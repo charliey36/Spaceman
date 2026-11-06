@@ -832,6 +832,51 @@ button.ms-card:hover .ms-ic{transform:scale(1.08) rotate(-6deg)}
 .cap-mini{display:flex;align-items:center;gap:14px;background:var(--surface-2)}
 .go-crew .pl-av .cap-badge{right:-4px;bottom:-2px}
 
+/* ---------- v0.5: every player on their own phone ---------- */
+.dev-bar{display:flex;align-items:center;justify-content:space-between;gap:10px 12px;flex-wrap:wrap}
+.dev-chip{display:flex;align-items:center;gap:10px;min-height:48px;padding:6px 14px 6px 8px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line-2);color:var(--fg-2)}
+.dev-txt{display:flex;flex-direction:column;line-height:1.2;text-align:left}
+.dev-txt b{color:var(--fg);font-size:14px;font-weight:600}
+.dev-txt small{font-size:12px}
+.dev-conn{display:flex;align-items:center;gap:4px;font-family:var(--font-mono);font-size:11.5px;color:var(--fg-3)}
+.dev-conn i{width:7px;height:7px;border-radius:50%;background:var(--signal);opacity:.55}
+.dev-conn i.me{opacity:1;box-shadow:0 0 0 3px rgba(98,217,166,.22)}
+.dev-conn span{margin-left:6px}
+.pl.mine{border-color:var(--ion)}
+.pl.mine.lead{border-color:rgba(242,183,102,.7)}
+.pu-dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--line-2);margin:10px 2px}
+.pu-dot.on{background:var(--fg-2);border-color:var(--fg-2)}
+#lv-ch{display:flex;flex-direction:column;gap:16px}
+.m-prog{font-size:12.5px;color:var(--fg-3);margin:0;letter-spacing:.02em}
+.m-prog:empty{display:none}
+.buzz{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;width:100%;min-height:150px;border-radius:var(--r-lg);background:radial-gradient(80% 90% at 50% 0%,rgba(124,156,255,.42),rgba(124,156,255,.08) 70%),var(--surface-2);border:1px solid rgba(124,156,255,.6);box-shadow:0 10px 40px rgba(124,156,255,.22);transition:transform var(--fast) var(--ease),box-shadow var(--fast)}
+.buzz span{font-family:var(--font-display);font-size:44px;font-weight:500;letter-spacing:-.03em}
+.buzz small{font-family:var(--font-mono);font-size:12px;color:var(--fg-2);letter-spacing:.08em;text-transform:uppercase}
+.buzz:active{transform:scale(.95);box-shadow:0 4px 18px rgba(124,156,255,.4)}
+.waiting{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:15px;color:var(--fg-2);line-height:1.4}
+.waiting i{width:5px;height:5px;border-radius:50%;background:var(--fg-2);animation:pulse 1.2s ease-in-out infinite;flex:none}
+.waiting i:nth-of-type(2){animation-delay:.2s}.waiting i:nth-of-type(3){animation-delay:.4s}
+.copilot{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:var(--fg-2);padding:12px 14px;border-radius:var(--r-md);background:var(--ion-soft);border:1px solid rgba(124,156,255,.25);line-height:1.4;margin:0}
+.copilot svg{flex:none;margin-top:1px;color:var(--ion)}
+.phones{display:flex;flex-direction:column;gap:12px}
+.phone-row{display:flex;gap:10px;flex-wrap:wrap}
+.phone{display:flex;align-items:center;gap:5px;padding:5px 12px 5px 5px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line)}
+.phone i{width:4px;height:4px;border-radius:50%;background:var(--fg-3);animation:pulse 1.2s ease-in-out infinite}
+.phone i:nth-of-type(2){animation-delay:.2s}.phone i:nth-of-type(3){animation-delay:.4s}
+.phone.done{border-color:rgba(98,217,166,.45);color:var(--signal)}
+.ca-card.own{border-color:rgba(124,156,255,.45)}
+.own-tag{margin-left:auto;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ion);flex:none;padding-top:3px}
+.cnt{display:flex;flex-direction:column;gap:4px}
+.cnt small{font-size:13px;color:var(--fg-2)}
+.ev-txt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ev-txt b{font-weight:600;font-size:14.5px}
+.ev-txt small{font-size:13px;color:var(--fg-2);line-height:1.35}
+.ev-d{flex:none;max-width:44%;text-align:right;font-family:var(--font-mono);font-size:13px !important;line-height:1.3}
+.ev-row.zero .ev-d{color:var(--fg-3)}
+.dec.static{cursor:default;opacity:.75}
+.who-btn[disabled]{opacity:.4;cursor:not-allowed}
+.muted-done{background:var(--surface-2) !important;border-color:var(--line) !important;color:var(--fg-2) !important}
+
 /* ---------- Auth ---------- */
 .auth{position:fixed;inset:0;z-index:200;background:var(--void);overflow-y:auto;isolation:isolate;transition:opacity 320ms var(--ease),transform 320ms var(--ease)}
 .auth.out{opacity:0;transform:scale(1.02);pointer-events:none}
@@ -881,9 +926,172 @@ button.ms-card:hover .ms-ic{transform:scale(1.08) rotate(-6deg)}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:1ms !important;animation-delay:0ms !important;animation-iteration-count:1 !important;transition-duration:1ms !important}
 }
+/* ---------- v0.6: one-screen mission view, Co-Pilot, new challenges ---------- */
+.live:has(.lv){overflow:hidden}
+.live-in.lv{height:100vh;height:100dvh;min-height:0;display:flex;flex-direction:column;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lv-top{display:flex;align-items:center;gap:10px;min-height:48px;flex:none}
+#lv-me{display:contents}
+.lv-me{display:flex;align-items:center;gap:8px;min-height:48px;min-width:0;max-width:58%;padding:5px 12px 5px 6px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line-2);color:var(--fg-2)}
+.lv-me .dev-txt{min-width:0}
+.lv-me .dev-txt b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.role-captain{color:var(--flare)}.role-co{color:var(--ion)}
+.lv-stat{margin-left:auto;display:flex;align-items:baseline;gap:6px;white-space:nowrap}
+.lv-stat .t-num{font-size:24px;letter-spacing:-.03em}
+.lv-stat small{font-size:13px;color:var(--fg-2);margin-right:4px}
+.lv-stat .mono{font-size:14px;color:var(--fg-2)}
+.lv-dot{width:8px;height:8px;border-radius:50%;background:#FF6B6B;animation:pulse 1.4s ease-in-out infinite;align-self:center}
+.lb{display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:6px;flex:none}
+.lb-p{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"av pts" "t t";align-items:center;gap:4px 8px;padding:8px 10px;border-radius:14px;background:rgba(11,12,16,.84);border:1px solid var(--line-2);text-align:left;min-width:0;transition:transform var(--fast) var(--ease),border-color var(--base)}
+.lb-p:active{transform:scale(.96)}
+.lb-p.mine{border-color:var(--ion)}
+.lb-p.lead{border-color:rgba(242,183,102,.7);background:linear-gradient(180deg,rgba(242,183,102,.12),rgba(11,12,16,.84) 70%)}
+.lb-r{display:none}
+.lb-av{grid-area:av;position:relative;display:grid}
+.rb{position:absolute;right:-5px;bottom:-4px;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--void);color:#000}
+.rb.cap{background:var(--flare)}.rb.co{background:var(--ion)}
+.lb-pts{grid-area:pts;justify-self:end;font-size:24px;letter-spacing:-.03em;line-height:1}
+.lb-t{grid-area:t;min-width:0;display:flex;flex-direction:column;line-height:1.2}
+.lb-t b,.lb-t small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-t b{font-size:14px;font-weight:600}
+.lb-t small{font-size:12px;color:var(--fg-3)}
+.lv-stage{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;border-radius:var(--r-lg);background:rgba(11,12,16,.86);border:1px solid var(--line);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:16px}
+.lv-stage:has(.ev-card.cosmic){border-color:rgba(242,183,102,.45)}
+.lv-stage:has(.ev-card.decision),.lv-stage:has(.ev-card.drop){border-color:rgba(124,156,255,.5)}
+#lv-ch,.ev-card{display:flex;flex-direction:column;gap:12px}
+.ev-card{animation:eventIn 520ms var(--spring)}
+.lv-prog{flex:none;min-height:18px;margin:0;text-align:center;font-size:13px;color:var(--fg-2);letter-spacing:.02em}
+.lv-tray{flex:none;display:flex;gap:8px;align-items:stretch}
+.pu-slot{flex:none;width:66px;min-height:60px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--ion-soft);border:1px solid rgba(124,156,255,.5);color:var(--fg);transition:transform var(--fast) var(--ease)}
+.pu-slot:active{transform:scale(.94)}
+.pu-slot small{font-size:12px;color:var(--fg-2)}
+.pu-slot.empty{background:transparent;border:1px dashed var(--line-2);color:var(--fg-3)}
+.pu-slot.empty small{color:var(--fg-3)}
+.pu-slot.cap{color:var(--flare);border-color:rgba(242,183,102,.5);background:rgba(242,183,102,.08);width:auto;padding:0 10px}
+.tray-tx{flex:1;min-height:60px;height:auto;border-radius:16px;gap:8px}
+.q-text{font-size:19px;font-weight:600;line-height:1.3;margin:0;letter-spacing:-.01em}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{display:flex;align-items:center;gap:10px;min-height:64px;padding:10px 12px;border-radius:16px;background:var(--surface-2);border:1px solid var(--line-2);font-size:15px;font-weight:600;text-align:left;line-height:1.25;transition:transform var(--fast) var(--ease),border-color var(--fast)}
+button.opt:active{transform:scale(.96);border-color:var(--ion)}
+.opt b{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--surface-3);font-size:13px}
+.opt.right{border-color:var(--signal);background:rgba(98,217,166,.12)}
+.opt.wrong{border-color:rgba(255,138,138,.6)}
+.co-panel{display:flex;flex-direction:column;gap:10px;padding:12px;border-radius:16px;background:var(--ion-soft);border:1px solid rgba(124,156,255,.35)}
+.co-panel .eyebrow{display:flex;align-items:center;gap:6px}
+.said{margin:0;font-size:17px;font-weight:600;color:var(--fg);line-height:1.35}
+.co-hint{margin:0;font-size:14px;color:var(--fg-2);display:flex;gap:6px;align-items:center;line-height:1.4}
+.cap-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.key{display:grid;place-items:center;min-height:58px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line-2);font:500 24px var(--font-display);transition:transform var(--fast) var(--ease)}
+.key:active{transform:scale(.92);border-color:var(--ion)}
+.cap-note{display:flex;gap:8px;align-items:flex-start;margin:0;font-size:13px;color:var(--fg-2);line-height:1.4}
+.cap-note svg{flex:none;color:var(--flare);margin-top:1px}
+.est-row{display:flex;gap:8px}
+.field.est{flex:1;min-width:0}
+.field.est input{font:600 22px var(--font-mono);letter-spacing:-.01em}
+.est-ans{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.est-ans .t-num{font-size:44px;letter-spacing:-.04em}
+.est-ans small{font-size:14px;color:var(--fg-2)}
+.est-rows{display:flex;flex-direction:column;gap:6px}
+.est-r{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border-radius:12px;background:var(--surface-2);border:1px solid transparent;font-size:14px}
+.est-r b{flex:1;font-weight:600}
+.est-r small{color:var(--fg-3);font-size:12px;min-width:80px;text-align:right}
+.est-r.win{border-color:rgba(98,217,166,.6)}
+.spot{display:flex;flex-direction:column;align-items:center;gap:4px;padding:4px 0;text-align:center}
+.spot-e{font-size:72px;line-height:1.05}
+.spot-n{font-size:28px}
+.spot.small-spot{flex-direction:row;justify-content:center;gap:14px}
+.spot.small-spot .spot-e{font-size:44px}
+.who-grid.compact{grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.who-grid.compact .who-btn{min-height:84px;font-size:14px;gap:6px;padding:8px 4px}
+.who-grid.compact.mini .who-btn{min-height:66px;flex-direction:row;gap:6px}
+.pick-list.mini{display:flex;flex-direction:row;flex-wrap:wrap;gap:8px}
+.pick-list.mini .pick-m{flex:1 1 140px;min-height:52px;padding:8px 10px;gap:10px}
+.pick-list.mini .pick-m .grow b{font-size:14px}
+.pick-m[aria-pressed="true"]{border-color:var(--ion);background:var(--ion-soft)}
+.pick-m.planned,.li.planned{opacity:.6}
+.pick-list.tight{gap:8px}
+.pick-list.tight .pick-m{min-height:60px;padding:10px 12px}
+.ca-reveal .by{display:flex;align-items:center;gap:10px;text-align:left}
+.ca-reveal .by b{display:block;font-size:18px}
+.btn-row.split{justify-content:space-between;align-items:center}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.live .m-head .cat-ic{width:40px;height:40px}
+.live.day .lv-stage,.live.day .lb-p{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
+.live.day .lb-p.lead{background:linear-gradient(180deg,rgba(242,183,102,.22),var(--surface) 70%)}
+.live.day .rb{border-color:var(--surface)}
+@media (max-height:720px){
+  .live-in.lv{gap:8px}
+  .lb-p{padding:6px 8px;gap:2px 6px}
+  .lb-pts{font-size:20px}
+  .lv-stage{padding:12px}
+  .q-text{font-size:17px}
+  .opt{min-height:54px;font-size:14px}
+  .spot-e{font-size:54px}
+  .who-grid.compact .who-btn{min-height:72px}
+  .pu-slot,.tray-tx{min-height:54px}
+  .live .m-head .cat-ic,.live .ev-ic{width:34px;height:34px}
+  .m-title{font-size:17px}
+  .lv .phone-row,.lv .cap-note,.lv .hide-short{display:none}
+  .pick-list.tight .pick-m{min-height:48px;padding:8px 10px}
+  .pick-list.tight .pick-m .grow span{display:none}
+  .dec-opts.big{margin-top:0}
+  .dec-opts.big .dec{min-height:58px;font-size:17px}
+  .key{min-height:48px}
+  .co-panel{padding:10px;gap:8px}
+  .est-ans .t-num{font-size:34px}
+  .spot.small-spot .spot-e{font-size:36px}
+  #lv-ch,.ev-card{gap:10px}
+}
+.av-auto{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line-2);color:var(--fg-2)}
+.pick[disabled]{opacity:.35;pointer-events:none}
+/* ---------- v0.7: the Co-Pilot seat ---------- */
+.lb-p.co{border-color:rgba(124,156,255,.6);box-shadow:0 0 18px rgba(124,156,255,.2)}
+.lb-p.co.lead{border-color:rgba(242,183,102,.7)}
+.pu-slots{display:flex;gap:8px;flex:none}
+.pu-slots.three .pu-slot{width:58px}
+.ev-card.role,.ev-card.promo{align-items:center;text-align:center}
+.perks{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.perks span{font-size:12.5px;padding:6px 10px;border-radius:999px;background:var(--ion-soft);border:1px solid rgba(124,156,255,.3);color:var(--fg);line-height:1.2}
+.cp-title{font-size:24px;letter-spacing:-.02em;line-height:1.15}
+.cp-after{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;text-align:center}
+.cp-reel{position:relative;width:104px;height:104px;margin:4px auto;flex:none}
+.cp-reel .r{position:absolute;inset:8px;opacity:0;transform:scale(.88);transition:opacity 70ms linear,transform 70ms linear}
+.cp-reel .r.on{opacity:1;transform:scale(1)}
+.cp-reel .cp-win{position:absolute;inset:8px;opacity:0}
+.cp-reel .cp-win::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid var(--ion);box-shadow:0 0 30px rgba(124,156,255,.55)}
+.cp-sat{position:absolute;right:-12px;top:-10px;font-style:normal;font-size:26px;z-index:1}
+.revealed .cp-reel .r{display:none}
+.revealed .cp-reel .cp-win{animation:cpPop 640ms var(--spring) both}
+.ev-card.role:not(.revealed) .cp-after{visibility:hidden;opacity:0}
+.ev-card.role.revealed .cp-after{animation:cpIn 420ms var(--ease) both}
+.ev-card.promo:not(.revealed) .cp-after{animation:cpIn 420ms var(--ease) .95s both}
+.promo-win,.cp-win{position:relative}
+.die-wrap{display:grid;place-items:center;padding:2px 0}
+.die .die-b{fill:var(--fg)}
+.die .die-p,.die .die-q{fill:var(--void)}
+.die .die-q{font:500 46px var(--font-display)}
+.die.shake{animation:dieShake .55s ease-in-out infinite;transform-origin:50% 60%}
+.die.tumble{animation:dieTumble 950ms cubic-bezier(.2,.8,.2,1) both}
+.odds{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.odds span{font-family:var(--font-mono);font-size:12px;padding:5px 9px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line);color:var(--fg-2)}
+.odds .six{color:var(--ion);border-color:rgba(124,156,255,.45)}
+.roll-btn{font-size:20px}
+.lv-stage:has(.ev-card.promo){border-color:rgba(242,183,102,.5)}
+.lv-stage:has(.ev-card.role),.lv-stage:has(.ev-card.struggle){border-color:rgba(124,156,255,.55)}
+.cp-info{display:flex;flex-direction:column;gap:6px;padding:14px 16px}
+.cp-info p{margin:0;line-height:1.45}
+.copilot-card{display:flex;flex-direction:column;gap:12px}
+.cp-final{display:flex;align-items:center;gap:14px}
+.cp-final b{display:block;font-size:20px}
+.cp-final small{display:block;margin-top:2px}
+.cp-hist{display:flex;flex-wrap:wrap;gap:6px}
+@keyframes cpPop{0%{opacity:0;transform:scale(.4) rotate(-12deg)}60%{opacity:1;transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+@keyframes cpIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dieShake{0%,100%{transform:rotate(-9deg)}50%{transform:rotate(9deg) translateY(-4px)}}
+@keyframes dieTumble{0%{transform:rotate(-560deg) scale(.35);opacity:.2}70%{transform:rotate(14deg) scale(1.1);opacity:1}100%{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.die.shake,.die.tumble,.revealed .cp-reel .cp-win,.ev-card.promo .cp-after,.ev-card.role .cp-after{animation:none}}
+@media (max-height:720px){.ev-card.struggle .perks,.ev-card.promo .perks{display:none}.cp-reel{width:84px;height:84px}.cp-reel .r,.cp-reel .cp-win{inset:6px}.die{width:72px;height:72px}.cp-title{font-size:20px}.perks span{padding:4px 8px}}
 </style>
-</head>
-<body>
+
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
     <linearGradient id="g-ion" x1="0" y1="0" x2="1" y2="1">
@@ -999,28 +1207,28 @@ const MILESTONES = [
   {k:'10000', mi:10000, name:'10,000 Miles Together',ic:'moon',   line:'Basically family. 40% of the way round the Earth.'}
 ];
 
-const CAT_H = {Featured:38, Team:205, Music:285, Vote:330, Competitive:22, Trivia:45};
+const CAT_H = {Featured:38, Team:205, Music:285, Vote:330, Competitive:22, Trivia:45, Spotting:160};
 const MISSIONS = {
-  answers:{name:'Cosmic Answers',   cat:'Featured',    kind:'answers', ic:'planet', desc:'Passengers write secret answers. The Captain picks a favourite, then guesses who wrote it.'},
-  cows:   {name:'Cow Count',        cat:'Team',        kind:'count',  ic:'users',   unit:'cows', desc:'Tap +1 for every cow you pass. The crew total is the score.'},
-  intro:  {name:'Name That Intro',  cat:'Music',       kind:'winner', ic:'music',   rounds:3, desc:'Someone plays a song from their phone. First to name it takes the round.'},
-  silent: {name:'Silent Five',      cat:'Team',        kind:'silent', ic:'moon',    mins:5, desc:'Five minutes. Not a single word. Tap the moment someone cracks.'},
-  singer: {name:'Worst Singer',     cat:'Vote',        kind:'vote',   ic:'mic',     desc:'Secret ballot. Who should never be handed the aux again?'},
-  wee:    {name:'Services Prophet', cat:'Vote',        kind:'vote',   ic:'flag',    desc:'Vote now: who’ll be first to ask for a services stop?'},
-  plate:  {name:'Plate Poker',      cat:'Competitive', kind:'winner', ic:'trophy',  rounds:3, desc:'Best poker hand from passing number plates. Tap who won each hand.'},
-  yellow: {name:'Yellow Car',       cat:'Competitive', kind:'winner', ic:'bolt',    rounds:5, desc:'The classic. First to call a yellow car scores.'},
-  capital:{name:'Capital Rush',     cat:'Trivia',      kind:'winner', ic:'sparkle', rounds:3, desc:'A passenger reads out a country. First correct capital wins.'}
+  answers: {name:'Cosmic Answers',     cat:'Featured', kind:'answers',  ic:'planet',  w:3,   desc:'Everyone writes a secret answer on their own phone. The Captain picks a favourite, then guesses who wrote it.'},
+  estimate:{name:'Estimation Station', cat:'Trivia',   kind:'estimate', ic:'sliders', w:4,   desc:'One question nobody actually knows. Talk it through, then everyone locks in a number. Closest wins.'},
+  trivia:  {name:'Quickfire Trivia',   cat:'Trivia',   kind:'trivia',   ic:'sparkle', w:3,   rounds:3, desc:'Three questions, four options each. The fastest correct answer wins the round.'},
+  silent:  {name:'Silent Mission',     cat:'Team',     kind:'silent',   ic:'moon',    w:1.5, desc:'One to three minutes. Not a single word. Crack, and everyone else scores.'},
+  singer:  {name:'Worst Singer',       cat:'Vote',     kind:'vote',     ic:'mic',     w:1,   desc:'Secret ballot on your own phone. Pick with the majority to score.'},
+  wee:     {name:'Services Prophet',   cat:'Vote',     kind:'vote',     ic:'flag',    w:1,   desc:'Who’ll be first to ask for a services stop? Vote in secret. Majority pickers score.'},
+  spot:    {name:'Spot Challenge',     cat:'Spotting', kind:'spot',     ic:'eye',     w:0,   interrupt:true, desc:'Spaceman names a target. Shout when you see it. The car agrees who was first.'}
 };
+/* Shown as a placeholder only. Never part of the rotation (see docs/SPOTIFY.md). */
+const PLANNED = [{id:'intro', name:'Name That Intro', ic:'music', tag:'Planned feature', line:'Future Spotify integration. Not playable yet.'}];
 const VIBES = {
-  chill:{name:'Chill', line:'A couple of games. Mostly vibes and window staring.', lineup:['cows','silent','wee']},
-  party:{name:'Party', line:'Games every few miles. Expect noise.', lineup:['answers','intro','cows']},
-  competitive:{name:'Competitive', line:'Everything is scored. Losers buy the services coffee.', lineup:['answers','plate','yellow']}
+  chill:{name:'Chill', line:'A couple of games. Mostly vibes and window staring.', lineup:['estimate','silent','wee']},
+  party:{name:'Party', line:'Games every few miles. Expect noise.', lineup:['answers','estimate','trivia']},
+  competitive:{name:'Competitive', line:'Everything is scored. Losers buy the services coffee.', lineup:['trivia','estimate','answers']}
 };
 const AWARDS = {
   champion:   {name:'Challenge Champion', ic:'crown',  line:({w,t}) => `Won ${w} of ${t} rounds. Has not stopped mentioning it.`},
   aux:        {name:'Aux King',           ic:'music',  line:({n}) => `Picked ${n + 8} songs in a row. Nobody voted for this.`},
   backseat:   {name:'Backseat Driver',    ic:'pin',    line:({n}) => `Gave ${n + 2} directions. Zero were requested.`},
-  competitive:{name:'Most Competitive',   ic:'trophy', line:() => 'Treated Cow Count like an Olympic final.'},
+  competitive:{name:'Most Competitive',   ic:'trophy', line:() => 'Treated the Spot Challenge like an Olympic final.'},
   silent:     {name:'Silent Passenger',   ic:'moon',   line:({n}) => `Said about ${n + 3} words. Two were “are we there”.`},
   snack:      {name:'Snack Treasurer',    ic:'gift',   line:({n}) => `Opened ${Math.ceil(n/2) + 2} packets. Shared one.`},
   services:   {name:'Services Enthusiast',ic:'flag',   line:({n}) => `Asked for ${Math.ceil(n/3) + 1} services stops. Got one.`},
@@ -1088,6 +1296,7 @@ function shuffle(arr, r=Math.random){ const a = [...arr]; for (let i = a.length-
 const QUIPS = ['Nobody got lost. Probably.','Everyone survived the playlist.','Another one for the scrapbook.','The car smells of crisps. Worth it.'];
 
 const ICONS = {
+  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
   home:'<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>',
   users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.4 3.4-5.5 6.5-5.5s5.7 2.1 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.8c1.6.8 2.6 2.6 3 5.2"/>',
   user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.2-6.5 8-6.5s7 2.5 8 6.5"/>',
@@ -1237,9 +1446,10 @@ function normalize(u){
   if (!VIBES[u.launch.mode]) u.launch.mode = 'party';
   const valid = new Set([...u.friends.map(f => f.id), ...u.guests.map(g => g.id)]);
   u.launch.crew = (u.launch.crew || []).filter(id => valid.has(id));
-  u.launch.lineup = (u.launch.lineup || []).filter(id => MISSIONS[id]);
+  u.launch.lineup = (u.launch.lineup || []).filter(id => MISSIONS[id] && MISSIONS[id].w);
   if (!u.launch.lineup.length) u.launch.lineup = [...VIBES[u.launch.mode].lineup];
   if (!u.launch.v4){ u.launch.lineup = [...VIBES[u.launch.mode].lineup]; u.launch.v4 = true; }
+  if (!u.launch.v6){ u.launch.lineup = [...VIBES[u.launch.mode].lineup]; u.launch.v6 = true; }
   if (![u.id, ...u.launch.crew].includes(u.launch.captain)) u.launch.captain = u.launch.crew.find(id => !id.startsWith('g_')) || u.id;
   u.launch.seat = u.launch.captain === u.id ? 'driver' : 'passenger';
 }
@@ -1413,7 +1623,7 @@ function loadSample(){
   u.friends = [...u.friends.filter(f => real.has(f.id)), ...SAMPLE_FRIENDS.map(f => ({...f, since:f.first, ms:sampleMs(f, today)}))];
   Object.assign(u, {totalMiles:12904, journeyCount:186, xp:51616, sample:true,
     achievements:ACH_DEFS.filter(d => d.got).map(d => ({id:d.id, got:d.got}))});
-  u.launch = {crew:['thomas','megan','connor'], captain:'thomas', mode:'party', seat:'passenger', dest:'', lineup:[...VIBES.party.lineup], v4:true};
+  u.launch = {crew:['thomas','megan','connor'], captain:'thomas', mode:'party', seat:'passenger', dest:'', lineup:[...VIBES.party.lineup], v4:true, v6:true};
   persist(); hydrate(u);
 }
 /* The owner's own account arrives populated, once. */
@@ -1625,14 +1835,15 @@ function vGo(){
     ${crewHTML(people, L.captain)}
     <div class="list go-list">
       <button class="row" data-action="edit-crew"><span class="ic-tile">${ic('users')}</span><span class="grow"><b>Players</b><span>${plural(people.length,'person','people')}${guests ? ` · ${guests} without Spaceman` : ''}</span></span><span class="chev">${ic('chevR',18)}</span></button>
-      <button class="row" data-action="edit-type"><span class="ic-tile">${ic('sliders')}</span><span class="grow"><b>Journey type</b><span>${VIBES[L.mode].name} · Captain: ${L.captain === ME.id ? 'You' : esc(PEOPLE[L.captain].name)}${L.dest ? ` · ${esc(L.dest)}` : ''}</span></span><span class="chev">${ic('chevR',18)}</span></button>
+      <button class="row" data-action="edit-type"><span class="ic-tile">${ic('sliders')}</span><span class="grow"><b>Journey type</b><span>${VIBES[L.mode].name} · Captain: ${L.captain === ME.id ? 'You' : esc(PEOPLE[L.captain].name)} · Co-Pilot picked at launch${L.dest ? ` · ${esc(L.dest)}` : ''}</span></span><span class="chev">${ic('chevR',18)}</span></button>
     </div>
   </section>
   <button class="btn btn-primary btn-xl btn-block" data-action="start">${ic('rocket',24)}Start mission</button>
   <section>
     ${secH('Challenge line-up','','',`<button class="link-btn" data-action="shuffle">${ic('sparkle',15)}Shuffle</button>`)}
     <div class="stack-v">${L.lineup.map(lineupRow).join('')}</div>
-    <p class="small muted" style="margin-top:14px">Between challenges: cosmic events, transmissions, Captain decisions and a power-up for everyone every 10 minutes.</p>
+    ${PLANNED.map(p => `<div class="li planned" style="margin-top:10px"><span class="cat-ic" style="--h:${CAT_H.Music}">${ic(p.ic,20)}</span><span class="grow"><b>${p.name} <span class="feat-tag">🎵 ${p.tag}</span></b><span>${p.line}</span></span></div>`).join('')}
+    <p class="small muted" style="margin-top:14px">Between challenges: spot challenges, cosmic events, transmissions, Captain decisions and power-up drops. One at a time, never on top of each other.</p>
   </section>`;
 }
 
@@ -1753,7 +1964,7 @@ function vBrand(){
     ['Discord','Groups with identity and presence','Crew: your people, each with a level and a history'],
     ['Duolingo','Streaks and celebratory unlocks','Weekly journey streak; level-up and milestone celebrations'],
     ['BeReal','Shared moments tied to a time','Journey events fired by the road'],
-    ['Uber','Live trip state with one primary metric','Driver Safe Mode: one number per card, no taps'],
+    ['Uber','Live trip state with one primary metric','One shared live screen on every phone, hosted by the Captain'],
     ['Revolut','One huge number as the hero','Live screen and recap lead with miles'],
     ['Airbnb','A trip as a story','Memories grouped by month and nameable'],
     ['Headspace','Calm pacing, generous spacing','Wide gutters, 36–40px section rhythm'],
@@ -1813,7 +2024,7 @@ function vBrand(){
   </section>
   <section>${secH('Accessibility')}
     <div class="list">
-      ${[['16px body, 12px minimum labels','No text below 12px anywhere in the app.'],['44px minimum touch targets','Live-screen buttons are 64–112px for use in a moving car.'],['Contrast','Secondary text 7:1, tertiary 5:1 on Void. Daylight contrast lifts both further.'],['Daylight mode on the live screen','One tap switches to dark-on-light for glare.'],['Driver Safe Mode','Four large read-only cards. Nothing to tap but mode and end.'],['Reduced motion','All animation collapses to instant when the system asks.']].map(([a,b]) => `<div class="row"><span class="status-done">${ic('check',18,2.2)}</span><span class="grow"><b>${a}</b><span>${b}</span></span></div>`).join('')}
+      ${[['16px body, 12px minimum labels','No text below 12px anywhere in the app.'],['44px minimum touch targets','Live-screen buttons are 64–112px for use in a moving car.'],['Contrast','Secondary text 7:1, tertiary 5:1 on Void. Daylight contrast lifts both further.'],['Daylight mode on the live screen','One tap switches to dark-on-light for glare.'],['Captain-safe play','The Captain answers out loud. The Co-Pilot taps it in on their own phone. Big buttons stay available if the Captain is stopped.'],['Reduced motion','All animation collapses to instant when the system asks.']].map(([a,b]) => `<div class="row"><span class="status-done">${ic('check',18,2.2)}</span><span class="grow"><b>${a}</b><span>${b}</span></span></div>`).join('')}
     </div>
   </section>
   <section>${secH('Research → decisions')}
@@ -2112,55 +2323,773 @@ function editTypeSheet(){
       <nav class="seg" aria-label="Vibe">${Object.entries(VIBES).map(([k,v]) => `<button data-vibe="${k}" aria-pressed="${L.mode === k}">${v.name}</button>`).join('')}</nav>
       <p class="muted" id="vibe-d">${VIBES[L.mode].line}</p></section>
     <section class="stack-v"><h3 class="eyebrow">Captain</h3>
-      <p class="small muted" style="margin-top:-4px">Whoever’s driving. The Captain gets Driver Safe Mode, the big decisions and a crew rating at the end.</p>
+      <p class="small muted" style="margin-top:-4px">Whoever’s driving. Their phone hosts the mission. They play every challenge out loud, judge, make the big decisions and get rated at the end. The driver’s seat starts with a Shield.</p>
       <div class="pick-crew">${[ME.id, ...L.crew].map(id => `<button class="pick" data-cap="${id}" aria-pressed="${L.captain === id}">${av(id,52)}<span class="tick">${ic('steer',12,2.2)}</span>${esc(whoName(id))}</button>`).join('')}</div></section>
+    <section class="card cp-info"><span class="eyebrow ion">🛰 Co-Pilot</span><p class="small">Picked at random once the mission launches, and it can change hands. Perks: +1 on every challenge win, three power-up slots, a free Shield and supply drop priority. The Co-Pilot also taps in the Captain’s answers.</p><p class="small muted">Watch out for Mission Promotion: roll a 6 and the seat is yours.</p></section>
     <section class="stack-v"><h3 class="eyebrow">Destination · optional</h3>
       <label class="field" for="dest">${ic('pin',18)}<input id="dest" value="${esc(L.dest)}" placeholder="Leave blank for a mystery drive" autocomplete="off" maxlength="40"></label></section>
     <button class="btn btn-primary btn-lg btn-block" data-close>Done</button>`);
 }
 
-/* ---------- live mission ---------- */
-/* Pace: 10 real seconds = 1 mission minute. Everything in a mission is scheduled in mission minutes. */
-const SIM_RATE = 1/10;
-const RATE_KEYS = [['smooth','Smooth driving','steer'],['music','Music selection','music'],['fun','Entertainment value','sparkle'],['lead','Mission leadership','helmet']];
+/* ENGINE:START */
+/* ==========================================================================
+   Mission engine. Pure logic, no DOM, so the same code can run:
+   - on the Captain's phone as the mission host (today: in this tab),
+   - in a Node balance simulation (docs/BALANCE.md),
+   - FUTURE: on a server or host device behind a realtime transport.
+   Devices never change state directly. They send intents with act(S, {type, by, ...});
+   the host applies them and every device renders the same shared state from its own seat.
+
+   Roles: Captain (driving), Co-Pilot (a passenger who taps things in for the Captain), Crew.
+   An intent with as:'captain' from the Co-Pilot counts as the Captain's. The Captain can still tap directly.
+
+   Pacing: one major thing at a time. Challenges, cosmic events, decisions, transmissions and power-up
+   drops all go through one queue, with at least RULES.gap REAL seconds between them.
+   ========================================================================== */
+const PT = {
+  answerAuthor:5, captainGuess:5,          // equal value: a Captain guessing right is as likely as any one writer being picked
+  triviaFast:4, triviaRight:1,             // fastest correct answer, any other correct answer
+  estClosest:5, estSecond:2, estBangOn:2,  // bang on = within 2% of the real number
+  spot:3, voteMajority:3,
+  silentSurvivor:3, silentFlawless:[2,4],
+  supply:[3,8], flare:[2,5], strike:[3,5], direct:[6,8], major:[5,10], minor:[2,4], dent:[3,6],
+  lucky:[2,6], thief:[2,5],
+  /* Co-Pilot perks: small, stackable, never a multiplier (docs/COPILOT.md) */
+  coWinBonus:1, coWinMode:'challenge', slots:2, coSlots:3, coShield:true, coSupply:1.3, promoBonus:5, capShield:true,
+  proxyAllow:2.25,                         // seconds: a Captain answer typed in by the Co-Pilot counts as this much earlier (docs/BALANCE.md)
+  copilotAllow:.75,                        // seconds: the Co-Pilot's own answer, when they had to type the Captain's first
+  priority:0                               // Captain questions are for glory, not points
+};
+const RULES = {
+  gap:10,                                  // REAL seconds between major events. Never journey time.
+  stale:12,                                // journey minutes before an unplayed chat prompt is dropped
+  dropEvery:15,                            // journey minutes between power-up drops
+  answers:{write:3, pickBy:[.5,1.4], guessBy:[.4,1.2]},
+  trivia:{open:15, reveal:5, think:[2.5,9], know:.65},         // seconds
+  estimate:{len:2.2, by:[.5,1.8], spread:.5},                  // journey minutes; spread = how wild bot guesses are
+  spot:{reroll:2.5, giveUp:8, mean:{common:1.2, medium:2.5, rare:5}},
+  vote:{len:1.5, by:[.2,1.2]},
+  silent:{len:[1,3], autoStart:.6, crack:[.3,5]},
+  proxy:[1,2.5],                           // seconds for the Co-Pilot to tap in what the Captain said
+  role:{show:1.4},                         // journey minutes a Co-Pilot reveal stays up
+  promo:{rollBy:[1.5,3.5], autoRoll:10, show:1.4},              // seconds to roll, seconds before an auto-roll
+  struggle:{open:12, first:[25,40], every:[45,65], minHeld:10},  // seconds to answer; journey minutes between rare challenges
+  evShow:1.5, dropShow:1, txLen:1.6, decideBy:[.6,1.6], decideFor:4, answerBy:[.8,1.6], reactBy:[.2,.8]
+};
+const COSMIC = {
+  asteroid:{name:'Asteroid Field Detected', ic:'comet', line:'Debris incoming. Not everyone gets out clean.'},
+  supply:  {name:'Supply Drop',             ic:'gift',  line:'A crate drifts past the window. Finders keepers.'},
+  flare:   {name:'Solar Flare',             ic:'sun',   line:'One side of the ship catches the flare.'},
+  hole:    {name:'Black Hole',              ic:'hole',  line:'Gravity goes weird. Scores get swapped. Shields are useless here.'}
+};
+const DECISIONS = [
+  {id:'asteroid', ic:'comet',  title:'Asteroid field ahead', line:'Big rocks, dead ahead. Captain, your call.', a:'Avoid', b:'Fly through'},
+  {id:'distress', ic:'signal', title:'Distress signal',      line:'Someone out there needs help. Or it’s a trap.', a:'Answer the signal', b:'Ignore it'},
+  {id:'wormhole', ic:'hole',   title:'Wormhole spotted',     line:'Could be a shortcut. Could be chaos.', a:'Steer clear', b:'Go through it'},
+  {id:'route',    ic:'route',  title:'Navigation event',     line:'Two ways forward. One scenic, one very fast.', a:'Scenic route', b:'Hyperdrive'}
+];
 const POWERUPS = {
   double:{name:'Double Points', ic:'star',   line:'Your next points are doubled.'},
   shield:{name:'Shield',        ic:'shield', line:'Blocks the next bad thing that happens to you.'},
   thief: {name:'Point Thief',   ic:'mask',   line:'Steal 2–5 points from another player.'},
-  lucky: {name:'Lucky Roll',    ic:'dice',   line:'Roll for 1–6 bonus points.'}
+  lucky: {name:'Lucky Roll',    ic:'dice',   line:'Roll for 2–6 bonus points.'}
 };
-const COSMIC = {
-  asteroid:{name:'Asteroid Field Detected', ic:'comet', line:'Debris incoming. Somebody’s getting hit.'},
-  supply:  {name:'Supply Drop',             ic:'gift',  line:'A crate drifts past the window. Finders keepers.'},
-  flare:   {name:'Solar Flare',             ic:'sun',   line:'The whole ship gets a boost.'},
-  hole:    {name:'Black Hole',              ic:'hole',  line:'Gravity goes weird. Points get scrambled. Shields are useless here.'}
-};
-const DECISIONS = [
-  {id:'asteroid', ic:'comet',  title:'Asteroid detected', line:'Big rock, dead ahead. Captain, your call.', a:'Avoid the asteroid', b:'Fly through the field'},
-  {id:'distress', ic:'signal', title:'Distress signal',   line:'Someone out there needs help. Or it’s a trap.', a:'Answer the signal', b:'Ignore it, keep moving'},
-  {id:'wormhole', ic:'hole',   title:'Wormhole spotted',  line:'Could be a shortcut. Could be chaos.', a:'Steer clear', b:'Go through it'},
-  {id:'route',    ic:'route',  title:'Navigation event',  line:'Two ways forward. One scenic, one very fast.', a:'Scenic route', b:'Hyperdrive'}
-];
+/* Discussion prompts. Need the crew to talk, so never during a Silent Mission.
+   {p} passenger · {c} Captain · {a} {b} two different crew members */
 const TALK = [
-  'Which passenger would survive longest on Mars?', 'What’s the worst purchase you’ve ever made?',
-  'What would {p} buy immediately if they won £1 million?', 'Name something {p} definitely thinks is true but probably isn’t.',
-  'Which crew member would get us thrown off a space station first?', 'If this car had a theme song, what would it be?',
-  'Worst snack to bring on a road trip. Go.', '{p}, describe your perfect service station.',
-  'Who in this car is worst at keeping a secret?', 'What’s a hill you would genuinely die on?'
+  'If this crew started a cult, who would become leader first?',
+  'Which passenger is most likely to become Prime Minister completely by accident?',
+  'If aliens landed tomorrow, who here would trust them immediately?',
+  'If this crew opened a restaurant, who would get fired first?',
+  'If this car broke down in the middle of nowhere, who takes charge and who panics?',
+  'If {p} came with a warning label, what would it say?',
+  'If we all swapped jobs for a week, whose job would go the worst?',
+  'If this crew were a band, who sings, who drums and who quits first?',
+  'If {a} and {b} were stranded on a desert island, who gets rescued first and who builds a hut?',
+  'If this journey were a film, what’s it called and who plays Captain {c}?',
+  'Who in this car survives longest in a zombie apocalypse? Who goes first?',
+  'You can add one ridiculous feature to this car. What is it?',
+  'This crew gets its own reality show. What’s it called?',
+  'If animals could talk, which one would be the rudest?',
+  'Is a hot dog a sandwich? Settle it before the next junction.',
+  'Cereal first or milk first? Defend yourself.',
+  'Sweet or savoury road trip snacks? The car must reach a verdict.',
+  'Should the driver always pick the music? Discuss.',
+  'What’s the most overrated holiday destination?',
+  'Toast: triangles or rectangles? This matters.',
+  'Best crisp flavour of all time. One each. No duplicates allowed.',
+  'Pineapple on pizza: crime or genius?',
+  'A goose has taken over the car. Who negotiates with it?',
+  'You have 24 hours to plan a heist with this crew. Who does what?',
+  'This car is now a spaceship. Who’s in charge of snacks, navigation and alien diplomacy?',
+  'Invent a brand new sport using only things in this car.',
+  'An alien asks what a service station is for. Explain it in one sentence.',
+  'You must replace the national anthem with a song from this car’s playlist. Which one?',
+  'What’s the most suspicious thing you’ve ever bought at a service station?',
+  'Worst place you’ve ever been desperate for the loo?',
+  'Who in this car is the worst passenger, and why?',
+  'Describe your perfect road trip in three words.',
+  'What’s the longest you’ve ever been properly lost?',
+  'Rate the Captain’s driving so far, but only as a weather forecast.',
+  'Who in this car is most likely to get a tattoo they regret?',
+  'Who would last longest without their phone? Who would last ten minutes?',
+  'Who here would win a pub quiz on their own?',
+  'Who is most likely to be famous one day, and for what?',
+  'Who in this car is secretly the most competitive?',
+  'Who would cry first at a wedding?',
+  'Who has the most chaotic camera roll? Prove it at the next stop.',
+  'Who would be the worst flatmate, and what’s the habit?',
+  'Who is most likely to end up with fifteen cats?',
+  'What would {p} buy first if they won a million pounds?',
+  'Name something {p} definitely believes but probably isn’t true.',
+  'Which crew member would get us thrown off a space station first?',
+  'If this car had a theme song, what would it be?',
+  'Who in this car is worst at keeping a secret?',
+  'What’s a hill you would genuinely die on?',
+  'Which passenger would survive longest on Mars?',
+  'What’s the worst thing you’ve ever bought?',
+  '{p}, describe your perfect service station.',
+  'What’s the most useless talent in this car?',
+  'If {p} ran the country for a day, what’s the first new law?'
 ];
+/* Captain interview questions. Answered out loud, entered by the Co-Pilot or the Captain. No points. */
 const CAPTAIN_Q = [
-  'Captain, what’s your most controversial opinion?', 'Captain, what food should be banned forever?',
-  'Captain, who in this car would survive the least time in prison?', 'Captain, which passenger would you leave at the next services?',
-  'Captain, rate everyone’s music taste out of ten. Out loud.', 'Captain, what’s the most overrated film of all time?'
+  'Captain, what’s your most controversial opinion?', 'Captain, which food should be banned forever?',
+  'Captain, who in this car would last the least time in prison?', 'Captain, which passenger would you leave at the next services?',
+  'Captain, rate everyone’s music taste out of ten. Out loud.', 'Captain, what’s the most overrated film of all time?',
+  'Captain, which passenger would you actually trust to drive this car?', 'Captain, worst song played so far?',
+  'Captain, if you could ban one passenger from the aux forever, who would it be?', 'Captain, what’s your guilty pleasure road trip snack?',
+  'Captain, rank the passengers by navigation skill.', 'Captain, what’s the most dramatic thing that’s ever happened to you on a drive?',
+  'Captain, which passenger would you swap for a bag of crisps?', 'Captain, your honest opinion of roundabouts, please.',
+  'Captain, if this car had a name, what would it be?', 'Captain, who in this car would be worst in a crisis?',
+  'Captain, describe each passenger as a type of vehicle.', 'Captain, one rule you’d enforce in this car forever?',
+  'Captain, who’s the best singer in here? You’re allowed to lie.'
+];
+/* Mission Control chatter. Passive: nobody has to answer.
+   {p} passenger · {c} Captain · {cp} Co-Pilot · {lead} current leader · {a} any crew member */
+const CHATTER = [
+  'Sensors show the snack supply dropping faster than expected. {p}, we’re looking at you.',
+  'Quick update from base. Captain {c} is doing a solid job. Nobody tell them we said that.',
+  'We’ve detected an unusual amount of singing from this vehicle. Request denied. Carry on anyway.',
+  'Routine check. Seatbelts on? Good. {p}, sit up properly.',
+  'Scanners report {p} has checked their phone more times than we’ve passed road signs.',
+  'Mission Control confirms this is currently the most chaotic ship in the fleet. Congratulations.',
+  'A reminder from base. Snacks are communal under intergalactic law.',
+  'We’ve reviewed the playlist. Some choices have been made. That’s all we’ll say.',
+  'Weather report from orbit. Chance of {p} falling asleep: eighty percent.',
+  'Base has received a complaint about the temperature in this car. It came from everyone.',
+  'Fun fact from base. Nobody has ever won an argument about directions. Keep trying.',
+  '{a}, Mission Control would like to know why you’ve gone so quiet. Suspicious.',
+  'Mission Control is proud of this crew. Slightly worried. But proud.',
+  'Status report. Morale high, snacks low, {p} still talking.',
+  'Base has spotted a cow. Just thought you should know.',
+  'We may have lost track of who’s winning. Only joking. It’s {lead}.',
+  'The Captain has asked us to remind you that they can hear everything.',
+  'Mission Control has calculated the perfect snack to mile ratio. You’ve already gone past it.',
+  'Space traffic report. Heavy congestion near the services. Probably. We can’t actually see.',
+  '{p}, base would like to remind you it is not your turn to pick the music.',
+  'Somebody in this car is secretly winning at life. It’s not who you think.',
+  'That last conversation has been entered into the official mission log. For legal reasons.',
+  'Mission Control salutes Co-Pilot {cp}. Doing all the work while the Captain gets the glory.',
+  'Quick question from base. Who brought the snacks? Promotion pending.',
+  'A gentle reminder to {lead} that pride comes before an asteroid.',
+  'Base is picking up strong main character energy from {a}. Noted.',
+  'Mission Control would like everyone to know the Captain’s parking will be judged later.'
 ];
 const ANSWER_PROMPTS = [
-  {q:'What’s the worst possible superpower?', ideas:['Flying, but only at walking pace','Perfect memory, but only for adverts','Turning invisible when nobody is looking']},
-  {q:'Name a terrible name for a spaceship.', ideas:['The Leaky Biscuit','HMS Probably Fine','Kevin']},
-  {q:'What’s the worst thing to hear from the pilot mid-flight?', ideas:['“Does anyone know how to land?”','“Hold my drink.”','“That button wasn’t supposed to do that.”']},
-  {q:'Invent a new rule for road trips.', ideas:['Whoever falls asleep loses the aux forever','Every services stop needs a group photo','The driver names the car, no appeals']},
-  {q:'What’s the worst crisp flavour that could exist?', ideas:['Wet dog','Tuesday','Lukewarm tea']},
-  {q:'What would aliens find most confusing about humans?', ideas:['Queueing for fun','Paying to sit in traffic','Saying “we must do this again” and never doing it']}
+  {q:'What’s the worst possible superpower?', ideas:['Flying, but only at walking pace','Perfect memory, but only for adverts','Turning invisible when nobody is looking','Super strength, but only on Tuesdays']},
+  {q:'Name a terrible name for a spaceship.', ideas:['The Leaky Biscuit','HMS Probably Fine','Kevin','The Flying Overdraft']},
+  {q:'What’s the worst thing to hear from the pilot mid-flight?', ideas:['“Does anyone know how to land?”','“Hold my drink.”','“That button wasn’t supposed to do that.”','“Anyone got a map?”']},
+  {q:'Invent a new rule for road trips.', ideas:['Whoever falls asleep loses the aux forever','Every services stop needs a group photo','The driver names the car, no appeals','Snacks are communal by law']},
+  {q:'What’s the worst crisp flavour that could exist?', ideas:['Wet dog','Tuesday','Lukewarm tea','Dentist']},
+  {q:'What would aliens find most confusing about humans?', ideas:['Queueing for fun','Paying to sit in traffic','Saying “we must do this again” and never doing it','Sleeping a third of the day']},
+  {q:'What’s the worst thing to find in a hire car?', ideas:['Someone else’s half-eaten sandwich','A note saying “good luck”','A live crab','Only one wheel nut']},
+  {q:'Pitch a terrible new service station.', ideas:['Only sells warm lettuce','The toilets are a ten-minute drive away','Everything costs £40','A mime does the announcements']}
 ];
+/* Quickfire Trivia: questions most people have a fair chance at. a = index of the right option. */
+const TRIVIA = [
+  {c:'Geography', q:'What’s the capital of Australia?', o:['Canberra','Sydney','Melbourne','Perth']},
+  {c:'Geography', q:'What’s the capital of Canada?', o:['Ottawa','Toronto','Vancouver','Montreal']},
+  {c:'Geography', q:'What’s the longest river in the UK?', o:['Severn','Thames','Trent','Tay']},
+  {c:'Geography', q:'What’s the smallest country in the world?', o:['Vatican City','Monaco','San Marino','Liechtenstein']},
+  {c:'Geography', q:'Which is the largest ocean?', o:['Pacific','Atlantic','Indian','Arctic']},
+  {c:'Geography', q:'Which of these countries drives on the left?', o:['Japan','France','Germany','USA']},
+  {c:'Geography', q:'Which city is nicknamed the Big Apple?', o:['New York','Los Angeles','Chicago','Boston']},
+  {c:'Geography', q:'What’s the highest mountain in the UK?', o:['Ben Nevis','Yr Wyddfa (Snowdon)','Scafell Pike','Ben Macdui']},
+  {c:'Films', q:'Who directed Jaws?', o:['Steven Spielberg','George Lucas','Ridley Scott','James Cameron']},
+  {c:'Films', q:'Which film features Elsa singing “Let It Go”?', o:['Frozen','Tangled','Moana','Brave']},
+  {c:'Films', q:'Which film is “I’ll be back” from?', o:['The Terminator','Die Hard','RoboCop','Predator']},
+  {c:'Films', q:'What’s the cowboy toy called in Toy Story?', o:['Woody','Andy','Rex','Slinky']},
+  {c:'Films', q:'Which film won Best Picture at the 2020 Oscars?', o:['Parasite','1917','Joker','Ford v Ferrari']},
+  {c:'Music', q:'Which band released “Wonderwall”?', o:['Oasis','Blur','Pulp','The Verve']},
+  {c:'Music', q:'Who released “Shape of You”?', o:['Ed Sheeran','Sam Smith','Lewis Capaldi','Harry Styles']},
+  {c:'Music', q:'Which Beatle played the drums?', o:['Ringo Starr','Paul McCartney','George Harrison','John Lennon']},
+  {c:'Music', q:'How many strings does a standard guitar have?', o:['6','4','5','7']},
+  {c:'Music', q:'Who is known as the Queen of Pop?', o:['Madonna','Beyoncé','Kylie Minogue','Lady Gaga']},
+  {c:'Sport', q:'How many players does each football team have on the pitch?', o:['11','10','12','9']},
+  {c:'Sport', q:'You’d do a slam dunk in which sport?', o:['Basketball','Volleyball','Netball','Handball']},
+  {c:'Sport', q:'How many tennis Grand Slams are there each year?', o:['4','3','5','6']},
+  {c:'Sport', q:'Which country has won the most men’s football World Cups?', o:['Brazil','Germany','Italy','Argentina']},
+  {c:'Sport', q:'How long is a marathon?', o:['26.2 miles','13.1 miles','24 miles','30 miles']},
+  {c:'Sport', q:'Which sport uses a shuttlecock?', o:['Badminton','Squash','Tennis','Table tennis']},
+  {c:'Science', q:'What’s the largest planet in our solar system?', o:['Jupiter','Saturn','Neptune','Earth']},
+  {c:'Science', q:'What’s the chemical symbol for gold?', o:['Au','Ag','Go','Gd']},
+  {c:'Science', q:'Which planet is called the Red Planet?', o:['Mars','Venus','Mercury','Jupiter']},
+  {c:'Science', q:'Which gas do plants take in from the air?', o:['Carbon dioxide','Oxygen','Nitrogen','Helium']},
+  {c:'Science', q:'What’s the hardest natural substance?', o:['Diamond','Quartz','Topaz','Granite']},
+  {c:'Science', q:'What’s the largest organ of the human body?', o:['Skin','Liver','Lungs','Brain']},
+  {c:'Science', q:'Which element has the symbol Fe?', o:['Iron','Lead','Fluorine','Tin']},
+  {c:'General', q:'Who painted the Mona Lisa?', o:['Leonardo da Vinci','Michelangelo','Raphael','Vincent van Gogh']},
+  {c:'General', q:'What does MOT stand for?', o:['Ministry of Transport','Motor Operations Test','Mechanical Overall Test','Motorway Operating Ticket']},
+  {c:'General', q:'Which car maker builds the 911?', o:['Porsche','Ferrari','BMW','Audi']},
+  {c:'General', q:'What’s the longest motorway in the UK?', o:['M6','M1','M25','M4']},
+  {c:'General', q:'How many sides does a hexagon have?', o:['6','5','7','8']},
+  {c:'General', q:'The Penny Black is a famous what?', o:['Stamp','Coin','Racehorse','Beer']}
+];
+/* Estimation Station: closest number wins. Keep answers to well-documented figures. */
+const ESTIMATES = [
+  {q:'How many keys are on a standard piano?', a:88},
+  {q:'How many miles long was Route 66?', a:2448, u:'miles'},
+  {q:'Roughly how many islands and islets does Greece have?', a:6000},
+  {q:'How many lighthouses does the Northern Lighthouse Board look after around Scotland and the Isle of Man?', a:208},
+  {q:'How many bones are in the adult human body?', a:206},
+  {q:'How tall is the Eiffel Tower, in metres?', a:330, u:'m'},
+  {q:'How tall is Ben Nevis, in metres?', a:1345, u:'m'},
+  {q:'How tall is Mount Everest, in metres?', a:8849, u:'m'},
+  {q:'How many countries are there in Africa?', a:54},
+  {q:'How many member states does the United Nations have?', a:193},
+  {q:'How many seconds are there in a day?', a:86400},
+  {q:'What year did the first iPhone go on sale?', a:2007, year:true},
+  {q:'What year did the Channel Tunnel open?', a:1994, year:true},
+  {q:'How many miles long is the Channel Tunnel?', a:31, u:'miles'},
+  {q:'How many miles long is the M25?', a:117, u:'miles'},
+  {q:'How long is the River Thames, in miles?', a:215, u:'miles'},
+  {q:'How tall is the Burj Khalifa, in metres?', a:828, u:'m'},
+  {q:'How many squares are on a chessboard? Just the black and white ones.', a:64},
+  {q:'How many hearts does an octopus have?', a:3},
+  {q:'On average, how many miles away is the Moon?', a:238900, u:'miles'},
+  {q:'How many teeth does an adult usually have, wisdom teeth included?', a:32},
+  {q:'How many stripes are on the US flag?', a:13},
+  {q:'How many official James Bond films have Eon Productions made?', a:25},
+  {q:'How many people can Wembley Stadium hold?', a:90000},
+  {q:'How many stations does the London Underground serve?', a:272},
+  {q:'Roughly how many litres of blood are in an adult body?', a:5, u:'litres'},
+  {q:'How many years did the Hundred Years’ War actually last?', a:116, u:'years'},
+  {q:'How many legs does a lobster have?', a:10}
+];
+/* Spot Challenge targets. r sets how long they usually take to appear. */
+const SPOT_TARGETS = [
+  {e:'🚌', n:'Bus', r:'common'}, {e:'🏍️', n:'Motorbike', r:'common'}, {e:'🚲', n:'Cyclist', r:'common'}, {e:'🐕', n:'Dog', r:'common'}, {e:'🔴', n:'Red car', r:'common'},
+  {e:'🟡', n:'Yellow car', r:'medium'}, {e:'🚓', n:'Police car', r:'medium'}, {e:'🚑', n:'Ambulance', r:'medium'}, {e:'🐑', n:'Sheep', r:'medium'}, {e:'🐄', n:'Cow', r:'medium'},
+  {e:'🚐', n:'Camper van', r:'medium'}, {e:'🧳', n:'Car with a roof box', r:'medium'}, {e:'🟣', n:'Purple car', r:'medium'}, {e:'🏕️', n:'Car towing a caravan', r:'medium'},
+  {e:'🚜', n:'Tractor', r:'rare'}, {e:'🐴', n:'Horse', r:'rare'}, {e:'🚒', n:'Fire engine', r:'rare'}, {e:'🍦', n:'Ice cream van', r:'rare'}, {e:'🌈', n:'Rainbow', r:'rare'}
+];
+const FLAVOUR = {
+  direct:['{n} flew too close to the asteroid field.','{n} was waving out of the window. Big mistake.','{n} took one straight to the hull.'],
+  strike:['{n} was checking power-ups.','{n} was looking at the snacks, not the sky.','{n} got clipped by a space pebble.'],
+  miss:['{n} escaped damage.','{n} ducked just in time.','{n} saw it coming.'],
+  supply:['{n} grabbed the crate first.','{n} found it wedged under the seat.','{n} spotted it drifting past.'],
+  flare:['{n}’s side of the car caught the flare.','{n} soaked up the solar boost.'],
+  hole:'{a} and {b} swapped places. Physics is weird.'
+};
+/* What the queue is offered each 30 journey minutes. Power-up drops are added every RULES.dropEvery minutes. */
+const CYCLE = [[2,'talk'],[4,'promo'],[5,'spot'],[8,'chatter'],[11,'promo'],[12,'decision'],[14,'cosmic'],[17,'captain'],[19,'promo'],[20,'spot'],[22,'talk'],[25,'cosmic'],[26,'promo'],[27,'chatter']];
+const PRIO = {role:0, crew:1, decision:2, drop:3, promo:4, struggle:4, cosmic:4, spot:5, captain:6, talk:7, chatter:8};
+const PASSIVE = ['cosmic','drop'];            /* allowed during a Silent Mission: nobody has to speak */
+const VOICE = ['crew','talk','chatter','captain'];   /* between two challenges: at most one event, one voice moment and one Co-Pilot moment */
+const ROLE_T = ['role','promo','struggle'];
+
+const Engine = (() => {
+  const R = () => Math.random();
+  const ri = (a, b) => a + Math.floor(R()*(b - a + 1));
+  const rr = ([a, b]) => a + R()*(b - a);
+  const rng = ([a, b]) => ri(a, b);
+  const pick = a => a[Math.floor(R()*a.length)];
+  const shuf = a => { const x = [...a]; for (let i = x.length - 1; i > 0; i--){ const k = Math.floor(R()*(i + 1)); [x[i], x[k]] = [x[k], x[i]]; } return x; };
+  const wpick = (items, w) => { let r = R()*items.reduce((a, x) => a + w(x), 0); for (const x of items){ if ((r -= w(x)) < 0) return x; } return items[items.length - 1]; };
+  const sample = (items, n, w) => { const pool = [...items], out = []; while (out.length < n && pool.length){ const x = w ? wpick(pool, w) : pick(pool); out.push(x); pool.splice(pool.indexOf(x), 1); } return out; };
+  const gauss = () => { let u = 0, v = 0; while (!u) u = R(); while (!v) v = R(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); };
+  const nm = (S, id) => S.names[id] || 'Someone';
+  const fl = (S, list, id) => pick(list).replace('{n}', nm(S, id));
+  const pass = S => S.crew.filter(id => id !== S.captain);
+  const bump = S => { S.seq++; };
+  const say = (S, o) => { S.out.push(o); };
+  function log(S, ic, text){ S.log.push({t:Math.floor(S.min), ic, text}); bump(S); }
+  const agenda = k => CYCLE.map(([at, type]) => ({at:at + 30*k, type}));
+  /* Draw without repeats until a deck runs out, so lines feel rare. */
+  function deal(S, name, arr, ok = () => true){
+    let d = S.decks[name]; if (!d || !d.some(i => ok(arr[i]))) d = S.decks[name] = shuf(arr.map((_, i) => i));
+    const i = [...d].reverse().find(i => ok(arr[i])); S.decks[name] = d.filter(x => x !== i); return arr[i];
+  }
+  const art = n => `${/^[aeiou]/i.test(n) ? 'an' : 'a'} ${n.toLowerCase()}`;
+  const leader = S => { const max = Math.max(...S.crew.map(id => S.pts[id])); return max > 0 ? S.crew.find(id => S.pts[id] === max) : null; };
+  function fill(S, t){
+    const P = pass(S), [a, b] = sample(S.crew, 2), lead = leader(S);
+    return t.replace(/\{p\}/g, () => nm(S, P.length ? pick(P) : S.captain)).replace(/\{c\}/g, nm(S, S.captain)).replace(/\{cp\}/g, nm(S, S.copilot))
+      .replace(/\{lead\}/g, lead ? nm(S, lead) : 'nobody yet').replace(/\{a\}/g, nm(S, a)).replace(/\{b\}/g, nm(S, b || a));
+  }
+
+  /* ---- points ---- */
+  function gain(S, id, n, src){ let v = n; if (v > 0 && S.fx[id].double){ v *= 2; S.fx[id].double = false; } S.pts[id] += v; S.src[id][src] += v; bump(S); return v; }
+  function loss(S, id, n, src){
+    if (S.fx[id].shield){ S.fx[id].shield = false; S.fx[id].roleShield = false; bump(S); return {blocked:true, want:n}; }
+    const lost = Math.min(S.pts[id], n); S.pts[id] -= lost; S.src[id][src] -= lost; bump(S); return {lost, want:n};
+  }
+  /* Never shows a −0. A player at zero still feels the hit. */
+  const lossText = r => r.blocked ? 'Shield absorbed the hit' : r.lost === 0 ? `Would have lost ${r.want} but was already at 0` : r.lost < r.want ? `−${r.lost}, all they had (${r.want} incoming)` : `−${r.lost}`;
+  const lossClass = r => r.blocked ? 'ok' : r.lost === 0 ? 'zero' : 'bad';
+
+  /* ---- create ---- */
+  function create(o){
+    const crew = [...o.crew], P = crew.filter(id => id !== o.captain);
+    const S = {crew, captain:o.captain, copilot:null, coLog:[], promos:[], nextStruggle:rr(RULES.struggle.first), names:{...o.names}, mode:o.mode || 'party', dest:o.dest || '',
+      min:0, rt:0, mi:0, pts:{}, inv:{}, fx:{}, src:{}, queue:[...(o.lineup || [])].filter(id => MISSIONS[id] && !MISSIONS[id].interrupt), done:[], ch:null, opts:[], pick:null,
+      ev:null, tx:null, txq:[], q:P.length ? [{type:'role', at:0}] : [], nextAt:3, gapUsed:['voice','event'], agenda:agenda(0), cycle:0, nextDrop:10, calm:0, forceAsteroid:false, usedDec:[],
+      decks:{}, log:[], results:[], seq:0, out:[], bots:[], txId:0};
+    S.crew.forEach(id => { S.pts[id] = 0; S.inv[id] = []; S.fx[id] = {}; S.src[id] = {challenge:0, copilot:0, event:0, power:0, captain:0}; });
+    if (PT.capShield) S.fx[S.captain].shield = true;                                   /* the driver's seat starts shielded */
+    log(S, 'rocket', `Mission started. Captain ${nm(S, S.captain)} has the controls.`);
+    setOpts(S);
+    return S;
+  }
+
+  /* ---- the queue: one major thing at a time ---- */
+  function endMajor(S){ S.nextAt = S.rt + RULES.gap; bump(S); }
+  const silentRun = S => !!(S.ch && S.ch.kind === 'silent' && S.ch.phase === 'run');
+  const active = S => !!(S.tx || S.ev || (S.ch && S.ch.phase !== 'done'));
+  function enqueue(S, type, extra = {}){ if (['drop','promo','struggle'].includes(type) && S.q.some(x => x.type === type)) return; S.q.push({type, at:S.min, ...extra}); bump(S); }
+  function takeQ(S, ok){
+    const c = S.q.filter(ok); if (!c.length) return null;
+    const score = x => PRIO[x.type] - (S.min - x.at)/4;                /* waiting items climb the queue, so nothing starves */
+    const it = c.sort((a, b) => score(a) - score(b) || a.at - b.at)[0]; S.q = S.q.filter(x => x !== it); return it;
+  }
+  function serve(S){
+    if (S.rt < S.nextAt) return;
+    if (silentRun(S)){ if (S.tx || S.ev) return; const it = takeQ(S, x => PASSIVE.includes(x.type)); if (it) run(S, it); return; }
+    if (active(S)) return;
+    S.q = S.q.filter(x => !VOICE.includes(x.type) || x.type === 'crew' || S.min - x.at <= RULES.stale);
+    const kind = x => VOICE.includes(x.type) ? 'voice' : ROLE_T.includes(x.type) ? 'role' : 'event';
+    const evSlots = S.q.filter(x => kind(x) === 'event').length >= 3 ? 2 : 1;               /* catch up if events pile up */
+    const used = k => S.gapUsed.filter(u => u === k).length;
+    const it = takeQ(S, x => used(kind(x)) < (kind(x) === 'event' ? evSlots : 1));
+    if (it){ S.gapUsed.push(kind(it)); return run(S, it); }
+    S.gapUsed = []; const id = S.pick || nextChallengeId(S); S.pick = null; startCh(S, id);
+  }
+  function run(S, it){
+    if (S.ch && S.ch.phase === 'done') S.ch = null;
+    switch (it.type){
+      case 'crew': return openTx(S, {kind:'crew', to:it.to, text:it.text, from:it.from});
+      case 'talk': return openTx(S, {kind:'talk', text:fill(S, deal(S, 'talk', TALK))});
+      case 'chatter': return openTx(S, {kind:'chatter', text:fill(S, deal(S, 'chatter', CHATTER, t => (S.copilot || !t.includes('{cp}')) && (leader(S) || !t.includes('{lead}'))))});
+      case 'captain': return openTx(S, {kind:'captain', text:deal(S, 'captain', CAPTAIN_Q)});
+      case 'decision': { const pool = DECISIONS.filter(d => !S.usedDec.includes(d.id)), d = pick(pool.length ? pool : DECISIONS); S.usedDec.push(d.id);
+        S.ev = {type:'decision', d, chosen:null, expires:S.min + RULES.decideFor, botAt:S.min + rr(RULES.decideBy), id:++S.txId, said:{}}; log(S, d.ic, `Captain decision: ${d.title}`); return say(S, {t:'haptic'}); }
+      case 'cosmic': {
+        if (!it.k && S.calm > S.min){ log(S, 'sparkle', 'Clear skies, thanks to the Captain’s earlier dodge.'); return; }
+        const k = it.k || (S.forceAsteroid ? 'asteroid' : pickCosmic(S)); S.forceAsteroid = false; return runCosmic(S, k); }
+      case 'drop': return drop(S);
+      case 'spot': return startCh(S, 'spot');
+      case 'role': { const P = pass(S); if (!P.length) return; const pool = shuf(P), who = pick(P); setCopilot(S, who, 'start');
+        S.ev = {type:'role', how:'start', who, pool, until:S.min + RULES.role.show, id:++S.txId};
+        log(S, 'steer', `Co-Pilot assigned: ${nm(S, who)}`); return say(S, {t:'haptic'}); }
+      case 'promo': { const el = eligible(S); if (!el.length) return; const who = pick(el);
+        S.ev = {type:'promo', who, phase:'ready', at:S.rt, botAt:S.rt + rr(RULES.promo.rollBy), autoAt:S.rt + RULES.promo.autoRoll, id:++S.txId};
+        log(S, 'dice', `Mission Promotion: ${nm(S, who)} has been selected for promotion`); return say(S, {t:'haptic'}); }
+      case 'struggle': { if (!S.copilot || !eligible(S).length) return; const t = pick(TRIVIA), order = shuf([0, 1, 2, 3]), cur = {c:t.c, q:t.q, o:order.map(i => t.o[i]), a:order.indexOf(0)};
+        S.ev = {type:'struggle', who:S.copilot, cur, phase:'q', at:S.rt, id:++S.txId,
+          bot:{t:S.rt + rr(RULES.trivia.think), opt:R() < RULES.trivia.know ? cur.a : pick([0, 1, 2, 3].filter(i => i !== cur.a))}};
+        log(S, 'shield', `Co-Pilot Challenge: ${nm(S, S.copilot)} must answer to keep the seat`); return say(S, {t:'haptic'}); }
+    }
+  }
+
+  /* ---- challenges ---- */
+  function nextChallengeId(S){
+    if (S.queue.length) return S.queue.shift();
+    const recent = S.done.slice(-2), pool = Object.keys(MISSIONS).filter(k => MISSIONS[k].w && !recent.includes(k) && !(k === 'answers' && pass(S).length < 2));
+    return wpick(pool, k => MISSIONS[k].w);
+  }
+  function setOpts(S){
+    const recent = S.done.slice(-2), pool = Object.keys(MISSIONS).filter(k => MISSIONS[k].w && !recent.includes(k) && !(k === 'answers' && pass(S).length < 2));
+    S.opts = sample(pool, 3, k => MISSIONS[k].w); if (S.queue.length && !S.opts.includes(S.queue[0])) S.opts[0] = S.queue[0];
+  }
+  function chGain(S, id, n, win){
+    let v = gain(S, id, n, 'challenge');
+    if (win && id === S.copilot && PT.coWinBonus && PT.coWinMode === 'round'){ v += gain(S, id, PT.coWinBonus, 'copilot'); S.ch.coBonus = (S.ch.coBonus || 0) + PT.coWinBonus; }
+    return v;
+  }
+  function startCh(S, id){
+    if (id === 'answers' && pass(S).length < 2) id = 'estimate';
+    const M = MISSIONS[id], P = pass(S), ch = {id, kind:M.kind, t0:S.min, bot:{}, said:{}, uid:++S.txId};
+    S.ch = ch; S.queue = S.queue.filter(x => x !== id);
+    if (M.kind === 'answers'){
+      const pr = deal(S, 'answers', ANSWER_PROMPTS);
+      Object.assign(ch, {phase:'write', prompt:pr.q, ideas:pr.ideas, answers:{}, deadline:S.min + RULES.answers.write});
+      P.forEach(p => { ch.bot[p] = S.min + rr([.4, 2.2]); });
+    }
+    if (M.kind === 'trivia'){
+      let pool = TRIVIA.filter(t => !(S.decks.seenT || []).includes(t.q)); if (pool.length < M.rounds){ S.decks.seenT = []; pool = TRIVIA; }
+      Object.assign(ch, {rounds:M.rounds, round:0, qs:sample(pool, M.rounds), fast:{}}); S.decks.seenT = [...(S.decks.seenT || []), ...ch.qs.map(t => t.q)]; openQ(S); }
+    if (M.kind === 'estimate'){
+      const q = deal(S, 'est', ESTIMATES);
+      Object.assign(ch, {phase:'est', q, guesses:{}, deadline:S.min + RULES.estimate.len});
+      S.crew.forEach(p => { ch.bot[p] = S.min + rr(RULES.estimate.by); });
+    }
+    if (M.kind === 'spot') newTarget(S, ch, null);
+    if (M.kind === 'vote'){ Object.assign(ch, {phase:'vote', votes:{}, deadline:S.min + RULES.vote.len}); S.crew.forEach(p => { ch.bot[p] = S.min + rr(RULES.vote.by); }); }
+    if (M.kind === 'silent') Object.assign(ch, {phase:'idle', autoAt:S.min + RULES.silent.autoStart, len:Math.round(rr(RULES.silent.len)*2)/2});
+    log(S, M.ic, M.interrupt ? `Incoming mission challenge: find ${art(ch.target.n)}` : `Challenge: ${M.name}`);
+    say(S, {t:'haptic'}); bump(S);
+  }
+  /* Who won the challenge as a whole. Votes and Silent Missions are shared results, so nobody 'wins' them. */
+  function chWinners(S, ch){
+    if (ch.kind === 'trivia'){ const top = Math.max(0, ...Object.values(ch.fast || {})); return top ? Object.keys(ch.fast).filter(id => ch.fast[id] === top) : []; }
+    if (ch.kind === 'estimate') return ch.rows && ch.rows.length ? ch.rows.filter(r => r[2] === ch.rows[0][2]).map(r => r[0]) : [];
+    if (ch.kind === 'spot') return ch.winner ? [ch.winner] : [];
+    if (ch.kind === 'answers') return ch.fav && ch.reveal ? [ch.fav] : [];
+    return [];
+  }
+  function finishCh(S, result){
+    const ch = S.ch, M = MISSIONS[ch.id];
+    if (PT.coWinBonus && PT.coWinMode === 'challenge' && S.copilot && chWinners(S, ch).includes(S.copilot)){
+      const v = gain(S, S.copilot, PT.coWinBonus, 'copilot'); ch.coBonus = v; result += `. Co-Pilot bonus: ${nm(S, S.copilot)} +${v}`;
+    }
+    ch.phase = 'done'; ch.result = result; ch.doneAt = S.min;
+    S.results.push([M.name, result]); S.done.push(ch.id); log(S, 'check', `${M.name}: ${result}`);
+    setOpts(S); endMajor(S); say(S, {t:'haptic'});
+  }
+  /* Trivia: answer times are measured in real seconds, because reactions happen in real time. */
+  function openQ(S){
+    const ch = S.ch, t = ch.qs[ch.round], order = shuf([0, 1, 2, 3]);
+    ch.cur = {c:t.c, q:t.q, o:order.map(i => t.o[i]), a:order.indexOf(0)};
+    Object.assign(ch, {phase:'q', qAt:S.rt, ans:{}, said:{}, last:null});
+    S.crew.forEach(p => { const knows = R() < RULES.trivia.know; ch.bot[p] = {t:S.rt + rr(RULES.trivia.think), opt:knows ? ch.cur.a : pick([0, 1, 2, 3].filter(i => i !== ch.cur.a))}; });
+    bump(S);
+  }
+  function settleQ(S){
+    const ch = S.ch, right = Object.entries(ch.ans).filter(([, x]) => x.opt === ch.cur.a).sort((a, b) => a[1].t - b[1].t || R() - .5).map(([id]) => id);
+    const fast = right[0] || null;
+    right.forEach(id => chGain(S, id, id === fast ? PT.triviaFast : PT.triviaRight, id === fast));
+    if (fast) ch.fast[fast] = (ch.fast[fast] || 0) + 1;
+    ch.last = {fast, right, answer:ch.cur.o[ch.cur.a]}; ch.phase = 'reveal'; ch.revealUntil = S.rt + RULES.trivia.reveal; bump(S);
+  }
+  function nextQ(S){
+    const ch = S.ch; ch.round++;
+    if (ch.round < ch.rounds) return openQ(S);
+    const w = Object.entries(ch.fast).sort((a, b) => b[1] - a[1]);
+    finishCh(S, w.length ? `${nm(S, w[0][0])} was fastest on ${w[0][1]} of ${ch.rounds}` : 'Nobody got one right. Brains switched off for the drive.');
+  }
+  function settleEst(S){
+    const ch = S.ch, A = ch.q.a, rows = Object.entries(ch.guesses).map(([id, v]) => [id, v, Math.abs(v - A)]).sort((a, b) => a[2] - b[2]);
+    if (!rows.length) return finishCh(S, `Nobody guessed. It was ${A.toLocaleString('en-GB')}.`);
+    const d1 = rows[0][2], d2 = (rows.find(r => r[2] > d1) || [])[2];
+    rows.forEach(([id, v, d]) => {
+      let n = d === d1 ? PT.estClosest : (rows.length > 2 && d === d2 ? PT.estSecond : 0);
+      if (d <= (ch.q.year ? 0 : Math.max(.5, A*.02))) n += PT.estBangOn;
+      if (n) chGain(S, id, n, d === d1);
+    });
+    ch.rows = rows; ch.answer = A;
+    const best = rows.filter(r => r[2] === d1).map(r => nm(S, r[0])).join(' & ');
+    finishCh(S, `It’s ${A.toLocaleString('en-GB')}${ch.q.u ? ` ${ch.q.u}` : ''}. ${best} ${rows.filter(r => r[2] === d1).length > 1 ? 'were' : 'was'} closest with ${rows[0][1].toLocaleString('en-GB')}`);
+  }
+  function newTarget(S, ch, prev){
+    const t = pick(SPOT_TARGETS.filter(x => !prev || x.n !== prev.n));
+    Object.assign(ch, {phase:'look', target:t, lookAt:S.min, rerollAt:S.min + RULES.spot.reroll, giveUpAt:Math.max(ch.giveUpAt || 0, S.min + (prev ? 4 : RULES.spot.giveUp)),
+      appearAt:S.min - Math.log(1 - R())*RULES.spot.mean[t.r], rerolls:(ch.rerolls || 0) + (prev ? 1 : 0)});
+    bump(S);
+  }
+  function settleVote(S){
+    const ch = S.ch, tally = {};
+    Object.values(ch.votes).forEach(w => { tally[w] = (tally[w] || 0) + 1; });
+    const ent = Object.entries(tally).sort((a, b) => b[1] - a[1]);
+    if (!ent.length) return finishCh(S, 'No votes. A shy crew.');
+    const top = ent[0][1], winners = ent.filter(e => e[1] === top).map(e => e[0]);
+    const smart = Object.entries(ch.votes).filter(([, w]) => winners.includes(w)).map(([v]) => v);
+    smart.forEach(v => chGain(S, v, PT.voteMajority, true));
+    ch.tally = tally; ch.winners = winners;
+    finishCh(S, `${winners.map(w => nm(S, w)).join(' & ')}, ${top} vote${top === 1 ? '' : 's'}. ${smart.length} read the room: +${PT.voteMajority}`);
+  }
+  function crack(S, who){
+    const ch = S.ch; if (!ch || ch.kind !== 'silent' || ch.phase !== 'run') return;
+    S.crew.filter(x => x !== who).forEach(x => chGain(S, x, PT.silentSurvivor));
+    finishCh(S, `${nm(S, who)} cracked after ${mins(S.min - ch.runAt)}. Everyone else +${PT.silentSurvivor}`);
+  }
+  const mins = m => m < 1 ? `${Math.round(m*60)} seconds` : `${m.toFixed(1)} minutes`;
+  function toPick(S){
+    const ch = S.ch, ids = Object.keys(ch.answers);
+    if (ids.length < 2) return finishCh(S, 'Not enough answers came in. Next time.');
+    ch.order = shuf(ids); ch.phase = 'pick'; ch.bot[S.captain] = S.min + rr(RULES.answers.pickBy); bump(S);
+  }
+
+  /* ---- events ---- */
+  function runCosmic(S, k){
+    const ids = S.crew, out = [];
+    if (k === 'asteroid'){
+      sample(ids, Math.min(ids.length, ri(2, 3)), id => S.pts[id] + 2).forEach(id => {
+        const roll = R();
+        if (roll < .2) return out.push({id, kind:'Near miss', text:fl(S, FLAVOUR.miss, id), d:'No damage', c:'ok'});
+        const direct = roll > .65, r = loss(S, id, rng(direct ? PT.direct : PT.strike), 'event');
+        out.push({id, kind:direct ? 'Direct hit' : 'Asteroid strike', text:fl(S, direct ? FLAVOUR.direct : FLAVOUR.strike, id), d:lossText(r), c:lossClass(r)});
+      });
+    }
+    if (k === 'supply'){
+      const ranked = [...ids].sort((a, b) => S.pts[a] - S.pts[b]);
+      sample(ids, Math.min(ids.length, ri(1, 2)), id => (1 + (ids.length - ranked.indexOf(id)))*(id === S.copilot ? PT.coSupply : 1)).forEach(id => out.push({id, kind:'Supply drop', text:fl(S, FLAVOUR.supply, id), d:`+${gain(S, id, rng(PT.supply), 'event')}`, c:'good'}));
+    }
+    if (k === 'flare') sample(ids, Math.ceil(ids.length/2)).forEach(id => out.push({id, kind:'Solar flare', text:fl(S, FLAVOUR.flare, id), d:`+${gain(S, id, rng(PT.flare), 'event')}`, c:'good'}));
+    if (k === 'hole'){
+      const [a, b] = sample(ids, 2, id => S.pts[id] + 1), pa = S.pts[a], pb = S.pts[b];
+      S.pts[a] = pb; S.pts[b] = pa; S.src[a].event += pb - pa; S.src[b].event += pa - pb; bump(S);
+      out.push({id:a, kind:'Swapped', text:FLAVOUR.hole.replace('{a}', nm(S, a)).replace('{b}', nm(S, b)), d:`${pa} → ${pb}`, c:pb >= pa ? 'good' : 'bad'});
+      out.push({id:b, kind:'Swapped', text:'', d:`${pb} → ${pa}`, c:pa >= pb ? 'good' : 'bad'});
+    }
+    S.ev = {type:'cosmic', k, out, until:S.min + RULES.evShow, id:++S.txId};
+    log(S, COSMIC[k].ic, `${COSMIC[k].name}. ${out.map(o => `${nm(S, o.id)}: ${o.d}`).join(', ')}`);
+    say(S, {t:'haptic'});
+  }
+  function pickCosmic(S){
+    const total = S.crew.reduce((a, id) => a + S.pts[id], 0), w = [['supply',3],['flare',2]];
+    if (total >= 8) w.push(['asteroid',4]);
+    if (total >= 10 && S.crew.length > 2) w.push(['hole',1]);
+    return wpick(w, x => x[1])[0];
+  }
+  function decide(S, choice, viaCo){
+    const e = S.ev; if (!e || e.type !== 'decision' || e.chosen || !['a','b'].includes(choice)) return;
+    const d = e.d, ids = S.crew, out = []; let text = '';
+    const plus = (id, range, why) => out.push({id, kind:why, text:'', d:`+${gain(S, id, rng(range), 'event')}`, c:'good'});
+    const minus = (id, range, why) => { const r = loss(S, id, rng(range), 'event'); out.push({id, kind:why, text:'', d:lossText(r), c:lossClass(r)}); };
+    const pu = (id) => { const k = givePU(S, id); out.push({id, kind:'Power-up', text:'', d:k ? 'Got a power-up' : 'Inventory full', c:k ? 'ok' : 'zero'}); };
+    if (d.id === 'asteroid'){
+      if (choice === 'a'){ const s = pick(ids); plus(s, PT.minor, 'Spotted the gap'); S.calm = S.min + 8; text = `Smooth dodge. ${nm(S, s)} spotted the gap, and the skies stay quiet for a while.`; }
+      else { const lucky = sample(ids, Math.min(2, ids.length)), rest = ids.filter(x => !lucky.includes(x)); lucky.forEach(id => plus(id, PT.major, 'Rare minerals')); sample(rest, Math.min(2, rest.length)).forEach(id => minus(id, PT.dent, 'Hull dent')); S.forceAsteroid = true; text = 'Risky. Some found rare minerals, some took dents, and more rocks are coming.'; }
+    }
+    if (d.id === 'distress'){
+      if (choice === 'a'){ sample(ids, Math.min(2, ids.length)).forEach(pu); text = 'A stranded snack freighter. The grateful aliens hand out power-ups.'; }
+      else { const s = pick(ids); plus(s, PT.minor, 'Pocketed the reward'); text = `Cold but efficient. ${nm(S, s)} pocketed the reward money anyway.`; }
+    }
+    if (d.id === 'wormhole'){
+      if (choice === 'a'){ const s = pick(ids); plus(s, PT.minor, 'Kept us safe'); text = `Sensible. ${nm(S, s)} spotted the exit sign.`; }
+      else { S.agenda.unshift({at:S.min + 1.5, type:'cosmic', k:ids.length > 2 ? 'hole' : 'supply'}); const s = pick(ids); plus(s, PT.major, 'Wormhole jackpot'); text = `${nm(S, s)} grabbed something shiny on the way through. Something strange is coming.`; }
+    }
+    if (d.id === 'route'){
+      if (choice === 'a'){ sample(ids, Math.min(2, ids.length)).forEach(id => plus(id, PT.minor, 'Scenic views')); text = 'Scenic route. Someone took a photo of a cow.'; }
+      else { const [w, l] = sample(ids, 2); plus(w, PT.major, 'Hyperdrive rush'); if (l) minus(l, PT.dent, 'Hyperdrive sick'); text = 'Hyperdrive. Thrilling for some, nauseating for others.'; }
+    }
+    Object.assign(e, {chosen:choice, viaCo:!!viaCo, text, out, until:S.min + RULES.evShow});
+    log(S, d.ic, `Captain chose “${d[choice]}”${viaCo ? ` (tapped in by Co-Pilot ${nm(S, S.copilot)})` : ''}. ${out.map(o => `${nm(S, o.id)}: ${o.d}`).join(', ')}`);
+    say(S, {t:'haptic'});
+  }
+  const slotsOf = (S, id) => id === S.copilot ? PT.coSlots : PT.slots;
+  function givePU(S, id){ if (S.inv[id].length >= slotsOf(S, id)) return null; const k = pick(Object.keys(POWERUPS)); S.inv[id].push(k); bump(S); return k; }
+  function drop(S){
+    const got = S.crew.map(id => [id, givePU(S, id)]).filter(x => x[1]);
+    S.ev = {type:'drop', got:Object.fromEntries(got), full:S.crew.filter(id => !got.some(g => g[0] === id)), until:S.min + RULES.dropShow, id:++S.txId};
+    log(S, 'star', got.length ? `Power-up drop: ${got.length} of ${S.crew.length} phones got one` : 'Power-up drop: everyone’s inventory was already full');
+    say(S, {t:'drop', ids:got.map(g => g[0])});
+  }
+  function usePU(S, by, idx, target, viaCo){
+    const k = S.inv[by] && S.inv[by][idx]; if (!k) return null;
+    if (k === 'thief' && (!target || target === by || !S.crew.includes(target) || S.pts[target] <= 0)) return null;
+    S.inv[by].splice(idx, 1); let msg = '';
+    if (k === 'double'){ S.fx[by].double = true; msg = `${nm(S, by)} activated Double Points`; }
+    if (k === 'shield'){ S.fx[by].shield = true; msg = `${nm(S, by)} raised a Shield`; }
+    if (k === 'lucky'){ const r = rng(PT.lucky), v = gain(S, by, r, 'power'); msg = `${nm(S, by)} rolled a ${r}${v !== r ? ', doubled' : ''}: +${v}`; }
+    if (k === 'thief'){
+      const want = rng(PT.thief), r = loss(S, target, want, 'power');
+      if (r.blocked) msg = `${nm(S, target)}’s Shield stopped ${nm(S, by)}’s heist`;
+      else { gain(S, by, r.lost, 'power'); msg = `${nm(S, by)} stole ${r.lost} from ${nm(S, target)}`; }
+    }
+    if (viaCo) msg += ` (used by Co-Pilot ${nm(S, S.copilot)})`;
+    log(S, POWERUPS[k].ic, msg); say(S, {t:'toast', text:msg}); bump(S);
+    return msg;
+  }
+
+  /* ---- the Co-Pilot seat ---- */
+  const eligible = S => S.crew.filter(id => id !== S.captain && id !== S.copilot);
+  /* Moves the seat. The perks go with it: the role's Shield and anything in the third power-up slot. */
+  function setCopilot(S, id, how){
+    const old = S.copilot, hand = {};
+    if (old){
+      if (S.fx[old].roleShield){ S.fx[old].shield = false; S.fx[old].roleShield = false; hand.shield = true; }
+      if (S.inv[old].length > PT.slots) hand.pu = S.inv[old].splice(PT.slots);
+      const last = S.coLog[S.coLog.length - 1]; if (last && last.to === null) last.to = S.min;
+    }
+    S.copilot = id;
+    if (id){
+      if (PT.coShield){ if (!S.fx[id].shield){ S.fx[id].shield = true; S.fx[id].roleShield = true; hand.gotShield = 'shield'; } else if (S.inv[id].length < PT.coSlots){ S.inv[id].push('shield'); hand.gotShield = 'item'; } }
+      (hand.pu || []).forEach(k => { if (S.inv[id].length < PT.coSlots){ S.inv[id].push(k); (hand.passed ||= []).push(k); } });
+      S.coLog.push({id, from:S.min, to:null, how});
+    }
+    bump(S); return hand;
+  }
+  function roll(S, auto){
+    const e = S.ev; if (!e || e.type !== 'promo' || e.phase !== 'ready') return;
+    const r = ri(1, 6); Object.assign(e, {roll:r, auto:!!auto, phase:'rolled', until:S.min + RULES.promo.show});
+    S.promos.push({id:e.who, roll:r, t:Math.floor(S.min)});
+    if (r === 5) e.gain = gain(S, e.who, PT.promoBonus, 'event');
+    if (r === 6){ e.prev = S.copilot; e.hand = setCopilot(S, e.who, 'promotion'); }
+    log(S, 'dice', r === 6 ? `${nm(S, e.who)} rolled a 6 and was promoted to Co-Pilot${e.prev ? `. ${nm(S, e.prev)} stands down` : ''}` : r === 5 ? `${nm(S, e.who)} rolled a 5: +${e.gain}` : `${nm(S, e.who)} rolled a ${r}. No promotion`);
+    say(S, {t:'haptic'}); bump(S);
+  }
+  function settleStruggle(S, opt){
+    const e = S.ev; if (!e || e.type !== 'struggle' || e.phase !== 'q') return;
+    e.ans = opt; e.ok = opt === e.cur.a; e.phase = 'done'; e.until = S.min + RULES.role.show + .4;
+    if (e.ok) log(S, 'shield', `${nm(S, e.who)} answered correctly and keeps the Co-Pilot seat`);
+    else { const el = eligible(S); e.pool = el; e.next = pick(el); e.prev = e.who; e.hand = setCopilot(S, e.next, 'reassigned');
+      log(S, 'swap', `${nm(S, e.who)} lost the Co-Pilot challenge. ${nm(S, e.next)} takes the seat`); }
+    say(S, {t:'haptic'}); bump(S);
+  }
+
+  /* ---- transmissions ---- */
+  function openTx(S, tx){
+    tx.id = ++S.txId; tx.phase = tx.kind === 'captain' ? 'ask' : 'play'; tx.at = S.min; tx.reacts = {}; tx.said = {};
+    if (tx.kind === 'captain') tx.botAnswerAt = S.min + rr(RULES.answerBy); else tx.until = S.min + RULES.txLen;
+    S.tx = tx;
+    log(S, 'signal', tx.kind === 'captain' ? `Captain question: ${tx.text}` : tx.kind === 'talk' ? `Discussion: ${tx.text}` : tx.kind === 'chatter' ? `Mission Control: ${tx.text}` : `Transmission: “${tx.text}”`);
+    say(S, {t:'tx', id:tx.id});
+  }
+  function closeTx(S){
+    const tx = S.tx; if (!tx) return;
+    if (tx.kind === 'captain'){ const t = {}; Object.values(tx.reacts).forEach(v => { t[v] = (t[v] || 0) + 1; }); const top = Object.entries(t).sort((a, b) => b[1] - a[1])[0];
+      if (top) log(S, 'signal', `Crew verdict on the Captain’s answer: ${top[0]}`); }
+    S.tx = null; endMajor(S);
+  }
+
+  /* ---- intents from devices ---- */
+  function act(S, a){
+    const by = a.by; if (!S.crew.includes(by)) return null;
+    const viaCo = a.as === 'captain' && by === S.copilot && by !== S.captain;   /* the Co-Pilot tapping in what the Captain said */
+    const pid = viaCo ? S.captain : by, capOK = pid === S.captain, ch = S.ch;
+    switch (a.type){
+      case 'answer': if (ch && ch.kind === 'answers' && ch.phase === 'write' && pid !== S.captain && !ch.answers[pid] && a.text){ ch.answers[pid] = String(a.text).slice(0, 90); bump(S); if (Object.keys(ch.answers).length >= pass(S).length) toPick(S); } break;
+      case 'pick': if (ch && ch.phase === 'pick' && capOK && ch.order[a.idx]){ ch.fav = ch.order[a.idx]; ch.phase = 'guess'; ch.viaCo = viaCo; ch.said = {}; ch.bot[S.captain] = S.min + rr(RULES.answers.guessBy); bump(S); } break;
+      case 'guess': if (ch && ch.phase === 'guess' && capOK && pass(S).includes(a.who)){
+        const ok = a.who === ch.fav; chGain(S, ch.fav, PT.answerAuthor, true); if (ok) chGain(S, S.captain, PT.captainGuess);
+        ch.reveal = {by:ch.fav, guess:a.who, ok, text:ch.answers[ch.fav]};
+        finishCh(S, `“${ch.answers[ch.fav]}” by ${nm(S, ch.fav)} (+${PT.answerAuthor}). Captain guessed ${ok ? `right (+${PT.captainGuess})` : 'wrong'}`); } break;
+      case 'tq': if (ch && ch.kind === 'trivia' && ch.phase === 'q' && !ch.ans[pid] && a.opt >= 0 && a.opt < 4){
+        let t = S.rt - ch.qAt;
+        if (viaCo) t -= PT.proxyAllow;                                                      /* the Co-Pilot had to type it in */
+        else if (pid === S.copilot && ch.ans[S.captain] && ch.ans[S.captain].viaCo) t -= PT.copilotAllow;   /* and typed the Captain's first */
+        ch.ans[pid] = {opt:+a.opt, t, viaCo}; bump(S);
+        if (Object.keys(ch.ans).length >= S.crew.length) settleQ(S); } break;
+      case 'est': { const v = Math.round(Number(a.value)*100)/100;
+        if (ch && ch.kind === 'estimate' && ch.phase === 'est' && !(pid in ch.guesses) && Number.isFinite(v) && v >= 0){ ch.guesses[pid] = v; if (viaCo) ch.viaCo = true; bump(S); if (Object.keys(ch.guesses).length >= S.crew.length) settleEst(S); } } break;
+      case 'spot-found': if (ch && ch.kind === 'spot' && ch.phase === 'look' && S.crew.includes(a.who)){ const v = chGain(S, a.who, PT.spot, true); ch.winner = a.who; ch.reportedBy = by;
+        finishCh(S, `${nm(S, a.who)} spotted the ${ch.target.n.toLowerCase()} first. +${v}`); } break;
+      case 'spot-new': if (ch && ch.kind === 'spot' && ch.phase === 'look' && S.min >= ch.rerollAt){ log(S, 'swap', `No ${ch.target.n.toLowerCase()} in sight. New target requested`); newTarget(S, ch, ch.target); } break;
+      case 'vote': if (ch && ch.kind === 'vote' && ch.phase === 'vote' && !ch.votes[pid] && a.who !== pid && S.crew.includes(a.who)){ ch.votes[pid] = a.who; bump(S); if (Object.keys(ch.votes).length >= S.crew.length) settleVote(S); } break;
+      case 'silent-start': if (ch && ch.kind === 'silent' && ch.phase === 'idle'){ ch.phase = 'run'; ch.runAt = S.min; ch.crackAt = S.min + rr(RULES.silent.crack); ch.cracker = pick(S.crew); S.nextAt = Math.max(S.nextAt, S.rt + RULES.gap); bump(S); } break;
+      case 'talked': if (S.crew.includes(a.who)) crack(S, a.who); break;
+      case 'choose': if (MISSIONS[a.id] && MISSIONS[a.id].w && (!ch || ch.phase === 'done')){ S.pick = a.id; bump(S); } break;
+      case 'skip': if (ch && ch.phase !== 'done'){ log(S, 'x', `${MISSIONS[ch.id].name} skipped`); S.ch = null; setOpts(S); endMajor(S); } break;
+      case 'decide': if (capOK) decide(S, a.choice, viaCo); break;
+      case 'use': return usePU(S, pid, a.idx, a.target, viaCo);
+      case 'tx-send': if (a.text){ S.txq.push({at:S.min + (a.when === 'rand' ? 3 + R()*9 : +a.when), to:a.to, text:String(a.text).slice(0, 140), from:by}); bump(S); } break;
+      case 'answered': if (S.tx && S.tx.kind === 'captain' && S.tx.phase === 'ask' && capOK){ S.tx.phase = 'react'; S.tx.viaCo = viaCo; S.tx.until = S.min + 1.2; pass(S).forEach(p => { S.tx['bot_' + p] = S.min + rr(RULES.reactBy); }); if (PT.priority) gain(S, S.captain, PT.priority, 'captain'); bump(S); } break;
+      case 'react': if (S.tx && S.tx.phase === 'react' && pid !== S.captain && !S.tx.reacts[pid]){ S.tx.reacts[pid] = a.v; bump(S); if (Object.keys(S.tx.reacts).length >= pass(S).length) closeTx(S); } break;
+      case 'roll': if (S.ev && S.ev.type === 'promo' && S.ev.who === by) roll(S); break;
+      case 'struggle-ans': if (S.ev && S.ev.type === 'struggle' && S.ev.who === by && a.opt >= 0 && a.opt < 4) settleStruggle(S, +a.opt); break;
+      case 'warp': S.min += a.mins; S.mi += a.mins*58/60; break;
+    }
+    return null;
+  }
+
+  /* ---- bots: simulated players acting from their own devices ---- */
+  /* A simulated Captain says its choice out loud. The Co-Pilot taps it in (a bot after a short delay, or you).
+     owner.said[key] is what the Co-Pilot's phone shows as "Captain said". */
+  function capSays(S, B, owner, key, intent, text){
+    if (!S.copilot) return act(S, {...intent, by:S.captain});
+    if (!owner.said[key]){ owner.said[key] = {intent, text, at:S.rt, by:S.rt + rr(RULES.proxy)}; bump(S); }
+    const s = owner.said[key];
+    if (B.has(S.copilot) && S.rt >= s.by && !s.done){ s.done = true; act(S, {...intent, by:S.copilot, as:'captain'}); }
+  }
+  function botAnswer(S){ const ch = S.ch, used = Object.values(ch.answers); const opt = ch.ideas.filter(x => !used.includes(x)); return opt.length ? pick(opt) : pick(ch.ideas) + '!'; }
+  function botGuess(q){ const g = q.a*Math.exp(gauss()*RULES.estimate.spread); return q.year ? Math.round(q.a + gauss()*6) : g >= 100 ? Math.round(g/10)*10 : g >= 10 ? Math.round(g) : Math.round(g*10)/10; }
+  function bots(S){
+    const B = new Set(S.bots), ch = S.ch, capBot = B.has(S.captain);
+    const dueMin = id => ch && ch.bot[id] !== undefined && S.min >= ch.bot[id];
+    if (ch){
+      if (ch.phase === 'write') pass(S).forEach(p => { if (B.has(p) && dueMin(p) && !ch.answers[p]) act(S, {type:'answer', by:p, text:botAnswer(S)}); });
+      if (ch.phase === 'pick' && capBot && dueMin(S.captain)){ const i = ch.botPick ?? (ch.botPick = Math.floor(R()*ch.order.length)); capSays(S, B, ch, 'pick', {type:'pick', idx:i}, `I like ${'ABCDEF'[i]}`); }
+      if (ch.phase === 'guess' && capBot && dueMin(S.captain)){ const w = ch.botGuess || (ch.botGuess = pick(pass(S))); capSays(S, B, ch, 'guess', {type:'guess', who:w}, `I reckon ${nm(S, w)} wrote it`); }
+      if (ch.phase === 'q'){
+        S.crew.forEach(p => { const b = ch.bot[p]; if (!b || ch.ans[p] || S.rt < b.t) return;
+          if (p === S.captain){ if (capBot) capSays(S, B, ch, 'q' + ch.round, {type:'tq', opt:b.opt}, `It’s ${'ABCD'[b.opt]}, ${ch.cur.o[b.opt]}`); return; }
+          if (!B.has(p)) return;
+          if (p === S.copilot && !ch.ans[S.captain] && ch.said['q' + ch.round] && !ch.said['q' + ch.round].done) return;   /* busy tapping in the Captain's answer */
+          act(S, {type:'tq', by:p, opt:b.opt}); });
+      }
+      if (ch.phase === 'est') S.crew.forEach(p => { if (!dueMin(p) || p in ch.guesses) return; const g = ch.botG?.[p] ?? ((ch.botG ||= {})[p] = botGuess(ch.q));
+        if (p === S.captain){ if (capBot) capSays(S, B, ch, 'est', {type:'est', value:g}, `I’m going with ${g.toLocaleString('en-GB')}`); }
+        else if (B.has(p)) act(S, {type:'est', by:p, value:g}); });
+      if (ch.phase === 'vote') S.crew.forEach(p => { if (!dueMin(p) || ch.votes[p]) return; const w = ch.botV?.[p] || ((ch.botV ||= {})[p] = pick(S.crew.filter(x => x !== p)));
+        if (p === S.captain){ if (capBot) capSays(S, B, ch, 'vote', {type:'vote', who:w}, `My vote’s for ${nm(S, w)}`); }
+        else if (B.has(p)) act(S, {type:'vote', by:p, who:w}); });
+      if (ch.phase === 'look'){
+        const reporters = S.crew.filter(x => B.has(x) && x !== S.captain);
+        if (S.min >= ch.appearAt && reporters.length) act(S, {type:'spot-found', by:pick(reporters), who:pick(S.crew)});   /* the car agrees who saw it first */
+        else if (S.min >= ch.rerollAt && ch.appearAt > S.min + 1.5 && reporters.length && R() < .5*S._dm) act(S, {type:'spot-new', by:pick(reporters)});
+      }
+      if (ch.phase === 'idle' && S.min >= ch.autoAt && B.size) act(S, {type:'silent-start', by:[...B][0]});
+      if (ch.phase === 'run' && S.min >= ch.crackAt && ch.crackAt - ch.runAt < ch.len && B.has(ch.cracker)) crack(S, ch.cracker);
+    }
+    const pe = S.ev;
+    if (pe && pe.type === 'promo' && pe.phase === 'ready' && B.has(pe.who) && S.rt >= pe.botAt) roll(S);
+    if (pe && pe.type === 'struggle' && pe.phase === 'q' && B.has(pe.who) && S.rt >= pe.bot.t) settleStruggle(S, pe.bot.opt);
+    const e = S.ev; if (e && e.type === 'decision' && !e.chosen && capBot && S.min >= e.botAt){ const c = e.botC || (e.botC = R() < .5 ? 'a' : 'b'); capSays(S, B, e, 'decide', {type:'decide', choice:c}, `${c.toUpperCase()}. ${e.d[c]}`); }
+    const t = S.tx;
+    if (t && t.kind === 'captain'){
+      if (t.phase === 'ask' && capBot && S.min >= t.botAnswerAt) capSays(S, B, t, 'answered', {type:'answered'}, 'Captain has answered out loud');
+      if (t.phase === 'react') pass(S).forEach(p => { if (B.has(p) && !t.reacts[p] && S.min >= t['bot_' + p]) act(S, {type:'react', by:p, v:pick(['Fair','Questionable','Outrageous'])}); });
+    }
+    S.crew.forEach(id => {                                  /* bots use power-ups within a few minutes of getting them */
+      if (!B.has(id) || !S.inv[id].length || R() > .3*S._dm) return;
+      const k = S.inv[id][0], co = id === S.captain && S.copilot && B.has(S.copilot);
+      if (k === 'thief'){ const tg = S.crew.filter(x => x !== id && S.pts[x] > 0).sort((a, b) => S.pts[b] - S.pts[a])[0]; if (tg) usePU(S, id, 0, tg, co); }
+      else usePU(S, id, 0, undefined, co);
+    });
+  }
+
+  /* ---- host clock: called every frame on the host. dm = journey minutes, dr = REAL seconds ---- */
+  function step(S, dm, dr = dm*60/6){
+    S._dm = dm; S.min += dm; S.rt += dr; S.mi += (58 + Math.sin(S.min*1.7)*9)/60*dm;
+    while (S.agenda.length && S.min >= S.agenda[0].at){ const b = S.agenda.shift(); enqueue(S, b.type, b.k ? {k:b.k} : {}); }
+    if (!S.agenda.length) S.agenda = agenda(++S.cycle);
+    while (S.min >= S.nextDrop){ S.nextDrop += RULES.dropEvery; enqueue(S, 'drop'); }
+    S.txq.filter(t => S.min >= t.at).forEach(t => enqueue(S, 'crew', {to:t.to, text:t.text, from:t.from}));
+    S.txq = S.txq.filter(t => S.min < t.at);
+    bots(S);                                   /* players act before anything times out */
+    const ch = S.ch;
+    if (ch){
+      if (ch.phase === 'write' && S.min >= ch.deadline) toPick(S);
+      if (ch.phase === 'q' && S.rt - ch.qAt >= RULES.trivia.open) settleQ(S);
+      if (ch.phase === 'reveal' && S.rt >= ch.revealUntil) nextQ(S);
+      if (ch.phase === 'est' && S.min >= ch.deadline) settleEst(S);
+      if (ch.phase === 'vote' && S.min >= ch.deadline) settleVote(S);
+      if (ch.phase === 'look' && S.min >= ch.giveUpAt) finishCh(S, `The ${ch.target.n.toLowerCase()} never showed. No points this time.`);
+      if (ch.phase === 'run' && S.min - ch.runAt >= ch.len){ S.crew.forEach(id => chGain(S, id, rng(PT.silentFlawless))); finishCh(S, `Flawless. ${mins(ch.len)} of silence. Everyone rolled for 2–4`); }
+    }
+    if (S.copilot && S.min >= S.nextStruggle && !S.q.some(x => x.type === 'struggle')){
+      const last = S.coLog[S.coLog.length - 1];
+      if (last && S.min - last.from >= RULES.struggle.minHeld){ enqueue(S, 'struggle'); S.nextStruggle = S.min + rr(RULES.struggle.every); }
+    }
+    if (S.ev && S.ev.type === 'promo' && S.ev.phase === 'ready' && S.rt >= S.ev.autoAt) roll(S, true);
+    if (S.ev && S.ev.type === 'struggle' && S.ev.phase === 'q' && S.rt - S.ev.at >= RULES.struggle.open) settleStruggle(S, null);
+    const e = S.ev;
+    if (e && ((e.until && S.min >= e.until) || (e.type === 'decision' && !e.chosen && S.min >= e.expires))){ if (e.type === 'decision' && !e.chosen) log(S, e.d.ic, 'The Captain hesitated. The moment passed.'); S.ev = null; endMajor(S); }
+    if (S.tx && S.tx.until && S.min >= S.tx.until) closeTx(S);
+    if (S.tx && S.tx.kind === 'captain' && S.tx.phase === 'ask' && S.min >= S.tx.at + 4) closeTx(S);
+    serve(S);
+  }
+  function winner(S){ const max = Math.max(...S.crew.map(id => S.pts[id])); if (max <= 0) return null; const tied = S.crew.filter(id => S.pts[id] === max); return pick(tied); }
+  const timeLeft = S => S.ch && S.ch.phase === 'q' ? Math.max(0, RULES.trivia.open - (S.rt - S.ch.qAt)) : 0;
+  const slots = (S, id) => slotsOf(S, id);
+  return {create, act, step, winner, lossText, timeLeft, slots};
+})();
+/* ENGINE:END */
+
+/* ---------- live mission: every player on their own phone ---------- */
+const RATE_KEYS = [['smooth','Smooth driving','steer'],['music','Music selection','music'],['fun','Entertainment value','sparkle'],['lead','Mission leadership','helmet']];
 const VERDICTS = {Fair:'Fair. The Captain lives to drive another mile.', Questionable:'Questionable. Noted in the mission log.', Outrageous:'Outrageous. This will be brought up again.'};
 const SAMPLE_META = {
   sj10:{captain:'me', rating:[5,4,5,5]}, sj9:{captain:'me', rating:[4,5,5,4]}, sj8:{captain:'megan', rating:[4,3,4,4]},
@@ -2179,16 +3108,6 @@ function decorateSample(j, u){
   j.spaceman = top;
   return j;
 }
-/* The mission rhythm: one beat every few minutes, repeating every 30 mission minutes. Power-ups land every 10. */
-const CYCLE = [[2,'talk'],[6,'decision'],[13,'cosmic'],[16,'captain'],[22,'talk'],[26,'cosmic'],[29,'decision']];
-const agendaFor = k => CYCLE.map(([at, type]) => ({at:at + 30*k, type}));
-const pickOne = a => a[Math.floor(Math.random()*a.length)];
-const randInt = (a, b) => a + Math.floor(Math.random()*(b - a + 1));
-/* Voice: browser speech for now. FUTURE: swap speak() for a synthesised Spaceman voice; callers stay the same. */
-const Voice = {
-  speak(text){ try { if (!('speechSynthesis' in window)) return false; speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.rate = 1; u.pitch = .9; speechSynthesis.speak(u); return true; } catch { return false; } },
-  stop(){ try { speechSynthesis.cancel(); } catch {} }
-};
 function captainStats(id){
   const js = JOURNEYS.filter(j => j.captain === id && j.rating && Object.keys(j.rating).length);
   if (!js.length) return null;
@@ -2197,45 +3116,80 @@ function captainStats(id){
   return {n:js.length, avg:all.reduce((a,b) => a + b, 0)/all.length, per};
 }
 const verdictFor = a => a >= 4.6 ? 'Five-star Captain. Frame it.' : a >= 4 ? 'Solid. Nobody was sick.' : a >= 3 ? 'Survivable. Mostly.' : 'Mutiny pending.';
+const pickOne = a => a[Math.floor(Math.random()*a.length)];
+
+
+
+/* Voice: human first, radio second.
+   Today: the most natural voice this device has, spoken phrase by phrase with real pauses, names said properly,
+   symbols and emoji cleaned up, and a light radio squelch either side. FUTURE (docs/VOICE.md): neural TTS clips
+   through the same speak() call, with the radio filter applied to the voice itself. */
+const NAME_SAY = {Zac:'Zack', Seb:'Sebb', Ollie:'Olly'};
+const Voice = {
+  ctx:null, voice:null, t:0, run:0,
+  score(v){ const n = v.name; let s = /^en-GB/i.test(v.lang) ? 20 : /^en/i.test(v.lang) ? 10 : -100;
+    if (/Natural|Neural|Online/i.test(n)) s += 50; if (/Premium|Enhanced/i.test(n)) s += 40; if (/Google UK English/i.test(n)) s += 30;
+    if (/Daniel|Serena|Kate|Libby|Sonia|Ryan|Arthur|Martha|Oliver|Thomas/i.test(n)) s += 8;
+    if (/compact|eSpeak|Fred|Albert|Bad News|Bells|Boing|Bubbles|Cellos|Good News|Jester|Organ|Superstar|Trinoids|Whisper|Wobble|Zarvox/i.test(n)) s -= 80;
+    return s; },
+  pickVoice(){ try { const vs = speechSynthesis.getVoices(); if (vs.length) this.voice = [...vs].sort((a, b) => this.score(b) - this.score(a))[0]; } catch {} return this.voice; },
+  prep(t){
+    let x = String(t).replace(/£(\d+(?:\.\d+)?)/g, '$1 pounds').replace(/&/g, ' and ').replace(/(\d)%/g, '$1 percent').replace(/\bvs\.?\s/gi, 'versus ')
+      .replace(/[“”"]/g, '').replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}]/gu, '').replace(/\s*·\s*/g, '. ').replace(/\s+/g, ' ').trim();
+    Object.entries(NAME_SAY).forEach(([k, v]) => { x = x.replace(new RegExp(`\\b${k}\\b`, 'g'), v); });
+    return x;
+  },
+  squelch(out){ try { const C = this.ctx ||= new (window.AudioContext || window.webkitAudioContext)(); const t = C.currentTime, dur = out ? .09 : .16;
+    const len = C.sampleRate*dur, buf = C.createBuffer(1, len, C.sampleRate), d = buf.getChannelData(0); for (let i = 0; i < len; i++) d[i] = (Math.random()*2 - 1)*(1 - i/len);
+    const n = C.createBufferSource(); n.buffer = buf; const bp = C.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1700; bp.Q.value = .9;
+    const g = C.createGain(); g.gain.value = out ? .035 : .05; n.connect(bp).connect(g).connect(C.destination); n.start(t);
+    if (!out){ const o = C.createOscillator(), og = C.createGain(); o.frequency.value = 1150; og.gain.setValueAtTime(.03, t + .14); og.gain.exponentialRampToValueAtTime(.0001, t + .26); o.connect(og).connect(C.destination); o.start(t + .14); o.stop(t + .28); }
+  } catch {} },
+  /* One utterance per sentence, so pauses land where a person would take a breath. */
+  speak(text){ try { if (!('speechSynthesis' in window)) return false; this.stop(); this.squelch();
+    const ph = (this.prep(text).match(/[^.!?]+[.!?]+|[^.!?]+$/g) || []).map(p => p.trim()).filter(Boolean), v = this.voice || this.pickVoice(), run = ++this.run;
+    let i = 0;
+    const next = () => { if (run !== this.run) return; if (i >= ph.length){ this.squelch(true); return; }
+      const p = ph[i++], q = /\?$/.test(p), over = /^Over\.?$/i.test(p), u = new SpeechSynthesisUtterance(p);
+      if (v) u.voice = v; u.rate = over ? .9 : q ? .97 : /!$/.test(p) ? 1.02 : .99; u.pitch = q ? 1.04 : over ? .95 : 1;
+      let moved = false; const go = () => { if (moved) return; moved = true; this.t = setTimeout(next, q ? 420 : over ? 200 : 300); };
+      u.onend = go; u.onerror = go; setTimeout(go, 1600 + p.length*85);          /* some browsers drop onend */
+      speechSynthesis.speak(u); };
+    this.t = setTimeout(next, 320); return true; } catch { return false; } },
+  stop(){ this.run++; clearTimeout(this.t); try { speechSynthesis.cancel(); } catch {} }
+};
+try { speechSynthesis.onvoiceschanged = () => Voice.pickVoice(); } catch {}
+const Transport = { send(intent){ if (!LJ) return null; const r = Engine.act(LJ.S, {...intent, by:intent.by || LJ.viewer}); drain(); paint(); return r; } };
 
 let LJ = null;
-const setText = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
-const clock = () => `${Math.floor(LJ.min/60)}:${String(Math.floor(LJ.min % 60)).padStart(2,'0')}`;
-const capName = () => LJ.captain === ME.id ? ME.name : PEOPLE[LJ.captain].name;
+const setText = (id, v) => { const el = document.getElementById(id); if (el && el.textContent !== String(v)) el.textContent = v; };
+const mmss = m => `${Math.floor(Math.max(0, m))}:${String(Math.floor((Math.max(0, m) % 1)*60)).padStart(2,'0')}`;
+const secs = s => `0:${String(Math.ceil(Math.max(0, s))).padStart(2,'0')}`;
+const clock = () => `${Math.floor(LJ.S.min/60)}:${String(Math.floor(LJ.S.min % 60)).padStart(2,'0')}`;
+const capName = () => LJ.S.names[LJ.S.captain];
+const coName = () => LJ.S.copilot ? LJ.S.names[LJ.S.copilot] : '';
 const fullOf = id => id === ME.id ? ME.full : PEOPLE[id].full;
-const poss = id => id === ME.id ? 'Your' : `${PEOPLE[id].name}’s`;
-function logIt(icon, text){ if (!LJ) return; LJ.log.push({t:Math.floor(LJ.min), ic:icon, text}); refreshLog(); }
-function addPts(id, n){ if (!LJ || !(id in LJ.pts)) return 0; let v = n; if (v > 0 && LJ.fx[id].double){ v *= 2; LJ.fx[id].double = false; } LJ.pts[id] = Math.max(0, LJ.pts[id] + v); return v; }
-function hit(id, n){ if (LJ.fx[id].shield){ LJ.fx[id].shield = false; return 'blocked'; } const b = LJ.pts[id]; LJ.pts[id] = Math.max(0, b - n); return b - LJ.pts[id]; }
-function givePU(id){ if (LJ.inv[id].length >= 2) return null; const k = pickOne(Object.keys(POWERUPS)); LJ.inv[id].push(k); return k; }
-function fillPrompt(t){
-  const pass = LJ.crew.filter(id => id !== LJ.captain), p = pass.length ? pickOne(pass) : LJ.captain;
-  return t.replace('{p}', whoName(p)).replace('{c}', capName());
-}
-function newM(id){
-  const m = {id, phase: MISSIONS[id].kind === 'silent' ? 'idle' : 'play', round:0, count:0, tally:{}, votes:{}, total:0, result:'', startMin:0};
-  if (MISSIONS[id].kind === 'answers'){ m.writers = shuffle(LJ.crew.filter(x => x !== LJ.captain)); m.prompt = pickOne(ANSWER_PROMPTS); m.answers = []; }
-  return m;
-}
-function nextMission(){
-  const id = LJ.queue.shift();
-  LJ.m = id ? newM(id) : null;
-  if (!id){ const pool = Object.keys(MISSIONS).filter(k => !LJ.done.includes(k)); LJ.opts = shuffle(pool.length >= 3 ? pool : Object.keys(MISSIONS)).slice(0,3); }
-}
+const viewName = id => id === LJ.viewer ? 'You' : LJ.S.names[id];
+const isCap = () => LJ.viewer === LJ.S.captain;
+const isCo = () => LJ.viewer === LJ.S.copilot;
+const roleOf = id => id === LJ.S.captain ? 'Captain' : id === LJ.S.copilot ? 'Co-Pilot' : 'Crew';
+const passengers = () => LJ.S.crew.filter(id => id !== LJ.S.captain);
+const L4 = 'ABCD';
 
 /* ---------- launch ---------- */
 function startJourney(){
   const L = launchCfg(), crew = [ME.id, ...L.crew];
   if (!sheet.hidden){ sheet.hidden = true; sheet.innerHTML = ''; sheet.classList.remove('open'); }
   live.className = 'live'; live.hidden = false; document.body.style.overflow = 'hidden';
-  LJ = {crew, captain:L.captain, dest:L.dest, mode:L.mode, view:L.captain === ME.id ? 'driver' : 'passenger', day:false, voice:true,
-    queue:[...L.lineup], m:null, opts:[], done:[], results:[], pts:{}, inv:{}, fx:{}, agenda:agendaFor(0), cycle:0, txq:[],
-    ev:null, tx:null, lastBeat:0, nextDrop:10, log:[], calm:0, usedDec:[], mi:0, min:0, last:0, raf:0, startedAt:new Date()};
-  crew.forEach(id => { LJ.pts[id] = 0; LJ.inv[id] = []; LJ.fx[id] = {}; });
+  const names = Object.fromEntries(crew.map(id => [id, id === ME.id ? ME.name : PEOPLE[id].name]));
+  LJ = {S:Engine.create({crew, captain:L.captain, copilot:L.copilot, names, lineup:L.lineup, mode:L.mode, dest:L.dest}), viewer:ME.id, day:false, voice:true,
+    cache:{}, spun:{}, lastSeq:-1, hiddenTx:0, hiddenEv:0, introTx:0, pickWho:null, raf:0, last:0, startedAt:new Date()};
   S.tx = {to:'crew', when:'5'};
+  try { Voice.ctx ||= new (window.AudioContext || window.webkitAudioContext)(); } catch {}
+  const co = LJ.S.copilot;
   live.innerHTML = `<canvas aria-hidden="true"></canvas><div class="countdown" aria-live="assertive"><div class="cd-ring"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="94" fill="none" stroke="var(--surface-3)" stroke-width="3"/><circle id="cd-c" cx="100" cy="100" r="94" fill="none" stroke="url(#g-ion)" stroke-width="3" stroke-linecap="round" stroke-dasharray="590.6" stroke-dashoffset="590.6" style="transition:stroke-dashoffset 2.7s linear"/></svg><div class="n" id="cd-n"><span>3</span></div></div>
-    <div style="display:flex;flex-direction:column;gap:10px;align-items:center;padding:0 24px"><span class="eyebrow ion">Mission control</span><span class="display" style="font-size:22px">${L.dest ? `Destination: ${esc(L.dest)}` : 'Destination: wherever'}</span>${avs(crew,30,'#000')}</div></div>`;
-  nextMission();
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:center;padding:0 24px"><span class="eyebrow ion">Mission control</span><span class="display" style="font-size:22px">${L.dest ? `Destination: ${esc(L.dest)}` : 'Destination: wherever'}</span>${avs(crew,30,'#000')}
+    <span class="small muted">${plural(crew.length,'phone')} joining · Captain ${esc(names[L.captain])}${crew.length > 1 ? ' · Co-Pilot picked at launch' : ''}</span></div></div>`;
   const sf = new Starfield($('canvas', live), {speed:.4, n:220});
   requestAnimationFrame(() => requestAnimationFrame(() => { const c = $('#cd-c'); if (c) c.style.strokeDashoffset = '0'; }));
   let n = 3;
@@ -2243,318 +3197,451 @@ function startJourney(){
     if (n > 0){ $('#cd-n').innerHTML = `<span>${n}</span>`; sf.speed = n === 2 ? 1.5 : 4; return setTimeout(step, 900); }
     sf.speed = 9;
     const cd = live.querySelector('.countdown');
-    if (cd) cd.outerHTML = `<div class="m-start" role="status"><span class="medal-ic">${ic('rocket',40)}</span><span class="display">Mission started</span><span class="muted">Captain ${esc(capName())} has the controls.</span></div>`;
+    if (cd) cd.outerHTML = `<div class="m-start" role="status"><span class="medal-ic">${ic('rocket',40)}</span><span class="display">Mission started</span><span class="muted">Captain ${esc(capName())} has the controls${co ? `. ${esc(coName())} is Co-Pilot` : ''}.</span></div>`;
     haptic();
-    setTimeout(() => { if (!LJ) return; sf.speed = .6; live.querySelector('.m-start')?.remove(); logIt('rocket', `Mission started. Captain ${capName()} has the controls.`); renderHud(); LJ.last = performance.now(); LJ.raf = requestAnimationFrame(tick); }, reduce ? 0 : 1500);
+    setTimeout(() => { if (!LJ) return; sf.speed = .6; live.querySelector('.m-start')?.remove(); renderHud(); LJ.last = performance.now(); LJ.raf = requestAnimationFrame(tick); }, reduce ? 0 : 1500);
   };
   setTimeout(step, reduce ? 0 : 900);
 }
-
-/* ---------- HUD ---------- */
-const whoGridIds = (ids, attr, sub) => `<div class="who-grid">${ids.map(id => { const s = sub(id); return `<button class="who-btn" data-${attr}="${id}">${av(id,44)}<b>${esc(whoName(id))}</b>${s ? `<span class="pts">${s}</span>` : ''}</button>`; }).join('')}</div>`;
-const whoGrid = (attr, sub) => whoGridIds(LJ.crew, attr, sub);
-const silentLeft = () => Math.max(0, MISSIONS.silent.mins - (LJ.min - LJ.m.startMin)).toFixed(1);
-function boardHTML(){
-  const max = Math.max(...LJ.crew.map(id => LJ.pts[id]));
-  return LJ.crew.map(id => { const fx = LJ.fx[id], inv = LJ.inv[id];
-    return `<button class="pl ${max > 0 && LJ.pts[id] === max ? 'lead' : ''}" data-pu="${id}" aria-label="${esc(whoName(id))}: ${LJ.pts[id]} points, ${inv.length} power-ups">
-      <span class="pl-av">${av(id,44)}${id === LJ.captain ? `<span class="cap-badge" title="Captain">${ic('steer',12,2)}</span>` : ''}</span>
-      <b>${esc(whoName(id))}</b><span class="pl-pts">${LJ.pts[id]}</span>
-      <span class="pl-fx">${[fx.double ? '2× ready' : '', fx.shield ? 'shielded' : ''].filter(Boolean).join(' · ')}</span>
-      <span class="pl-inv">${[0,1].map(i => inv[i] ? `<i class="pu">${ic(POWERUPS[inv[i]].ic,15)}</i>` : '<i class="pu empty"></i>').join('')}</span></button>`; }).join('');
-}
-const dPtsHTML = () => [...LJ.crew].sort((a,b) => LJ.pts[b] - LJ.pts[a]).slice(0,5).map(id => `<span class="d-pt">${av(id,40)}<b>${esc(whoName(id))}</b><span>${LJ.pts[id]}</span></span>`).join('');
-const lgRow = x => `<div class="lg"><span class="mono">min ${x.t}</span>${ic(x.ic,16)}<span>${esc(x.text)}</span></div>`;
-const logRows = () => LJ.log.length ? LJ.log.slice(-4).reverse().map(lgRow).join('') : '<p class="small muted">Quiet so far. Enjoy it.</p>';
-const outHTML = out => out && out.length ? `<div class="ev-out">${out.map(([id,t,c]) => `<span class="ev-row ${c}">${av(id,28)}<b>${esc(whoName(id))}</b><span>${t}</span></span>`).join('')}</div>` : '';
-
-function missionHTML(){
-  const m = LJ.m;
-  if (!m) return `<div class="m-head"><span class="grow"><span class="eyebrow ion">Challenge select</span><b class="m-title">Pick the next challenge</b></span></div>
-    <div class="pick-list">${LJ.opts.map(id => { const M = MISSIONS[id]; return `<button class="pick-m" data-mission="${id}"><span class="cat-ic" style="--h:${CAT_H[M.cat]}">${ic(M.ic,20)}</span><span class="grow"><b>${M.name}${M.cat === 'Featured' ? ' <span class="feat-tag">Featured</span>' : ''}</b><span>${M.desc}</span></span></button>`; }).join('')}</div>`;
-  const M = MISSIONS[m.id];
-  const head = `<div class="m-head"><span class="cat-ic" style="--h:${CAT_H[M.cat]}">${ic(M.ic,20)}</span><span class="grow"><span class="eyebrow ${M.cat === 'Featured' ? 'feat' : ''}">${M.cat === 'Featured' ? 'Featured challenge' : `Challenge · ${M.cat}`}</span><b class="m-title">${M.name}</b></span>${m.phase !== 'done' ? '<button class="link-btn" data-action="skip">Skip</button>' : ''}</div>`;
-  if (m.phase === 'done') return `${head}${m.reveal ? revealHTML(m) : ''}<div class="m-done">${ic('check',18,2.4)}<span>${esc(m.result)}</span></div>
-    <button class="btn btn-primary btn-lg btn-block" data-action="next">${LJ.queue.length ? `Next: ${MISSIONS[LJ.queue[0]].name}` : 'Choose the next challenge'}</button>`;
-  switch (M.kind){
-    case 'count': return `${head}<p class="m-desc">${M.desc}</p><div class="counter-row"><span class="t-num m-count" id="m-count">${m.count}</span><button class="plus" data-action="plus" aria-label="Add one">+1</button></div><button class="btn btn-secondary btn-lg btn-block" data-action="finish">Done counting · everyone +1</button>`;
-    case 'winner': return `${head}<p class="m-desc">${M.desc}</p><span class="m-sub">Round ${m.round + 1} of ${M.rounds} · Who won? +1 point</span>${whoGrid('who', id => `${m.tally[id] || 0} won`)}`;
-    case 'vote': return `${head}<p class="m-desc">${M.desc}</p><span class="m-sub">${m.total ? `${plural(m.total,'vote')} cast. Pass the phone on.` : 'Pass the phone round. One tap each.'}</span>${whoGrid('who', () => '')}<button class="btn btn-secondary btn-lg btn-block" data-action="reveal" ${m.total ? '' : 'disabled'}>Reveal the result</button>`;
-    case 'silent':
-      if (m.phase === 'idle') return `${head}<p class="m-desc">${M.desc}</p><button class="btn btn-primary btn-lg btn-block" data-action="silent-start">Start the silence</button>`;
-      if (m.phase === 'run') return `${head}<div class="silent"><span class="t-num" id="silent-left">${silentLeft()}</span><span class="muted">silent minutes to go</span></div><button class="btn btn-secondary btn-lg btn-block" data-action="silent-break">Someone talked</button>`;
-      return `${head}<span class="m-sub">Who cracked? Everyone else +1</span>${whoGrid('who', () => '')}`;
-    case 'answers': {
-      const P = `<p class="ca-prompt">${m.prompt.q}</p>`;
-      if (m.writers.length < 2) return `${head}<p class="m-desc">${M.desc}</p><p class="muted">Needs a Captain and at least two passengers. Bring more crew next time.</p><button class="btn btn-secondary btn-lg btn-block" data-action="skip">Skip for now</button>`;
-      if (m.phase === 'play'){
-        const w = m.writers[m.answers.length];
-        if (!m.unlocked) return `${head}${P}<div class="pass"><span class="m-sub">Secret answer ${m.answers.length + 1} of ${m.writers.length}</span>${av(w,64)}<b>Hand the phone to ${esc(whoName(w))}</b><button class="btn btn-primary btn-lg btn-block" data-action="ca-unlock">I’m ${esc(whoName(w))}</button></div>`;
-        return `${head}${P}<label class="field area" for="ca-input"><textarea id="ca-input" maxlength="90" rows="2" placeholder="Your answer. Nobody will see who wrote it."></textarea></label><button class="link-btn" data-action="ca-idea" style="align-self:flex-start">${ic('sparkle',15)}Need an idea?</button><p class="auth-err" id="ca-err"></p><button class="btn btn-primary btn-lg btn-block" data-action="ca-submit">Lock in answer</button>`;
-      }
-      if (m.phase === 'review') return `${head}${P}<span class="m-sub">Read them out. Captain ${esc(capName())} picks a favourite.</span><div class="ca-list">${m.answers.map((a,i) => `<button class="ca-card" data-pickans="${i}"><span class="mono">${'ABCDEF'[i]}</span><span>${esc(a.text)}</span></button>`).join('')}</div><button class="link-btn" data-action="ca-read" style="align-self:center">${ic('speaker',15)}Read them out for me</button>`;
-      if (m.phase === 'guess') return `${head}<div class="ca-card chosen"><span class="mono">${'ABCDEF'[m.fav]}</span><span>${esc(m.answers[m.fav].text)}</span></div><span class="m-sub">Before the reveal: Captain, who wrote it?</span>${whoGridIds(m.writers,'who',() => '')}`;
-    }
-  }
-  return head;
-}
-function revealHTML(m){
-  const r = m.reveal;
-  return `<div class="ca-reveal">${av(r.by,64)}<span class="eyebrow ion">Written by</span><b class="display">${esc(fullOf(r.by))}</b>
-    <div class="btn-row"><span class="chip ok">+3 to ${esc(whoName(r.by))}</span><span class="chip ${r.ok ? 'ok' : ''}">${r.ok ? 'Captain guessed right · +2' : `Captain guessed ${esc(whoName(r.guess))}. No bonus.`}</span></div></div>`;
-}
-function eventHTML(){
-  const e = LJ.ev; if (!e) return '';
-  if (e.type === 'cosmic'){ const c = COSMIC[e.k];
-    return `<section class="card event cosmic"><div class="m-head"><span class="trophy ev-ic">${ic(c.ic,22)}</span><span class="grow"><span class="eyebrow" style="color:var(--flare)">Cosmic event</span><b class="m-title">${c.name}</b></span></div><p class="m-desc">${c.line}</p>${outHTML(e.out)}<button class="btn btn-secondary btn-block" data-action="ev-ok">Continue</button></section>`; }
-  const d = e.d;
-  if (!e.chosen) return `<section class="card event decision"><div class="m-head"><span class="ic-tile ion ev-ic">${ic(d.ic,22)}</span><span class="grow"><span class="eyebrow ion">Captain decision</span><b class="m-title">${d.title}</b></span></div><p class="m-desc">${d.line}</p><p class="small muted">${LJ.captain === ME.id ? 'Say it out loud, Captain. A passenger taps.' : `Captain ${esc(capName())} decides. Tap their answer.`}</p><div class="dec-opts"><button class="dec" data-dec="a"><span class="mono">A</span>${d.a}</button><button class="dec" data-dec="b"><span class="mono">B</span>${d.b}</button></div></section>`;
-  return `<section class="card event decision"><div class="m-head"><span class="ic-tile ion ev-ic">${ic(d.ic,22)}</span><span class="grow"><span class="eyebrow ion">Captain chose ${e.chosen.toUpperCase()}</span><b class="m-title">${d[e.chosen]}</b></span></div><p class="m-desc">${e.text}</p>${outHTML(e.out)}<button class="btn btn-secondary btn-block" data-action="ev-ok">Continue</button></section>`;
-}
-function driverActHTML(){
-  const e = LJ.ev, pass = LJ.crew.length > 1 ? 'Your passengers are running this.' : 'Switch to passenger view when you’re parked.';
-  if (e && e.type === 'decision' && !e.chosen) return `<span class="k">Captain decision</span><span class="v m">${e.d.title}</span><div class="dec-opts big"><button class="dec" data-dec="a"><span class="mono">A</span>${e.d.a}</button><button class="dec" data-dec="b"><span class="mono">B</span>${e.d.b}</button></div>`;
-  if (e && e.type === 'decision') return `<span class="k">Captain chose</span><span class="v m">${e.d[e.chosen]}</span><span class="u">${e.text}</span>`;
-  if (e) return `<span class="k">Cosmic event</span><span class="v m">${COSMIC[e.k].name}</span><span class="u">${COSMIC[e.k].line}</span>`;
-  if (LJ.m && LJ.m.id === 'answers' && ['review','guess'].includes(LJ.m.phase)) return `<span class="k">Cosmic Answers</span><span class="v m">${LJ.m.phase === 'review' ? 'Pick your favourite' : 'Who wrote it?'}</span><span class="u">Your passengers will read them out. Say your pick.</span>`;
-  if (LJ.m) return `<span class="k">Challenge</span><span class="v m">${MISSIONS[LJ.m.id].name}</span><span class="u">${pass}</span>`;
-  return `<span class="k">Challenge</span><span class="v m">Picking the next one</span><span class="u">${pass}</span>`;
-}
-function renderHud(){
-  let w = live.querySelector('.live-in'); if (!w){ w = document.createElement('div'); live.insertBefore(w, $('#tx', live)); }
-  w.className = 'live-in'; live.classList.toggle('day', LJ.day);
-  const top = `<header class="live-top"><span class="live-pill"><i></i>MISSION LIVE</span><span class="mono live-clock" id="lv-clock">${clock()}</span>
-    <span class="top-actions"><button class="icon-btn" data-action="voice" aria-pressed="${LJ.voice}" aria-label="Read transmissions aloud">${ic(LJ.voice ? 'speaker' : 'mute',20)}</button><button class="icon-btn day-btn" data-action="day" aria-pressed="${LJ.day}" aria-label="Daylight mode">${ic('sun',22)}</button></span></header>`;
-  if (LJ.view === 'driver'){
-    w.innerHTML = `${top}
-      <p class="driver-note">${LJ.captain === ME.id ? 'Eyes on the road, Captain. We’ve got the rest.' : `Captain ${esc(capName())} has the controls. Big numbers only.`}</p>
-      <div class="driver">
-        <div class="dcard"><span class="k">Distance</span><span class="v" id="d-mi">${LJ.mi.toFixed(1)}</span><span class="u">miles</span></div>
-        <div class="dcard"><span class="k">Mission time</span><span class="v" id="d-time">${clock()}</span></div>
-        <div class="dcard" id="d-act">${driverActHTML()}</div>
-        <div class="dcard"><span class="k">Crew points</span><div class="d-pts" id="d-pts">${dPtsHTML()}</div></div>
-      </div>
-      <div class="driver-actions"><button class="btn btn-secondary" data-action="mode" data-mode="passenger">${ic('user',20)}Passenger</button><button class="btn btn-primary" data-action="end">${ic('stop',18)}End mission</button></div>`;
-  } else {
-    w.innerHTML = `${top}
-      <nav class="seg mode-seg" aria-label="View"><button aria-pressed="true">${ic('user',18)}Passenger</button><button data-action="mode" data-mode="driver" aria-pressed="false">${ic('steer',18)}Captain view</button></nav>
-      <div class="live-sub"><span class="eyebrow">${LJ.dest ? `Mission to ${esc(LJ.dest)}` : 'Mystery mission'} · ${VIBES[LJ.mode].name}</span>${avs(LJ.crew,28,'var(--void)')}</div>
-      <section class="live-miles"><span class="t-num" id="lv-mi">${LJ.mi.toFixed(1)}</span><span class="muted">${LJ.crew.length > 1 ? 'miles together' : 'miles'}</span></section>
-      <section class="live-meta">
-        <div class="tile"><span class="t-num" id="lv-time">${clock()}</span><span class="lbl">Mission time</span></div>
-        <div class="tile"><span class="t-num" id="lv-mph">0</span><span class="lbl">mph</span></div>
-        <div class="tile"><span class="t-num" id="lv-done">${LJ.results.length}</span><span class="lbl">Completed</span></div>
-      </section>
-      <section><div class="board-h"><h2 class="sec">Crew points</h2><span class="mono small muted" id="lv-drop">Power-ups at min ${LJ.nextDrop}</span></div><div class="board" id="lv-board">${boardHTML()}</div></section>
-      <div id="lv-event">${eventHTML()}</div>
-      <section class="card mission" id="lv-mission">${missionHTML()}</section>
-      <button class="btn btn-secondary btn-lg btn-block" data-action="tx-new">${ic('signal',18)}Send transmission<span class="chip ion" id="lv-txq" ${LJ.txq.length ? '' : 'hidden'}>${LJ.txq.length} queued</span></button>
-      <section class="card mission"><div class="board-h" style="margin:0"><h2 class="sec">Mission log</h2></div><div class="mlog" id="lv-log">${logRows()}</div></section>
-      <button class="btn btn-ghost btn-lg btn-block" data-action="end">${ic('stop',16)}End mission</button>
-      <p class="small" style="text-align:center;color:var(--fg-3)">Simulated drive: 10 seconds is one mission minute. FUTURE: GPS distance for everyone in the car.</p>
-      <button class="link-btn warp" data-action="warp">${ic('bolt',14)}Prototype: warp 5 minutes</button>`;
-  }
-}
-function refreshBoard(){ if (!LJ) return; const b = $('#lv-board'); if (b) b.innerHTML = boardHTML(); const d = $('#d-pts'); if (d) d.innerHTML = dPtsHTML(); setText('lv-drop', `Power-ups at min ${LJ.nextDrop}`); }
-function refreshEvent(){ if (!LJ) return; const e = $('#lv-event'); if (e) e.innerHTML = eventHTML(); const d = $('#d-act'); if (d) d.innerHTML = driverActHTML(); }
-function refreshMission(){ if (!LJ) return; const m = $('#lv-mission'); if (m) m.innerHTML = missionHTML(); setText('lv-done', LJ.results.length); const d = $('#d-act'); if (d) d.innerHTML = driverActHTML(); }
-function refreshLog(){ const l = $('#lv-log'); if (l && LJ) l.innerHTML = logRows(); }
-function updateTxCount(){ const c = $('#lv-txq'); if (c){ c.hidden = !LJ.txq.length; c.textContent = `${LJ.txq.length} queued`; } }
-function complete(result){
-  const m = LJ.m, M = MISSIONS[m.id]; m.phase = 'done'; m.result = result;
-  LJ.results.push([M.name, result]); LJ.done.push(m.id); logIt('check', `${M.name}: ${result}`); haptic(); refreshMission(); refreshBoard();
-}
-
-/* ---------- the rhythm ---------- */
-const busy = () => !!(LJ.tx || LJ.ev || (LJ.m && LJ.m.id === 'answers' && LJ.m.phase !== 'done' && (LJ.m.unlocked || (LJ.m.answers || []).length)));
+const SIM_RATE = 1/10;   /* 10 real seconds = 1 mission minute */
 function tick(now){
-  if (!LJ) return; const real = Math.min(.25, (now - LJ.last)/1000); LJ.last = now;
-  const mph = 58 + Math.sin(now/2300)*9 + Math.sin(now/700)*2, dm = real*SIM_RATE;
-  LJ.min += dm; LJ.mi += mph/60*dm;
-  setText('lv-mi', LJ.mi.toFixed(1)); setText('d-mi', LJ.mi.toFixed(1)); setText('lv-mph', Math.round(mph));
-  setText('lv-time', clock()); setText('d-time', clock()); setText('lv-clock', clock());
-  const m = LJ.m;
-  if (m && m.id === 'silent' && m.phase === 'run'){
-    setText('silent-left', silentLeft());
-    if (LJ.min - m.startMin >= MISSIONS.silent.mins){ LJ.crew.forEach(id => addPts(id, 1)); complete('Flawless. Five silent minutes. Everyone +1'); }
-  }
-  beats();
+  if (!LJ) return;
+  const S = LJ.S, real = Math.min(.25, (now - LJ.last)/1000); LJ.last = now;
+  S.bots = S.crew.filter(id => id !== ME.id && id !== LJ.viewer);   /* every other phone is simulated */
+  Engine.step(S, real*SIM_RATE, real);
+  drain();
+  setText('lv-mi', S.mi.toFixed(1)); setText('lv-clock', clock());
+  progress();
+  if (S.seq !== LJ.lastSeq) paint();
   if (LJ) LJ.raf = requestAnimationFrame(tick);
 }
-function beats(){
-  while (LJ.min >= LJ.nextDrop){ LJ.nextDrop += 10; dropPowerups(); }
-  const e = LJ.ev;
-  if (e && ((e.until && LJ.min >= e.until) || (!e.chosen && e.expires && LJ.min >= e.expires))){
-    if (e.type === 'decision' && !e.chosen) logIt(e.d.ic, 'The Captain hesitated. The moment passed.');
-    LJ.ev = null; LJ.lastBeat = LJ.min; refreshEvent();
-  }
-  if (!LJ.agenda.length) LJ.agenda = agendaFor(++LJ.cycle);
-  if (busy() || LJ.min - LJ.lastBeat < 1.5) return;
-  const due = LJ.txq.find(t => LJ.min >= t.at);
-  if (due){ LJ.txq = LJ.txq.filter(t => t !== due); updateTxCount(); return openTx({kind:'crew', to:due.to, text:due.text}); }
-  if (LJ.min >= LJ.agenda[0].at) fireBeat(LJ.agenda.shift());
-}
-function fireBeat(b){
-  LJ.lastBeat = LJ.min;
-  if (b.type === 'talk') return openTx({kind:'talk', text:fillPrompt(pickOne(TALK))});
-  if (b.type === 'captain') return openTx({kind:'captain', text:pickOne(CAPTAIN_Q)});
-  if (b.type === 'decision'){
-    const pool = DECISIONS.filter(d => !LJ.usedDec.includes(d.id)), d = pickOne(pool.length ? pool : DECISIONS);
-    LJ.usedDec.push(d.id); LJ.ev = {type:'decision', d, chosen:null, expires:LJ.min + 4};
-    logIt(d.ic, `Captain decision: ${d.title}`); haptic(); return refreshEvent();
-  }
-  if (b.type === 'cosmic'){
-    if (!b.k && LJ.calm > LJ.min) return logIt('sparkle', 'Clear skies, thanks to the Captain’s earlier dodge.');
-    const k = b.k || (LJ.forceAsteroid ? 'asteroid' : pickCosmic()); LJ.forceAsteroid = false;
-    runCosmic(k); haptic(); refreshBoard(); refreshEvent();
-  }
-}
-function pickCosmic(){
-  const total = LJ.crew.reduce((a,id) => a + LJ.pts[id], 0), w = [['supply',3],['flare',2]];
-  if (total >= 4) w.push(['asteroid',3]);
-  if (total >= 6 && LJ.crew.length > 1) w.push(['hole',1]);
-  let r = Math.random()*w.reduce((a,x) => a + x[1], 0);
-  for (const [k,n] of w){ if ((r -= n) < 0) return k; }
-  return 'supply';
-}
-const hitRow = (id, n) => { const r = hit(id, n); return r === 'blocked' ? [id, 'Shield held', 'ok'] : [id, `−${r}`, 'bad']; };
-function runCosmic(k){
-  const ids = LJ.crew, out = [];
-  if (k === 'asteroid') shuffle(ids).slice(0, Math.min(ids.length, Math.random() < .4 ? 2 : 1)).forEach(id => out.push(hitRow(id, randInt(2,4))));
-  if (k === 'supply') shuffle(ids).slice(0, Math.min(ids.length, randInt(1,2))).forEach(id => out.push([id, `+${addPts(id, randInt(2,4))}`, 'good']));
-  if (k === 'flare') ids.forEach(id => out.push([id, `+${addPts(id, 2)}`, 'good']));
-  if (k === 'hole'){ const before = {...LJ.pts}, vals = shuffle(ids.map(id => LJ.pts[id])); ids.forEach((id,i) => { LJ.pts[id] = vals[i]; }); ids.forEach(id => out.push([id, `${before[id]} → ${LJ.pts[id]}`, LJ.pts[id] >= before[id] ? 'good' : 'bad'])); }
-  LJ.ev = {type:'cosmic', k, out, until:LJ.min + 2};
-  logIt(COSMIC[k].ic, `${COSMIC[k].name}. ${out.map(([id,t]) => `${whoName(id)} ${t}`).join(', ')}`);
-}
-function decide(choice){
-  const e = LJ.ev; if (!e || e.type !== 'decision' || e.chosen) return;
-  const d = e.d, cap = LJ.captain, crew = LJ.crew, out = []; let text = '';
-  const all = n => crew.forEach(id => out.push([id, `+${addPts(id, n)}`, 'good']));
-  if (d.id === 'asteroid'){
-    if (choice === 'a'){ all(1); LJ.calm = LJ.min + 8; text = 'Smooth dodge. Everyone +1, and the skies stay quiet for a while.'; }
-    else if (Math.random() < .55){ all(3); const k = givePU(cap); text = `Rare minerals in the debris. Everyone +3${k ? ` and the Captain grabs a ${POWERUPS[k].name}` : ''}.`; }
-    else { crew.forEach(id => out.push(hitRow(id, 2))); LJ.forceAsteroid = true; text = 'Hull dented. Everyone −2, and more rocks are on the way.'; }
-  }
-  if (d.id === 'distress'){
-    if (choice === 'a'){ shuffle(crew).slice(0, Math.min(2, crew.length)).forEach(id => { const k = givePU(id); out.push([id, k ? `+${POWERUPS[k].name}` : 'Inventory full', k ? 'ok' : '']); }); text = 'It was a stranded snack freighter. Grateful aliens hand out power-ups.'; }
-    else { out.push([cap, `+${addPts(cap, 2)}`, 'good']); text = 'Cold but efficient. Captain +2. The crew judges silently.'; }
-  }
-  if (d.id === 'wormhole'){
-    if (choice === 'a'){ out.push([cap, `+${addPts(cap, 1)}`, 'good']); text = 'Sensible. Captain +1 for not getting everyone spaghettified.'; }
-    else { LJ.agenda.unshift({at:LJ.min + 1.5, type:'cosmic', k: LJ.crew.length > 1 ? 'hole' : 'supply'}); all(1); text = 'Into the wormhole. Everyone +1, but something strange is coming.'; }
-  }
-  if (d.id === 'route'){
-    if (choice === 'a'){ all(1); text = 'Scenic route. Everyone +1. Someone took a photo of a cow.'; }
-    else { const k = givePU(cap); out.push([cap, `+${addPts(cap, 3)}`, 'good']); text = `Hyperdrive engaged. Captain +3${k ? ` and a ${POWERUPS[k].name}` : ''}.`; }
-  }
-  Object.assign(e, {chosen:choice, text, out, until:LJ.min + 2});
-  logIt(d.ic, `Captain chose “${d[choice]}”. ${text}`); haptic(); refreshBoard(); refreshEvent();
+function drain(){
+  const S = LJ.S;
+  S.out.splice(0).forEach(o => {
+    if (o.t === 'toast') toast(o.text);
+    if (o.t === 'haptic') haptic();
+    if (o.t === 'drop') haptic();
+  });
 }
 
-/* ---------- power-ups ---------- */
-function dropPowerups(){
-  const got = LJ.crew.map(id => [id, givePU(id)]).filter(x => x[1]);
-  if (got.length){ toast(`Power-ups delivered to ${got.length === LJ.crew.length ? 'the whole crew' : plural(got.length,'player')}`); logIt('star', `Power-up drop: ${got.map(([id,k]) => `${whoName(id)} got ${POWERUPS[k].name}`).join(', ')}`); haptic(); }
-  else toast('Power-up drop skipped. Everyone’s inventory is full');
-  refreshBoard();
+/* ---------- shell: one screen, no scrolling ---------- */
+function renderHud(){
+  let w = live.querySelector('.live-in'); if (!w){ w = document.createElement('div'); live.insertBefore(w, $('#tx', live)); }
+  w.className = 'live-in lv'; live.classList.toggle('day', LJ.day); LJ.cache = {};
+  w.innerHTML = `<header class="lv-top">
+      <span id="lv-me"></span>
+      <span class="lv-stat" aria-label="Mission status"><i class="lv-dot"></i><span class="t-num" id="lv-mi">${LJ.S.mi.toFixed(1)}</span><small>mi</small><span class="mono" id="lv-clock">${clock()}</span></span>
+      <button class="icon-btn" data-live="menu" aria-label="Mission menu">${ic('sliders',20)}</button>
+    </header>
+    <div class="lv-board" id="lv-board"></div>
+    <section class="lv-stage" id="lv-stage" aria-live="polite"><div id="lv-ch"></div></section>
+    <p class="lv-prog mono" id="ch-prog" aria-live="off"></p>
+    <footer class="lv-tray" id="lv-tray"></footer>`;
+  paint();
 }
-function powerSheet(pid, stealIdx=null){
-  if (!LJ) return;
-  if (stealIdx !== null){
-    const others = LJ.crew.filter(id => id !== pid);
-    return openSheet(`<div class="sheet-title"><span class="eyebrow ion">Point Thief</span><h2 class="display" style="font-size:24px">Steal from who?</h2><p class="muted">Takes 2–5 points. A Shield stops it.</p></div>${whoGridIds(others, 'steal', id => `${LJ.pts[id]} pts${LJ.fx[id].shield ? ' · shielded' : ''}`).replace(/data-steal="/g, `data-steal="${pid}|${stealIdx}|`)}`);
-  }
-  const inv = LJ.inv[pid], fx = LJ.fx[pid];
-  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Power-ups</span><h2 class="display" style="font-size:24px">${poss(pid)} power-ups</h2><p class="muted">${LJ.pts[pid]} points. Max two at a time. A new one lands every 10 mission minutes.</p></div>
-    ${fx.double || fx.shield ? `<div class="btn-row" style="justify-content:flex-start">${fx.double ? `<span class="chip ion">${ic('star',13)}Double Points ready</span>` : ''}${fx.shield ? `<span class="chip ion">${ic('shield',13)}Shield up</span>` : ''}</div>` : ''}
-    ${inv.length ? `<div class="list">${inv.map((k,i) => `<div class="row"><span class="ic-tile ion">${ic(POWERUPS[k].ic)}</span><span class="grow"><b>${POWERUPS[k].name}</b><span>${POWERUPS[k].line}</span></span><button class="btn btn-primary" style="height:44px;padding:0 18px" data-use="${pid}|${i}">Use</button></div>`).join('')}</div>`
-      : `<p class="muted">Empty for now. The next drop is at minute ${LJ.nextDrop}.</p>`}
-    <div class="list">${Object.entries(POWERUPS).map(([k,p]) => `<div class="row"><span class="ic-tile">${ic(p.ic,18)}</span><span class="grow"><b>${p.name}</b><span>${p.line}</span></span></div>`).join('')}</div>`);
-}
-function usePower(pid, idx, target){
-  const k = LJ.inv[pid][idx]; if (!k) return;
-  if (k === 'thief' && !target) return powerSheet(pid, idx);
-  LJ.inv[pid].splice(idx, 1);
-  const n = whoName(pid); let msg = '';
-  if (k === 'double'){ LJ.fx[pid].double = true; msg = `${n} activated Double Points`; }
-  if (k === 'shield'){ LJ.fx[pid].shield = true; msg = `${n} raised a Shield`; }
-  if (k === 'lucky'){ const r = randInt(1,6), v = addPts(pid, r); msg = `${n} rolled a ${r}${v !== r ? ', doubled' : ''}. +${v}`; }
-  if (k === 'thief'){ const r = hit(target, randInt(2,5));
-    if (r === 'blocked') msg = `${poss(target)} Shield stopped ${n === 'You' ? 'your' : `${n}’s`} heist`;
-    else if (!r) msg = `${n} tried to rob ${whoName(target)}. Nothing to take.`;
-    else { addPts(pid, r); msg = `${n} stole ${r} from ${whoName(target)}`; } }
-  logIt(POWERUPS[k].ic, msg); toast(msg); haptic(); closeSheet(); refreshBoard();
+function setHTML(id, html){ if (LJ.cache[id] === html) return; const el = document.getElementById(id); if (!el) return; el.innerHTML = html; LJ.cache[id] = html; }
+function paint(){
+  if (!LJ) return; const S = LJ.S; LJ.lastSeq = S.seq;
+  setHTML('lv-me', meHTML()); setHTML('lv-board', boardHTML()); setHTML('lv-ch', stageHTML()); setHTML('lv-tray', trayHTML()); spinReels();
+  txOverlay(); progress();
 }
 
-/* ---------- transmissions ---------- */
-const txKind = k => k === 'captain' ? 'Captain priority question' : k === 'talk' ? 'Crew discussion' : 'Incoming transmission';
-const txSpeech = tx => `${txKind(tx.kind)}. ${tx.text}`;
+/* ---------- sections ---------- */
+function meHTML(){
+  const v = LJ.viewer, r = roleOf(v);
+  return `<button class="lv-me" data-live="devices" aria-label="Switch phone">${av(v,30)}<span class="dev-txt"><b>${v === ME.id ? 'Your phone' : `${esc(LJ.S.names[v])}’s phone`}</b><small class="role-${r === 'Co-Pilot' ? 'co' : r.toLowerCase()}">${r === 'Captain' ? 'Captain · driving' : r}</small></span>${ic('swap',15)}</button>`;
+}
+function boardHTML(){
+  const S = LJ.S, order = [...S.crew].sort((a, b) => S.pts[b] - S.pts[a] || S.crew.indexOf(a) - S.crew.indexOf(b)), max = S.pts[order[0]];
+  const cols = S.crew.length <= 4 ? S.crew.length : 3;
+  return `<div class="lb" style="--cols:${cols}">${order.map((id, i) => { const fx = S.fx[id], mine = id === LJ.viewer;
+    const badge = id === S.captain ? `<i class="rb cap" title="Captain">${ic('steer',11,2.2)}</i>` : id === S.copilot ? '<i class="rb co" title="Co-Pilot">CP</i>' : '';
+    return `<button class="lb-p ${max > 0 && S.pts[id] === max ? 'lead' : ''} ${mine ? 'mine' : ''} ${id === S.copilot ? 'co' : ''}" data-live="pu|${id}" aria-label="${esc(viewName(id))}, ${roleOf(id)}, ${S.pts[id]} points">
+      <span class="lb-r mono">${i + 1}</span><span class="lb-av">${av(id,30)}${badge}</span>
+      <span class="lb-t"><b>${esc(viewName(id))}</b><small>${fx.shield ? 'Shielded' : mine && fx.double ? '2× ready' : roleOf(id)}</small></span>
+      <span class="lb-pts t-num">${S.pts[id]}</span></button>`; }).join('')}</div>`;
+}
+function trayHTML(){
+  const S = LJ.S, v = LJ.viewer, inv = S.inv[v], q = S.txq.filter(t => t.from === v).length + S.q.filter(t => t.type === 'crew' && t.from === v).length;
+  const slot = i => inv[i] ? `<button class="pu-slot" data-live="use|${i}" aria-label="Use ${POWERUPS[inv[i]].name}">${ic(POWERUPS[inv[i]].ic,22)}<small>${POWERUPS[inv[i]].name.split(' ')[0]}</small></button>` : `<span class="pu-slot empty" aria-hidden="true"><small>Empty</small></span>`;
+  const n = Engine.slots(S, v);
+  return `<div class="pu-slots ${n > 2 ? 'three' : ''}">${Array.from({length:n}, (_, i) => slot(i)).join('')}</div>
+    <button class="btn btn-secondary tray-tx" data-action="tx-new">${ic('signal',18)}<span>Transmit</span>${q ? `<span class="chip ion">${q}</span>` : ''}</button>`;
+}
+
+/* ---------- the stage: whatever is happening right now ---------- */
+const lgRow = x => `<div class="lg"><span class="mono">min ${x.t}</span>${ic(x.ic,16)}<span>${esc(x.text)}</span></div>`;
+const outHTML = out => out && out.length ? `<div class="ev-out">${out.map(o => `<span class="ev-row ${o.c}">${av(o.id,30)}<span class="ev-txt"><b>${esc(viewName(o.id))}${o.kind ? ` · ${o.kind}` : ''}</b>${o.text ? `<small>${esc(o.text)}</small>` : ''}</span><span class="ev-d">${esc(o.d)}</span></span>`).join('')}</div>` : '';
+const said = (owner, key) => owner && owner.said && owner.said[key] && !owner.said[key].done ? owner.said[key] : null;
+/* What the Co-Pilot sees when it's their job to tap something in for the Captain */
+const coPanel = (owner, key, body, hint) => { const s = said(owner, key);
+  return `<div class="co-panel"><span class="eyebrow ion">${ic('steer',13,2)} For Captain ${esc(capName())}</span>${s ? `<p class="said">Captain said: “${esc(s.text)}”</p>` : `<p class="co-hint">${hint || 'Ask the Captain. Tap in what they say.'}</p>`}${body}</div>`; };
+const capNote = () => LJ.S.copilot ? `<p class="cap-note">${ic('steer',14)}Hands on the wheel? Say it out loud. Co-Pilot ${esc(coName())} can tap it in.</p>` : '';
+const head = (M, eyebrow, skip=true) => `<div class="m-head"><span class="cat-ic" style="--h:${CAT_H[M.cat]}">${ic(M.ic,20)}</span><span class="grow"><span class="eyebrow ${M.cat === 'Featured' ? 'feat' : ''}">${eyebrow || (M.cat === 'Featured' ? 'Featured challenge' : `Challenge · ${M.cat}`)}</span><b class="m-title">${M.name}</b></span>${skip ? '<button class="link-btn" data-live="skip">Skip</button>' : ''}</div>`;
+const whoGrid = (ids, act, cls='') => `<div class="who-grid ${cls}">${ids.map(id => `<button class="who-btn" data-live="${act}|${id}">${av(id,40)}<b>${esc(viewName(id))}</b></button>`).join('')}</div>`;
+const phones = (ids, done) => `<div class="phone-row">${ids.map(p => `<span class="phone ${done(p) ? 'done' : ''}" title="${esc(viewName(p))}">${av(p,30)}${done(p) ? ic('check',11,2.6) : '<i></i><i></i><i></i>'}</span>`).join('')}</div>`;
+const waiting = t => `<p class="waiting">${t}<i></i><i></i><i></i></p>`;
+
+function stageHTML(){
+  const S = LJ.S, e = S.ev;
+  if (e && e.id !== LJ.hiddenEv) return eventHTML(e);
+  if (S.ch && !(S.ch.phase === 'done' && !S.ch.result)) return chHTML(S.ch);
+  return upNextHTML(true);
+}
+/* ---------- the Co-Pilot seat: reveals, promotion dice, Co-Pilot Challenge ---------- */
+const PIPS = {1:[[50,50]],2:[[30,30],[70,70]],3:[[28,28],[50,50],[72,72]],4:[[30,30],[70,30],[30,70],[70,70]],5:[[28,28],[72,28],[50,50],[28,72],[72,72]],6:[[30,26],[70,26],[30,50],[70,50],[30,74],[70,74]]};
+const dieSVG = (n, cls='') => `<svg class="die ${cls}" viewBox="0 0 100 100" width="96" height="96" role="img" aria-label="${n ? `Rolled a ${n}` : 'Dice'}"><rect x="6" y="6" width="88" height="88" rx="22" class="die-b"/>${n ? PIPS[n].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="8.5" class="die-p"/>`).join('') : '<text x="50" y="66" text-anchor="middle" class="die-q">?</text>'}</svg>`;
+const perksHTML = () => `<div class="perks"><span>+${PT.coWinBonus} on every challenge win</span><span>${PT.coSlots} power-up slots</span><span>Free Shield</span><span>Supply drop priority</span></div>`;
+const reelHTML = (pool, w) => `<div class="cp-reel" aria-hidden="true">${pool.map(id => `<span class="r">${av(id,88)}</span>`).join('')}<span class="cp-win">${sparks(12)}${av(w,88)}<i class="cp-sat">🛰</i></span></div>`;
+function handText(e){
+  const h = e.hand || {}, bits = [];
+  if (e.prev) bits.push(`${viewName(e.prev)} ${e.prev === LJ.viewer ? 'stand' : 'stands'} down${h.shield ? ' and the Co-Pilot Shield goes with the seat' : ''}.`);
+  if (h.passed && h.passed.length) bits.push('The power-up in the third slot moves over too.');
+  if (h.gotShield === 'item') bits.push('Already shielded, so the free Shield arrives as a power-up.');
+  return bits.join(' ');
+}
+function roleHTML(e){
+  const S = LJ.S, me = id => id === LJ.viewer;
+  if (e.type === 'role'){ const w = e.who;
+    return `<div class="ev-card role" data-ev="r${e.id}"><span class="eyebrow ion">🛰 Co-Pilot assigned</span>${reelHTML(e.pool, w)}
+      <div class="cp-after"><b class="display cp-title">${me(w) ? 'You’re the Co-Pilot!' : esc(fullOf(w))}</b>
+      <p class="m-desc">${me(w) ? 'You’ve been selected as Co-Pilot. When the Captain answers out loud, you tap it in.' : `${esc(fullOf(w))} has been selected as Co-Pilot.`}</p>${perksHTML()}
+      <p class="small muted">The seat can change hands. Watch out for Mission Promotion.</p><button class="btn btn-secondary btn-block" data-live="ev-hide">${me(w) ? 'Let’s go' : 'Got it'}</button></div></div>`; }
+  if (e.type === 'promo'){ const w = e.who;
+    const top = `<span class="eyebrow" style="color:var(--flare)">🎲 Mission Promotion</span><b class="m-title">${me(w) ? 'You’ve been selected for promotion' : `${esc(fullOf(w))} has been selected for promotion`}</b>`;
+    const odds = `<div class="odds"><span>1–4 · nothing</span><span>5 · +${PT.promoBonus} points</span><span class="six">6 · Co-Pilot</span></div>`;
+    if (e.phase === 'ready') return `<div class="ev-card promo" data-ev="p${e.id}">${top}<div class="die-wrap">${dieSVG(0, 'shake')}</div>${odds}
+      ${me(w) ? `<button class="btn btn-primary btn-xl btn-block roll-btn" data-live="roll">🎲 Roll the dice</button><p class="small muted">Come on… give me the 6.</p>` : waiting(`${esc(viewName(w))} is rolling`)}</div>`;
+    const r = e.roll, anim = !LJ.spun['d' + e.id];
+    const res = r === 6 ? `<div class="cp-after promo-win">${sparks(14)}<span class="eyebrow ion">🛰 New Co-Pilot</span><b class="display cp-title">${me(w) ? 'You’ve been promoted!' : `${esc(viewName(w))} has been promoted`}</b><p class="m-desc">${esc(handText(e))}</p>${perksHTML()}</div>`
+      : r === 5 ? `<div class="cp-after"><b class="display cp-title">+${e.gain} bonus points</b><p class="m-desc">A 5. No seat, but ${me(w) ? 'you pocket' : `${esc(viewName(w))} pockets`} the bonus.</p></div>`
+      : `<div class="cp-after"><b class="display cp-title">No promotion</b><p class="m-desc">${['A 1. Ouch.','A 2. Not today.','A 3. The seat stays put.','A 4. So close. Well, not really.'][r - 1]}${e.auto ? ' Auto-rolled.' : ''}</p></div>`;
+    return `<div class="ev-card promo ${anim ? '' : 'revealed'}" data-ev="p${e.id}">${top}<div class="die-wrap">${dieSVG(r, anim ? 'tumble' : '')}</div>${res}<button class="btn btn-secondary btn-block cp-after" data-live="ev-hide">Got it</button></div>`; }
+  /* Co-Pilot Challenge */
+  const w = e.who, c = e.cur;
+  const top = `<span class="eyebrow ion">🛰 Co-Pilot Challenge</span><b class="m-title">${me(w) ? 'Defend your seat' : `${esc(viewName(w))} must defend the seat`}</b>`;
+  if (e.phase === 'q') return `<div class="ev-card struggle" data-ev="s${e.id}">${top}<p class="small muted">One question, ${RULES.struggle.open} seconds. Right answer keeps the seat. Wrong answer opens it up.</p><span class="m-sub">${c.c}</span><p class="q-text">${esc(c.q)}</p>
+    <div class="opts">${c.o.map((o, i) => me(w) ? `<button class="opt" data-live="struggle|${i}"><b class="mono">${L4[i]}</b>${esc(o)}</button>` : `<span class="opt"><b class="mono">${L4[i]}</b>${esc(o)}</span>`).join('')}</div>${me(w) ? '' : waiting(`${esc(viewName(w))} is answering`)}</div>`;
+  const opts = `<div class="opts">${c.o.map((o, i) => `<span class="opt ${i === c.a ? 'right' : e.ans === i ? 'wrong' : ''}"><b class="mono">${L4[i]}</b>${esc(o)}</span>`).join('')}</div>`;
+  if (e.ok) return `<div class="ev-card struggle">${top}${opts}<div class="m-done">${ic('shield',18)}<span>${me(w) ? 'You hold' : `${esc(viewName(w))} holds`} on to the Co-Pilot seat.</span></div><button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div>`;
+  return `<div class="ev-card struggle role" data-ev="f${e.id}">${top}<p class="m-desc">${e.ans === null ? 'Time’s up.' : 'Wrong answer.'} It was ${esc(c.o[c.a])}. The seat is open…</p>${reelHTML(e.pool, e.next)}
+    <div class="cp-after"><span class="eyebrow ion">🛰 New Co-Pilot</span><b class="display cp-title">${me(e.next) ? 'You’re the Co-Pilot!' : esc(fullOf(e.next))}</b><p class="m-desc">${esc(handText(e))}</p>${perksHTML()}<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div></div>`;
+}
+/* The reveal reel spins once per event per phone. */
+function spinReels(){
+  const el = document.querySelector('#lv-ch .cp-reel:not(.go)');
+  if (el){ const card = el.closest('.ev-card'), key = card.dataset.ev; el.classList.add('go');
+    if (reduce || LJ.spun[key]) card.classList.add('revealed');
+    else { const rs = [...el.querySelectorAll('.r')], n = Math.max(rs.length*3, 9); let i = 0;
+      const t = setInterval(() => { rs.forEach(r => r.classList.remove('on')); if (!LJ || i >= n){ clearInterval(t); card.classList.add('revealed'); if (LJ) LJ.spun[key] = true; haptic(); return; } rs[i % rs.length].classList.add('on'); i++; }, 115); } }
+  const d = document.querySelector('#lv-ch .die.tumble:not([data-go])');
+  if (d){ d.dataset.go = 1; const key = d.closest('.ev-card').dataset.ev.slice(1); setTimeout(() => { if (LJ) LJ.spun['d' + key] = true; haptic(); }, 1000); }
+}
+function eventHTML(e){
+  const S = LJ.S;
+  if (e.type === 'role' || e.type === 'promo' || e.type === 'struggle') return roleHTML(e);
+  if (e.type === 'drop'){ const mine = e.got[LJ.viewer];
+    return `<div class="ev-card drop"><div class="m-head"><span class="ic-tile ion ev-ic">${ic('star',22)}</span><span class="grow"><span class="eyebrow ion">Power-up distribution</span><b class="m-title">${mine ? `You got ${POWERUPS[mine].name}` : 'Power-ups delivered'}</b></span></div>
+      <p class="m-desc">${mine ? POWERUPS[mine].line : e.full.includes(LJ.viewer) ? 'Your inventory is full. Use one to make room.' : ''} ${Object.keys(e.got).length} of ${S.crew.length} phones got one. Only each phone can see what it got.</p>
+      ${mine ? `<button class="btn btn-secondary btn-block" data-live="ev-hide">Keep it for later</button>` : `<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button>`}</div>`; }
+  if (e.type === 'cosmic'){ const c = COSMIC[e.k];
+    return `<div class="ev-card cosmic"><div class="m-head"><span class="trophy ev-ic">${ic(c.ic,22)}</span><span class="grow"><span class="eyebrow" style="color:var(--flare)">Cosmic event</span><b class="m-title">${c.name}</b></span></div><p class="m-desc">${c.line}</p>${outHTML(e.out)}<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div>`; }
+  const d = e.d;
+  if (e.chosen) return `<div class="ev-card decision"><div class="m-head"><span class="ic-tile ion ev-ic">${ic(d.ic,22)}</span><span class="grow"><span class="eyebrow ion">Captain chose ${e.chosen.toUpperCase()}${e.viaCo ? ` · tapped in by ${esc(viewName(S.copilot))}` : ''}</span><b class="m-title">${d[e.chosen]}</b></span></div><p class="m-desc">${e.text}</p>${outHTML(e.out)}<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div>`;
+  const btns = flag => `<div class="dec-opts big">${['a','b'].map(c => `<button class="dec" data-live="decide|${c}${flag}"><span class="mono">${c.toUpperCase()}</span>${d[c]}</button>`).join('')}</div>`;
+  const body = isCap() ? `${btns('')}${capNote()}`
+    : isCo() ? coPanel(e, 'decide', btns('|cap'), 'The Captain says A or B out loud. You tap it in.')
+    : `<div class="dec-opts"><span class="dec static"><span class="mono">A</span>${d.a}</span><span class="dec static"><span class="mono">B</span>${d.b}</span></div>${waiting(`Captain ${esc(capName())} is deciding${S.copilot ? `. ${esc(viewName(S.copilot))} taps it in` : ''}`)}`;
+  return `<div class="ev-card decision"><div class="m-head"><span class="ic-tile ion ev-ic">${ic(d.ic,22)}</span><span class="grow"><span class="eyebrow ion">Captain decision</span><b class="m-title">${d.title}</b></span></div><p class="m-desc">${d.line}</p>${body}</div>`;
+}
+function upNextHTML(idle){
+  const S = LJ.S, next = S.pick ? MISSIONS[S.pick] : null;
+  return `${idle ? `<div class="m-head"><span class="grow"><span class="eyebrow ion">Breather</span><b class="m-title">${next ? `Up next: ${next.name}` : 'Pick the next challenge'}</b></span></div><p class="m-desc hide-short">Anyone can choose. Otherwise Spaceman picks. Something else might arrive first.</p>` : `<span class="m-sub">${next ? `Up next: ${next.name}` : 'Choose what’s next'}</span>`}
+    <div class="pick-list ${idle ? 'tight' : 'mini'}">${S.opts.map(id => { const M = MISSIONS[id]; return `<button class="pick-m" data-live="choose|${id}" aria-pressed="${S.pick === id}"><span class="cat-ic" style="--h:${CAT_H[M.cat]}">${ic(M.ic,18)}</span><span class="grow"><b>${M.name}</b>${idle ? `<span>${M.cat === 'Featured' ? 'Featured' : M.cat}</span>` : ''}</span></button>`; }).join('')}
+    ${idle ? PLANNED.map(p => `<div class="pick-m planned" aria-disabled="true"><span class="cat-ic" style="--h:${CAT_H.Music}">${ic(p.ic,18)}</span><span class="grow"><b>${p.name}</b><span>🎵 ${p.tag} · Future Spotify integration</span></span></div>`).join('') : ''}</div>`;
+}
+function chHTML(ch){
+  const S = LJ.S, M = MISSIONS[ch.id], v = LJ.viewer, cap = isCap(), co = isCo();
+  if (ch.phase === 'done') return doneHTML(ch, M);
+  if (ch.kind === 'answers'){
+    const P = `<p class="ca-prompt">${esc(ch.prompt)}</p>`, mine = ch.answers[v];
+    if (ch.phase === 'write'){
+      if (cap) return `${head(M)}${P}<span class="m-sub">Your passengers are typing on their phones</span>${phones(passengers(), p => ch.answers[p])}<p class="small muted">Answers stay anonymous. You pick a favourite, then guess who wrote it.${S.copilot ? ` ${esc(coName())} can read them out and tap in your choice.` : ''}</p>`;
+      if (mine) return `${head(M)}${P}<div class="m-done">${ic('lock',16)}<span>Locked in: “${esc(mine)}”</span></div>${phones(passengers(), p => ch.answers[p])}`;
+      return `${head(M)}${P}<label class="field area" for="ca-input"><textarea id="ca-input" maxlength="90" rows="2" placeholder="Your answer. Only your phone sees it."></textarea></label><div class="btn-row split"><button class="link-btn" data-live="idea">${ic('sparkle',15)}Need an idea?</button><span class="auth-err" id="ca-err"></span></div><button class="btn btn-primary btn-lg btn-block" data-live="answer">Lock in answer</button>`;
+    }
+    if (ch.phase === 'pick'){
+      const list = flag => `<div class="ca-list">${ch.order.map((id, i) => `<button class="ca-card ${id === v ? 'own' : ''}" data-live="pick|${i}${flag}"><span class="mono">${'ABCDEF'[i]}</span><span>${esc(ch.answers[id])}</span>${id === v ? '<span class="own-tag">Yours</span>' : ''}</button>`).join('')}</div>`;
+      const ro = `<div class="ca-list">${ch.order.map((id, i) => `<div class="ca-card ${id === v ? 'own' : ''}"><span class="mono">${'ABCDEF'[i]}</span><span>${esc(ch.answers[id])}</span>${id === v ? '<span class="own-tag">Yours</span>' : ''}</div>`).join('')}</div>`;
+      if (cap) return `${head(M)}${P}<span class="m-sub">Pick your favourite</span>${list('')}<button class="link-btn" data-live="read" style="align-self:center">${ic('speaker',15)}Read them out to me</button>`;
+      if (co) return `${head(M)}${P}${coPanel(ch, 'pick', list('|cap'), 'Read the answers out. Tap the Captain’s favourite.')}`;
+      return `${head(M)}${P}${ro}${waiting(`Captain ${esc(capName())} is picking a favourite`)}`;
+    }
+    if (ch.phase === 'guess'){ const fav = `<div class="ca-card chosen"><span class="mono">★</span><span>${esc(ch.answers[ch.fav])}</span></div>`;
+      if (cap) return `${head(M)}${fav}<span class="m-sub">Before the reveal: who wrote it?</span>${whoGrid(passengers(), 'guess', 'compact')}`;
+      if (co) return `${head(M)}${fav}${coPanel(ch, 'guess', whoGrid(passengers(), 'guess', 'compact').replace(/data-live="guess\|([^"]+)"/g, 'data-live="guess|$1|cap"'), 'Who does the Captain think wrote it?')}`;
+      return `${head(M)}${fav}${waiting(ch.fav === v ? 'That’s yours. Keep a straight face' : `Captain ${esc(capName())} is guessing who wrote it`)}`; }
+  }
+  if (ch.kind === 'trivia'){
+    const c = ch.cur, mine = ch.ans && ch.ans[v], capA = ch.ans && ch.ans[S.captain];
+    const sub = `<span class="m-sub">Question ${ch.round + 1} of ${ch.rounds} · ${c.c}</span><p class="q-text">${esc(c.q)}</p>`;
+    if (ch.phase === 'reveal'){ const L = ch.last;
+      return `${head(M, '', false)}${sub}<div class="opts">${c.o.map((o, i) => `<span class="opt ${i === c.a ? 'right' : ch.ans[v] && ch.ans[v].opt === i ? 'wrong' : ''}"><b class="mono">${L4[i]}</b>${esc(o)}</span>`).join('')}</div>
+        <div class="m-done ${L.fast ? '' : 'muted-done'}">${ic(L.fast ? 'bolt' : 'x',18,2.2)}<span>${L.fast ? `${esc(viewName(L.fast))} ${L.fast === v ? 'were' : 'was'} fastest. +${PT.triviaFast}${L.right.length > 1 ? `. ${L.right.length - 1} more got it right: +${PT.triviaRight}` : ''}` : `Nobody got it. It was ${esc(L.answer)}.`}</span></div>`; }
+    const own = cap ? '' : mine ? `<div class="m-done">${ic('lock',16)}<span>Locked in: ${L4[mine.opt]}. ${esc(c.o[mine.opt])}</span></div>`
+      : `<div class="opts">${c.o.map((o, i) => `<button class="opt" data-live="tq|${i}"><b class="mono">${L4[i]}</b>${esc(o)}</button>`).join('')}</div>`;
+    const capPart = cap ? (capA ? `<div class="m-done">${ic('lock',16)}<span>Locked in: ${L4[capA.opt]}</span></div>` : `<div class="opts">${c.o.map((o, i) => `<button class="opt" data-live="tq|${i}"><b class="mono">${L4[i]}</b>${esc(o)}</button>`).join('')}</div>${capNote()}`)
+      : co ? (capA ? `<p class="co-hint">${ic('check',14,2.4)} Captain’s answer is in: ${L4[capA.opt]}</p>` : coPanel(ch, 'q' + ch.round, `<div class="cap-keys">${L4.split('').map((l, i) => `<button class="key" data-live="tq|${i}|cap" aria-label="Captain answered ${l}">${l}</button>`).join('')}</div>`, 'Read it to the Captain. Tap the letter they shout.'))
+      : '';
+    return `${head(M)}${sub}${own}${capPart}${co && !capA ? '' : phones(S.crew, p => ch.ans[p])}`;
+  }
+  if (ch.kind === 'estimate'){
+    const q = ch.q, mine = ch.guesses[v], capG = ch.guesses[S.captain];
+    const box = (id, flag, ph) => `<div class="est-row"><label class="field est" for="${id}"><input id="${id}" type="text" inputmode="decimal" autocomplete="off" placeholder="${ph}" maxlength="12"></label><button class="btn btn-primary btn-lg" data-live="est|${id}${flag}">Lock in</button></div>`;
+    const own = mine !== undefined ? `<div class="m-done">${ic('lock',16)}<span>Your number: ${mine.toLocaleString('en-GB')}</span></div>` : box('est-in', '', q.year ? 'A year' : 'Your best guess');
+    const capPart = co ? (capG !== undefined ? `<p class="co-hint">${ic('check',14,2.4)} Captain’s number is in</p>` : coPanel(ch, 'est', box('est-cap', '|cap', 'Captain’s number'), 'What does the Captain reckon?')) : cap && mine === undefined ? capNote() : '';
+    return `${head(M)}<p class="q-text">${esc(q.q)}</p><p class="small muted">Talk it through first. Closest +${PT.estClosest}, runner-up +${PT.estSecond}, bang on +${PT.estBangOn} more.</p>${own}${capPart}${phones(S.crew, p => p in ch.guesses)}`;
+  }
+  if (ch.kind === 'spot'){
+    const t = ch.target, canNew = S.min >= ch.rerollAt;
+    return `${head(M, 'Incoming mission challenge', false)}<div class="spot"><span class="spot-e" aria-hidden="true">${t.e}</span><span class="eyebrow">Find</span><b class="display spot-n">${esc(t.n)}</b><small class="muted">Shout it out. The car agrees who saw it first.</small></div>
+      ${LJ.pickWho === 'spot' ? `<span class="m-sub">Who saw it first? +${PT.spot}</span>${whoGrid(S.crew, 'spot-found', 'compact')}<button class="link-btn" data-live="pick-cancel" style="align-self:center">Not yet</button>`
+        : `<button class="btn btn-primary btn-lg btn-block" data-live="pick-who|spot">${ic('check',18,2.4)}Someone found it</button><button class="btn btn-ghost btn-block" data-live="spot-new" ${canNew ? '' : 'disabled'}>${ic('swap',16)}${canNew ? 'Generate new target' : `New target in ${mmss(ch.rerollAt - S.min)}`}</button>`}`;
+  }
+  if (ch.kind === 'vote'){
+    const mine = ch.votes[v], capV = ch.votes[S.captain];
+    const own = mine ? `<div class="m-done">${ic('lock',16)}<span>Your secret vote: ${esc(viewName(mine))}</span></div>` : `<span class="m-sub">Your secret vote</span>${whoGrid(S.crew.filter(x => x !== v), 'vote', 'compact')}`;
+    const capPart = co ? (capV ? `<p class="co-hint">${ic('check',14,2.4)} Captain’s vote is in</p>` : coPanel(ch, 'vote', whoGrid(S.crew.filter(x => x !== S.captain), 'vote', 'compact mini').replace(/data-live="vote\|([^"]+)"/g, 'data-live="vote|$1|cap"'), 'Who does the Captain vote for?')) : cap && !mine ? capNote() : '';
+    return `${head(M)}<p class="m-desc">${M.desc}</p>${own}${capPart}`;
+  }
+  if (ch.kind === 'silent'){
+    if (ch.phase === 'idle') return `${head(M)}<p class="m-desc">${mmss(ch.len)} of total silence. Nobody speaks on purpose. Mission Control stays quiet too.</p><button class="btn btn-primary btn-lg btn-block" data-live="silent-start">${ic('moon',18)}Start the silence</button>`;
+    return `${head(M, 'Silence in progress', false)}<div class="silent"><span class="t-num" id="silent-left">${mmss(ch.len - (S.min - ch.runAt))}</span><span class="muted">to go. If someone cracks, everyone else scores.</span></div>${LJ.pickWho === 'talk' ? `<span class="m-sub">Who cracked?</span>${whoGrid(S.crew, 'talked', 'compact')}` : '<button class="btn btn-secondary btn-lg btn-block" data-live="pick-who|talk">Someone talked</button>'}`;
+  }
+  return head(M);
+}
+function doneHTML(ch, M){
+  const S = LJ.S, v = LJ.viewer; let extra = '';
+  const r = ch.reveal;
+  if (r) extra = `<div class="ca-reveal"><div class="ca-card chosen"><span class="mono">★</span><span>${esc(r.text)}</span></div><div class="by">${av(r.by,44)}<span><span class="eyebrow ion">Written by</span><b>${esc(r.by === v ? 'You!' : fullOf(r.by))}</b></span></div>
+    <div class="btn-row"><span class="chip ok">+${PT.answerAuthor} to ${esc(viewName(r.by))}</span><span class="chip ${r.ok ? 'ok' : ''}">${r.ok ? `Captain guessed right · +${PT.captainGuess}` : `Captain guessed ${esc(viewName(r.guess))}`}</span></div></div>`;
+  if (ch.kind === 'estimate' && ch.rows) extra = `<div class="est-ans"><span class="eyebrow">The answer</span><b class="t-num">${ch.answer.toLocaleString('en-GB')}</b>${ch.q.u ? `<small>${esc(ch.q.u)}</small>` : ''}</div>
+    <div class="est-rows">${ch.rows.slice(0, 6).map(([id, g, d], i) => `<span class="est-r ${i === 0 || d === ch.rows[0][2] ? 'win' : ''}">${av(id,24)}<b>${esc(viewName(id))}</b><span class="mono">${g.toLocaleString('en-GB')}</span><small class="mono">${d === 0 ? 'bang on' : `off by ${(+d.toFixed(2)).toLocaleString('en-GB')}`}</small></span>`).join('')}</div>`;
+  if (ch.kind === 'spot' && ch.winner) extra = `<div class="spot small-spot"><span class="spot-e" aria-hidden="true">${ch.target.e}</span>${av(ch.winner,44)}</div>`;
+  return `${head(M, 'Challenge complete', false)}${extra}${r || ch.rows ? '' : `<div class="m-done">${ic('check',18,2.4)}<span>${esc(ch.result)}</span></div>`}${upNextHTML(false)}`;
+}
+function progress(){
+  if (!LJ) return; const S = LJ.S, ch = S.ch, e = S.ev; let t = '';
+  const gap = S.nextAt - S.rt;
+  if (e && e.type === 'decision' && !e.chosen) t = `Captain decides · ${mmss(e.expires - S.min)} left`;
+  else if (e && e.type === 'promo' && e.phase === 'ready') t = `${e.who === LJ.viewer ? 'Your roll' : `${S.names[e.who]} is rolling`} · auto-rolls in ${secs(e.autoAt - S.rt)}`;
+  else if (e && e.type === 'struggle' && e.phase === 'q') t = `${secs(RULES.struggle.open - (S.rt - e.at))} to answer`;
+  else if (ch && ch.phase === 'run') t = `Silent Mission · ${mmss(ch.len - (S.min - ch.runAt))} left`;
+  else if (e) t = '';
+  else if (!ch || ch.phase === 'done') t = gap > 0 ? `Next up in ${secs(gap)}` : 'Stand by';
+  else if (ch.phase === 'write') t = `${Object.keys(ch.answers).length} of ${passengers().length} answers in · ${mmss(ch.deadline - S.min)} left`;
+  else if (ch.phase === 'q') t = `${Object.keys(ch.ans).length} of ${S.crew.length} in · ${secs(Engine.timeLeft(S))} left`;
+  else if (ch.phase === 'reveal') t = ch.round + 1 < ch.rounds ? `Next question in ${secs(ch.revealUntil - S.rt)}` : 'Final scores coming';
+  else if (ch.phase === 'est') t = `${Object.keys(ch.guesses).length} of ${S.crew.length} locked in · ${mmss(ch.deadline - S.min)} left`;
+  else if (ch.phase === 'vote') t = `${Object.keys(ch.votes).length} of ${S.crew.length} voted · ${mmss(ch.deadline - S.min)} left`;
+  else if (ch.phase === 'look') t = `Searching · ${mmss(ch.giveUpAt - S.min)} until the target is lost`;
+  else if (ch.phase === 'idle') t = 'Waiting for someone to start';
+  else if (ch.phase === 'pick' || ch.phase === 'guess') t = 'Over to the Captain';
+  setText('ch-prog', t);
+  if (ch && ch.phase === 'run') setText('silent-left', mmss(ch.len - (S.min - ch.runAt)));
+}
+
+/* ---------- transmissions (each phone shows and reads them out on its own) ---------- */
+const txKind = k => k === 'captain' ? 'Captain interview' : k === 'talk' ? 'Crew discussion' : k === 'chatter' ? 'Mission Control' : 'Incoming transmission';
+const vary = (tx, a) => a[tx.id % a.length];
+function txSpeech(tx){
+  if (tx.kind === 'captain') return `${vary(tx, ['Captain, quick one for you.', 'Priority question for the Captain.', 'Captain. Mission Control here.'])} ${tx.text} Over.`;
+  if (tx.kind === 'talk') return `${vary(tx, ['Mission Control to the crew.', 'Right then, crew.', 'Quick one for the whole car.', 'Crew, we need an answer on this.'])} ${tx.text} ${vary(tx, ['Over to you.', 'Discuss.', 'Go.'])} Over.`;
+  if (tx.kind === 'chatter') return `${tx.text} ${vary(tx, ['Over.', 'Mission Control out.', 'Over and out.'])}`;
+  return `Incoming transmission${tx.to === 'crew' ? ' for the whole crew' : tx.to === 'captain' ? ' for the Captain' : ` for ${LJ.S.names[tx.to]}`}. ${tx.text} Over.`;
+}
 function txTo(tx){
-  if (tx.kind === 'captain') return `For Captain ${esc(capName())} only`;
+  if (tx.kind === 'captain') return `For Captain ${esc(capName())}`;
   if (tx.kind === 'talk') return 'To: entire crew · discuss';
-  return `To: ${tx.to === 'crew' ? 'entire crew' : tx.to === 'captain' ? `Captain ${esc(capName())}` : esc(whoName(tx.to))}`;
+  if (tx.kind === 'chatter') return 'To: entire crew · no reply needed';
+  return `To: ${tx.to === 'crew' ? 'entire crew' : tx.to === 'captain' ? `Captain ${esc(capName())}` : esc(viewName(tx.to))}`;
 }
 function txActions(tx){
-  const read = `<button class="btn btn-secondary btn-lg btn-block" data-action="tx-read">${ic('speaker',18)}Read aloud</button>`;
+  const read = `<button class="btn btn-secondary btn-lg btn-block" data-action="tx-read">${ic('speaker',18)}Read aloud</button>`, close = `<button class="btn btn-ghost btn-block" data-action="tx-close">Close on this phone</button>`;
   if (tx.kind !== 'captain') return `${read}<button class="btn btn-primary btn-lg btn-block" data-action="tx-close">End transmission</button>`;
-  if (tx.phase === 'main') return `${read}<button class="btn btn-primary btn-lg btn-block" data-action="tx-answered">Captain has answered</button>`;
-  return `<span class="m-sub" style="text-align:center">Crew verdict</span><div class="verdicts">${Object.keys(VERDICTS).map(v => `<button class="btn btn-secondary" data-verdict="${v}">${v}</button>`).join('')}</div>`;
+  if (tx.phase === 'ask'){
+    if (isCap()) return `${read}<button class="btn btn-primary btn-lg btn-block" data-live="answered">I’ve answered out loud</button>${LJ.S.copilot ? `<p class="small muted">Or Co-Pilot ${esc(coName())} can tap it for you.</p>` : ''}`;
+    if (isCo()){ const s = said(tx, 'answered'); return `${s ? `<p class="said">${esc(s.text)}</p>` : `<p class="co-hint">Tap once the Captain has answered.</p>`}<button class="btn btn-primary btn-lg btn-block" data-live="answered|cap">${ic('steer',18)}Captain has answered</button>${close}`; }
+    return `${waiting(`Waiting for Captain ${esc(capName())} to answer`)}${close}`;
+  }
+  if (isCap()) return `${waiting('The crew is judging your answer')}${close}`;
+  const mine = tx.reacts[LJ.viewer];
+  return mine ? `<p class="m-done" style="justify-content:center">${ic('check',16,2.4)}You said: ${mine}</p>${close}` : `<span class="m-sub" style="text-align:center">Your verdict</span><div class="verdicts">${Object.keys(VERDICTS).map(x => `<button class="btn btn-secondary" data-live="react|${x}">${x}</button>`).join('')}</div>`;
 }
-function openTx(tx){
-  tx.id = Date.now(); tx.phase = 'main'; LJ.tx = tx; LJ.lastBeat = LJ.min;
-  logIt('signal', tx.kind === 'captain' ? `Captain question: ${tx.text}` : tx.kind === 'talk' ? `Discussion: ${tx.text}` : `Transmission ${txTo(tx).replace('To: ', 'to ')}: “${tx.text}”`);
-  const el = document.createElement('div');
-  el.className = `tx ${tx.kind}`; el.id = 'tx'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label', txKind(tx.kind));
-  el.innerHTML = `<div class="tx-in">
+function txOverlay(){
+  const tx = LJ.S.tx, el = $('#tx', live);
+  if (!tx || tx.id === LJ.hiddenTx){ if (el){ el.remove(); Voice.stop(); } return; }
+  if (el && +el.dataset.id === tx.id){ setHTML('tx-actions', txActions(tx)); return; }
+  el?.remove();
+  const box = document.createElement('div');
+  box.className = `tx ${tx.kind}`; box.id = 'tx'; box.dataset.id = tx.id; box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label', txKind(tx.kind));
+  box.innerHTML = `<div class="tx-in">
     <div class="radar" aria-hidden="true"><i></i><i></i><i></i><span class="core">${ic('signal',28)}</span></div>
-    <span class="eyebrow tx-kind">${txKind(tx.kind)}</span>
-    <span class="tx-status" id="tx-status">Incoming signal</span>
+    <span class="eyebrow tx-kind">${txKind(tx.kind)}</span><span class="tx-status" id="tx-status">Incoming signal</span>
     <div class="wave" aria-hidden="true">${Array.from({length:14}, (_,i) => `<i style="--d:${(i*67) % 480}ms"></i>`).join('')}</div>
-    <div class="tx-body"><span class="tx-to">${txTo(tx)}</span><p class="tx-msg">“${esc(tx.text)}”</p><span class="tx-from">${tx.kind === 'crew' ? 'From: someone in this car' : 'From: Spaceman'}</span><div class="tx-actions" id="tx-actions">${txActions(tx)}</div></div>
-  </div>`;
-  live.appendChild(el); haptic();
-  const id = tx.id, still = () => LJ && LJ.tx && LJ.tx.id === id;
-  setTimeout(() => { if (still()) setText('tx-status', 'Transmitting message'); }, reduce ? 0 : 1400);
-  setTimeout(() => { if (!still()) return; el.classList.add('open'); setText('tx-status', 'Voice transmission'); if (LJ.voice) Voice.speak(txSpeech(tx)); }, reduce ? 0 : 2700);
+    <div class="tx-body"><span class="tx-to">${txTo(tx)}</span><p class="tx-msg">“${esc(tx.text)}”</p><span class="tx-from">${tx.kind === 'crew' ? (tx.from === LJ.viewer ? 'From: you (they don’t know that)' : 'From: someone in this car') : 'From: Mission Control'}</span><div class="tx-actions" id="tx-actions">${txActions(tx)}</div></div></div>`;
+  live.appendChild(box); delete LJ.cache['tx-actions']; haptic();
+  const id = tx.id, still = () => LJ && LJ.S.tx && LJ.S.tx.id === id && $('#tx', live);
+  if (LJ.introTx === id){ box.classList.add('open'); setText('tx-status', 'Voice transmission'); return; }
+  LJ.introTx = id; Voice.squelch();
+  setTimeout(() => { if (still()) setText('tx-status', 'Transmitting message'); }, reduce ? 0 : 1300);
+  setTimeout(() => { if (!still()) return; box.classList.add('open'); setText('tx-status', 'Voice transmission'); if (LJ.voice) Voice.speak(txSpeech(tx)); }, reduce ? 0 : 2500);
 }
-function closeTx(){ Voice.stop(); $('#tx', live)?.remove(); if (LJ){ LJ.tx = null; LJ.lastBeat = LJ.min; } }
+
 function txSheet(){
-  const d = S.tx, names = shuffle(LJ.crew.filter(id => id !== ME.id)).map(id => whoName(id));
+  const d = S.tx, St = LJ.S, names = shuffle(St.crew.filter(id => id !== LJ.viewer)).map(id => St.names[id]);
   const n = i => names[i % Math.max(1, names.length)] || 'The Captain';
   const ideas = [`${n(0)} still owes me £20.`, `If ${n(1)} was an animal they’d definitely be a pigeon.`, `${n(2)} has somehow forgotten their wallet again.`];
-  const targets = [['crew','Entire crew',ic('users',15)], ['captain',`Captain ${esc(capName())}`,ic('steer',15)], ...LJ.crew.filter(id => id !== LJ.captain).map(id => [id, esc(whoName(id)), av(id,24)])];
-  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Transmission</span><h2 class="display" style="font-size:24px">Send a transmission</h2><p class="muted">It interrupts the mission later and gets read out. Nobody will know it was you.</p></div>
+  const targets = [['crew','Entire crew',ic('users',15)], ['captain',`Captain ${esc(capName())}`,ic('steer',15)], ...St.crew.filter(id => id !== St.captain && id !== LJ.viewer).map(id => [id, esc(viewName(id)), av(id,24)])];
+  if (!targets.some(t => t[0] === d.to)) d.to = 'crew';
+  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Transmission</span><h2 class="display" style="font-size:24px">Send a transmission</h2><p class="muted">Sent from ${LJ.viewer === ME.id ? 'your' : `${esc(viewName(LJ.viewer))}’s`} phone. It interrupts every phone later and gets read out. Nobody will know who sent it.</p></div>
     <section class="stack-v"><h3 class="eyebrow">To</h3><div class="tx-targets">${targets.map(([v,l,i]) => `<button class="chip filter" data-txto="${v}" aria-pressed="${d.to === v}">${i}${l}</button>`).join('')}</div></section>
     <section class="stack-v"><h3 class="eyebrow">Message</h3>
       <label class="field area" for="tx-text"><textarea id="tx-text" maxlength="140" rows="3" placeholder="Something the crew needs to hear"></textarea></label>
       <div class="tx-ideas">${ideas.map(t => `<button class="chip" data-txidea="${esc(t)}">${ic('sparkle',13)}${esc(t)}</button>`).join('')}</div></section>
     <section class="stack-v"><h3 class="eyebrow">When</h3><nav class="seg" aria-label="When">${[['2','In 2 min'],['5','In 5 min'],['rand','Surprise']].map(([v,l]) => `<button data-txwhen="${v}" aria-pressed="${d.when === v}">${l}</button>`).join('')}</nav></section>
     <p class="auth-err" id="tx-err" role="alert"></p>
-    <button class="btn btn-primary btn-lg btn-block" data-action="tx-queue">${ic('signal',18)}Queue transmission</button>
-    ${LJ.txq.length ? `<p class="small muted" style="text-align:center">${plural(LJ.txq.length,'transmission')} already queued.</p>` : ''}`);
+    <button class="btn btn-primary btn-lg btn-block" data-action="tx-queue">${ic('signal',18)}Queue transmission</button>`);
 }
 
-/* ---------- end + recap ---------- */
+
+
+/* ---------- sheets ---------- */
+function powerSheet(stealIdx=null, forCap=false){
+  const S = LJ.S, owner = forCap ? S.captain : LJ.viewer, flag = forCap ? '|cap' : '';
+  if (stealIdx !== null){
+    const others = S.crew.filter(id => id !== owner);
+    return openSheet(`<div class="sheet-title"><span class="eyebrow ion">Point Thief${forCap ? ' · for the Captain' : ''}</span><h2 class="display" style="font-size:24px">Steal from who?</h2><p class="muted">Takes 2–5 points. A Shield stops it. Nobody with zero points can be robbed.</p></div>
+      <div class="who-grid">${others.map(id => `<button class="who-btn" data-live="steal|${stealIdx}|${id}${flag}" ${S.pts[id] > 0 ? '' : 'disabled'}>${av(id,44)}<b>${esc(viewName(id))}</b><span class="pts">${S.pts[id] > 0 ? `${S.pts[id]} pts${S.fx[id].shield ? ' · shielded' : ''}` : 'Nothing to take'}</span></button>`).join('')}</div>`);
+  }
+  const inv = S.inv[owner], fx = S.fx[owner];
+  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Power-ups</span><h2 class="display" style="font-size:24px">${forCap ? `Captain ${esc(capName())}’s power-ups` : owner === ME.id ? 'Your power-ups' : `${esc(S.names[owner])}’s power-ups`}</h2><p class="muted">${forCap ? 'You’re Co-Pilot, so you can use these when the Captain says so.' : 'Only this phone can see and use them.'} Max ${Engine.slots(S, owner)} at a time${owner === S.copilot ? ' (Co-Pilot perk)' : ''}. A new one lands every 15 mission minutes.</p></div>
+    ${!forCap && isCo() ? `<button class="row card" data-live="cap-pu" style="width:100%">${ic('steer',20)}<span class="grow"><b>Captain ${esc(capName())}’s power-ups</b><span>Use them when the Captain says so</span></span><span class="chev">${ic('chevR',18)}</span></button>` : ''}
+    ${fx.double || fx.shield ? `<div class="btn-row" style="justify-content:flex-start">${fx.double ? `<span class="chip ion">${ic('star',13)}Double Points ready</span>` : ''}${fx.shield ? `<span class="chip ion">${ic('shield',13)}Shield up</span>` : ''}</div>` : ''}
+    ${inv.length ? `<div class="list">${inv.map((k,i) => `<div class="row"><span class="ic-tile ion">${ic(POWERUPS[k].ic)}</span><span class="grow"><b>${POWERUPS[k].name}</b><span>${POWERUPS[k].line}</span></span><button class="btn btn-primary" style="height:48px;padding:0 20px" data-live="use|${i}${flag}">Use</button></div>`).join('')}</div>`
+      : `<p class="muted">Empty for now. The next drop is at minute ${S.nextDrop}.</p>`}
+    <div class="list">${Object.values(POWERUPS).map(p => `<div class="row"><span class="ic-tile">${ic(p.ic,18)}</span><span class="grow"><b>${p.name}</b><span>${p.line}</span></span></div>`).join('')}</div>`);
+}
+function devicesSheet(){
+  const S = LJ.S;
+  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Phones in this mission</span><h2 class="display" style="font-size:24px">Everyone plays on their own phone</h2><p class="muted">In the real app each player joins on their own phone and the Captain’s phone hosts. In this prototype the other phones are simulated. Tap one to play as that person.</p></div>
+    <div class="list">${S.crew.map(id => `<button class="row" data-live="view|${id}">${av(id,44)}<span class="grow"><b>${esc(id === ME.id ? `${ME.name} (you)` : S.names[id])}</b><span>${id === S.captain ? 'Captain · driving · host phone' : id === S.copilot ? 'Co-Pilot · taps things in for the Captain' : 'Crew'} · ${id === ME.id ? 'this phone' : 'simulated'}</span></span>${id === LJ.viewer ? `<span class="chip ion">Viewing</span>` : `<span class="chev">${ic('chevR',18)}</span>`}</button>`).join('')}</div>`);
+}
+function menuSheet(){
+  const S = LJ.S;
+  openSheet(`<div class="sheet-title"><span class="eyebrow ion">${S.dest ? `Mission to ${esc(S.dest)}` : 'Mystery mission'} · ${VIBES[S.mode].name}</span><h2 class="display" style="font-size:24px">Mission menu</h2></div>
+    <div class="list">
+      <button class="row" data-action="voice">${ic(LJ.voice ? 'speaker' : 'mute',20)}<span class="grow"><b>Read transmissions aloud</b><span>${LJ.voice ? 'On for this phone' : 'Off for this phone'}</span></span><span class="chip ${LJ.voice ? 'ion' : ''}">${LJ.voice ? 'On' : 'Off'}</span></button>
+      <button class="row" data-action="day">${ic('sun',20)}<span class="grow"><b>Daylight mode</b><span>Higher contrast for bright sun</span></span><span class="chip ${LJ.day ? 'ion' : ''}">${LJ.day ? 'On' : 'Off'}</span></button>
+      <button class="row" data-action="warp">${ic('bolt',20)}<span class="grow"><b>Prototype: warp 5 minutes</b><span>Skip journey time to see more events</span></span></button>
+    </div>
+    <section class="stack-v"><h3 class="eyebrow">Mission log</h3><div class="card mlog">${S.log.slice(-10).reverse().map(lgRow).join('') || '<p class="small muted">Quiet so far.</p>'}</div></section>
+    <p class="small muted">Simulated drive: 10 seconds is one mission minute. Major events always have at least 10 real seconds between them.</p>
+    <button class="btn btn-ghost btn-lg btn-block" data-action="end">${ic('stop',16)}End mission for everyone</button>`);
+}
+
+/* ---------- intents from this phone ---------- */
+function liveAct(spec){
+  if (!LJ) return; const parts = spec.split('|'), cap = parts[parts.length - 1] === 'cap', [a, x, y] = parts, S = LJ.S, v = LJ.viewer;
+  const as = cap ? {as:'captain'} : {};
+  switch (a){
+    case 'devices': return devicesSheet();
+    case 'menu': return menuSheet();
+    case 'view': LJ.viewer = x; LJ.pickWho = null; closeSheet(); renderHud(); return toast(x === ME.id ? 'Back on your phone' : `Now on ${S.names[x]}’s phone · ${roleOf(x)}`);
+    case 'pu': if (x === v) return powerSheet(); if (x === S.captain && isCo()) return powerSheet(null, true); return toast(`Only ${S.names[x]} can see and use their power-ups.`);
+    case 'cap-pu': return powerSheet(null, true);
+    case 'roll': Transport.send({type:'roll'}); return haptic();
+    case 'struggle': Transport.send({type:'struggle-ans', opt:+x}); return haptic();
+    case 'use': { const owner = cap ? S.captain : v, k = S.inv[owner][+x]; if (k === 'thief') return powerSheet(+x, cap); Transport.send({type:'use', idx:+x, ...as}); return closeSheet(); }
+    case 'steal': { const r = Transport.send({type:'use', idx:+x, target:y, ...as}); if (!r) toast('That didn’t work. Pick someone with points.'); return closeSheet(); }
+    case 'ev-hide': LJ.hiddenEv = S.ev && S.ev.id; return paint();
+    case 'decide': Transport.send({type:'decide', choice:x, ...as}); return haptic();
+    case 'answer': { const t = ($('#ca-input')?.value || '').trim(); if (!t){ setText('ca-err', 'Write something first. Anything.'); return; } Transport.send({type:'answer', text:t}); return haptic(); }
+    case 'idea': { const i = $('#ca-input'); if (i) i.value = pickOne(S.ch.ideas); return; }
+    case 'pick': return Transport.send({type:'pick', idx:+x, ...as});
+    case 'guess': return Transport.send({type:'guess', who:x, ...as});
+    case 'read': { const ch = S.ch; if (!Voice.speak(`${ch.prompt} ${ch.order.map((id, i) => `${'ABCDEF'[i]}. ${ch.answers[id]}.`).join(' ')}`)) toast('Voice isn’t available here. Ask the Co-Pilot to read them.'); return; }
+    case 'tq': Transport.send({type:'tq', opt:+x, ...as}); return haptic();
+    case 'est': { const el = $('#' + x), raw = (el?.value || '').replace(/[,\s]/g, ''), n = Number(raw);
+      if (!raw || !Number.isFinite(n) || n < 0){ toast('Type a number first'); el?.focus(); return; }
+      Transport.send({type:'est', value:n, ...as}); return haptic(); }
+    case 'pick-who': LJ.pickWho = x; LJ.cache['lv-ch'] = null; return paint();
+    case 'pick-cancel': LJ.pickWho = null; LJ.cache['lv-ch'] = null; return paint();
+    case 'spot-found': LJ.pickWho = null; Transport.send({type:'spot-found', who:x}); return haptic();
+    case 'spot-new': return Transport.send({type:'spot-new'});
+    case 'vote': Transport.send({type:'vote', who:x, ...as}); return toast(cap ? 'Captain’s vote locked in' : 'Secret vote locked in');
+    case 'silent-start': return Transport.send({type:'silent-start'});
+    case 'talked': LJ.pickWho = null; return Transport.send({type:'talked', who:x});
+    case 'choose': Transport.send({type:'choose', id:x}); return toast(`${MISSIONS[x].name} is up next`);
+    case 'skip': return Transport.send({type:'skip'});
+    case 'answered': return Transport.send({type:'answered', ...as});
+    case 'react': Transport.send({type:'react', v:x}); return toast(VERDICTS[x]);
+  }
+}
+const LIVE_ACTIONS = {
+  day: () => { LJ.day = !LJ.day; closeSheet(); renderHud(); },
+  voice: () => { LJ.voice = !LJ.voice; if (!LJ.voice) Voice.stop(); closeSheet(); toast(LJ.voice ? 'Transmissions will be read aloud' : 'Voice off on this phone'); },
+  end: () => { closeSheet(); endJourney(); },
+  warp: () => { Transport.send({type:'warp', mins:5}); closeSheet(); toast('Warped 5 mission minutes'); },
+  'tx-new': () => txSheet(),
+  'tx-queue': () => {
+    const text = ($('#tx-text')?.value || '').replace(/\s+/g, ' ').trim();
+    if (!text){ setText('tx-err', 'Write a message first.'); return; }
+    Transport.send({type:'tx-send', to:S.tx.to, text, when:S.tx.when}); S.tx = {to:'crew', when:'5'};
+    closeSheet(); toast('Transmission queued. Act natural.');
+  },
+  'tx-read': () => { if (LJ && LJ.S.tx && !Voice.speak(txSpeech(LJ.S.tx))) toast('Voice isn’t available in this browser. Read it out.'); },
+  'tx-close': () => { if (!LJ || !LJ.S.tx) return; LJ.hiddenTx = LJ.S.tx.id; Voice.stop(); txOverlay(); }
+};
 function endJourney(){
-  if (!LJ) return; cancelAnimationFrame(LJ.raf); closeTx();
-  const s = LJ.startedAt, max = Math.max(...LJ.crew.map(id => LJ.pts[id]));
-  const top = max > 0 ? LJ.crew.find(id => LJ.pts[id] === max) : null;
-  logIt('flag', top ? `Mission complete. ${whoName(top)} is the Journey Spaceman.` : 'Mission complete.');
-  const j = {id:'j' + Date.now().toString(36), title:'', dest:LJ.dest, date:isoToday(), start:`${String(s.getHours()).padStart(2,'0')}:${String(s.getMinutes()).padStart(2,'0')}`,
-    mi:Math.max(1, Math.round(LJ.mi)), min:Math.max(1, Math.round(LJ.min)), crew:[...LJ.crew], mode:LJ.mode, ch:LJ.results, songs:[],
-    captain:LJ.captain, scores:{...LJ.pts}, spaceman:top, rating:null, log:LJ.log.slice(-14)};
-  j.awards = makeAwards(j, LJ.pts);
+  if (!LJ) return; cancelAnimationFrame(LJ.raf); Voice.stop(); $('#tx', live)?.remove();
+  const S = LJ.S, s = LJ.startedAt, top = Engine.winner(S);
+  S.log.push({t:Math.floor(S.min), ic:'flag', text:top ? `Mission complete. ${S.names[top]} is the Journey Spaceman.` : 'Mission complete.'});
+  const j = {id:'j' + Date.now().toString(36), title:'', dest:S.dest, date:isoToday(), start:`${String(s.getHours()).padStart(2,'0')}:${String(s.getMinutes()).padStart(2,'0')}`,
+    mi:Math.max(1, Math.round(S.mi)), min:Math.max(1, Math.round(S.min)), crew:[...S.crew], mode:S.mode, ch:S.results, songs:[],
+    captain:S.captain, copilot:S.copilot, coLog:S.coLog.map(x => ({...x, to:x.to === null ? Math.round(S.min*10)/10 : x.to})), promos:[...S.promos], scores:{...S.pts}, spaceman:top, rating:null, log:S.log.slice(-14)};
+  j.awards = makeAwards(j, S.pts);
   const info = recordJourney(j);
+  trackCoPilot(j);
   LJ = null; live.classList.remove('day');
   const w = live.querySelector('.live-in'); w.className = 'live-in recap'; w.innerHTML = recapHTML(j, info);
   live.scrollTo(0,0); if (top) haptic();
+}
+/* Co-Pilot statistics for this account. Stored now, shown in a future stats screen (docs/COPILOT.md). */
+function trackCoPilot(j){
+  const u = cur(); if (!u || !j.coLog) return;
+  const s = u.coStats ||= {assignments:0, promoted:0, longestStreak:0, promosWon:0, promosRolled:0, finalCopilot:0, minutes:0, v:1};
+  j.coLog.filter(x => x.id === ME.id).forEach(x => { const m = Math.max(0, Math.round(x.to - x.from));
+    s.assignments++; if (x.how === 'promotion') s.promoted++; s.minutes += m; s.longestStreak = Math.max(s.longestStreak, m); });
+  (j.promos || []).filter(p => p.id === ME.id).forEach(p => { s.promosRolled++; if (p.roll >= 5) s.promosWon++; });
+  if (j.copilot === ME.id) s.finalCopilot++;
+  persist();
+}
+function coPilotHTML(j){
+  const log = j.coLog || []; if (!j.copilot) return '';
+  const held = id => Math.round(log.filter(x => x.id === id).reduce((a, x) => a + (x.to - x.from), 0));
+  const last = log.filter(x => x.id === j.copilot).pop(), how = {start:'assigned at launch', promotion:'promoted', reassigned:'took the open seat'};
+  return `<section class="card copilot-card"><span class="eyebrow ion">🛰 Final Co-Pilot</span>
+    <div class="cp-final">${av(j.copilot,56)}<span><b class="display">${esc(j.copilot === ME.id ? ME.full : PEOPLE[j.copilot].full)}</b><small class="muted">${held(j.copilot)} min in the seat${last ? ` · ${how[last.how]}${last.how !== 'start' ? ` at min ${Math.floor(last.from)}` : ''}` : ''}</small></span></div>
+    ${log.length > 1 ? `<div class="cp-hist">${log.map(x => `<span class="chip">${av(x.id,20)}${esc(whoName(x.id))} · ${x.how === 'start' ? 'from launch' : `${x.how === 'promotion' ? 'promoted' : 'took over'} at min ${Math.floor(x.from)}`}</span>`).join('')}</div>` : '<p class="small muted">Held the seat for the whole mission.</p>'}
+    ${(j.promos || []).length ? `<p class="small muted">Mission Promotion rolls: ${j.promos.map(p => `${esc(whoName(p.id))} ${p.roll}`).join(' · ')}</p>` : ''}
+  </section>`;
 }
 const smChip = j => `<span class="award-chip sm-chip">${av(j.spaceman,22)}${esc(whoName(j.spaceman))} · Journey Spaceman</span>`;
 const spacemanHTML = (j, burst) => `<section class="spaceman-card">${burst ? sparks(18) : ''}
   <span class="eyebrow" style="color:var(--flare)">The Spaceman</span>
   <span class="sm-av">${av(j.spaceman,108)}<span class="sm-badge">${ic('trophy',13)}Journey Spaceman</span></span>
-  <h2 class="display">${esc(fullOf(j.spaceman))}</h2>
+  <h2 class="display">${esc(j.spaceman === ME.id ? ME.full : PEOPLE[j.spaceman].full)}</h2>
   <p class="muted">“The crew’s top performer.”</p>
   ${j.scores ? `<span class="chip mono">${plural(j.scores[j.spaceman],'point')}${j.spaceman === j.captain ? ' · and the Captain' : ''}</span>` : ''}
 </section>`;
@@ -2569,7 +3656,7 @@ function rateHTML(j){
   const r = j.rating || {}, vals = Object.values(r), avg = vals.length ? vals.reduce((a,b) => a + b, 0)/vals.length : 0, mine = j.captain === ME.id;
   const name = mine ? ME.name : PEOPLE[j.captain].name;
   return `<section class="card rate" id="rate-${j.id}">
-    <div class="rate-head">${av(j.captain,48)}<span class="grow"><span class="eyebrow">${mine ? 'Your crew rates you' : 'Rate your Captain'}</span><b style="font-size:18px;font-weight:600">Captain ${esc(name)}</b><span class="verdict">${avg ? verdictFor(avg) : mine ? 'Pass the phone. Be honest. Ish.' : 'Be fair. Or don’t.'}</span></span><span class="rate-avg">${avg ? fmt(avg,1) : '–'}<small> /5</small></span></div>
+    <div class="rate-head">${av(j.captain,48)}<span class="grow"><span class="eyebrow">${mine ? 'Your crew rates you' : 'Rate your Captain'}</span><b style="font-size:18px;font-weight:600">Captain ${esc(name)}</b><span class="verdict">${avg ? verdictFor(avg) : mine ? 'Each passenger rates you on their own phone. Brace.' : 'Your rating, from your phone. Be fair. Or don’t.'}</span></span><span class="rate-avg">${avg ? fmt(avg,1) : '–'}<small> /5</small></span></div>
     ${RATE_KEYS.map(([k,l,i]) => `<div class="rate-row"><span>${ic(i,18)}${l}</span><span class="stars" role="radiogroup" aria-label="${l}">${[1,2,3,4,5].map(n => `<button class="star ${r[k] >= n ? 'on' : ''}" role="radio" aria-checked="${r[k] === n}" aria-label="${l}: ${n} of 5" data-rate="${j.id}|${k}|${n}">${ic('star',24,1.5)}</button>`).join('')}</span></div>`).join('')}
   </section>`;
 }
@@ -2615,6 +3702,7 @@ function recapHTML(j, info){
       <span class="muted">${dShort(j.date)} · ${j.start} · ${QUIPS[Math.floor(Math.random()*QUIPS.length)]}</span>
     </section>
     ${j.spaceman ? spacemanHTML(j, true) : ''}
+    ${coPilotHTML(j)}
     <div class="jmap recap-map">${routeSvg(j.id,340,170)}</div>
     ${summaryTiles(j)}
     ${scoresHTML(j)}
@@ -2635,60 +3723,6 @@ function setTitle(id, v){
   const j = cur().journeys.find(x => x.id === id); if (!j) return;
   j.title = String(v).trim().slice(0,48); persist(); hydrate(cur()); toast(j.title ? 'Memory named' : 'Name cleared');
   if (live.hidden) refresh();
-}
-
-/* ---------- live actions ---------- */
-const LIVE_ACTIONS = {
-  plus: () => { const m = LJ && LJ.m; if (!m) return; m.count++; const n = $('#m-count'); if (n){ n.textContent = m.count; n.classList.remove('bump'); void n.offsetWidth; n.classList.add('bump'); } haptic(); },
-  finish: () => { const m = LJ.m, M = MISSIONS[m.id]; LJ.crew.forEach(id => addPts(id, 1)); complete(`${plural(m.count, M.unit.replace(/s$/,''), M.unit)}. Everyone +1`); },
-  reveal: () => { const m = LJ.m, [w, n] = Object.entries(m.votes).sort((a,b) => b[1] - a[1])[0]; complete(`${whoName(w)}, ${plural(n,'vote')}`); },
-  'silent-start': () => { LJ.m.phase = 'run'; LJ.m.startMin = LJ.min; refreshMission(); },
-  'silent-break': () => { LJ.m.phase = 'who'; refreshMission(); },
-  skip: () => { nextMission(); refreshMission(); },
-  next: () => { nextMission(); refreshMission(); },
-  mode: (t, d) => { LJ.view = d.mode; renderHud(); live.scrollTo(0,0); },
-  day: () => { LJ.day = !LJ.day; renderHud(); },
-  voice: () => { LJ.voice = !LJ.voice; if (!LJ.voice) Voice.stop(); renderHud(); toast(LJ.voice ? 'Transmissions will be read aloud' : 'Voice off'); },
-  end: () => endJourney(),
-  warp: () => { LJ.min += 5; LJ.mi += 5*58/60; toast('Warped 5 mission minutes'); },
-  'ev-ok': () => { LJ.ev = null; LJ.lastBeat = LJ.min; refreshEvent(); },
-  'tx-new': () => txSheet(),
-  'tx-queue': () => {
-    const text = ($('#tx-text')?.value || '').replace(/\s+/g, ' ').trim();
-    if (!text){ setText('tx-err', 'Write a message first.'); return; }
-    const w = S.tx.when, at = LJ.min + (w === 'rand' ? 3 + Math.random()*9 : +w);
-    LJ.txq.push({at, to:S.tx.to, text:text.slice(0,140)}); S.tx = {to:'crew', when:'5'};
-    closeSheet(); updateTxCount(); toast('Transmission queued. Act natural.');
-  },
-  'tx-read': () => { if (LJ && LJ.tx && !Voice.speak(txSpeech(LJ.tx))) toast('Voice isn’t available in this browser. Read it out.'); },
-  'tx-close': () => closeTx(),
-  'tx-answered': () => { const tx = LJ.tx; if (!tx) return; addPts(LJ.captain, 1); tx.phase = 'verdict'; Voice.stop(); $('#tx-actions').innerHTML = txActions(tx); refreshBoard(); },
-  'ca-unlock': () => { LJ.m.unlocked = true; refreshMission(); setTimeout(() => $('#ca-input')?.focus(), 60); },
-  'ca-idea': () => { const i = $('#ca-input'); if (i) i.value = pickOne(LJ.m.prompt.ideas); },
-  'ca-submit': () => {
-    const m = LJ.m, v = ($('#ca-input')?.value || '').trim();
-    if (!v){ setText('ca-err', 'Write something first. Anything.'); return; }
-    m.answers.push({by:m.writers[m.answers.length], text:v.slice(0,90)}); m.unlocked = false; haptic();
-    if (m.answers.length >= m.writers.length){ m.answers = shuffle(m.answers); m.phase = 'review'; }
-    refreshMission();
-  },
-  'ca-read': () => { const m = LJ.m; if (!Voice.speak(`${m.prompt.q} ${m.answers.map((a,i) => `${'ABCDEF'[i]}. ${a.text}.`).join(' ')}`)) toast('Voice isn’t available here. Read them out yourselves.'); }
-};
-function onWho(id){
-  const m = LJ && LJ.m; if (!m) return; const M = MISSIONS[m.id]; haptic();
-  if (M.kind === 'winner'){
-    m.tally[id] = (m.tally[id] || 0) + 1; const v = addPts(id, 1); m.round++;
-    if (v > 1) toast(`Double Points! ${whoName(id)} +${v}`);
-    if (m.round >= M.rounds){ const [w, n] = Object.entries(m.tally).sort((a,b) => b[1] - a[1])[0]; return complete(`${whoName(w)} won ${n} of ${M.rounds}`); }
-    refreshBoard(); return refreshMission();
-  }
-  if (M.kind === 'vote'){ m.votes[id] = (m.votes[id] || 0) + 1; m.total++; toast('Vote counted. Pass it on'); return refreshMission(); }
-  if (M.kind === 'silent'){ LJ.crew.filter(x => x !== id).forEach(x => addPts(x, 1)); return complete(`${whoName(id)} cracked after ${(LJ.min - m.startMin).toFixed(1)} minutes`); }
-  if (M.kind === 'answers' && m.phase === 'guess'){
-    const a = m.answers[m.fav], ok = id === a.by; addPts(a.by, 3); if (ok) addPts(LJ.captain, 2);
-    m.reveal = {by:a.by, guess:id, ok};
-    return complete(`“${a.text}” by ${whoName(a.by)}. Captain guessed ${ok ? 'right' : 'wrong'}.`);
-  }
 }
 
 /* ---------- sign-in screen ---------- */
@@ -2741,7 +3775,7 @@ const ACTIONS = {
   start: () => startJourney(),
   'edit-crew': () => editCrewSheet(),
   'edit-type': () => editTypeSheet(),
-  shuffle: () => { const L = launchCfg(); L.lineup = shuffle(Object.keys(MISSIONS)).slice(0,3); persist(); refresh(); toast('New line-up'); },
+  shuffle: () => { const L = launchCfg(); L.lineup = shuffle(Object.keys(MISSIONS).filter(k => MISSIONS[k].w)).slice(0,3); persist(); refresh(); toast('New line-up'); },
   notes: () => notesSheet(),
   invite: () => addFriendSheet(false),
   claim: () => addFriendSheet(true),
@@ -2762,7 +3796,7 @@ function confirmTwice(t, fn){
   fn();
 }
 document.addEventListener('click', e => {
-  const t = e.target.closest('[data-action],[data-close],[data-f],[data-mem],[data-ach],[data-ms],[data-guest],[data-toggle],[data-pick],[data-vibe],[data-seat],[data-who],[data-ev],[data-mission],[data-acct],[data-addfriend],[data-copy],[data-avopt],[data-pu],[data-use],[data-steal],[data-dec],[data-txto],[data-txwhen],[data-txidea],[data-pickans],[data-rate],[data-verdict],[data-cap]');
+  const t = e.target.closest('[data-action],[data-close],[data-f],[data-mem],[data-ach],[data-ms],[data-guest],[data-toggle],[data-pick],[data-vibe],[data-seat],[data-who],[data-ev],[data-mission],[data-acct],[data-addfriend],[data-copy],[data-avopt],[data-pu],[data-use],[data-steal],[data-dec],[data-txto],[data-txwhen],[data-txidea],[data-pickans],[data-rate],[data-verdict],[data-cap],[data-copi],[data-live]');
   if (!t || t.disabled) return;
   const d = t.dataset;
   if ('close' in d && !d.action){ if (t.tagName === 'A') { closeSheet(); return; } return closeSheet(); }
@@ -2783,19 +3817,14 @@ document.addEventListener('click', e => {
   if (d.pick){ const L = launchCfg(); L.crew = L.crew.includes(d.pick) ? L.crew.filter(x => x !== d.pick) : [...L.crew, d.pick]; t.setAttribute('aria-pressed', L.crew.includes(d.pick)); if (![ME.id, ...L.crew].includes(L.captain)) L.captain = L.crew.find(x => !x.startsWith('g_')) || ME.id; L.seat = L.captain === ME.id ? 'driver' : 'passenger'; persist(); return; }
   if (d.vibe){ const L = launchCfg(); L.mode = d.vibe; L.lineup = [...VIBES[d.vibe].lineup]; document.querySelectorAll('[data-vibe]').forEach(b => b.setAttribute('aria-pressed', b.dataset.vibe === d.vibe)); $('#vibe-d').textContent = VIBES[d.vibe].line; persist(); return; }
   if (d.seat){ launchCfg().seat = d.seat; document.querySelectorAll('[data-seat]').forEach(b => b.setAttribute('aria-pressed', b.dataset.seat === d.seat)); persist(); return; }
-  if (d.who) return onWho(d.who);
-  if (d.mission){ LJ.m = newM(d.mission); return refreshMission(); }
-  if (d.pu) return powerSheet(d.pu);
-  if (d.use){ const [pid, i] = d.use.split('|'); return usePower(pid, +i); }
-  if (d.steal){ const [pid, i, tg] = d.steal.split('|'); return usePower(pid, +i, tg); }
-  if (d.dec) return decide(d.dec);
+  if (d.live){ if (!t.disabled) liveAct(d.live); return; }
   if (d.txto){ S.tx.to = d.txto; document.querySelectorAll('[data-txto]').forEach(b => b.setAttribute('aria-pressed', b.dataset.txto === d.txto)); return; }
   if (d.txwhen){ S.tx.when = d.txwhen; document.querySelectorAll('[data-txwhen]').forEach(b => b.setAttribute('aria-pressed', b.dataset.txwhen === d.txwhen)); return; }
   if (d.txidea){ const a = $('#tx-text'); if (a) a.value = d.txidea; setText('tx-err',''); return; }
-  if ('pickans' in d){ LJ.m.fav = +d.pickans; LJ.m.phase = 'guess'; haptic(); return refreshMission(); }
   if (d.rate){ const [jid, k, n] = d.rate.split('|'); return setRating(jid, k, +n); }
-  if (d.verdict){ logIt('signal', `Crew verdict on the Captain’s answer: ${d.verdict}`); toast(VERDICTS[d.verdict]); return closeTx(); }
-  if (d.cap){ const L = launchCfg(); L.captain = d.cap; L.seat = d.cap === ME.id ? 'driver' : 'passenger'; document.querySelectorAll('[data-cap]').forEach(b => b.setAttribute('aria-pressed', b.dataset.cap === d.cap)); persist(); return; }
+  if (d.cap){ const L = launchCfg(); L.captain = d.cap; L.seat = d.cap === ME.id ? 'driver' : 'passenger'; document.querySelectorAll('[data-cap]').forEach(b => b.setAttribute('aria-pressed', b.dataset.cap === d.cap));
+    if (L.copilot === d.cap) L.copilot = ''; document.querySelectorAll('[data-copi]').forEach(b => { b.disabled = b.dataset.copi === d.cap; b.setAttribute('aria-pressed', b.dataset.copi === (L.copilot || 'auto')); }); persist(); return; }
+  if (d.copi){ const L = launchCfg(); L.copilot = d.copi === 'auto' ? '' : d.copi; document.querySelectorAll('[data-copi]').forEach(b => b.setAttribute('aria-pressed', b.dataset.copi === d.copi)); persist(); return; }
   const A = ACTIONS[d.action]; if (A) A(t, d);
 });
 document.addEventListener('submit', e => {
