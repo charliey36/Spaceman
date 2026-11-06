@@ -35,6 +35,27 @@ The Captain's input is sent as an ordinary intent with `as:'captain'`. The engin
 
 In the prototype, a simulated Captain "says" its choice. That appears on the Co-Pilot's phone as *Captain said: "B. Fly through"* and gets tapped in, either by a simulated Co-Pilot after 1–2.5 s or by you.
 
+### Pacing profiles (v1.0)
+
+Chosen on the Go page; stored as the mission `mode` and applied through `TEMPO` in the engine. Nobody picks games any more: the engine picks the next game itself (`nextChallengeId`), so there is no line-up and no "up next" vote.
+
+| Pacing (`mode`) | Gap after anything (real s) | Rest between games, journey min (Simulation / Real) | Events between games | Event cycle |
+|---|---|---|---|---|
+| Relaxed (`chill`) | 20 | 1.5 / 4 | 1 | ×1.5 |
+| **Balanced** (`party`, default) | 12 | 0.6 / 1.5 | 1 | ×1 |
+| Chaotic (`competitive`) | 10 | 0 / 0.5 | 2 | ×0.75 |
+
+Spaceman roasts join the voice queue (`roast`) and are rate-limited by `RULES.roastGap × cycle`. Why Balanced is the default: `SPACEMAN.md`.
+
+### Pacing (v0.8)
+
+- **Games always take priority.** While any game is running (Silent Mission included), no transmission, cosmic event, decision, power-up drop or role moment can start. They wait in the queue.
+- After each game ends, nothing new starts for at least 10 real seconds.
+- On-screen times for events, transmissions and decisions are in real seconds, so they feel the same in both modes.
+- **Simulation Mode:** AI passengers, 10 seconds = 1 mission minute.
+- **Real Journey Mode:** 1 minute = 1 minute, no AI passengers. Players pass the phone, or in the future use their own. Miles come from GPS when allowed, with at least 1.5 minutes between games.
+- Toasts show one at a time, and only on the phones they concern.
+
 ### Pacing (v0.6)
 
 All major events go through one queue in the engine: challenges, spot challenges, cosmic events, Captain decisions, transmissions and power-up drops.

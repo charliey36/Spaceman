@@ -39,6 +39,11 @@ The Co-Pilot still taps in the Captain's spoken answers. That job now comes with
 
 Role moments get their own slot in the event queue, next to one event and one voice moment between two challenges, and still with at least 10 real seconds between events.
 
+**🎲 Lucky Roll** (v0.8)
+- The power-up rolls a real die: a roll of 1–5 gives +2 to +6 points as before.
+- A **6** gives +6 *and* promotes the roller to Co-Pilot. The roller sees a dice animation straight away, and everyone else sees a "🎲 Lucky Roll · 🛰 New Co-Pilot" reveal once the current game ends.
+- The Captain can't leave the driver's seat, and a Co-Pilot who rolls a 6 just keeps the seat.
+
 ## Keeping it fair
 
 The Captain can never hold the seat, so the Co-Pilot's perks would quietly come out of the Captain's chances. To balance that, **the driver's seat starts every mission with a Shield.**

@@ -2,6 +2,12 @@
 
 **Question:** with equally skilled, equally engaged players, does the Captain (driver), the Co-Pilot or a Crew member have a built-in advantage in becoming Journey Spaceman?
 
+**v1.0 update (Crew vs Spaceman):** Spaceman is now an opponent (`SPACEMAN.md`). Role fairness is measured on the best crew member (`Engine.topCrew`), because a mission can now end with no Journey Spaceman. Balanced pacing, 1,000 missions per row: the Captain wins 27.3% (4 players, 45 min; fair 25%), 23.6% (4p, 60 min), 19.7% (5p, 45 min; fair 20%) and 18.6% (6p, 45 min; fair 16.7%). **Known gap:** in 20-minute missions the Captain sits 2–4 points below fair (20.6% at 4p), because three-round Estimation Station and the Bluff put more hidden lock-ins in a short mission and the Captain always answers last. It evens out by 45 minutes; worth watching in real play. Spaceman retains control in 11–30% of missions depending on crew size and length.
+
+**v0.9 update:** the catalogue is now the seven core games (`GAMES.md`). In 2,000-mission runs the Captain wins 23.6% (4 players, 20 min), 26.2% (4p, 45 min), 17.0% (6p, 20 min) and 16.9% (6p, 45 min) against fair shares of 25% and 16.7%. The first Co-Pilot wins 20–29% and players who never hold the seat 14–23%. A Captain's +1 per game won was tested and rejected: it pushed the Captain to 28.6% in short 4-player missions. In hidden-answer games the Captain answers out loud last. What Happens Next? pays the star the predictors' average, so the Captain (who never stars) isn't disadvantaged.
+
+**v0.8 update:** Quickfire Trivia no longer rewards speed. Everyone locks in privately and every correct answer is +3, so the answer-time allowances are gone. Worst Singer and Services Prophet were removed. Lucky Roll can now promote a passenger to Co-Pilot on a 6. Re-check at 3,000 missions, 4 players, 45 min: Captain 24.2% (fair 25%), first Co-Pilot 28.6%, never held the seat 21.1%. Estimation Station now always pays 🥇 +5 and 🥈 +2. In 300 test missions every game awarded a winner, and no event or transmission ever interrupted a game.
+
 **Answer (v0.7):** the Captain and a typical passenger are both within about 2 points of a fair share. The Co-Pilot seat is now a deliberate, slight advantage of 3–5 points for whoever holds it. Run-to-run noise is about ±1 point.
 
 ## v0.7: the dynamic Co-Pilot seat (2,500 missions per row)

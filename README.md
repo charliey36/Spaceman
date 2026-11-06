@@ -17,12 +17,24 @@ Sign in with any email. There's no password, and accounts are stored in your bro
 |---|---|
 | Navigation | Home · Crew · **Go** · Memories · You |
 | Crew | Friendship levels and milestones based on miles together, guests and invite/claim codes, removing friends |
-| Go | One-tap mission launch, Captain picker, journey vibe, challenge line-up |
-| Live mission | Passenger mode and Captain (Driver Safe) view, challenges including Cosmic Answers, power-ups, cosmic events, transmissions, Captain decisions |
-| Recap | Journey Spaceman, final scores, miles together, Captain rating, awards, mission log, share card preview |
+| Go | One-tap mission launch, Captain picker, pacing (Relaxed / **Balanced** / Chaotic). The mission picks the games |
+| Live mission | Crew vs Spaceman: a persistent AI opponent on the leaderboard with a Crew vs Spaceman banner. Passenger mode and Captain (Driver Safe) view, eight games (see `docs/GAMES.md`), power-ups, cosmic events, transmissions, Spaceman roasts, Captain decisions |
+| Recap | Crew took control or Spaceman Retains Control, Journey Spaceman, final scores, miles together, Captain rating, awards, mission log, share card preview |
 | Memories | Scrapbook of every journey |
 | You | Profile, Spaceman avatar editor, Captain rating, driving stats, Year in Spaceman preview |
 
 The live mission runs on a simulated clock where 10 real seconds equals one mission minute. Use the **Prototype: warp 5 minutes** link on the live screen to skip ahead.
 
 Places where real functionality will plug in later (GPS, Spotify, voice, sharing) are marked `FUTURE:` in the code.
+
+## Design docs
+
+| Doc | What it covers |
+|---|---|
+| `docs/SPACEMAN.md` | Crew vs Spaceman: how Spaceman earns, fighting back, roasts, pacing and the default |
+| `docs/GAMES.md` | The game catalogue and scoring |
+| `docs/BALANCE.md` | Fairness simulations for the Captain, Co-Pilot and crew |
+| `docs/COPILOT.md` | The Co-Pilot seat |
+| `docs/MULTIPLAYER.md` | Host-authoritative engine and device sync |
+| `docs/AUDIO.md`, `docs/VOICE.md`, `docs/SPOTIFY.md` | Sound, voice and music plans |
+| `docs/GAME-DESIGN-ROADMAP.md` | Long-term direction for the games |
