@@ -1,5 +1,9 @@
 # Game design roadmap (internal planning note)
 
+## v1.1 update
+
+The Phase 10 review (`PRODUCT-REVIEW.md`) ranks **Secret Assignments** as the strongest candidate for Spaceman's next signature game: each passenger gets a private mission ("get the Captain to say 'roundabout'"), played out over the whole journey and revealed in the recap. It fits every principle below: long-running, social, voice-only for the Captain, and it creates stories. Recommended order: Secret Assignments, then player-written bluffs in the Spaceman Bluff, then a 3-player Black Box variant.
+
 ## Long-term note (v0.9)
 
 **From now on, development should focus on:**

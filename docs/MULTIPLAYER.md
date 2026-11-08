@@ -42,8 +42,8 @@ Chosen on the Go page; stored as the mission `mode` and applied through `TEMPO` 
 | Pacing (`mode`) | Gap after anything (real s) | Rest between games, journey min (Simulation / Real) | Events between games | Event cycle |
 |---|---|---|---|---|
 | Relaxed (`chill`) | 20 | 1.5 / 4 | 1 | ×1.5 |
-| **Balanced** (`party`, default) | 12 | 0.6 / 1.5 | 1 | ×1 |
-| Chaotic (`competitive`) | 10 | 0 / 0.5 | 2 | ×0.75 |
+| **Balanced** (`party`, default) | 12 | 0.6 / 1.5 | 2 | ×1 |
+| Chaotic (`competitive`) | 10 | 0 / 0.5 | 3 | ×0.75 |
 
 Spaceman roasts join the voice queue (`roast`) and are rate-limited by `RULES.roastGap × cycle`. Why Balanced is the default: `SPACEMAN.md`.
 

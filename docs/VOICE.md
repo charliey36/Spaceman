@@ -2,7 +2,22 @@
 
 **Goal:** Mission Control should sound like another person riding in the car. It should be warm and quick, a little dry, and good with names. **Human first, radio effect second.** The radio texture is seasoning. It must never make the voice harder to understand.
 
-## What the prototype does now (v0.6)
+## What the prototype does now (v1.1)
+
+| Technique | How it's done in the browser |
+|---|---|
+| **The full stop before "Over."** | Every transmission ends with "Over.", spoken as its own utterance after a **one-second pause**, slower (×0.9) and lower (×0.9), like someone letting go of the talk button. "Mission Control out" and "Over and out" were retired so the sign-off is always the same, recognisable word. |
+| **Phrase-level pauses** | Sentences are separate utterances (300 ms gaps, 420 ms after a question). Long sentences (70+ characters) also break at commas, colons and dashes with 170 ms breaths. |
+| **Moods** | Each line is spoken with a baseline: *smug* for Spaceman's roasts and verdicts (×0.94 rate, ×0.9 pitch), *host* for Mission Control and readings (brighter), *neutral* otherwise. |
+| **Emphasis** | Words written in capitals (JACKPOT, EXACT) are spoken on their own, slower and higher, after a short beat. |
+| **Natural drift** | Each phrase gets a tiny random pitch change (±3%), so long lines don't sound flat. The first phrase starts slightly slower. Questions lift at the end, exclamations speed up. |
+| **Radio processing** | A squelch and tone open the channel. A faint band-limited hiss with the odd crackle runs under the voice and fades out with a click. (Browsers can't filter `speechSynthesis` itself, so the radio feel is built around the voice, never on top of it.) |
+| **Voice choice** | Natural/Neural/Online voices first, then Premium/Enhanced, with a preference for a British male voice for Spaceman where one exists. |
+| **Openers** | Spaceman varies how it starts ("Ahem.", "Right.", "Hello, crew.", "This is Spaceman.") so it never opens the same way twice in a row. |
+
+The next step is still a neural voice with real emotion control (below). Everything above carries over: the pause before "Over." and the moods map directly onto SSML breaks and style tags.
+
+## Earlier behaviour (v0.6)
 
 Browser speech is the stand-in until a neural voice is wired in. Within that limit:
 

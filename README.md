@@ -18,7 +18,7 @@ Sign in with any email. There's no password, and accounts are stored in your bro
 | Navigation | Home · Crew · **Go** · Memories · You |
 | Crew | Friendship levels and milestones based on miles together, guests and invite/claim codes, removing friends |
 | Go | One-tap mission launch, Captain picker, pacing (Relaxed / **Balanced** / Chaotic). The mission picks the games |
-| Live mission | Crew vs Spaceman: a persistent AI opponent on the leaderboard with a Crew vs Spaceman banner. Passenger mode and Captain (Driver Safe) view, eight games (see `docs/GAMES.md`), power-ups, cosmic events, transmissions, Spaceman roasts, Captain decisions |
+| Live mission | Crew vs Spaceman: a persistent AI opponent with a personality and a radio voice. It takes hostages (rescue missions, ransoms, swaps), comments on every game, and triggers milestones every 10 miles. Co-Pilot Qualification Roll and king-of-the-hill Seat Challenges. 28 Captain decisions with gambles and callbacks. Passenger mode and Captain (Driver Safe) view, eight games (see `docs/GAMES.md`), power-ups, cosmic events, transmissions, Spaceman roasts, Captain decisions |
 | Recap | Crew took control or Spaceman Retains Control, Journey Spaceman, final scores, miles together, Captain rating, awards, mission log, share card preview |
 | Memories | Scrapbook of every journey |
 | You | Profile, Spaceman avatar editor, Captain rating, driving stats, Year in Spaceman preview |
@@ -31,7 +31,8 @@ Places where real functionality will plug in later (GPS, Spotify, voice, sharing
 
 | Doc | What it covers |
 |---|---|
-| `docs/SPACEMAN.md` | Crew vs Spaceman: how Spaceman earns, fighting back, roasts, pacing and the default |
+| `docs/PRODUCT-REVIEW.md` | Phase 10 research, gameplay, commercial, engagement and TikTok audits, and recommendations |
+| `docs/SPACEMAN.md` | Crew vs Spaceman: Spaceman's character, hijacks and rescues, milestones, surprise events, how Spaceman earns, pacing |
 | `docs/GAMES.md` | The game catalogue and scoring |
 | `docs/BALANCE.md` | Fairness simulations for the Captain, Co-Pilot and crew |
 | `docs/COPILOT.md` | The Co-Pilot seat |

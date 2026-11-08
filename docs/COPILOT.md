@@ -1,12 +1,14 @@
-# The Co-Pilot seat (v0.7)
+# The Co-Pilot seat (v1.1)
 
 **Design goal:** being Co-Pilot should feel like getting the golden piece in Frustration. It should be valuable, exciting and transferable, and never overpowered. When 🎲 Mission Promotion appears, players should think "come on… give me the 6", not "oh great, extra admin".
 
 ## Assignment
 
 - The Co-Pilot is **not** chosen before launch. The Go page just explains the role.
-- The first thing that happens after launch is a **🛰 Co-Pilot Assigned** event. A reel of passenger avatars spins and lands on one, with a sparkle burst and the line "Seb Wright has been selected as Co-Pilot." It also lists the perks.
-- Only passengers can be Co-Pilot, never the Captain.
+- **v1.1: 🎲 Co-Pilot Qualification Roll.** Straight after the Crew Intel launch briefing, every passenger rolls a die on their own phone (it auto-rolls after 12 seconds). **Highest roll becomes Co-Pilot.** Ties roll off between the tied players only, as many times as needed. Every phone shows everyone's dice, so the reveal is a shared moment rather than a random reel.
+- Only passengers roll. The Captain is driving, so they sit it out.
+- With one passenger, they roll alone and qualify automatically.
+- *(v0.7–v1.0: a random reel picked the Co-Pilot. It felt arbitrary, so it was replaced.)*
 
 ## Perks
 
@@ -23,14 +25,22 @@ The Co-Pilot still taps in the Captain's spoken answers. That job now comes with
 
 ## Changing hands
 
-**🎲 Mission Promotion** (about every 7–8 journey minutes, at most one between two challenges)
+**🎲 Mission Promotion** (v1.1: twice per 30-minute cycle, down from four, so Seat Challenges get room)
 - A random passenger is chosen. Never the Captain, never the current Co-Pilot.
 - The chosen player taps **Roll the dice** on their own phone. It auto-rolls after 10 seconds. Everyone else watches the die shake.
-- **1–4:** no promotion. **5:** +5 bonus points. **6:** 🛰 New Co-Pilot. The previous Co-Pilot stands down, and the new one gets the perks with a celebration.
+- **1–4:** no promotion. **5:** +5 bonus credits. **6:** 🛰 New Co-Pilot. The previous Co-Pilot stands down, and the new one gets the perks with a celebration.
 
-**🛰 Co-Pilot Challenge** (rare: at most once every 45–65 journey minutes, and only after the Co-Pilot has held the seat for 10+ minutes)
-- The current Co-Pilot answers one trivia question in 12 seconds on their own phone.
-- **Right:** they keep the seat. **Wrong or timed out:** the seat opens, a reel spins across the other passengers and someone new takes it.
+**🛰 Seat Challenge** (v1.1: king of the hill; every 16–24 journey minutes, first after 14–22, and only after the seat has been held for 8+ minutes)
+
+Research: king-of-the-hill and possession games stay exciting when (1) the holder has a small, visible advantage, (2) the challenger is someone with a claim, (3) holding on builds a streak worth protecting, and (4) losing comes with a route back. The Seat Challenge does all four.
+
+- **Who challenges:** the last Co-Pilot to lose the seat gets the first shot at winning it back (a *revenge match*). Otherwise the best-placed passenger challenges.
+- **The duel:** both players answer the same question on their own phones within 20 seconds. Answers stay hidden until both are in.
+- **Defender's advantage:** the challenger only takes the seat if they're right **and** the Co-Pilot is wrong (or silent). Both right, both wrong, or challenger wrong: the Co-Pilot holds.
+- **Defence streak:** every successful defence pays the Co-Pilot +2. Three in a row earns the title *Veteran Co-Pilot* in the mission log.
+- **Handover:** when the seat changes hands, everyone sees the old Co-Pilot's avatar hand over to the new one, how long they held it and how many defences they made. The old Co-Pilot becomes the next challenger.
+- **Bot fix (v1.1):** simulated players always answer inside the window. Before, a simulated Co-Pilot's thinking time (3–16 s) could run past the 12-second limit, so they lost the seat without answering about 30% of the time.
+- **Captain decision "Mutiny rumours"** can call a Seat Challenge early.
 
 **What changes hands.** When the seat moves, the role's perks move with it:
 - The old Co-Pilot loses the role's Shield if it hasn't been used yet. A Shield they bought with a power-up stays with them.

@@ -1,4 +1,4 @@
-# Spaceman game catalogue (v1.0)
+# Spaceman game catalogue (v1.1)
 
 > Spaceman is not a trivia app or a quiz app. It's a social journey game.
 > The best moments come from conversation, stories, knowing your friends and humour the players make themselves.
@@ -22,6 +22,7 @@ Every game must:
 | 7 | **Road Challenge** | The road itself | Surprise interruption | None |
 | 8 | **The Spaceman Bluff** | Crew vs Spaceman | Recurring | None |
 | — | **Corrective Action** | Crew vs Spaceman, together | Special event | One shared number |
+| — | **Rescue Mission** | Free a hostage from Spaceman | Only during a hijack | None |
 
 v1.0 adds Spaceman as an opponent (see `SPACEMAN.md`). Every game can feed Spaceman when the crew gets it wrong. Games are never chosen by hand: the mission picks them.
 
@@ -46,6 +47,8 @@ Removed from rotation: Quickfire Trivia (general knowledge isn't social; its que
 3. Everyone else locks in a guess. Guesses stay hidden until all are in, or 45 seconds pass.
 4. Reveal: the right answer, with avatars on the option each person picked.
 
+**v1.1 privacy fix:** the subject's own answer is never shown on any screen before the reveal, not even their own. Their phone just says it's about them and to keep a poker face, so nobody can glance at it, which matters most when the subject is the Captain with a mounted phone.
+
 | Scoring | Points |
 |---|---|
 | Each correct guess | +5 |
@@ -54,6 +57,8 @@ Removed from rotation: Quickfire Trivia (general knowledge isn't social; its que
 It rewards both knowing people and being known. **Next:** feed results into friendship levels ("You know Megan 82%").
 
 ## 2. Cosmic Answers ⭐
+
+**v1.1:** 48 prompts, most about the people in the car, with real names filled in: "What would Captain Thomas get arrested for?", "The text Megan would send to the group chat by mistake", "Who in this car would sell the others out to Spaceman first, and for what?". The best answer should come from the players, not the prompt, so prompts set up a target and get out of the way. The quick picks are cheeky too, and use the same names. Safe by design: habits, decisions and silly hypotheticals, never looks, bodies or anything genuinely personal.
 
 - Mission Control gives a prompt. Passengers write a secret answer, or tap one of 3 **quick picks** (no typing).
 - The Captain (judge) hears the answers read out (by voice or the Co-Pilot), picks a favourite and guesses who wrote it.
@@ -69,6 +74,8 @@ It rewards both knowing people and being known. **Next:** feed results into frie
 |---|---|
 | Each correct prediction | +4 |
 | The star | The predictors' average, rounded (2 of 3 right → +3) |
+
+**Driver-safe (v1.1):** the Captain's screen shows no endings at all, just "Eyes on the road. Just listen." When everyone else has locked in, Spaceman reads the scenario and the four endings out loud on the Co-Pilot's phone ("Captain. Lewis is offered a free sample… A. Takes one. B…. A, B, C or D?"). The Captain says a letter and the Co-Pilot taps it. Either of them can replay the reading. Letter-only buttons are there for when the car is parked. If the Captain doesn't answer, they simply don't score: there's no penalty and nothing goes to Spaceman.
 
 Only passengers star, because the Captain's choice would have to be said aloud. The star's average-based score keeps it fair for the Captain. There are 16 scenarios, with no repeats within a mission.
 
@@ -119,6 +126,13 @@ The reveal shows both questions. There are 18 question pairs.
 - Reveal: the answer, a one-line explanation, and each player's result.
 - **Scoring:** right +5. Wrong −5, and the lost credits go to Spaceman.
 - 24 facts, no repeats within a mission.
+
+## Rescue Mission (v1.1, only during a hijack)
+
+- Spaceman is holding a crewmate (see `SPACEMAN.md`). Three true-or-false rounds from the Bluff fact bank.
+- Everyone except the captive answers; the captive can shout answers out loud.
+- **More than half of all answers right:** the captive is free, Spaceman loses 6, and everyone who got one right gets +2. **Otherwise:** Spaceman +5, and another chance comes in 3–5 minutes.
+- No credits are lost for wrong answers. It's a team effort.
 
 ## Corrective Action (special event)
 

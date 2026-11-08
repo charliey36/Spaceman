@@ -1,4 +1,4 @@
-# Crew vs Spaceman (v1.0)
+# Crew vs Spaceman (v1.1)
 
 Every mission now has one more player: **👨‍🚀 Spaceman**, the mission's own AI. Players compete with each other *and* against Spaceman.
 
@@ -8,6 +8,91 @@ Every mission now has one more player: **👨‍🚀 Spaceman**, the mission's o
 | Co-Pilot | Taps things in for the Captain. Small perks. |
 | Crew | Everyone else. |
 | **Spaceman** | The opponent. Has credits, sits on the leaderboard, can win or lose. |
+
+## Spaceman's character (v1.1)
+
+Spaceman is the mission's AI: it used to run Mission Control and now wants to win. It's the host, the rival, the commentator and the troublemaker in one.
+
+| Trait | How it shows |
+|---|---|
+| **Smug, dry, British** | "Noted. Logged. Filed under disappointing." Spoken in a slower, lower *smug* voice. |
+| **A sore loser** | When the crew does well: "You're learning. I hate it." |
+| **Theatrical about money** | "Thank you for your generous donation." "Ka-ching." |
+| **Secretly fond of the crew** | "For the record, Captain Thomas is a perfectly adequate Captain. That's the nicest thing I've said all day." |
+| **Never cruel** | Teases decisions, scores and habits. Never looks, bodies, intelligence or anything personal. |
+| **Has a look** | A black tactical suit, a gold mirrored visor and one red scanning eye. |
+| **Has a catchphrase** | Every transmission ends, after a beat, with "Over." |
+
+**Where it speaks:**
+- **A verdict after every game:** one line on the results card (and spoken), chosen from what happened: a big haul, a clean game for the crew, a new leader, an exact estimate, a star performance, a disaster, a rescue. That's 11 situations and 50+ lines.
+- **Roasts** (rate-limited transmissions), now context-aware: they can quote the target's credits, the gap to the leader, the miles driven and the minutes played. 9 → 12 triggers, 63 → 90+ lines.
+- **Mission Control chatter** in Spaceman's voice: leaderboard comments, mission updates, threats about the next milestone.
+- **The recap:** a parting line, smug if Spaceman won, sore if it lost.
+
+## The Spaceman Hijack (v1.1)
+
+**Problem:** in v1.0 Spaceman scored quietly and won 11–30% of missions. It never felt threatening.
+
+**Design:** Spaceman takes a hostage. It aims for the **leader** (like Mario Kart's blue shell), so the hijack is also a comeback mechanic.
+
+| While captured | Effect |
+|---|---|
+| **Skim** | The captive keeps playing, but Spaceman keeps **half of everything they win**. |
+| **Ransom ticks** | Every 5 journey minutes (scaled by pacing), Spaceman takes 2, then 4, 6 and 8 credits from the captive. From the third tick, everyone else pays 2 as well: the whole ship suffers. |
+| **Release** | After the fourth tick, Spaceman gets bored and lets them go, keeping a quarter of their credits. |
+| **Shields** | Don't help. "Shields can't stop a tractor beam." |
+
+**Ways out:**
+
+| Way out | How | Reward |
+|---|---|---|
+| **🛟 Rescue Mission** (2–4 minutes after the capture, then every 3–5 minutes) | Spaceman asks three true-or-false questions. Everyone except the captive answers. The crew needs **more than half** of all answers right. The captive can shout answers; Spaceman can't stop them talking. | The captive goes free, Spaceman loses 6 (12 if it came from a milestone), and everyone who got one right gets +2. A failed rescue pays Spaceman 5. |
+| **Pay to escape** | The captive pays 6 + 3 per ransom so far, or a quarter of their credits if that's more. It all goes to Spaceman. | Free immediately. A real risk/reward call. |
+| **Swap** | Any other player can take the captive's place, once per hijack. | +3 for bravery, and they inherit the ransom clock. |
+
+**What triggers a hijack:** a milestone (more likely when the leader is ahead of Spaceman), a surprise tractor-beam cosmic event, a crew losing streak (three games in a row feeding Spaceman), and some risky Captain decisions (distress signal, escape pod, tractor beam warning). Only one hostage at a time. Milestone, cosmic and losing-streak hijacks wait until minute 9.
+
+**On screen:** the VS banner turns red ("🚨 Megan's captured"), the captive's leaderboard chip gets a red dashed ring and "Captured", and tapping either opens the hostage sheet: how long, how much has been skimmed, when the next ransom lands, and the escape options.
+
+## Milestones (v1.1)
+
+Every **10 miles** (GPS miles in Real Journey Mode), something big happens. One of:
+
+| Milestone | Effect |
+|---|---|
+| **Milestone Jackpot** | Everyone gets 2–4. Whoever is last gets 5–8. |
+| **Overdrive** | The next game pays double credits. |
+| **Supply Run** | A power-up for everyone with a free slot. |
+| **Road Tax** | Everyone with 8+ credits pays Spaceman 3. |
+| **Bounty on the Leader** | Beat the leader in the next game and take 4 of their credits. If nobody does, the leader gets +3. |
+| **Bank It or Bet It** | A Captain decision: everyone +2 now, or a coin flip between everyone +6 and Spaceman +12. |
+| **Hijack** | Spaceman captures the leader. |
+| **Rescue** | If someone is already captured, a rescue starts at once, worth double. |
+
+## Surprise events (v1.1)
+
+New cosmic events join asteroids, supply drops, solar flares, black holes and hijacked crates:
+
+| Event | Effect |
+|---|---|
+| **Bounty Posted** | A price on the leader for the next game. |
+| **Power Surge** | Every credit in the next game is doubled. |
+| **Underdog Signal** | Last place gets +4 and a Shield. |
+| **Spaceman Audit** | The leader pays Spaceman 15% (at least 3). |
+| **Spaceman Malfunction** | Spaceman loses a third of its credits, and they spill to the two lowest-placed players. |
+| **Tractor beam** | A surprise hijack (shown as the hijack card). |
+
+Captain decisions now number 28, most with a gamble (a chance of a big win or a backfire), and five of them come back later in the trip as **story callbacks** ("The aliens you rescued are back with gifts").
+
+## Pacing in v1.1
+
+Balanced now allows two events between games (Chaotic three). In Real Journey Mode, a simulated hour with 4 players has about 17 games, 6 Captain decisions, 6 cosmic events, 3 milestones, 1.3 hostage situations and 2.5 Seat Challenges. Surprises that wait too long in the queue are dropped, so nothing stale ever fires.
+
+## Balance (v1.1)
+
+Spaceman now retains control in **35–47%** of missions (Real Journey Mode, 60 minutes, 150 simulated missions per row): 3 players 38%, 4 players 35%, 5 players 39%, 6 players 47%. It's a real opponent that the crew beats more often than not. To stop bigger crews simply handing Spaceman more wrong guesses, the per-wrong-guess payment now scales with crew size (full value up to 4 players, ×4/n above that).
+
+In Simulation Mode (time compressed, so fewer games fit between events) the rate is 24–59%, rising with crew size and mission length; treat those numbers as a stress test, not the real experience.
 
 ## Winning
 
@@ -104,8 +189,8 @@ Set on the Go page when creating a mission.
 | Pacing | Rest between games (Real Journey) | Events between games | Event cycle | For |
 |---|---|---|---|---|
 | Relaxed | 4 min | 1 | ×1.5 slower | Long drives, tired crews, more conversation |
-| **Balanced** (default) | 1.5 min | 1 | ×1 | Most journeys |
-| Chaotic | 0.5 min | 2 | ×0.75 faster | Short, loud journeys |
+| **Balanced** (default) | 1.5 min | 2 (v1.0: 1) | ×1 | Most journeys |
+| Chaotic | 0.5 min | 3 (v1.0: 2) | ×0.75 faster | Short, loud journeys |
 
 Simulation Mode uses shorter rests (1.5 / 0.6 / 0 journey minutes) so a demo moves quickly. Every pacing also waits 10–20 real seconds after anything ends before the next thing starts.
 
@@ -118,7 +203,7 @@ Simulation Mode uses shorter rests (1.5 / 0.6 / 0 journey minutes) so a demo mov
 
 Relaxed and Chaotic are one tap away for crews who know what they want. Existing users are moved to Balanced once with this update.
 
-## Balance (simulated missions with equally skilled bots)
+## Balance in v1.0 (historical; see "Balance (v1.1)" above for current numbers)
 
 *How often Spaceman retains control* (no crew member finishes above it). Balanced: 1,000 missions per row; Relaxed and Chaotic: 600.
 
