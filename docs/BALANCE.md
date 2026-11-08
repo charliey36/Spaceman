@@ -2,6 +2,17 @@
 
 **Question:** with equally skilled, equally engaged players, does the Captain (driver), the Co-Pilot or a Crew member have a built-in advantage in becoming Journey Spaceman?
 
+**v1.2 update (party mechanics and Commander Atlas):** Chance Time, Duels, Spaceman's bribe, Alliances, hot streaks, Final Approach and end-of-mission Bonus Awards add swing late in a mission (`PARTY.md`). Real Journey Mode, 60 minutes, Final Approach used 12 minutes before the end, about 150 missions per row (noise about ±5 points):
+
+| Crew | Spaceman wins | Bonus Awards change the top crew member | Captain is the best crew member (fair share) |
+|---|---|---|---|
+| 3 | 31–35% | 19–29% | 22% (33%) |
+| 4 | 24–30% | 19–29% | 28% (25%) |
+| 5 | 39–47% | 19–29% | 20–26% (20%) |
+| 6 | 37–44% | 19–29% | 13% (17%) |
+
+Changes made to get there: Bonus Awards +8 → **+6** (at +8 Spaceman fell to 20–25%); **Spaceman's Bonus** (+8 per hostage and per accepted bribe); power surges now double Spaceman's gains too; **`capWinBonus` +1** per game won by the Captain in crews of 5 or fewer (the Captain was about 20% against a fair 25% in Real Journey Mode in v1.1; +2 overshot to 36–40%). The Captain is never in a Duel, so 3-player crews still sit low; watch this in real play. Simulation Mode (`tools/balance-sim.js`, 300 missions per row): Captain 20–30%, Spaceman 22–55%, rising with mission length. Events per hour in Real Journey Mode: Chance Time about 0.75, Duel 0.5, bribe 0.3, Alliance 0.3. Roasts are spaced further apart (`roastGap` 6 → 9) so Commander Atlas speaks about 6 times an hour and Spaceman about 4.
+
 **v1.1 update (hijacks, milestones, Seat Challenges):** Role fairness holds (Simulation Mode, 300 missions per row, Balanced): the Captain wins 23.7% / 28.3% / 30.7% with 4 players at 20 / 45 / 60 minutes (fair 25%), 20.3% / 25.7% / 19.7% with 5 (fair 20%) and 19.0% / 17.0% / 19.3% with 6 (fair 16.7%). The Captain sits a few points above fair in some longer missions (4 players, 60 minutes: +5.7 points), which is outside sampling noise and worth watching in real play. In Real Journey Mode the Co-Pilot seat changes hands about 1.5–1.9 times an hour (v1.0: about 2.3, mostly from random promotion dice). More of the changes are now earned: there are about 2.3–2.5 Seat Challenges an hour, and promotions dropped from four to two per 30-minute cycle. Spaceman's win rate is in `SPACEMAN.md` (35–47% in Real Journey Mode). Use `tools/balance-sim.js` for role fairness; the Real Journey numbers come from a simple driver that steps the engine at one real second per step and counts events.
 
 **v1.0 update (Crew vs Spaceman):** Spaceman is now an opponent (`SPACEMAN.md`). Role fairness is measured on the best crew member (`Engine.topCrew`), because a mission can now end with no Journey Spaceman. Balanced pacing, 1,000 missions per row: the Captain wins 27.3% (4 players, 45 min; fair 25%), 23.6% (4p, 60 min), 19.7% (5p, 45 min; fair 20%) and 18.6% (6p, 45 min; fair 16.7%). **Known gap:** in 20-minute missions the Captain sits 2–4 points below fair (20.6% at 4p), because three-round Estimation Station and the Bluff put more hidden lock-ins in a short mission and the Captain always answers last. It evens out by 45 minutes; worth watching in real play. Spaceman retains control in 11–30% of missions depending on crew size and length.
