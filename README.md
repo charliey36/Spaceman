@@ -37,5 +37,6 @@ Places where real functionality will plug in later (GPS, Spotify, voice, sharing
 | `docs/BALANCE.md` | Fairness simulations for the Captain, Co-Pilot and crew |
 | `docs/COPILOT.md` | The Co-Pilot seat |
 | `docs/MULTIPLAYER.md` | Host-authoritative engine and device sync |
-| `docs/AUDIO.md`, `docs/VOICE.md`, `docs/SPOTIFY.md` | Sound, voice and music plans |
+| `docs/AUDIO.md`, `docs/VOICE.md` | Sound and voice plans |
+| `docs/SPOTIFY.md` | Phase 12 Spotify integration: PKCE sign-in, Share Spotify Data, music commentary, Aux King, and the Developer Policy switches |
 | `docs/GAME-DESIGN-ROADMAP.md` | Long-term direction for the games |

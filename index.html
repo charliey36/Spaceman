@@ -8,6 +8,54 @@
 body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif}
 img{max-width:100%}
 [hidden]{display:none!important}
+
+/* ---------- Spotify + music (Phase 12) ---------- */
+.sp-logo{flex:none;display:block}
+.lv-music{flex:none}
+.mus{display:flex;align-items:center;gap:10px;width:100%;min-height:46px;padding:6px 12px 6px 6px;border-radius:14px;background:rgba(11,12,16,.86);border:1px solid var(--line);color:var(--fg);text-align:left;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);text-decoration:none}
+.mus .art{width:34px;height:34px;border-radius:8px;flex:none;object-fit:cover;background:var(--surface-3);display:grid;place-items:center;color:var(--fg-3)}
+.mus .txt{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.mus .txt b{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mus .txt small{font-size:12px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mus.idle .txt b{font-weight:500;color:var(--fg-2)}
+.mus .eq{display:flex;gap:2px;align-items:flex-end;height:14px;flex:none}
+.mus .eq i{width:3px;height:100%;background:var(--signal);border-radius:2px;transform-origin:bottom;animation:spEq 1s ease-in-out infinite}
+.mus .eq i:nth-child(2){animation-delay:.25s}.mus .eq i:nth-child(3){animation-delay:.5s}
+.mus .cta{font-size:13px;font-weight:600;color:var(--ion);flex:none}
+@keyframes spEq{0%,100%{transform:scaleY(.3)}50%{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.mus .eq i{animation:none;transform:scaleY(.7)}}
+.live.day .mus{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}
+.sp-sec{display:flex;flex-direction:column;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px;margin-top:10px}
+.sp-h{display:flex;align-items:center;gap:10px}
+.sp-h h3{margin:0;flex:1}
+.sp-h .sp-tag{font-size:11.5px;color:var(--fg-3);font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
+.sp-chips{display:flex;flex-wrap:wrap;gap:8px}
+.sp-sub{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin:2px 0 -4px}
+.sp-list{display:flex;flex-direction:column}
+.sp-item{display:flex;align-items:center;gap:12px;padding:7px 0;color:var(--fg);text-decoration:none;min-height:48px}
+.sp-item + .sp-item{border-top:1px solid var(--line)}
+.sp-item .n{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.sp-item .n b{font-weight:500;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-item .n small{font-size:12.5px;color:var(--fg-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-item .rk{width:18px;text-align:center;font-family:var(--font-mono);font-size:12px;color:var(--fg-3)}
+.sp-img{width:40px;height:40px;border-radius:8px;object-fit:cover;flex:none;background:var(--surface-3)}
+.sp-img.r{border-radius:50%}
+.sp-img.ph{display:grid;place-items:center;color:var(--fg-3);font-weight:600}
+.sp-empty{display:flex;align-items:center;gap:12px;color:var(--fg-2);font-size:14px;line-height:1.4}
+.sp-empty .ic-tile{flex:none}
+.sp-foot{font-size:12px;color:var(--fg-3);display:flex;align-items:center;gap:8px}
+.sp-status .sp-logo{margin:0 2px}
+.sp-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sp-tile{display:flex;flex-direction:column;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;min-width:0}
+.sp-tile b{font-weight:600;font-size:15px;line-height:1.25;overflow-wrap:anywhere}
+.sp-tile small{color:var(--fg-2);font-size:12.5px}
+.sp-tile.wide{grid-column:1 / -1}
+.sp-mom{display:flex;gap:12px;align-items:baseline;padding:10px 0;font-size:14px;line-height:1.4}
+.sp-mom + .sp-mom{border-top:1px solid var(--line)}
+.sp-mom .mono{color:var(--fg-3);font-size:12px;flex:none}
+.sp-steps{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:var(--fg-2);font-size:14px;line-height:1.45}
+.sp-code{font-family:var(--font-mono);font-size:12.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow-wrap:anywhere;color:var(--fg)}
+.tx.roast.music .eyebrow.tx-kind{color:var(--signal)}
 </style>
 <title>Spaceman</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -1632,14 +1680,15 @@ const newUser = email => ({
   id:'u_' + Math.random().toString(36).slice(2,10), email, createdAt:new Date().toISOString(),
   totalMiles:0, crewLevel:0, xp:0, achievements:[], journeys:[], friends:[],
   guests:[], journeyCount:0, sample:false, lastSeen:Date.now(), launch:null,
-  settings:{notif:true,location:true,share:false,haptics:true,hc:false}
+  settings:{notif:true,location:true,share:false,haptics:true,hc:false,spotifyShare:false}
 });
 function normalize(u){
   u.achievements ||= []; u.journeys ||= []; u.friends ||= []; u.guests ||= [];
   const base = hashAv(u.email); u.avatar = {...base, ...(u.avatar || {})};
   Object.keys(base).forEach(k => { if (!AV[k][u.avatar[k]]) u.avatar[k] = base[k]; });
   u.totalMiles ||= 0; u.journeyCount ||= 0; u.xp ||= 0;
-  u.settings = {notif:true,location:true,share:false,haptics:true,hc:false, ...(u.settings || {})};
+  u.settings = {notif:true,location:true,share:false,haptics:true,hc:false,spotifyShare:false, ...(u.settings || {})};
+  u.spotify = {on:false, demo:false, demoCrew:true, status:'off', err:'', profile:null, at:0, ...(u.spotify || {})};      /* names and artwork links only; tokens live under their own key and are wiped on disconnect */
   u.friends.forEach(f => { f.mi ||= 0; f.j ||= 0; if (!isISO(f.first)) f.first = null; f.ms ||= {}; });
   u.journeys.forEach(j => { j.ch ||= []; j.crew ||= [u.id]; j.awards ||= []; j.songs ||= []; if (!j.dest && j.to) j.dest = j.to; if (String(j.id).startsWith('sj') && !j.captain) decorateSample(j, u); });
   if (!u.launch) u.launch = {crew:[...u.friends].sort((a,b) => b.mi - a.mi).slice(0,3).map(f => f.id), mode:'party', seat:'passenger', dest:'', lineup:[...VIBES.party.lineup]};
@@ -1696,11 +1745,11 @@ function makeAwards(j, scores){
   const r = rng(j.id + 'aw'), crew = [...j.crew];
   if (crew.length < 2) return [{who:crew[0], id:'solo', line:AWARDS.solo.line({})}];
   const pts = scores || {}, total = Object.values(pts).reduce((a,b) => a + b, 0);
-  if (total > 0){ const pool = shuffle(['aux','backseat','competitive','silent','snack','services'], r); return crew.map((id,k) => { const a = pool[k % pool.length]; return {who:id, id:a, line:AWARDS[a].line({n:2 + Math.floor(r()*12)})}; }); }
+  if (total > 0){ const pool = shuffle(['aux','backseat','competitive','silent','snack','services'].filter(k => k !== 'aux' || !(j.music && j.music.aux)), r); return crew.map((id,k) => { const a = pool[k % pool.length]; return {who:id, id:a, line:AWARDS[a].line({n:2 + Math.floor(r()*12)})}; }); }
   const champ = total ? Object.entries(pts).sort((a,b) => b[1] - a[1])[0][0] : crew[Math.floor(r()*crew.length)];
   const w = total ? pts[champ] : 2 + Math.floor(r()*3), t = total ? total : w + 1 + Math.floor(r()*3);
   const out = [{who:champ, id:'champion', line:AWARDS.champion.line({w, t})}];
-  const pool = shuffle(['aux','backseat','competitive','silent','snack','services'], r);
+  const pool = shuffle(['aux','backseat','competitive','silent','snack','services'].filter(k => k !== 'aux' || !(j.music && j.music.aux)), r);
   crew.filter(id => id !== champ).forEach((id, k) => { const a = pool[k % pool.length]; out.push({who:id, id:a, line:AWARDS[a].line({n:2 + Math.floor(r()*12)})}); });
   return out;
 }
@@ -1876,13 +1925,14 @@ function monthsFor(u){
   return out;
 }
 const yearMiles = () => cur().sample ? 9524 + JOURNEYS.filter(j => !j.id.startsWith('sj')).reduce((a,j) => a + j.mi, 0) : JOURNEYS.filter(j => Date.now() - dt(j.date) < 365*864e5).reduce((a,j) => a + j.mi, 0);
-function topSong(){ const t = {}; JOURNEYS.forEach(j => (j.songs || []).forEach(i => { t[i] = (t[i] || 0) + 1; })); const b = Object.entries(t).sort((a,b) => b[1] - a[1])[0]; return b ? SONGS[+b[0]] : null; }
+function topSong(){ const t = {}; JOURNEYS.forEach(j => { (j.songs || []).forEach(i => { const k = SONGS[i].join('|'); t[k] = (t[k] || 0) + 1; }); if (j.music && j.music.song){ const k = j.music.song.n + '|' + j.music.song.a; t[k] = (t[k] || 0) + j.music.song.k; } }); const b = Object.entries(t).sort((a,b) => b[1] - a[1])[0]; return b ? b[0].split('|') : null; }
+const journeySong = j => j.music && j.music.song ? [j.music.song.n, j.music.song.a] : j.songs && j.songs.length ? SONGS[j.songs[0]] : null;
 const rankFor = mi => mi < 100 ? 'Cadet' : mi < 1000 ? 'Road tripper' : mi < 5000 ? 'Navigator' : mi < 25000 ? 'Commander' : 'Orbiter';
 
 /* ---------- shared memory components ---------- */
 const awardChip = a => `<span class="award-chip">${av(a.who,22)}${esc(whoName(a.who))} · ${AWARDS[a.id].name}</span>`;
 function memFeature(j){
-  const aw = (j.awards || []).slice(0,2), song = j.songs && j.songs.length ? SONGS[j.songs[0]] : null;
+  const aw = (j.awards || []).slice(0,2), song = journeySong(j);
   return `<button class="mem-feature press" data-mem="${j.id}" style="--h:${jHue(j.id)}">
     <span class="art">${routeSvg(j.id,340,170)}<span class="chip tag">${dShort(j.date)}</span></span>
     <span class="body">
@@ -1890,7 +1940,7 @@ function memFeature(j){
       <span class="mem-stats"><span><b>${fmt(j.mi)}</b> mi</span><span><b>${dur(j.min)}</b></span><span><b>${j.ch.length}</b> ${j.ch.length === 1 ? 'challenge' : 'challenges'}</span></span>
       <span class="mem-crew">${avs(j.crew,30,'#05060A')}<span>${esc(nameList(j.crew))}</span></span>
       ${aw.length || j.spaceman || j.smWon ? `<span class="awards-line">${j.spaceman ? smChip(j) : j.smWon ? `<span class="award-chip sm-chip">${av('sm',22)}Spaceman kept control</span>` : ''}${aw.slice(0, j.spaceman || j.smWon ? 1 : 2).map(awardChip).join('')}</span>` : ''}
-      <span class="mem-song">${ic('music',15)}<span>${song ? `${esc(song[0])} · ${esc(song[1])}` : 'Top song · coming soon'}</span></span>
+      <span class="mem-song">${ic('music',15)}<span>${song ? `${esc(song[0])} · ${esc(song[1])}` : 'No music shared'}</span></span>
     </span></button>`;
 }
 const memRow = j => { const a = (j.awards || [])[0]; return `<button class="mem-row press" data-mem="${j.id}" style="--h:${jHue(j.id)}">
@@ -2145,6 +2195,7 @@ function vYou(){
       <div class="row"><span class="ic-tile">${ic('mail')}</span><span class="grow"><b>${esc(ME.email)}</b><span>Signed in on this device</span></span></div>
       <button class="row" data-action="switch"><span class="ic-tile">${ic('swap')}</span><span class="grow"><b>Switch account</b><span>${plural(Object.keys(DB.users).length,'account')} on this device</span></span><span class="chev">${ic('chevR',18)}</span></button>
     </div></section>
+  ${musicSectionHTML()}
   <section>${secH('Settings')}
     <div class="list">
       ${sw('notif','Journey notifications','Level-ups, milestones, crew invites')}
@@ -2376,6 +2427,7 @@ function friendSheet(id){
       <div class="tile"><span class="t-num">${fmt(f.mi/MOON*100,2)}%</span><span class="lbl">Of the way to the Moon</span></div>
     </div>
     ${(() => { const cs = captainStats(id); return cs ? `<div class="card cap-mini"><span class="ic-tile lit">${ic('steer')}</span><span class="who"><b>Captain rating ${fmt(cs.avg,1)} / 5</b><span>${plural(cs.n,'rated mission')} as your Captain. ${verdictFor(cs.avg)}</span></span></div>` : ''; })()}
+    ${friendMusicHTML(id)}
     <section>${secH('Milestones','','',`<span class="mono small muted">${MILESTONES.filter(m => f.ms && f.ms[m.k]).length} of ${MILESTONES.length}</span>`)}<div class="ms-grid">${MILESTONES.map(m => msCard(f, m)).join('')}</div></section>
     ${together.length ? `<section>${secH('Memories together')}<div class="stack-v">${together.slice(0,3).map(memRow).join('')}</div></section>` : ''}
     <button class="btn btn-primary btn-lg btn-block" data-action="go-with" data-id="${id}">${ic('rocket',20)}Start a journey with ${esc(p.name)}</button>
@@ -2437,7 +2489,7 @@ function msSheet(fid, k){
 }
 function memorySheet(id){
   const j = JOURNEYS.find(x => x.id === id); if (!j) return;
-  const others = j.crew.filter(x => x !== ME.id), song = j.songs && j.songs.length ? SONGS[j.songs[0]] : null;
+  const others = j.crew.filter(x => x !== ME.id);
   openSheet(`
     <div class="sheet-title"><span class="eyebrow">${dShort(j.date)}${j.start ? ` · ${j.start}` : ''}${j.dest ? ` · ${esc(j.dest)}` : ''}</span>
       <input class="title-input" data-title="${j.id}" value="${esc(j.title || '')}" placeholder="${esc(jTitle({...j, title:''}))}" maxlength="48" aria-label="Memory name">
@@ -2450,9 +2502,9 @@ function memorySheet(id){
     ${others.length ? `<section>${secH('Miles together')}<div class="together">${others.map(o => `<span class="chip">${av(o,24)}+${fmt(j.mi)} mi with ${esc(whoName(o))}</span>`).join('')}</div></section>` : ''}
     ${rateHTML(j)}
     ${awardsHTML(j)}
+    ${musicRecapHTML(j)}
     ${challengesHTML(j)}
     ${logHTML(j)}
-    <div class="card mem-song" style="border-top:1px solid var(--line)">${ic('music',16)}<span>${song ? `Top song: ${esc(song[0])} · ${esc(song[1])}` : 'Top song · coming soon'}</span></div>
     ${storyHTML(j)}`);
 }
 function achSheet(id){
@@ -2618,6 +2670,9 @@ const RULES = {
   qualify:{auto:12, by:[1.5,5]},           // Co-Pilot Qualification Roll: real seconds before an auto-roll; simulated players roll within 1.5–5 s
   hijack:{tick:5, maxLvl:4, first:[2,4], retry:[3,5], minAt:9},   // journey minutes: ransom ticks, first rescue, retries, earliest capture
   milestone:{every:10},                    // miles between milestone events
+  /* Phase 12 music: journey minutes (scaled by pacing). first/every: profile commentary; songGap/songTtl: reactions to what's playing;
+     intel: chance a Crew Intel round about a sharing player uses their Spotify; react: chance a simulated passenger reacts to a song */
+  music:{first:[3,5], every:[4,6], songGap:4, songTtl:4, intel:.35, react:.35},
   /* on-screen times in REAL seconds, so Real Journey Mode feels the same as Simulation Mode */
   evShow:15, dropShow:10, txLen:16, decideFor:40, askFor:40, reactFor:12,
   decideBy:[.6,1.6], answerBy:[.8,1.6], reactBy:[.2,.8]   // simulated players, journey minutes
@@ -3133,16 +3188,68 @@ const FLAVOUR = {
   flare:['{n}’s side of the car caught the flare.','{n} soaked up the solar boost.'],
   hole:'{a} and {b} swapped places. Physics is weird.'
 };
+/* Phase 12: Spaceman's music voice (docs/SPOTIFY.md). Every line is built from data the crew chose to share.
+   {n} the player · {a} an artist · {t} a track · {g} a genre · {k} a count · {m} another player · {r} how many recent plays were checked.
+   Never about looks or anything personal: it teases music taste, the way friends do. */
+const MUSIC = {
+  /* genre families, checked in order, so "indie folk" lands in sad before indie */
+  fam:[['sad',/indie folk|sad|emo|slowcore|bedroom|chamber|singer-songwriter|melancholia/i], ['rock80',/80s|soft rock|glam|album rock|classic rock|aor|hair metal/i],
+       ['britpop',/britpop|madchester/i], ['rap',/hip hop|rap|grime|drill|trap/i], ['dance',/house|edm|dance|techno|drum and bass|dnb|garage|trance|electro/i],
+       ['metal',/metal|metalcore|hardcore|punk|grunge/i], ['indie',/indie|alternative|modern rock|post-punk/i], ['pop',/pop/i], ['rock',/rock/i],
+       ['musical',/show tunes|musical|broadway|soundtrack/i], ['country',/country|americana|folk/i], ['jazz',/jazz|classical|orchestra|piano|ambient|lo-fi|lofi/i]],
+  sadT:/\b(goodbye|cry|crying|tears?|alone|lonely|sad|funeral|broken|heartbreak|hurt|apocalypse|creep|sick(ness)?|ghost|someone you loved|before you go|skinny love|no surprises|the end|miss(ing)? you)\b/i,
+  genre:{
+    sad:['{n}’s top genre is {g}. Mission Control recommends a hug.', 'I’ve analysed {n}’s listening. It’s mostly {g}. Someone pass them a biscuit.', '{n} listens to so much {g} the windows have started steaming up with feelings.'],
+    rock80:['{n}’s top genre is {g}. An unexpected development.', '{n} is mostly {g} this month. The hair is implied.', 'Scanning {n}… {g}. Born in the wrong decade, by about forty years.'],
+    britpop:['{n}’s top genre is {g}. They’ve definitely argued about Blur versus Oasis this week.', '{n} is mostly {g}. Bucket hat status: confirmed.'],
+    rap:['{n}’s top genre is {g}. They know every word. Every single one.', '{n} is mostly {g}. Expect an ad-lib at the next roundabout.'],
+    dance:['{n}’s top genre is {g}. This car is a festival now. Nobody agreed to that.', '{n} listens to mostly {g}. They’ve been waiting for the drop since the last junction.'],
+    metal:['{n}’s top genre is {g}. The volume has been noted.', '{n} listens to mostly {g}. Their neck has filed a complaint.'],
+    indie:['{n}’s top genre is {g}. They liked {a} before it was cool, and they will tell you.', '{n} listens to mostly {g}. Their tote bag is in the boot.'],
+    pop:['{n}’s top genre is {g}. Unashamed. Admirable, really.', '{n} is mostly {g}. Key change incoming.'],
+    rock:['{n}’s top genre is {g}. Air guitar privileges granted.', '{n} is mostly {g}. The steering wheel is not a drum kit, {n}.'],
+    musical:['{n}’s top genre is {g}. Every journey is a stage to them.'],
+    country:['{n}’s top genre is {g}. “Yeehaw” is now an official mission term.'],
+    jazz:['{n}’s top genre is {g}. Sophisticated. Suspiciously sophisticated.'],
+    other:['{n}’s top genre is {g}. Make of that what you will.', 'Mission Control has reviewed {n}’s music. Verdict: {g}. No further questions.']
+  },
+  topArtist:['{n}’s number one artist this month is {a}. Nobody in this car is surprised.', 'Breaking news from orbit: {n}’s top artist is {a}. Act shocked.', '{n} has {a} at number one. I’ll be adding that to their file.'],
+  topTrack:['{n}’s most-played song lately is {t}. You’ve all heard it. Through the walls.', '{n}’s number one track right now is {t} by {a}. Someone hide the aux cable.'],
+  /* d: derived from listening counts or comparisons (switched off in Spotify policy mode) */
+  repeat:['{n} has played {t} {k} times in their last {r} plays. Branching out remains optional.', '{t}. {k} times. Recently. {n}, are you okay?', 'Mission Control can confirm {n} played {t} {k} times lately. The song is fine. It’s the repetition we’re worried about.'],
+  loyal:['{k} of {n}’s last {r} plays are {a}. That’s not a phase, that’s a lifestyle.', '{n}’s recent listening is {k} parts {a}. Loyalty this strong deserves a medal.'],
+  variety:['{n} claims to enjoy variety. Spotify disagrees.', '{n}’s last {r} plays came from just {ka}. A small but devoted rotation.'],
+  eclectic:['{n} played {k} different artists in their last {r} plays. Either a connoisseur or deeply indecisive.'],
+  late:['{n} was playing {t} at {time}. Sleep is also an option.', 'Late-night report: {n}, {time}, {a}. Mission Control has questions.'],
+  sadSongs:['I’ve analysed {n}’s recent plays. {k} of them sound like an emotional goodbye.', '{n}’s recent plays include {k} songs that could soundtrack a breakup. Mission Control recommends a hug.'],
+  pairHigh:['{a} and {b} share {k}% of their top artists. Suspiciously compatible.', 'Musical compatibility check: {a} and {b}, {k}%. Someone make them a joint playlist.'],
+  both:['{a} and {b} both have {x} in their top artists. Finally, common ground.', 'Scanning… {a} and {b} both rate {x}. This could be the start of something.'],
+  pairZero:['{a} and {b} have absolutely nothing in common musically. Not one artist. Not one genre.', '{a} and {b} share zero top artists. The aux arrangements in this car will be tense.'],
+  odd:['{n} appears to be musically incompatible with the rest of the crew.', 'Crew analysis complete. Everyone overlaps a bit, except {n}. {n} is on their own planet.'],
+  crewFav:['{x} appears in the top artists of {k} of you. That’s a crew anthem waiting to happen.', 'Common ground detected: {x}. {k} of you have them in your top artists.'],
+  clash:['{a} listens to {g1}. {b} listens to {g2}. Whoever has the aux, someone suffers.'],
+  /* reactions to the song that's playing right now */
+  again:['{t} again. That’s {k} times this journey. Is the shuffle button broken?', 'Mission log: {t}, play number {k}. We’re all hearing it.'],
+  run:['{k} {a} songs in a row. Is this a tribute act?', '{a} again. {n} isn’t even pretending to share the aux.'],
+  hog:['{n} has had the aux for {k} songs straight. Democracy has collapsed.', '{k} songs in a row from {n}’s phone. Has anyone else been consulted?'],
+  fan:['{a}. That’s straight out of {m}’s top artists. {m}, you’re welcome.', '{t} by {a}. {m} has them in their top artists. Watch {m} pretend not to be delighted.'],
+  anthem:['{a}! {k} of you have them in your top artists. Group singalong authorised.'],
+  nobody:['Nobody in this car has {a} in their top artists. So who put this on? {n}. It was {n}.'],
+  /* Crew Intel decoys when the crew's own profiles don't give enough wrong answers */
+  decoyA:['Coldplay','Ed Sheeran','Adele','Drake','Beyoncé','The Beatles','Lady Gaga','Kings of Leon','Florence + The Machine','Stormzy','ABBA','Elton John','Billie Eilish','Muse','Bruno Mars'],
+  decoyG:['pop','indie rock','house','uk hip hop','classic rock','metal','country','jazz','soul','drum and bass','k-pop','folk'],
+  decoyT:['Mr. Brightside','Wonderwall','Dancing Queen','Bohemian Rhapsody','Africa','Valerie','Levitating','Blinding Lights','Shape of You','Uptown Funk']
+};
 /* What the queue is offered each 30 journey minutes. Power-up drops are added every RULES.dropEvery minutes. */
 const CYCLE = [[2,'talk'],[4,'promo'],[5,'spot'],[7,'decision'],[8,'chatter'],[10,'cosmic'],[12,'decision'],[14,'cosmic'],[16,'corrective'],[17,'captain'],[19,'promo'],[21,'decision'],[22,'talk'],[25,'cosmic'],[27,'chatter'],[29,'cosmic']];
-const PRIO = {role:0, news:0, qualify:0, rescue:0, hijack:1, milestone:1, story:2, roast:5, corrective:5, crew:1, decision:2, drop:3, promo:4, struggle:4, cosmic:4, spot:5, captain:6, talk:7, chatter:8};
+const PRIO = {role:0, news:0, qualify:0, rescue:0, hijack:1, milestone:1, story:2, roast:5, music:3, corrective:5, crew:1, decision:2, drop:3, promo:4, struggle:4, cosmic:4, spot:5, captain:6, talk:7, chatter:8};
 /* Pacing profiles, chosen when creating a mission. Keys match the stored mission mode. */
 const TEMPO = {
   chill:      {name:'Relaxed',  gap:20, rest:[1.5, 4], ev:1, voice:1, items:2, cycle:1.5, line:'Fewer games, longer gaps, more time to talk.'},
   party:      {name:'Balanced', gap:12, rest:[.6, 1.5], ev:2, voice:1, items:4, cycle:1,   line:'Recommended. A game every few minutes with breathing room.'},
   competitive:{name:'Chaotic',  gap:10, rest:[0, .5], ev:3, voice:1, items:5, cycle:.75, line:'Games and events back to back. For loud cars.'}
 };
-const VOICE = ['crew','talk','chatter','captain','roast'];   /* between two challenges: at most one event, one voice moment and one Co-Pilot moment */
+const VOICE = ['crew','talk','chatter','captain','roast','music'];   /* between two challenges: at most one event, one voice moment and one Co-Pilot moment */
 const ROLE_T = ['role','promo','struggle','news','qualify'];
 
 const Engine = (() => {
@@ -3204,7 +3311,7 @@ const Engine = (() => {
       min:0, rt:0, mi:0, pts:{}, inv:{}, fx:{}, src:{}, queue:[...(o.lineup || [])].filter(id => MISSIONS[id] && !MISSIONS[id].interrupt), done:[], ch:null, opts:[], pick:null,
       ev:null, tx:null, txq:[], q:P.length ? [{type:'qualify', at:0}] : [], nextAt:0, gapUsed:['voice','event'], intel:{}, intelQs:{}, intelUsed:{}, starred:{}, subjects:{}, agenda:agenda(0), cycle:0, nextDrop:10, calm:0, forceAsteroid:false, usedDec:[],
       decks:{}, log:[], results:[], seq:0, out:[], bots:[], txId:0,
-      hj:null, hjLog:[], nextMile:RULES.milestone.every, miles:[], surge:0, bounty:null, coDef:0, revenge:null, qualified:false};
+      hj:null, hjLog:[], music:{}, musicDerived:!(o.music && o.music.derived === false), musicUsed:[], musicLog:[], musicQs:{}, songs:[], now:null, lastSongTx:-99, nextMusic:0, musicQuiet:false, aux:{intro:{}, inter:{}}, nextMile:RULES.milestone.every, miles:[], surge:0, bounty:null, coDef:0, revenge:null, qualified:false};
     S.crew.forEach(id => { S.pts[id] = 0; S.inv[id] = []; S.fx[id] = {}; S.src[id] = {challenge:0, copilot:0, event:0, power:0, captain:0}; });
     if (PT.capShield) S.fx[S.captain].shield = true;                                   /* the driver's seat starts shielded */
     S.agenda = agenda(0, S.tempo.cycle); S.nextDrop = RULES.dropEvery*S.tempo.cycle;
@@ -3212,6 +3319,9 @@ const Engine = (() => {
     const qs = shuf(INTEL_Q.map((_, i) => i));
     S.crew.forEach((id, n) => { S.intelQs[id] = qs.slice(n*3 % (qs.length - 2), n*3 % (qs.length - 2) + 3); S.intel[id] = {}; S.intelUsed[id] = []; S.subjects[id] = 0; S.starred[id] = 0; });
     S.ev = {type:'briefing', id:++S.txId, at:0, until:(o.pace === 'real' ? RULES.briefing.real : RULES.briefing.sim), bot:Object.fromEntries(S.crew.map(id => [id, S.intelQs[id].map(() => rr(RULES.briefing.by))]))};
+    S.crew.forEach(id => { S.musicQs[id] = 0; });
+    if (o.music && o.music.profiles) Object.entries(o.music.profiles).forEach(([id, p]) => { if (S.crew.includes(id)) { const c = cleanProfile(p); if (c) S.music[id] = c; } });
+    S.nextMusic = rng(RULES.music.first)*S.tempo.cycle;
     if (!P.length) S.qualified = true;
     log(S, 'rocket', `Mission started. Captain ${nm(S, S.captain)} has the controls.`);
     setOpts(S);
@@ -3232,10 +3342,10 @@ const Engine = (() => {
     if (active(S)) return;                     /* a game, event or transmission is on screen: everything else waits */
     S.q = S.q.filter(x => !VOICE.includes(x.type) || x.type === 'crew' || S.min - x.at <= RULES.stale);
     S.q = S.q.filter(x => !['cosmic','decision','drop','talk','spot','corrective','story'].includes(x.type) || S.min - x.at <= 3*RULES.stale);   /* a backlog never builds up: old surprises are dropped */
-    const kind = x => VOICE.includes(x.type) ? 'voice' : ROLE_T.includes(x.type) ? 'role' : 'event';
+    const kind = x => x.type === 'music' ? 'music' : VOICE.includes(x.type) ? 'voice' : ROLE_T.includes(x.type) ? 'role' : 'event';
     const T = S.tempo, evSlots = S.q.filter(x => kind(x) === 'event').length >= 3 ? T.ev + 1 : T.ev;   /* catch up if events pile up */
     const used = k => S.gapUsed.filter(u => u === k).length;
-    const it = S.gapUsed.length < T.items + (S.gapUsed.length === 0 ? 0 : 1) ? takeQ(S, x => used(kind(x)) < (kind(x) === 'event' ? evSlots : kind(x) === 'voice' ? T.voice : 1)) : null;
+    const it = S.gapUsed.length < T.items + (S.gapUsed.length === 0 ? 0 : 1) ? takeQ(S, x => used(kind(x)) < (kind(x) === 'event' ? evSlots : kind(x) === 'voice' ? T.voice : kind(x) === 'music' ? 2 : 1)) : null;
     if (it){ S.gapUsed.push(kind(it)); return run(S, it); }
     if (S.lastChEnd !== null && S.min < S.lastChEnd + T.rest[S.pace === 'real' ? 1 : 0]) return;   /* breathing room between games, set by pacing */
     S.gapUsed = []; const id = S.pick || nextChallengeId(S); S.pick = null; startCh(S, id);
@@ -3244,6 +3354,9 @@ const Engine = (() => {
     if (S.ch && S.ch.phase === 'done') S.ch = null;
     switch (it.type){
       case 'crew': return openTx(S, {kind:'crew', to:it.to, text:it.text, from:it.from});
+      case 'music': { let text = it.text, who = it.who; if (!text){ const m = musicLine(S); if (!m) return; text = m.text; who = m.who; }
+        if (it.who && !S.music[it.who]) return;                               /* they stopped sharing while this waited */
+        S.musicLog.push({t:Math.floor(S.min), text}); return openTx(S, {kind:'roast', music:true, text, who}); }
       case 'talk': return openTx(S, {kind:'talk', text:fill(S, deal(S, 'talk', TALK))});
       case 'chatter': return openTx(S, {kind:'chatter', text:fillSm(S, deal(S, 'chatter', CHATTER, t => (S.copilot || !t.includes('{cp}')) && (leader(S) || !t.includes('{lead}')) && (S.hj || !t.includes('{hj}'))))});
       case 'captain': return openTx(S, {kind:'captain', text:deal(S, 'captain', CAPTAIN_Q)});
@@ -3332,9 +3445,10 @@ const Engine = (() => {
     }
     if (M.kind === 'spot') newTarget(S, ch, null);
     if (M.kind === 'intel'){
-      const who = intelSubject(S), qi = +pick(Object.keys(S.intel[who]).filter(q => !S.intelUsed[who].includes(+q))), q = INTEL_Q[qi];
-      S.intelUsed[who].push(qi); S.subjects[who]++;
-      Object.assign(ch, {phase:'guess', who, qi, q:q.about.replace('{n}', nm(S, who)), o:q.o, a:S.intel[who][qi], picks:{}, window:RULES.intel.open,
+      const who = intelSubject(S), mq = S.music[who] && S.musicQs[who] < 3 && R() < RULES.music.intel ? musicQ(S, who) : null;     /* Spotify Crew Intel: only about a player who is sharing */
+      const qi = mq ? -1 : +pick(Object.keys(S.intel[who]).filter(q => !S.intelUsed[who].includes(+q))), q = mq ? null : INTEL_Q[qi];
+      if (mq) S.musicQs[who]++; else S.intelUsed[who].push(qi); S.subjects[who]++;
+      Object.assign(ch, {phase:'guess', who, qi, music:!!mq, q:mq ? mq.q : q.about.replace('{n}', nm(S, who)), o:mq ? mq.o : q.o, a:mq ? mq.a : S.intel[who][qi], picks:{}, window:RULES.intel.open,
         voters:S.crew.filter(x => x !== who)});
       ch.voters.forEach(p => { ch.bot[p] = {by:rr(RULES.intel.by), opt:R() < RULES.intel.know ? ch.a : pick([0, 1, 2, 3].filter(i => i !== ch.a))}; });
     }
@@ -3407,6 +3521,139 @@ const Engine = (() => {
       .replace(/\{mi\}/g, Math.round(S.mi)).replace(/\{min\}/g, Math.round(S.min)).replace(/\{dest\}/g, S.dest || 'wherever we’re going').replace(/\{np\}/g, who ? S.pts[who] : 0)
       .replace(/\{hj\}/g, S.hj ? nm(S, S.hj.who) : nm(S, low)));
   }
+  /* ---- music (Phase 12) ----
+     Pure logic. The host hands each SHARING player's profile in (o.music.profiles, or the 'music-set' intent); a player who turns sharing off is removed
+     and nothing about them is used again. Nothing here talks to Spotify. See docs/SPOTIFY.md for the policy notes behind o.music.derived. */
+  const lc = s => String(s == null ? '' : s).toLowerCase();
+  const famOf = g => { const f = MUSIC.fam.find(([, re]) => re.test(g)); return f ? f[0] : 'other'; };
+  const tpl = (t, v) => t.replace(/\{(\w+)\}/g, (m, k) => k in v ? v[k] : m);
+  const clock = h => `${h % 12 || 12}${h < 12 ? 'am' : 'pm'}`;
+  function cleanProfile(p){
+    if (!p || typeof p !== 'object') return null;
+    const arr = (a, n) => (Array.isArray(a) ? a : []).slice(0, n), str = x => String(x == null ? '' : x).slice(0, 60);
+    const o = {genres:arr(p.genres, 8).map(str).filter(Boolean), artists:arr(p.artists, 10).map(str).filter(Boolean),
+      tracks:arr(p.tracks, 10).map(t => ({n:str(t && t.n), a:str(t && t.a)})).filter(t => t.n),
+      recent:arr(p.recent, 50).map(t => ({n:str(t && t.n), a:str(t && t.a), h:t && Number.isFinite(+t.h) ? +t.h : -1})).filter(t => t.n)};
+    return o.genres.length || o.artists.length || o.tracks.length || o.recent.length ? o : null;
+  }
+  function setMusic(S, id, p){ const c = S.crew.includes(id) ? cleanProfile(p) : null; if (c) S.music[id] = c; else delete S.music[id]; bump(S); }
+  const sharers = S => S.crew.filter(id => S.music[id]);
+  const sharedArtists = (a, b) => { const s = new Set(b.artists.map(lc)); return a.artists.filter(x => s.has(lc(x))); };
+  const overlapPct = (a, b) => a.artists.length && b.artists.length ? Math.round(100*sharedArtists(a, b).length/Math.min(a.artists.length, b.artists.length)) : null;
+  const likeness = (a, b) => (sharedArtists(a, b).length ? 2 : 0) + (a.genres[0] && b.genres.some(g => famOf(g) === famOf(a.genres[0])) ? 1 : 0);
+  function musicCands(S){
+    const out = [], D = S.musicDerived, ids = sharers(S);
+    const add = (key, pool, v, w = 1) => { if (!S.musicUsed.includes(key)) out.push({key, pool, v, w}); };
+    ids.forEach(id => {
+      const m = S.music[id], v0 = {n:nm(S, id)};
+      if (m.genres[0]) add('genre|' + id, MUSIC.genre[famOf(m.genres[0])] || MUSIC.genre.other, {...v0, g:m.genres[0], a:m.artists[0] || 'their favourites'}, 2);
+      if (m.artists[0]) add('artist|' + id, MUSIC.topArtist, {...v0, a:m.artists[0]}, 2);
+      if (m.tracks[0]) add('track|' + id, MUSIC.topTrack, {...v0, t:m.tracks[0].n, a:m.tracks[0].a || 'someone'});
+      if (D && m.recent.length >= 8){
+        const r = m.recent.length, byT = {}, byA = {};
+        m.recent.forEach(x => { byT[x.n] = (byT[x.n] || 0) + 1; if (x.a) byA[x.a] = (byA[x.a] || 0) + 1; });
+        const tt = Object.entries(byT).sort((a, b) => b[1] - a[1])[0], aa = Object.entries(byA).sort((a, b) => b[1] - a[1])[0], nA = Object.keys(byA).length;
+        if (tt && tt[1] >= 3) add('repeat|' + id, MUSIC.repeat, {...v0, t:tt[0], k:tt[1], r}, 3);
+        if (aa && aa[1] >= Math.max(5, Math.round(r*.3))) add('loyal|' + id, MUSIC.loyal, {...v0, a:aa[0], k:aa[1], r}, 3);
+        if (nA <= Math.round(r*.3)) add('variety|' + id, MUSIC.variety, {...v0, k:nA, ka:nA === 1 ? 'one artist' : nA + ' artists', r}, 3);
+        else if (nA >= Math.round(r*.8)) add('eclectic|' + id, MUSIC.eclectic, {...v0, k:nA, r});
+        const late = m.recent.find(x => x.h >= 0 && x.h <= 4); if (late) add('late|' + id, MUSIC.late, {...v0, t:late.n, a:late.a || 'someone', time:clock(late.h)}, 2);
+        const sad = m.recent.filter(x => MUSIC.sadT.test(x.n)).length; if (sad >= 3) add('sad|' + id, MUSIC.sadSongs, {...v0, k:sad}, 3);
+      }
+    });
+    for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++){
+      const A = ids[i], B = ids[j], a = S.music[A], b = S.music[B], v = {a:nm(S, A), b:nm(S, B)}, sh = sharedArtists(a, b), key = A + '+' + B;
+      if (sh.length) add('both|' + key, MUSIC.both, {...v, x:sh[0]}, 2);
+      if (D){
+        const p = overlapPct(a, b); if (p !== null && p >= 50) add('high|' + key, MUSIC.pairHigh, {...v, k:p}, 3);
+        if (!sh.length && a.genres.length && b.genres.length && !likeness(a, b)) add('zero|' + key, MUSIC.pairZero, v, 3);
+      }
+      const fa = a.genres[0] && famOf(a.genres[0]), fb = b.genres[0] && famOf(b.genres[0]);
+      if (fa && fb && fa !== fb && !sh.length) add('clash|' + key, MUSIC.clash, {...v, g1:a.genres[0], g2:b.genres[0]}, 2);
+    }
+    if (ids.length >= 3){
+      const cnt = {}; ids.forEach(id => S.music[id].artists.forEach(x => { (cnt[lc(x)] ||= {x, k:0}).k++; }));
+      const top = Object.values(cnt).sort((a, b) => b.k - a.k)[0]; if (top && top.k >= 2) add('fav|' + lc(top.x), MUSIC.crewFav, {x:top.x, k:top.k}, 2);
+      if (D){
+        const lone = ids.filter(id => ids.every(o => o === id || !likeness(S.music[id], S.music[o])));
+        if (lone.length === 1 && ids.some(a => a !== lone[0] && ids.some(b => b !== a && b !== lone[0] && likeness(S.music[a], S.music[b])))) add('odd|' + lone[0], MUSIC.odd, {n:nm(S, lone[0])}, 4);
+      }
+    }
+    return out;
+  }
+  /* One profile line, never repeated within a mission. Returns null when there is nothing fresh to say. */
+  function musicLine(S){
+    const c = musicCands(S); if (!c.length) return null;
+    const it = wpick(c, x => x.w); S.musicUsed.push(it.key);
+    return {text:tpl(deal(S, 'm_' + it.key.split('|')[0] + it.pool.length + it.pool[0].length, it.pool), it.v), kind:it.key.split('|')[0], who:it.key.split('|')[1]};
+  }
+  /* What's playing: only a sharing player's song is visible to the crew at all. */
+  function songIn(S, by, tr){
+    if (!S.music[by] || !tr || !tr.n) return;
+    const n = String(tr.n).slice(0, 80), a = String(tr.a || '').slice(0, 80), last = S.songs[S.songs.length - 1];
+    if (last && last.by === by && last.n === n && last.a === a && S.min - last.at < .5) return;       /* the same poll twice isn't a replay */
+    S.songs.push({by, n, a, at:S.min}); if (S.songs.length > 300) S.songs.shift();
+    S.now = {by, n, a, art:String(tr.art || '').slice(0, 300), at:S.min};
+    S.aux.intro[by] = (S.aux.intro[by] || 0) + 1;
+    if (S.musicQuiet || !S.qualified || S.min - S.lastSongTx < RULES.music.songGap*S.tempo.cycle || R() >= RULES.music.react) { bump(S); return; }
+    const key = x => lc(x.n) + '|' + lc(x.a), same = S.songs.filter(x => key(x) === key(S.songs[S.songs.length - 1])).length;
+    let runA = 0; for (let i = S.songs.length - 1; i >= 0 && a && lc(S.songs[i].a) === lc(a); i--) runA++;
+    let runP = 0; for (let i = S.songs.length - 1; i >= 0 && S.songs[i].by === by; i--) runP++;
+    const fans = sharers(S).filter(id => id !== by && S.music[id].artists.some(x => lc(x) === lc(a))), anyone = sharers(S).some(id => S.music[id].artists.some(x => lc(x) === lc(a)));
+    const v = {n:nm(S, by), a:a || 'this', t:n}, c = [];
+    if (same >= 2) c.push([MUSIC.again, {...v, k:same}, 'again']);
+    if (runA >= 3) c.push([MUSIC.run, {...v, k:runA}, 'run']);
+    if (runP >= 4 && S.crew.length > 1) c.push([MUSIC.hog, {...v, k:runP}, 'hog']);
+    if (a && fans.length >= 2) c.push([MUSIC.anthem, {...v, k:fans.length + (S.music[by].artists.some(x => lc(x) === lc(a)) ? 1 : 0)}, 'anthem']);
+    else if (a && fans.length === 1) c.push([MUSIC.fan, {...v, m:nm(S, fans[0])}, 'fan']);
+    if (a && S.musicDerived && sharers(S).length >= 3 && !anyone) c.push([MUSIC.nobody, v, 'nobody']);
+    if (!c.length) { bump(S); return; }
+    const [pool, vv, k] = pick(c); S.lastSongTx = S.min; S.aux.inter[by] = (S.aux.inter[by] || 0) + 1;
+    enqueue(S, 'music', {text:tpl(deal(S, 'ms_' + k, pool), vv), who:by, kind:k});
+  }
+  /* A Crew Intel question built from a sharing player's own Spotify data. */
+  function musicQ(S, who){
+    const m = S.music[who]; if (!m) return null;
+    const others = sharers(S).filter(id => id !== who).map(id => S.music[id]);
+    const mine = a => a.map(lc), kinds = shuf(['artist', 'genre', 'track'].filter(k => k === 'genre' ? m.genres.length : k === 'artist' ? m.artists.length : m.tracks.length));
+    for (const k of kinds){
+      const have = new Set(k === 'artist' ? mine(m.artists) : k === 'genre' ? mine(m.genres) : m.tracks.map(t => lc(t.n)));
+      const real = k === 'artist' ? pick(m.artists.slice(0, 5)) : k === 'genre' ? m.genres[0] : pick(m.tracks.slice(0, 5)).n;
+      const pool = shuf([...(k === 'artist' ? others.flatMap(o => o.artists) : k === 'genre' ? others.flatMap(o => o.genres) : others.flatMap(o => o.tracks.map(t => t.n))),
+        ...(k === 'artist' ? MUSIC.decoyA : k === 'genre' ? MUSIC.decoyG : MUSIC.decoyT)]), seen = new Set([lc(real)]), decoys = [];
+      for (const x of pool){ if (!have.has(lc(x)) && !seen.has(lc(x))){ seen.add(lc(x)); decoys.push(x); } if (decoys.length === 3) break; }
+      if (decoys.length < 3) continue;
+      const o = shuf([real, ...decoys]);
+      return {q:k === 'artist' ? `Which artist is in ${nm(S, who)}’s top artists?` : k === 'genre' ? `Which genre does ${nm(S, who)} listen to most?` : `Which of these is in ${nm(S, who)}’s top tracks?`, o, a:o.indexOf(real), kind:k};
+    }
+    return null;
+  }
+  /* Journey Recap, music section. Plain data only, safe to keep with the finished journey. */
+  function musicRecap(S){
+    const songs = S.songs, tally = (list, f) => { const t = {}; list.forEach(x => { const k = f(x); if (k) (t[k] ||= {k, n:0, x}).n++; }); return Object.values(t).sort((a, b) => b.n - a.n); };
+    const ts = tally(songs, x => lc(x.n) + '|' + lc(x.a))[0], ta = tally(songs, x => lc(x.a))[0];
+    const prof = {}; sharers(S).forEach(id => S.music[id].artists.forEach(x => { (prof[lc(x)] ||= {a:x, k:0}).k++; }));
+    const fav = Object.values(prof).sort((a, b) => b.k - a.k)[0];
+    const awards = [], ids = sharers(S), name = id => nm(S, id);
+    const auxScore = id => (S.aux.intro[id] || 0)*3 + (S.aux.inter[id] || 0), byAux = [...new Set([...Object.keys(S.aux.intro)])].filter(id => S.crew.includes(id)).sort((a, b) => auxScore(b) - auxScore(a));
+    const aux = byAux.length && (S.aux.intro[byAux[0]] || 0) >= 2 && (byAux.length < 2 || auxScore(byAux[0]) > auxScore(byAux[1])) ? byAux[0] : null;
+    if (aux) awards.push({id:aux, key:'aux', title:'Aux King', line:`${name(aux)} introduced ${S.aux.intro[aux]} of the ${songs.length} songs we heard.`});
+    if (S.musicDerived && ids.length){
+      const rep = {}; songs.forEach(x => { const k = x.by + '|' + lc(x.n); (rep[k] ||= {by:x.by, n:x.n, k:0}).k++; });
+      let ro = Object.values(rep).sort((a, b) => b.k - a.k)[0];
+      if (!ro || ro.k < 2){ ro = null; ids.forEach(id => { const c = {}; S.music[id].recent.forEach(x => { c[x.n] = (c[x.n] || 0) + 1; }); const top = Object.entries(c).sort((a, b) => b[1] - a[1])[0]; if (top && top[1] >= 4 && (!ro || top[1] > ro.k)) ro = {by:id, n:top[0], k:top[1]}; }); }
+      if (ro && ro.by !== aux) awards.push({id:ro.by, key:'repeat', title:'Repeat Offender', line:`${name(ro.by)} and ${ro.n}: ${ro.k} plays. We noticed.`});
+      if (ids.length >= 3){
+        const sc = ids.map(id => [id, ids.filter(o => o !== id).reduce((a, o) => a + likeness(S.music[id], S.music[o]), 0)]).sort((a, b) => a[1] - b[1]);
+        if (sc[0][1] < sc[1][1] && !awards.some(w => w.id === sc[0][0])) awards.push({id:sc[0][0], key:'taste', title:'Most Questionable Taste', line:`${name(sc[0][0])} has the least in common with the rest of the crew. Bold.`});
+      }
+      const wide = ids.map(id => [id, new Set(S.music[id].genres.map(famOf)).size]).sort((a, b) => b[1] - a[1]);
+      if (wide.length && wide[0][1] >= 3 && (wide.length < 2 || wide[0][1] > wide[1][1]) && !awards.some(w => w.id === wide[0][0])) awards.push({id:wide[0][0], key:'expert', title:'Hidden Music Expert', line:`${name(wide[0][0])} covers ${wide[0][1]} different genre families. Quietly impressive.`});
+    }
+    return {plays:songs.length, sharers:ids.length, song:ts ? {n:ts.x.n, a:ts.x.a, k:ts.n} : null, artist:ta ? {a:ta.x.a, k:ta.n} : null,
+      crewFav:fav && fav.k >= 2 ? {a:fav.a, k:fav.k} : null, aux:aux ? {id:aux, name:name(aux), k:S.aux.intro[aux]} : null, awards, moments:S.musicLog.slice(-4)};
+  }
+
   /* Trivia: answer times are measured in real seconds, because reactions happen in real time. */
   function openQ(S){
     const ch = S.ch, t = ch.qs[ch.round], order = shuf([0, 1, 2, 3]);
@@ -3868,6 +4115,9 @@ const Engine = (() => {
       case 'skip': if (ch && ch.phase !== 'done'){ log(S, 'x', `${MISSIONS[ch.id].name} skipped`); S.ch = null; setOpts(S); endMajor(S); } break;
       case 'decide': if (capOK) decide(S, a.choice, viaCo); break;
       case 'use': return usePU(S, pid, a.idx, a.target, viaCo);
+      case 'music-set': if (by === a.who || !a.who) setMusic(S, by, a.p); break;                    /* a player shares, refreshes or stops sharing their own profile */
+      case 'song': songIn(S, by, a.track); break;                                                   /* what this phone is playing; ignored unless they share */
+      case 'music-quiet': if (by === S.captain){ S.musicQuiet = !!a.on; bump(S); } break;
       case 'tx-send': if (a.text){ S.txq.push({at:S.min + (a.when === 'rand' ? 3 + R()*9 : +a.when), to:a.to, text:String(a.text).slice(0, 140), from:by}); bump(S); } break;
       case 'answered': if (S.tx && S.tx.kind === 'captain' && S.tx.phase === 'ask' && capOK){ S.tx.phase = 'react'; S.tx.viaCo = viaCo; S.tx.until = S.rt + RULES.reactFor; pass(S).forEach(p => { S.tx['bot_' + p] = S.min + rr(RULES.reactBy); }); if (PT.priority) gain(S, S.captain, PT.priority, 'captain'); bump(S); } break;
       case 'react': if (S.tx && S.tx.phase === 'react' && pid !== S.captain && !S.tx.reacts[pid]){ S.tx.reacts[pid] = a.v; bump(S); if (Object.keys(S.tx.reacts).length >= pass(S).length) closeTx(S); } break;
@@ -4025,6 +4275,7 @@ const Engine = (() => {
       if (S.min >= S.hj.nextTick && !(S.ch && S.ch.id === 'rescue' && S.ch.phase !== 'done')) hjTick(S);
       if (S.hj && S.min >= S.hj.retryAt && !S.q.some(x => x.type === 'rescue') && !(S.ch && S.ch.id === 'rescue' && S.ch.phase !== 'done')){ enqueue(S, 'rescue'); S.hj.retryAt = Infinity; }
     }
+    if (S.min >= S.nextMusic && S.qualified){ S.nextMusic = S.min + rr(RULES.music.every)*S.tempo.cycle; if (!S.musicQuiet && sharers(S).length && !S.q.some(x => x.type === 'music' && !x.text)) enqueue(S, 'music'); }
     if (S.min >= S.nextRoastCheck){ S.nextRoastCheck = S.min + 8*S.tempo.cycle; const lead = leader(S), low = [...S.crew].sort((a, b) => S.pts[a] - S.pts[b])[0];
       if (S.hj && S.min - S.hj.at >= 4 && R() < .5) roast(S, 'captive', S.hj.who);
       else if (lead && S.sm > S.pts[lead]) roast(S, 'smwinning'); else if (lead && S.pts[lead] - S.sm >= 8) roast(S, 'crewwinning');
@@ -4042,7 +4293,7 @@ const Engine = (() => {
   function winner(S){ const t = topCrew(S); return t && S.pts[t] > S.sm ? t : null; }
   const timeLeft = S => S.ch && S.ch.phase === 'q' ? Math.max(0, RULES.trivia.open - (S.rt - S.ch.qAt)) : S.ch && S.ch.until ? Math.max(0, S.ch.until - S.rt) : 0;
   const slots = (S, id) => slotsOf(S, id);
-  return {create, act, step, winner, topCrew, lossText, timeLeft, slots, hjCost:S => S.hj ? bail(S) : 0};
+  return {create, act, step, musicRecap, winner, topCrew, lossText, timeLeft, slots, hjCost:S => S.hj ? bail(S) : 0};
 })();
 /* ENGINE:END */
 
@@ -4212,7 +4463,8 @@ function startJourney(){
   if (!sheet.hidden){ sheet.hidden = true; sheet.innerHTML = ''; sheet.classList.remove('open'); }
   live.className = 'live'; live.hidden = false; document.body.style.overflow = 'hidden';
   const names = Object.fromEntries(crew.map(id => [id, id === ME.id ? ME.name : PEOPLE[id].name]));
-  LJ = {S:Engine.create({crew, captain:L.captain, names, lineup:[], mode:L.mode, dest:L.dest, pace:L.pace}), fk:{}, viewer:ME.id, day:false, voice:true,
+  Spotify.sync(false);
+  LJ = {S:Engine.create({crew, captain:L.captain, names, lineup:[], mode:L.mode, dest:L.dest, pace:L.pace, music:{derived:MUSIC_DERIVED, profiles:journeyMusic(crew)}}), nextSong:performance.now() + 25000, nextPoll:performance.now() + 4000, fk:{}, viewer:ME.id, day:false, voice:true,
     cache:{}, spun:{}, lastSeq:-1, hiddenTx:0, hiddenEv:0, introTx:0, pickWho:null, raf:0, last:0, startedAt:new Date()};
   S.tx = {to:'crew', when:'5'};
   try { Voice.ctx ||= new (window.AudioContext || window.webkitAudioContext)(); } catch {}
@@ -4249,7 +4501,7 @@ function tick(now){
   const S = LJ.S, real = Math.min(.25, (now - LJ.last)/1000); LJ.last = now;
   S.bots = S.pace === 'real' ? [] : S.crew.filter(id => id !== ME.id && id !== LJ.viewer);   /* Simulation Mode: every other phone is an AI passenger */
   Engine.step(S, real*(S.pace === 'real' ? 1/60 : SIM_RATE), real);
-  drain();
+  drain(); musicTick(now);
   setText('lv-mi', S.mi.toFixed(1)); setText('lv-clock', clock());
   progress();
   if (S.seq !== LJ.lastSeq) paint();
@@ -4278,6 +4530,7 @@ function renderHud(){
     <div class="lv-board" id="lv-board"></div>
     <section class="lv-stage" id="lv-stage" aria-live="polite"><div id="lv-ch"></div></section>
     <p class="lv-prog mono" id="ch-prog" aria-live="off"></p>
+    <div class="lv-music" id="lv-music"></div>
     <footer class="lv-tray" id="lv-tray"></footer>`;
   paint();
 }
@@ -4293,7 +4546,7 @@ function setHTML(id, html, fk){
 }
 function paint(){
   if (!LJ) return; const S = LJ.S; LJ.lastSeq = S.seq;
-  setHTML('lv-me', meHTML()); setHTML('lv-vs', vsHTML()); setHTML('lv-board', boardHTML()); setHTML('lv-ch', stageHTML(), S.ch ? `${S.ch.uid}|${S.ch.round || 0}|${S.ch.phase}` : (S.ev ? `e${S.ev.id}` : '')); setHTML('lv-tray', trayHTML()); spinReels();
+  setHTML('lv-me', meHTML()); setHTML('lv-vs', vsHTML()); setHTML('lv-board', boardHTML()); setHTML('lv-ch', stageHTML(), S.ch ? `${S.ch.uid}|${S.ch.round || 0}|${S.ch.phase}` : (S.ev ? `e${S.ev.id}` : '')); setHTML('lv-tray', trayHTML()); setHTML('lv-music', musicBarHTML()); spinReels();
   /* Spaceman's verdict after each game, and the What Happens Next? endings read out for the Captain on the Co-Pilot's phone */
   if (S.ch && S.ch.phase === 'done' && S.ch.smSay && LJ.verdict !== S.ch.uid && !S.tx){ LJ.verdict = S.ch.uid; if (LJ.voice) Voice.speak(`${S.ch.smSay} Over.`, {mood:'smug'}); }
   if (S.ch && S.ch.kind === 'whatnext' && S.ch.phase === 'guess' && LJ.readNext !== S.ch.uid && !S.tx && !(S.captain in S.ch.picks) && S.ch.voters.includes(S.captain)
@@ -4758,10 +5011,10 @@ function txOverlay(){
   if (el && +el.dataset.id === tx.id){ setHTML('tx-actions', txActions(tx)); return; }
   el?.remove();
   const box = document.createElement('div');
-  box.className = `tx ${tx.kind}`; box.id = 'tx'; box.dataset.id = tx.id; box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label', txKind(tx.kind));
+  box.className = `tx ${tx.kind}${tx.music ? ' music' : ''}`; box.id = 'tx'; box.dataset.id = tx.id; box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label', tx.music ? 'Spaceman music transmission' : txKind(tx.kind));
   box.innerHTML = `<div class="tx-in">
     <div class="radar" aria-hidden="true"><i></i><i></i><i></i><span class="core">${ic('signal',28)}</span></div>
-    <span class="eyebrow tx-kind">${txKind(tx.kind)}</span><span class="tx-status" id="tx-status">Incoming signal</span>
+    <span class="eyebrow tx-kind">${tx.music ? '🎵 Spaceman · Music' : txKind(tx.kind)}</span><span class="tx-status" id="tx-status">Incoming signal</span>
     <div class="wave" aria-hidden="true">${Array.from({length:14}, (_,i) => `<i style="--d:${(i*67) % 480}ms"></i>`).join('')}</div>
     <div class="tx-body"><span class="tx-to">${txTo(tx)}</span><p class="tx-msg">“${esc(tx.text)}”</p><span class="tx-from">${tx.kind === 'crew' ? (tx.from === LJ.viewer ? 'From: you (they don’t know that)' : 'From: someone in this car') : tx.kind === 'roast' ? 'From: Spaceman' : 'From: Mission Control'}</span><div class="tx-actions" id="tx-actions">${txActions(tx)}</div></div></div>`;
   live.appendChild(box); delete LJ.cache['tx-actions']; haptic();
@@ -4828,6 +5081,7 @@ function menuSheet(){
       <button class="row" data-action="voice">${ic(LJ.voice ? 'speaker' : 'mute',20)}<span class="grow"><b>Read transmissions aloud</b><span>${LJ.voice ? 'On for this phone' : 'Off for this phone'}</span></span><span class="chip ${LJ.voice ? 'ion' : ''}">${LJ.voice ? 'On' : 'Off'}</span></button>
       <button class="row" data-action="day">${ic('sun',20)}<span class="grow"><b>Daylight mode</b><span>Higher contrast for bright sun</span></span><span class="chip ${LJ.day ? 'ion' : ''}">${LJ.day ? 'On' : 'Off'}</span></button>
       <button class="row" data-action="sfx">${ic('sparkle',20)}<span class="grow"><b>Sound effects</b><span>${SFX.enabled() ? 'On' : 'Off'} on this phone</span></span><span class="chip ${SFX.enabled() ? 'ion' : ''}">${SFX.enabled() ? 'On' : 'Off'}</span></button>
+      ${musicMenuRow()}
       ${S.pace === 'real' ? '' : `<button class="row" data-action="warp">${ic('bolt',20)}<span class="grow"><b>Prototype: warp 5 minutes</b><span>Skip journey time to see more events</span></span></button>`}
     </div>
     <section class="stack-v"><h3 class="eyebrow">Mission log</h3><div class="card mlog">${S.log.slice(-10).reverse().map(lgRow).join('') || '<p class="small muted">Quiet so far.</p>'}</div></section>
@@ -4911,7 +5165,7 @@ function endJourney(){
   const best = Engine.topCrew(S);
   S.log.push({t:Math.floor(S.min), ic:'flag', text:top ? `Mission complete. ${S.names[top]} beat Spaceman and is the Journey Spaceman.` : `Mission complete. Spaceman retains control.`});
   const j = {id:'j' + Date.now().toString(36), title:'', dest:S.dest, date:isoToday(), start:`${String(s.getHours()).padStart(2,'0')}:${String(s.getMinutes()).padStart(2,'0')}`,
-    mi:Math.max(1, Math.round(S.mi)), min:Math.max(1, Math.round(S.min)), crew:[...S.crew], mode:S.mode, ch:S.results, songs:[],
+    mi:Math.max(1, Math.round(S.mi)), min:Math.max(1, Math.round(S.min)), crew:[...S.crew], mode:S.mode, ch:S.results, songs:[], music:trimMusic(Engine.musicRecap(S)),
     captain:S.captain, copilot:S.copilot, sm:S.sm, smWon:!top, hostages:S.hjLog.length + (S.hj ? 1 : 0), rescues:S.hjLog.filter(h => h.how === 'rescued').length, best, crewTotal:S.crew.reduce((a, id) => a + S.pts[id], 0), coLog:S.coLog.map(x => ({...x, to:x.to === null ? Math.round(S.min*10)/10 : x.to})), promos:[...S.promos], scores:{...S.pts}, spaceman:top, rating:null, log:S.log.slice(-14)};
   j.awards = makeAwards(j, S.pts);
   const info = recordJourney(j);
@@ -5031,6 +5285,7 @@ function recapHTML(j, info){
     ${info.guests.map(claimCard).join('')}
     ${rateHTML(j)}
     ${awardsHTML(j)}
+    ${musicRecapHTML(j)}
     ${challengesHTML(j)}
     ${logHTML(j)}
     ${info.ach.map(a => `<section class="card fact"><span class="ic-tile ion">${ic(a.ic)}</span><div><span class="eyebrow ion">Achievement unlocked</span><b style="font-weight:600;display:block;margin-top:4px">${a.name}</b><p class="small muted">${a.desc}</p></div></section>`).join('')}
@@ -5136,7 +5391,7 @@ document.addEventListener('click', e => {
   if (d.guest) return inviteSheet(d.guest);
   if (d.toggle){
     const on = t.getAttribute('aria-checked') !== 'true'; t.setAttribute('aria-checked', on);
-    if (d.toggle in S.settings){ S.settings[d.toggle] = on; cur().settings = {...S.settings}; persist(); if (d.toggle === 'hc') document.documentElement.classList.toggle('hc', on); }
+    if (d.toggle in S.settings){ S.settings[d.toggle] = on; cur().settings = {...S.settings}; persist(); if (d.toggle === 'hc') document.documentElement.classList.toggle('hc', on); if (d.toggle === 'spotifyShare') Spotify.shareChanged(); }
     return;
   }
   if (d.pick){ const L = launchCfg(); L.crew = L.crew.includes(d.pick) ? L.crew.filter(x => x !== d.pick) : [...L.crew, d.pick]; t.setAttribute('aria-pressed', L.crew.includes(d.pick)); if (![ME.id, ...L.crew].includes(L.captain)) L.captain = L.crew.find(x => !x.startsWith('g_')) || ME.id; L.seat = L.captain === ME.id ? 'driver' : 'passenger'; persist(); return; }
@@ -5175,6 +5430,7 @@ document.addEventListener('input', e => {
   if (id === 'claim-code') $('#claim-err').textContent = '';
   if (id === 'guest-name') $('#guest-err').textContent = '';
   if (id === 'display-name') setName(e.target.value);
+  if (id === 'sp-client') Spotify.setClient(e.target.value);
   if (id === 'dest'){ launchCfg().dest = e.target.value.trim(); persist(); }
 });
 document.addEventListener('change', e => { if (e.target.matches('[data-title]')) setTitle(e.target.dataset.title, e.target.value); });
@@ -5183,9 +5439,296 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.target.matches('[data-title]')) e.target.blur();
 });
 
+/* ---------- Spotify (Phase 12) ----------
+   Authorization Code + PKCE (no client secret ever ships in this file). Scopes are the minimum for the features: top items, recently played, playback state.
+   Tokens live under their own localStorage key and are wiped on disconnect. What the account keeps is names, artwork links and play hours only.
+   MUSIC_DERIVED switches the lines that compute things from listening (counts, percentages, awards). docs/SPOTIFY.md explains why it is a switch. */
+const MUSIC_DERIVED = true;
+const SP_KEY = 'spaceman.spotify.v1';
+const SP_SCOPES = 'user-top-read user-read-recently-played user-read-currently-playing user-read-playback-state';
+const spLogo = (n = 16) => `<svg class="sp-logo" width="${n}" height="${n}" viewBox="0 0 24 24" role="img" aria-label="Spotify"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M5.6 9.3c4.4-1.3 9.3-1 13 1.2M6.3 12.9c3.7-1 7.5-.7 10.6 1.1M7 16.3c3-.8 5.8-.5 8.3.9" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round"/></svg>`;
+const safeUrl = u => /^https:\/\/([\w-]+\.)*(spotify\.com|scdn\.co|spotifycdn\.com)\//.test(u || '') ? u : '';
+const SpStore = {
+  read(){ try { return JSON.parse(localStorage.getItem(SP_KEY)) || {}; } catch { return {}; } },
+  write(o){ try { localStorage.setItem(SP_KEY, JSON.stringify(o)); } catch {} }
+};
+const rand64 = n => { const cs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~', a = crypto.getRandomValues(new Uint8Array(n)); return Array.from(a, x => cs[x % cs.length]).join(''); };
+const b64url = buf => btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const imgOf = (imgs, min) => { const l = (imgs || []).filter(i => i && i.url).sort((a, b) => (a.width || 0) - (b.width || 0)); return (l.find(i => (i.width || 0) >= min) || l[l.length - 1] || {}).url || ''; };
+const agoText = t => { if (!t) return 'never'; const m = Math.round((Date.now() - t)/60000); return m < 1 ? 'just now' : m < 60 ? `${m} min ago` : m < 1440 ? `${Math.round(m/60)} h ago` : `${Math.round(m/1440)} d ago`; };
+
+const Spotify = {
+  now:null, busyUntil:0, syncing:false,
+  st: () => cur().spotify,
+  connected(){ const s = cur() && cur().spotify; return !!(s && s.on); },
+  sharing(){ return this.connected() && !!S.settings.spotifyShare && !!this.st().profile; },
+  clientId(){ return String(SpStore.read().clientId || window.SPACEMAN_SPOTIFY_CLIENT_ID || '').trim(); },
+  setClient(v){ const o = SpStore.read(); o.clientId = String(v).replace(/[^\w-]/g, '').slice(0, 64); SpStore.write(o); },
+  redirect: () => location.origin + location.pathname,
+  uriIssue(){
+    const h = location.hostname; if (location.protocol === 'https:' || h === '127.0.0.1' || h === '[::1]') return '';
+    return h === 'localhost' ? 'Spotify no longer accepts “localhost”. Open this page at http://127.0.0.1:PORT instead.' : 'Spotify only accepts https:// or http://127.0.0.1 redirect addresses. Host this page on HTTPS, or open it from http://127.0.0.1.';
+  },
+  engine(p = this.st().profile){ return p ? {genres:p.genres || [], artists:(p.artists || []).map(a => a.n), tracks:(p.tracks || []).map(t => ({n:t.n, a:t.a})), recent:p.recent || []} : null; },
+  /* ---- sign-in ---- */
+  async begin(share = true){
+    if (!this.clientId()) return spotifySheet();
+    const issue = this.uriIssue(); if (issue) return spotifySheet();
+    if (!(window.crypto && crypto.subtle)) return toast('This browser can’t do secure sign-in on this page.');
+    const verifier = rand64(64), challenge = b64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))), state = rand64(24);
+    const o = SpStore.read(); o.pending = {state, verifier, uid:cur().id, share, at:Date.now()}; SpStore.write(o);
+    location.assign('https://accounts.spotify.com/authorize?' + new URLSearchParams({client_id:this.clientId(), response_type:'code', redirect_uri:this.redirect(), code_challenge_method:'S256', code_challenge:challenge, state, scope:SP_SCOPES}));
+  },
+  async callback(){
+    const q = new URLSearchParams(location.search); if (!q.get('state') || !(q.has('code') || q.has('error'))) return false;
+    const o = SpStore.read(), pen = o.pending; history.replaceState(null, '', location.pathname);
+    if (!pen || pen.state !== q.get('state') || Date.now() - pen.at > 15*60e3){ toast('That Spotify sign-in expired. Try again.'); return true; }
+    delete o.pending; SpStore.write(o);
+    if (q.get('error')){ toast(q.get('error') === 'access_denied' ? 'Spotify wasn’t connected.' : 'Spotify sign-in failed.'); return true; }
+    if (pen.uid !== cur().id){ toast('Sign in as the account that started the Spotify connection, then try again.'); return true; }
+    const r = await this.token({grant_type:'authorization_code', code:q.get('code'), redirect_uri:this.redirect(), code_verifier:pen.verifier});
+    if (!r){ toast('Spotify couldn’t finish connecting. Try again.'); return true; }
+    const u = cur(); u.spotify = {...u.spotify, on:true, demo:false, status:'ok', err:''};
+    if (pen.share){ S.settings.spotifyShare = true; u.settings = {...S.settings}; }
+    persist(); await this.sync(true); toast('Spotify connected'); return true;
+  },
+  async token(params){
+    let r; try { r = await fetch('https://accounts.spotify.com/api/token', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams({client_id:this.clientId(), ...params})}); } catch { return null; }
+    if (!r.ok) return r.status === 400 ? {bad:true} : null;
+    const j = await r.json(), o = SpStore.read(); o.tok ||= {}; const old = o.tok[cur().id] || {};
+    o.tok[cur().id] = {access:j.access_token, refresh:j.refresh_token || old.refresh, exp:Date.now() + Math.max(60, j.expires_in - 60)*1000};   /* a refresh may not return a new refresh token: keep the old one */
+    SpStore.write(o); return o.tok[cur().id];
+  },
+  async access(){
+    const t = (SpStore.read().tok || {})[cur().id]; if (!t) return null;
+    if (t.exp > Date.now()) return t.access;
+    if (!t.refresh) return null;
+    this._r ||= this.token({grant_type:'refresh_token', refresh_token:t.refresh}).finally(() => { this._r = null; });
+    const n = await this._r; if (n && n.bad){ this.fail('auth'); return null; }
+    return n ? n.access : null;
+  },
+  async api(path){
+    if (Date.now() < this.busyUntil) return {err:'rate'};
+    for (let k = 0; k < 2; k++){
+      const tok = await this.access(); if (!tok) return {err:'auth'};
+      let r; try { r = await fetch('https://api.spotify.com/v1' + path, {headers:{Authorization:'Bearer ' + tok}}); } catch { return {err:'net'}; }
+      if (r.status === 401 && k === 0){ const o = SpStore.read(); if (o.tok && o.tok[cur().id]) o.tok[cur().id].exp = 0; SpStore.write(o); continue; }
+      if (r.status === 429){ this.busyUntil = Date.now() + (+r.headers.get('Retry-After') || 30)*1000; return {err:'rate'}; }
+      if (r.status === 204) return {data:null};
+      if (r.status === 403) return {err:'forbidden'};
+      if (!r.ok) return {err:'http'};
+      return {data:await r.json()};
+    }
+    return {err:'auth'};
+  },
+  fail(err){ const s = this.st(); if (!s || !s.on || s.demo) return; s.status = err === 'forbidden' ? 'forbidden' : err === 'auth' ? 'expired' : 'unavailable'; persist(); this.redraw(); },
+  /* ---- data ---- */
+  async sync(force){
+    const s = cur() && cur().spotify; if (!s || !s.on || s.demo || this.syncing) return;
+    if (!force && Date.now() - s.at < 30*60e3 && s.status === 'ok') return;
+    this.syncing = true;
+    try {
+      const [ta, tt, rc] = await Promise.all([this.api('/me/top/artists?time_range=medium_term&limit=20'), this.api('/me/top/tracks?time_range=medium_term&limit=10'), this.api('/me/player/recently-played?limit=50')]);
+      if (!ta.data && !tt.data && !rc.data){ const e = [ta, tt, rc].find(x => x.err); if (e && e.err !== 'rate') this.fail(e.err); return; }
+      const p = {...(s.profile || {})};
+      if (ta.data){ const items = ta.data.items || [], gc = {}; items.forEach(a => (a.genres || []).forEach(g => { gc[g] = (gc[g] || 0) + 1; }));
+        p.genres = Object.entries(gc).sort((a, b) => b[1] - a[1]).slice(0, 6).map(x => x[0]);
+        p.artists = items.slice(0, 10).map(a => ({n:a.name, img:imgOf(a.images, 64), url:safeUrl(a.external_urls && a.external_urls.spotify)})); }
+      if (tt.data) p.tracks = (tt.data.items || []).slice(0, 10).map(t => ({n:t.name, a:(t.artists[0] || {}).name || '', img:imgOf(t.album && t.album.images, 64), url:safeUrl(t.external_urls && t.external_urls.spotify)}));
+      if (rc.data) p.recent = (rc.data.items || []).filter(i => i.track).map(i => ({n:i.track.name, a:(i.track.artists[0] || {}).name || '', h:new Date(i.played_at).getHours()}));
+      s.profile = p; s.at = Date.now(); s.status = 'ok'; s.err = ''; persist(); this.pushToJourney(); this.redraw();
+    } finally { this.syncing = false; }
+  },
+  async pollNow(){
+    const s = cur() && cur().spotify; if (!s || !s.on || s.demo || document.hidden) return null;
+    const r = await this.api('/me/player?additional_types=track');
+    if (r.err){ if (r.err === 'auth' || r.err === 'forbidden') this.fail(r.err); return this.now; }
+    const d = r.data; if (!d || !d.item || (d.currently_playing_type && d.currently_playing_type !== 'track')){ this.now = null; return null; }
+    this.now = {id:d.item.id, n:d.item.name, a:(d.item.artists[0] || {}).name || '', art:imgOf(d.item.album && d.item.album.images, 64), url:safeUrl(d.item.external_urls && d.item.external_urls.spotify), playing:!!d.is_playing, dev:d.device && d.device.name || ''};
+    return this.now;
+  },
+  /* ---- state changes ---- */
+  disconnect(){
+    const u = cur(), o = SpStore.read(); if (o.tok) delete o.tok[u.id]; delete o.pending; SpStore.write(o);
+    u.spotify = {on:false, demo:false, demoCrew:u.spotify.demoCrew !== false, status:'off', err:'', profile:null, at:0};      /* data goes with the connection */
+    this.now = null; persist(); this.pushToJourney(); this.redraw();
+  },
+  demo(){
+    const u = cur(); u.spotify = {...u.spotify, on:true, demo:true, status:'ok', err:'', profile:DEMO_ME, at:Date.now()};
+    S.settings.spotifyShare = true; u.settings = {...S.settings}; persist(); this.pushToJourney(); this.redraw();
+  },
+  shareChanged(){ this.pushToJourney(); this.redraw(); },
+  pushToJourney(){ if (LJ && LJ.viewer === ME.id) Transport.send({type:'music-set', by:ME.id, p:this.sharing() ? this.engine() : null}); },
+  redraw(){ if (LJ) paint(); else if (live.hidden && typeof refresh === 'function') refresh(); if (!sheet.hidden && sheet.querySelector('[data-sp-sheet]')) spotifySheet(); },
+  async boot(){ const handled = await this.callback(); if (handled) return this.redraw(); if (this.connected() && !this.st().demo) this.sync(false); }
+};
+
+/* ---- demo provider: simulated crew who have "connected" and chosen to share (Lewis has opted out; guests have no account) ---- */
+const mp = (genres, artists, tracks, recent) => ({genres, artists:artists.map(n => ({n})), tracks:tracks.map(([n, a]) => ({n, a})), recent});
+function spRecent(spec){
+  const out = []; spec.forEach(([n, a, k, h]) => { for (let i = 0; i < k; i++) out.push({n, a, h:h ?? 12 + (i % 6)}); });
+  const r = rng('recent' + out.length + spec.length); for (let i = out.length - 1; i > 0; i--){ const k = Math.floor(r()*(i + 1)); [out[i], out[k]] = [out[k], out[i]]; }
+  return out;
+}
+const DEMO_ME = mp(['indie rock', 'alternative rock', 'pop punk'], ['Arctic Monkeys', 'The Killers', 'Oasis', 'Blink-182', 'Green Day'],
+  [['Do I Wanna Know?', 'Arctic Monkeys'], ['Mr. Brightside', 'The Killers'], ['Wonderwall', 'Oasis'], ['All The Small Things', 'Blink-182'], ['Boulevard of Broken Dreams', 'Green Day']],
+  spRecent([['Do I Wanna Know?', 'Arctic Monkeys', 5], ['Mr. Brightside', 'The Killers', 4], ['Wonderwall', 'Oasis', 3], ['All The Small Things', 'Blink-182', 4], ['Basket Case', 'Green Day', 3], ['R U Mine?', 'Arctic Monkeys', 3], ['Champagne Supernova', 'Oasis', 2], ['Somebody Told Me', 'The Killers', 3], ['Dammit', 'Blink-182', 2], ['Brianstorm', 'Arctic Monkeys', 2], ['When I Come Around', 'Green Day', 3], ['Human', 'The Killers', 2], ['Live Forever', 'Oasis', 2], ['What I Got', 'Sublime', 2], ['Seven Nation Army', 'The White Stripes', 2], ['Last Nite', 'The Strokes', 3], ['Take Me Out', 'Franz Ferdinand', 2], ['Float On', 'Modest Mouse', 3]]));
+const SAMPLE_MUSIC = {
+  connor:mp(['indie folk', 'sad indie', 'bedroom pop'], ['Bon Iver', 'Phoebe Bridgers', 'Fleet Foxes', 'Elliott Smith', 'Mitski'],
+    [['Skinny Love', 'Bon Iver'], ['Motion Sickness', 'Phoebe Bridgers'], ['Holocene', 'Bon Iver'], ['Between the Bars', 'Elliott Smith'], ['I Know the End', 'Phoebe Bridgers']],
+    spRecent([['Skinny Love', 'Bon Iver', 6], ['Skinny Love', 'Bon Iver', 2, 2], ['Funeral', 'Phoebe Bridgers', 5], ['Motion Sickness', 'Phoebe Bridgers', 5], ['Holocene', 'Bon Iver', 4], ['Between the Bars', 'Elliott Smith', 5], ['Washing Machine Heart', 'Mitski', 4], ['I Know the End', 'Phoebe Bridgers', 5], ['White Winter Hymnal', 'Fleet Foxes', 4], ['Lonely', 'Elliott Smith', 3], ['Goodbye', 'Fleet Foxes', 3], ['Your Best American Girl', 'Mitski', 3]])),
+  megan:mp(['80s rock', 'soft rock', 'glam metal'], ['Queen', 'Journey', 'Fleetwood Mac', 'The Killers', 'Bon Jovi'],
+    [['Don’t Stop Believin’', 'Journey'], ['Bohemian Rhapsody', 'Queen'], ['Go Your Own Way', 'Fleetwood Mac'], ['Livin’ On A Prayer', 'Bon Jovi'], ['Mr. Brightside', 'The Killers']],
+    spRecent([['Don’t Stop Believin’', 'Journey', 14], ['Bohemian Rhapsody', 'Queen', 8], ['Go Your Own Way', 'Fleetwood Mac', 7], ['Livin’ On A Prayer', 'Bon Jovi', 6], ['Mr. Brightside', 'The Killers', 5], ['Separate Ways', 'Journey', 6], ['Dreams', 'Fleetwood Mac', 4]])),
+  thomas:mp(['uk hip hop', 'drill', 'grime'], ['Central Cee', 'Dave', 'Stormzy', 'Skepta', 'Little Simz'],
+    [['Doja', 'Central Cee'], ['Starlight', 'Dave'], ['Shut Up', 'Stormzy'], ['That’s Not Me', 'Skepta'], ['Introvert', 'Little Simz']],
+    spRecent([['Doja', 'Central Cee', 9], ['Sprinter', 'Dave', 9], ['Shut Up', 'Stormzy', 8], ['That’s Not Me', 'Skepta', 8], ['Introvert', 'Little Simz', 8], ['Band4Band', 'Central Cee', 8]])),
+  zac:mp(['indie rock', 'britpop', 'alternative rock'], ['The Killers', 'Arctic Monkeys', 'Oasis', 'Blur', 'The Strokes'],
+    [['Mr. Brightside', 'The Killers'], ['Do I Wanna Know?', 'Arctic Monkeys'], ['Wonderwall', 'Oasis'], ['Song 2', 'Blur'], ['Last Nite', 'The Strokes']],
+    spRecent([['Mr. Brightside', 'The Killers', 5], ['Do I Wanna Know?', 'Arctic Monkeys', 4], ['Wonderwall', 'Oasis', 4], ['Song 2', 'Blur', 3], ['Last Nite', 'The Strokes', 4], ['Cigarettes & Alcohol', 'Oasis', 3], ['Parklife', 'Blur', 3], ['Reptilia', 'The Strokes', 3], ['R U Mine?', 'Arctic Monkeys', 4], ['Human', 'The Killers', 3], ['Roll With It', 'Oasis', 3], ['Girls & Boys', 'Blur', 3], ['Fluorescent Adolescent', 'Arctic Monkeys', 3], ['Somebody Told Me', 'The Killers', 3]])),
+  seb:mp(['house', 'uk garage', 'edm'], ['Fred again..', 'Disclosure', 'Calvin Harris', 'Chase & Status', 'Jamie xx'],
+    [['Delilah (pull me out of this)', 'Fred again..'], ['Latch', 'Disclosure'], ['Summer', 'Calvin Harris'], ['Baddadan', 'Chase & Status'], ['Loud Places', 'Jamie xx']],
+    spRecent([['Delilah (pull me out of this)', 'Fred again..', 5], ['Latch', 'Disclosure', 4], ['Summer', 'Calvin Harris', 4], ['Baddadan', 'Chase & Status', 4], ['Loud Places', 'Jamie xx', 4], ['Marea (we’ve lost dancing)', 'Fred again..', 4], ['White Ferrari', 'Jamie xx', 3], ['Hold On', 'Chase & Status', 3], ['Bangarang', 'Skrillex', 3], ['This Is What You Came For', 'Calvin Harris', 4], ['Ecstasy', 'Disclosure', 3], ['Gecko', 'Oliver Heldens', 3], ['Rinse & Repeat', 'Riton', 3]])),
+  ollie:mp(['pop', 'dance pop', 'k-pop'], ['Dua Lipa', 'Olivia Rodrigo', 'Taylor Swift', 'Harry Styles', 'Sabrina Carpenter'],
+    [['Houdini', 'Dua Lipa'], ['vampire', 'Olivia Rodrigo'], ['Anti-Hero', 'Taylor Swift'], ['As It Was', 'Harry Styles'], ['Espresso', 'Sabrina Carpenter']],
+    spRecent([['Houdini', 'Dua Lipa', 4], ['vampire', 'Olivia Rodrigo', 4], ['Anti-Hero', 'Taylor Swift', 5], ['As It Was', 'Harry Styles', 4], ['Espresso', 'Sabrina Carpenter', 5], ['Levitating', 'Dua Lipa', 3], ['good 4 u', 'Olivia Rodrigo', 3], ['Cruel Summer', 'Taylor Swift', 4], ['Watermelon Sugar', 'Harry Styles', 3], ['Please Please Please', 'Sabrina Carpenter', 4], ['Dynamite', 'BTS', 3], ['Padam Padam', 'Kylie Minogue', 4]])),
+  lewis:null
+};
+function demoMusicFor(id){
+  if (id in SAMPLE_MUSIC) return SAMPLE_MUSIC[id];
+  if (String(id).startsWith('g_')) return null;                                         /* guests have no Spotify */
+  const r = rng('mus' + id); return SAMPLE_MUSIC[['seb', 'ollie', 'zac'][Math.floor(r()*3)]];
+}
+function journeyMusic(crew){
+  const out = {}, s = cur().spotify; if (!s || !s.on) return out;
+  if (Spotify.sharing()) out[ME.id] = Spotify.engine();
+  if (s.demoCrew) crew.forEach(id => { if (id === ME.id) return; const p = demoMusicFor(id); if (p) out[id] = Spotify.engine(p); });
+  return out;
+}
+const trimMusic = m => m && (m.plays || m.crewFav || m.moments.length || m.awards.length) ? m : null;
+
+/* ---- live: this phone's real playback, plus simulated crew phones in Simulation Mode ---- */
+function musicTick(now){
+  if (!LJ) return; const S = LJ.S;
+  if (now > LJ.nextPoll){ LJ.nextPoll = now + 12000;
+    if (Spotify.connected() && !Spotify.st().demo && LJ.viewer === ME.id) Spotify.pollNow().then(n => {
+      if (!LJ) return; const k = n ? n.id : '';
+      if (n && Spotify.sharing() && k !== LJ.lastTrack){ LJ.lastTrack = k; Transport.send({type:'song', by:ME.id, track:{n:n.n, a:n.a, art:n.art, url:n.url}}); } else if (k !== LJ.lastTrack){ LJ.lastTrack = k; paint(); } }); }
+  if (now > LJ.nextSong){ LJ.nextSong = now + 150000 + Math.random()*90000;
+    const ids = Object.keys(S.music).filter(id => id !== ME.id || Spotify.st().demo); if (S.pace !== 'real' && ids.length){
+      const id = ids[Math.floor(Math.random()*ids.length)], p = id === ME.id ? Spotify.st().profile : demoMusicFor(id), pool = [...(p.tracks || []), ...(p.recent || [])];
+      if (pool.length){ const t = pool[Math.floor(Math.random()*pool.length)]; Transport.send({type:'song', by:id, track:{n:t.n, a:t.a}}); } } }
+}
+function musicBarHTML(){
+  const S = LJ.S, s = cur().spotify, now = S.now && S.music[S.now.by] ? S.now : null;
+  if (now){
+    const mine = now.by === ME.id, paused = mine && Spotify.now === null && !s.demo && Spotify.connected() && LJ.lastTrack === '';
+    const art = safeUrl(now.art) ? `<img class="art" src="${esc(now.art)}" alt="" referrerpolicy="no-referrer">` : `<span class="art">${ic('music',16)}</span>`;
+    const inner = `${art}<span class="txt"><b>${esc(now.n)}</b><small>${esc(now.a)}${S.crew.length > 1 ? ` · ${mine ? 'your' : esc(viewName(now.by)) + '’s'} aux` : ''}</small></span>${paused ? '' : '<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>'}${spLogo(18)}`;
+    const url = safeUrl(now.url);
+    return url ? `<a class="mus" href="${esc(url)}" target="_blank" rel="noopener" aria-label="Now playing: ${esc(now.n)} by ${esc(now.a)}. Open in Spotify">${inner}</a>` : `<div class="mus" role="status" aria-label="Now playing: ${esc(now.n)} by ${esc(now.a)}">${inner}</div>`;
+  }
+  const idle = (txt, cta) => `<button class="mus idle" data-action="sp-open"><span class="art">${ic('music',16)}</span><span class="txt"><b>${txt}</b></span>${cta ? `<span class="cta">${cta}</span>` : ''}${spLogo(18)}</button>`;
+  if (!s.on) return idle('Add your music to the mission', 'Connect');
+  if (s.status === 'expired') return idle('Spotify needs reconnecting', 'Reconnect');
+  if (s.status === 'forbidden' || s.status === 'unavailable') return idle('Spotify is unavailable right now', '');
+  if (!cur().settings.spotifyShare) return idle('Spotify sharing is off', 'Turn on');
+  return idle('Nothing playing. Start a song in Spotify', '');
+}
+function musicMenuRow(){
+  const s = cur().spotify;
+  if (!s.on) return `<button class="row" data-action="sp-open">${spLogo(22)}<span class="grow"><b>Connect Spotify</b><span>Songs, roasts and music moments</span></span></button>`;
+  return `<div class="row">${spLogo(22)}<span class="grow"><b>🎵 Share Spotify Data</b><span>${cur().settings.spotifyShare ? 'Your music is in this mission' : 'Hidden from the crew'}</span></span><button class="switch" role="switch" aria-checked="${!!cur().settings.spotifyShare}" aria-label="Share Spotify Data" data-toggle="spotifyShare"></button></div>`;
+}
+
+/* ---- profile section ---- */
+function spProfileHTML(p, name, simulated){
+  const g = (p.genres || []).slice(0, 5), a = (p.artists || []).slice(0, 5), t = (p.tracks || []).slice(0, 5);
+  const img = (u, n, r) => safeUrl(u) ? `<img class="sp-img${r ? ' r' : ''}" src="${esc(u)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : `<span class="sp-img${r ? ' r' : ''} ph" aria-hidden="true">${esc(String(n || '?')[0])}</span>`;
+  const item = (url, inner) => safeUrl(url) ? `<a class="sp-item" href="${esc(url)}" target="_blank" rel="noopener">${inner}</a>` : `<div class="sp-item">${inner}</div>`;
+  return `<div class="sp-sec">
+    <div class="sp-h">${spLogo(20)}<h3 class="sec">${name === 'You' ? 'Your music' : esc(name) + '’s music'}</h3><span class="sp-tag">${simulated ? 'Simulated' : 'Spotify'}</span></div>
+    ${g.length ? `<span class="sp-sub">Top genres</span><div class="sp-chips">${g.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
+    ${a.length ? `<span class="sp-sub">Top artists</span><div class="sp-list">${a.map((x, i) => item(x.url, `<span class="rk">${i + 1}</span>${img(x.img, x.n, true)}<span class="n"><b>${esc(x.n)}</b></span>`)).join('')}</div>` : ''}
+    ${t.length ? `<span class="sp-sub">Top tracks</span><div class="sp-list">${t.map((x, i) => item(x.url, `<span class="rk">${i + 1}</span>${img(x.img, x.n, false)}<span class="n"><b>${esc(x.n)}</b><small>${esc(x.a)}</small></span>`)).join('')}</div>` : ''}
+    <p class="sp-foot">Music data from Spotify${simulated ? ' · demo data, not a real account' : ''}</p></div>`;
+}
+const spNote = (inner, icon = 'music') => `<div class="sp-sec"><div class="sp-empty"><span class="ic-tile">${ic(icon)}</span><span>${inner}</span></div></div>`;
+function musicSectionHTML(){
+  const u = cur(), s = u.spotify, share = !!u.settings.spotifyShare;
+  const label = !s.on ? 'Connect Spotify' : s.status === 'expired' ? 'Reconnect Spotify' : s.status === 'forbidden' ? 'Spotify access blocked' : s.status === 'unavailable' ? 'Spotify unavailable' : 'Spotify Connected';
+  const sub = !s.on ? 'Roasts, transmissions and crew music moments' : s.demo ? 'Demo account · simulated music' : s.status === 'ok' ? `Updated ${agoText(s.at)}` : s.status === 'expired' ? 'Your session ended. Tap to sign in again' : s.status === 'forbidden' ? 'This Spotify account isn’t allowed on this app yet' : 'Showing your last saved music';
+  const head = `<button class="row sp-status" data-action="sp-open">${spLogo(30)}<span class="grow"><b>${label}</b><span>${sub}</span></span><span class="chev">${ic('chevR',18)}</span></button>`;
+  const toggle = `<div class="row"><span class="grow"><b>🎵 Share Spotify Data</b><span>${share ? 'Crew sees your music; Spaceman can comment on it' : 'Hidden. No Spotify roasts, questions or profile'}</span></span><button class="switch" role="switch" aria-checked="${share}" aria-label="Share Spotify Data" data-toggle="spotifyShare"></button></div>`;
+  const body = !s.on ? spNote('Connect Spotify and Spaceman will know your crew’s taste. Nothing is shared until you say so.')
+    : !share ? spNote('Your music profile is hidden. Switch on Share Spotify Data to show it and let Spaceman use it.', 'lock')
+    : s.profile ? spProfileHTML(s.profile, 'You', s.demo) : spNote('Your music is still loading. Pull to refresh in a moment.');
+  return `<section>${secH('Music')}<div class="list">${head}${toggle}</div>${body}</section>`;
+}
+function friendMusicHTML(id){
+  const s = cur().spotify; if (!s || !s.on || !s.demoCrew) return '';
+  const p = demoMusicFor(id), name = PEOPLE[id].name;
+  return `<section>${p ? spProfileHTML(p, name, true) : spNote(`${esc(name)} isn’t sharing Spotify data, so their music stays private.`, 'lock')}</section>`;
+}
+
+/* ---- recap + memory ---- */
+function musicRecapHTML(j){
+  const m = j.music;
+  if (!m) return `<section>${secH('Music')}<div class="sp-sec" style="margin-top:0"><div class="sp-empty">${spLogo(22)}<span>No shared music on this journey. Connect Spotify and switch on Share Spotify Data to get a music recap.</span></div></div></section>`;
+  const tile = (l, b, sm, wide) => `<div class="sp-tile${wide ? ' wide' : ''}"><span class="eyebrow">${l}</span><b>${b}</b>${sm ? `<small>${sm}</small>` : ''}</div>`;
+  const tiles = [
+    m.song ? tile('Most played song', esc(m.song.n), `${esc(m.song.a)} · ${m.song.k}×`) : '',
+    m.artist ? tile('Most played artist', esc(m.artist.a), `${m.artist.k} plays`) : '',
+    m.crewFav ? tile('Crew favourite artist', esc(m.crewFav.a), `In ${m.crewFav.k} top-artist lists`) : '',
+    m.aux ? tile('🎵 Aux King', esc(m.aux.name), `${m.aux.k} songs introduced`) : ''].filter(Boolean);
+  const aw = (m.awards || []).filter(a => a.key !== 'aux' || !m.aux);
+  return `<section>${secH('Music','','',spLogo(18))}
+    ${tiles.length ? `<div class="sp-tiles">${tiles.join('')}</div>` : ''}
+    ${aw.length ? `<div class="list" style="margin-top:10px">${aw.map(a => `<div class="award"><span class="trophy">${ic('music',20)}</span><span class="txt"><b>🎵 ${esc(a.title)}</b><span>${esc(a.line)}</span></span></div>`).join('')}</div>` : ''}
+    ${(m.moments || []).length ? `<div class="card" style="margin-top:10px;padding:8px 16px"><span class="eyebrow">Music moments</span>${m.moments.map(x => `<div class="sp-mom"><span class="mono">min ${x.t}</span><span>${esc(x.text)}</span></div>`).join('')}</div>` : ''}
+    <p class="sp-foot" style="margin-top:8px">Music data from Spotify</p></section>`;
+}
+
+/* ---- connect / manage sheet ---- */
+function spotifySheet(){
+  const u = cur(), s = u.spotify, cid = Spotify.clientId(), issue = Spotify.uriIssue(), share = !!u.settings.spotifyShare;
+  const switchRow = `<div class="row"><span class="grow"><b>🎵 Share Spotify Data</b><span>${share ? 'On: your crew sees your music' : 'Off: hidden, and Spaceman stays quiet about it'}</span></span><button class="switch" role="switch" aria-checked="${share}" aria-label="Share Spotify Data" data-toggle="spotifyShare"></button></div>`;
+  let body;
+  if (s.on){
+    const st = s.status === 'ok' ? 'Spotify Connected' : s.status === 'expired' ? 'Reconnect needed' : s.status === 'forbidden' ? 'Access blocked' : 'Spotify unavailable';
+    body = `<div class="list"><div class="row">${spLogo(30)}<span class="grow"><b>${st}</b><span>${s.demo ? 'Demo account with simulated music' : `Last updated ${agoText(s.at)}`}</span></span></div>${switchRow}
+      <div class="row"><span class="grow"><b>Simulated crew music</b><span>Prototype: friends in this app get demo profiles so you can try crew features</span></span><button class="switch" role="switch" aria-checked="${s.demoCrew !== false}" aria-label="Simulated crew music" data-sp-demo-crew data-action="sp-democrew"></button></div></div>
+      ${s.status === 'forbidden' ? '<p class="small muted">Spotify apps in Development Mode only work for accounts the developer has added (up to five). Add this account in the Spotify developer dashboard under User Management.</p>' : ''}
+      <div class="stack-v">${s.demo ? '' : `<button class="btn btn-secondary btn-lg btn-block" data-action="sp-refresh">${ic('swap',18)}Refresh my music</button>`}
+      ${!s.demo && s.status !== 'ok' ? `<button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">Reconnect Spotify</button>` : ''}
+      <button class="btn btn-danger btn-lg btn-block" data-action="sp-disconnect">${ic('trash',18)}Disconnect and delete my Spotify data</button></div>
+      <p class="small muted">Disconnecting removes the saved tokens and everything we stored from Spotify on this device. To also revoke access on Spotify’s side, remove Spaceman at spotify.com/account/apps.</p>`;
+  } else {
+    body = `<ul class="sp-steps"><li>Reads your top artists, top tracks and recently played, plus what’s playing now.</li><li>Stores artist and track names, artwork links and the hour of recent plays. Nothing else.</li><li>Never changes your playlists or your playback, and never posts anywhere.</li><li>Shared with your crew only while Share Spotify Data is on.</li></ul>
+      ${cid && !issue ? `<div class="stack-v"><button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">${spLogo(20)}Connect Spotify</button></div>` : `<div class="card stack-v" style="gap:10px"><b>Set up Spotify sign-in</b>
+        <p class="small muted">Create an app at developer.spotify.com/dashboard, add this redirect URI exactly, then paste the Client ID. There’s no secret to paste; sign-in uses PKCE.</p>
+        <div class="sp-code" id="sp-redirect">${esc(Spotify.redirect())}</div>
+        <button class="btn btn-secondary btn-block" data-copy="sp-redirect">${ic('copy',16)}Copy redirect URI</button>
+        <label class="field" for="sp-client">${ic('sliders',18)}<input id="sp-client" value="${esc(cid)}" placeholder="Spotify Client ID" autocomplete="off" spellcheck="false" autocapitalize="off"></label>
+        ${issue ? `<p class="small" style="color:var(--flare)">${esc(issue)}</p>` : ''}
+        <button class="btn btn-primary btn-block" data-action="sp-connect">Connect Spotify</button></div>`}
+      <button class="btn btn-ghost btn-lg btn-block" data-action="sp-demo">${ic('sparkle',18)}Try the demo (no Spotify account)</button>`;
+  }
+  openSheet(`<div data-sp-sheet class="stack-v" style="gap:16px"><div class="sheet-title"><span class="eyebrow ion">Music</span><h2 class="display" style="font-size:24px">Spotify</h2></div>${body}
+    <p class="sp-foot">${spLogo(14)}Music data from Spotify. Spotify is a trademark of Spotify AB; Spaceman isn’t affiliated with it.</p></div>`);
+}
+Object.assign(ACTIONS, {
+  'sp-open': () => spotifySheet(),
+  'sp-connect': () => Spotify.begin(true),
+  'sp-demo': () => { Spotify.demo(); spotifySheet(); toast('Demo music is on'); },
+  'sp-refresh': async () => { toast('Refreshing your music'); await Spotify.sync(true); },
+  'sp-disconnect': () => { Spotify.disconnect(); closeSheet(); toast('Spotify disconnected and your music data deleted'); },
+  'sp-democrew': (t) => { const s = cur().spotify, on = t.getAttribute('aria-checked') !== 'true'; t.setAttribute('aria-checked', on); s.demoCrew = on; persist(); }
+});
+
 /* ---------- boot ---------- */
 loadDB();
-if (DB.session && DB.users[DB.session]){ const u = DB.users[DB.session]; hydrate(u); seedIfNeeded(u); appEl.hidden = false; render(); }
+if (DB.session && DB.users[DB.session]){ const u = DB.users[DB.session]; hydrate(u); seedIfNeeded(u); appEl.hidden = false; render(); Spotify.boot(); }
 else { DB.session = null; showAuth(); }
 </script>
 
