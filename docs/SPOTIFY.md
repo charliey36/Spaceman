@@ -96,6 +96,8 @@ Some of the brief conflicts with Spotify's Developer Policy as written:
    - royalty-free or commissioned "sound-alike" intros, which work as a stopgap
 4. **Use Spotify where it is allowed.** "Now playing" logging for Memories and the Year in Spaceman top song isn't a game, and still needs to follow the Developer Terms.
 
+**v1.3 note:** when nothing is playing, the "Add your music to the mission" bar only appears during breathers, so games, events and results cards keep the whole screen. A song that is actually playing still shows at all times.
+
 ## Sources
 
 - [Authorization Code with PKCE](https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow)
@@ -108,5 +110,3 @@ Some of the brief conflicts with Spotify's Developer Policy as written:
 - [Web Playback SDK](https://developer.spotify.com/documentation/web-playback-sdk)
 - [Start/Resume Playback](https://developer.spotify.com/web-api/console/put-play/)
 - [Spotify API changes overview (third-party summary)](https://tunelab-developers.pages.dev/blog/spotify-api-changes-2026)
-
-**v1.3 note:** when nothing is playing, the "Add your music to the mission" bar only appears during breathers, so games, events and results cards keep the whole screen. A song that is actually playing still shows at all times.
