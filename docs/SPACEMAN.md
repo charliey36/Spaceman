@@ -9,6 +9,12 @@ Every mission now has one more player: **👨‍🚀 Spaceman**, the mission's o
 | Crew | Everyone else. |
 | **Spaceman** | The opponent. Has credits, sits on the leaderboard, can win or lose. |
 
+## v1.2 additions
+
+- **Commander Atlas** now voices Mission Control, so Spaceman has a rival in the car's ear. Atlas is on the crew's side; Spaceman calls him "adorable". Spaceman's own chatter moved to a *banter* roast pool. See `ATLAS.md`.
+- **Party mechanics** (see `PARTY.md`): Chance Time can swap credits *with Spaceman*; duels that nobody wins pay Spaceman; the **bribe** pays Spaceman 8 when accepted; surges and Final Approach's double credits double Spaceman's gains too.
+- **Spaceman's Bonus** at the end: +8 for every hostage it took and every bribe accepted, revealed alongside the crew's Bonus Awards.
+
 ## Spaceman's character (v1.1)
 
 Spaceman is the mission's AI: it used to run Mission Control and now wants to win. It's the host, the rival, the commentator and the troublemaker in one.

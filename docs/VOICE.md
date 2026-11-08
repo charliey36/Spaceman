@@ -2,6 +2,8 @@
 
 **Goal:** Mission Control should sound like another person riding in the car. It should be warm and quick, a little dry, and good with names. **Human first, radio effect second.** The radio texture is seasoning. It must never make the voice harder to understand.
 
+> **v1.2:** Mission Control is now **Commander Atlas**, with his own character, mood, memory and dialogue system, two distinct voices (Atlas and Spaceman), hesitations on "…", and optional ElevenLabs voices with real radio processing. See `ATLAS.md`.
+
 ## What the prototype does now (v1.1)
 
 | Technique | How it's done in the browser |
