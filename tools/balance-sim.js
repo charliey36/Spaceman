@@ -5,7 +5,7 @@
    p0 is always the Captain. The Co-Pilot is assigned at random after launch and can change hands,
    so the report splits passengers by their Co-Pilot history.
    Since v1.0 Spaceman is an opponent too. Role fairness is measured on the best crew member (Engine.topCrew),
-   and a separate column reports how often Spaceman retains control (no crew member finishes above it).
+   and a separate column reports how often Spaceman retains control (v1.3: the crew total doesn't beat Spaceman's total).
    Usage: node tools/balance-sim.js [runs=4000] [variant=final|noperks|noallow|allow<s>|co<s>|bonus<n>|supply<x>|noshield|slots2] [index.html] [pacing=party|chill|competitive]
    The third argument is a path to an index.html to test (defaults to ../index.html). Pacing: chill = Relaxed, party = Balanced, competitive = Chaotic. */
 const fs = require('fs'), path = require('path');
@@ -37,7 +37,7 @@ function run(N, mins){
       const max = Math.max(...crew.map(x => S.pts[x])), l = crew.filter(x => S.pts[x] === max).join();
       if (max > 0 && l !== leader){ if (leader) lead++; leader = l; }
     }
-    if (!Engine.winner(S)) smWins++; smPts += S.sm;
+    Engine.finale(S); if (!Engine.crewWins(S)) smWins++; smPts += Engine.smTotal(S);   /* v1.3: crew total vs Spaceman's total (captives count for Spaceman) */
     const w = Engine.topCrew(S), P = crew.slice(1), start = S.coLog[0] && S.coLog[0].id, fin = S.copilot, ever = new Set(S.coLog.map(x => x.id));
     moves += Math.max(0, S.coLog.length - 1);
     if (w === 'p0') c.cap++; else if (w) c.pass++;

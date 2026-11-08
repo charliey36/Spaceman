@@ -1287,6 +1287,80 @@ button.opt:active{transform:scale(.96);border-color:var(--ion)}
 .secrets{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border-radius:var(--r-lg);border:1px solid rgba(255,107,107,.4);background:var(--surface)}
 .secret{display:flex;align-items:center;gap:10px;font-size:14px}.secret.bad b{color:#FF8A8A}
 @media (prefers-reduced-motion:reduce){.slot.spinning .land,.award-row{animation:none;opacity:1}.slot .spin{display:none}.emote-float{display:none}}
+
+/* ---- v1.3 ---- */
+@media (max-height:720px){#lv-ch .m-done{font-size:14px;line-height:1.35;padding:10px 12px}#lv-ch .opts.reveal .opt{min-height:44px;padding-top:6px;padding-bottom:6px}#lv-ch .party-note{font-size:12.5px}}
+@media (max-height:720px){.q-text.small-q{display:none}}
+.q-text.small-q{font-size:15px;line-height:1.35;color:var(--fg-2)}
+.hj-acts{display:grid;gap:8px}.hj-acts.two{grid-template-columns:1fr 1fr}.hj-acts .btn{height:48px}
+@media (max-height:720px){.ev-card.hijack > .small.muted{display:none}.ev-card.hijack .sm-say{font-size:12.5px}}
+.hj-top{display:flex;align-items:center;gap:10px}.hj-top .grow{display:flex;flex-direction:column;gap:4px;min-width:0}.hj-pic.hj-sm{margin:0;gap:6px;flex:none}.hj-pic.hj-sm .hj-beam{width:28px}
+.ev-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.ev-chip{display:flex;align-items:center;gap:7px;padding:6px 8px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);min-width:0;font-size:13px}
+.ev-chip b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}.ev-chip .ev-d{font-family:var(--font-mono,monospace);font-size:12px;white-space:nowrap}
+.ev-chip.good .ev-d{color:#62D9A6}.ev-chip.bad .ev-d{color:#FF8A7A}.ev-chip.ok .ev-d{color:var(--ion,#7C9CFF)}.ev-chip.zero .ev-d{color:var(--fg-2)}
+.hj-move{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);font-size:13.5px;font-weight:600}.hj-move .down{color:#FF8A7A}.hj-move .up{color:var(--flare,#F2B766)}.hj-move .mono{font-size:12px;color:var(--fg-2);font-weight:500}
+.vs-side.sm.fury small{color:#FF6B6B;font-weight:600}.vs-side.sm.fury b{color:#FF8A7A;text-shadow:0 0 14px rgba(255,107,107,.45)}
+.co-hint .av,.bluff-s .av,.small .av,.aw-mini .av,.tx-kind .av{display:inline-grid;vertical-align:-4px;margin-right:6px;border-radius:50%}
+.aw-mini.sm{color:var(--fg-2)}
+.award-row .aw-star .av{vertical-align:middle}
+.radar .core .av{box-shadow:0 0 0 2px rgba(224,168,69,.6)}
+.tx.roast .radar .core{background:rgba(224,168,69,.12);border-color:rgba(224,168,69,.55);box-shadow:0 0 30px rgba(224,168,69,.3)}
+#lv-ch:has(> .breather){min-height:100%}
+.breather{justify-content:flex-start;gap:6px;flex:1}
+.ship-scene{position:relative;width:100%;flex:1;min-height:150px;max-height:340px;margin-top:6px;border-radius:var(--r-md);overflow:hidden;background:radial-gradient(120% 90% at 70% 0%,#121A33 0%,#06080E 60%);border:1px solid var(--line)}
+.px-stars{position:absolute;inset:0;background-repeat:repeat;animation:pxStars linear infinite}
+.px-stars.s1{background-image:linear-gradient(#fff,#fff),linear-gradient(#fff,#fff),linear-gradient(#cfd8ff,#cfd8ff),linear-gradient(#fff,#fff),linear-gradient(#fff,#fff),linear-gradient(#cfd8ff,#cfd8ff),linear-gradient(#fff,#fff);background-size:2px 2px;background-position:23px 31px,141px 87px,77px 140px,190px 20px,110px 210px,44px 250px,170px 280px;opacity:.9;animation-duration:9s}
+.px-stars.s2{background-image:linear-gradient(#8fa0d6,#8fa0d6),linear-gradient(#8fa0d6,#8fa0d6),linear-gradient(#8fa0d6,#8fa0d6),linear-gradient(#8fa0d6,#8fa0d6),linear-gradient(#8fa0d6,#8fa0d6),linear-gradient(#8fa0d6,#8fa0d6);background-size:2px 2px;background-position:60px 60px,170px 120px,10px 170px,130px 230px,200px 190px,90px 15px;opacity:.6;animation-duration:16s}
+.px-stars{background-repeat:no-repeat}
+.px-stars::before,.px-stars::after{content:'';position:absolute;inset:0;background:inherit;transform:translateX(220px)}
+.px-stars::after{transform:translateX(440px)}
+@keyframes pxStars{from{transform:translateX(0)}to{transform:translateX(-220px)}}
+.ship{position:absolute;left:50%;top:56%;width:min(84%,340px);aspect-ratio:40/16;transform:translate(-50%,-50%);animation:shipBob 3.4s ease-in-out infinite}
+.ship svg{display:block;width:100%;height:100%;image-rendering:pixelated}
+@keyframes shipBob{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 6px))}}
+.fl{animation:flick .36s steps(1) infinite}.fl.f2{animation-delay:.18s;opacity:0}
+@keyframes flick{0%{opacity:1}50%{opacity:0}}
+.pt{position:absolute;top:43.75%;width:10%;aspect-ratio:1;transform:translate(-50%,-50%);overflow:hidden;border-radius:2px;box-shadow:0 0 0 2px #262C3B}
+.pt .av{width:100%!important;height:100%!important;border-radius:2px;box-shadow:none}
+.pt.held{box-shadow:0 0 0 2px #FF6B6B}
+.bub{position:absolute;bottom:86%;transform:translateX(-50%);white-space:nowrap;padding:5px 8px;font:600 11.5px/1.2 var(--font-mono,ui-monospace,monospace);color:#0B0D12;background:#E9EDF5;box-shadow:2px 2px 0 #7C9CFF;animation:bubLife 3.6s steps(12) forwards;z-index:2}
+.bub::after{content:'';position:absolute;left:50%;top:100%;width:6px;height:6px;margin-left:-3px;background:#E9EDF5}
+@keyframes bubLife{0%{opacity:0;transform:translate(-50%,6px)}8%{opacity:1;transform:translate(-50%,0)}85%{opacity:1}100%{opacity:0}}
+.sm-chase{position:absolute;right:7%;top:12%;opacity:.85;animation:smChase 7s ease-in-out infinite}
+@keyframes smChase{0%,100%{transform:translate(0,0)}50%{transform:translate(-14px,8px)}}
+@media (prefers-reduced-motion:reduce){.px-stars,.ship,.fl,.sm-chase,.bub{animation:none!important}.fl.f2{opacity:0}}
+
+.ae{position:absolute;left:50%;bottom:62%;transform:translateX(-50%);font-size:24px;line-height:1;font-style:normal;pointer-events:none;z-index:8;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));animation:aeFade 4.5s ease-out forwards}
+@keyframes aeFade{0%{opacity:0;transform:translate(-50%,8px) scale(.6)}8%{opacity:1;transform:translate(-50%,0) scale(1.15)}16%{transform:translate(-50%,0) scale(1)}75%{opacity:1;transform:translate(-50%,-4px)}100%{opacity:0;transform:translate(-50%,-12px)}}
+#etray{position:absolute;inset:0;z-index:90}
+.etray-bk{position:absolute;inset:0}
+.etray{position:absolute;left:12px;right:12px;max-width:420px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:8px;border-radius:18px;background:rgba(20,22,30,.96);border:1px solid var(--line-2);box-shadow:0 12px 40px rgba(0,0,0,.55);animation:eventIn 200ms var(--spring)}
+.etray button{height:46px;border-radius:12px;font-size:25px;line-height:1;background:var(--surface-2);border:1px solid var(--line);transition:transform var(--fast) var(--ease)}
+.etray button:active{transform:scale(.88)}
+.vs-side small .av,.eyebrow .av{display:inline-grid;vertical-align:-3px;margin-right:4px;border-radius:50%}
+.rescue{display:flex;flex-direction:column;gap:7px;padding:10px 12px;border-radius:var(--r-md);background:rgba(255,107,107,.07);border:1px solid rgba(255,107,107,.3)}
+.rs-top{display:flex;justify-content:space-between;align-items:baseline;font-size:14px}
+.rs-bar{height:10px;border-radius:6px;background:var(--surface-3,#262B38);overflow:hidden}
+.rs-bar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#62D9A6,#7C9CFF);transition:width 500ms var(--ease)}
+.rs-give{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.rs-give .btn{height:42px}
+.rescue p{margin:0}
+.tx-bar{width:100%;height:4px;border-radius:4px;background:var(--line);overflow:hidden}
+.tx-bar i{display:block;height:100%;background:var(--ion);transform-origin:left;animation:txbar linear forwards}
+@keyframes txbar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.crown{display:flex;align-items:center;gap:12px;text-align:left;padding:12px 14px;border-radius:var(--r-md);background:linear-gradient(180deg,rgba(242,183,102,.16),rgba(242,183,102,.05));border:1px solid rgba(242,183,102,.5)}
+.crown span{display:flex;flex-direction:column;line-height:1.25}.crown small{color:var(--flare);font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}.crown b{font-size:19px}.crown i{font-style:normal;font-size:13px;color:var(--fg-2)}
+.pc-head{display:flex;align-items:center;gap:14px}.pc-head h2{margin:0}
+.pc-chips{display:flex;flex-wrap:wrap;gap:6px}.chip.bad{color:#FF8A8A;border-color:rgba(255,107,107,.4);background:rgba(255,107,107,.1)}
+details.guide{border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line);overflow:hidden}
+details.guide summary{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;list-style:none}
+details.guide summary::-webkit-details-marker{display:none}
+details.guide summary .grow{display:flex;flex-direction:column;line-height:1.25}details.guide summary .grow span{font-size:13px;color:var(--fg-2)}
+details.guide[open] summary>svg:last-child{transform:rotate(90deg)}
+details.guide .list{padding:0 8px 8px}
+.tx-row{display:flex}.tx-to-sel{display:flex;align-items:center;gap:10px;flex:1}.tx-to-sel select{flex:1;height:44px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line-2);color:var(--fg);padding:0 12px;font:inherit}
+.tx-custom[hidden]{display:none}
+.pc-rows{display:flex;flex-direction:column;padding:4px 14px}.pc-row{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}.pc-row:last-child{border:0}.pc-row .mono{font-size:12px;color:var(--fg-3);flex:none;min-width:48px}.pc-row .grow{min-width:0;font-size:14px}.rs-give .btn{font-size:17px}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -1346,42 +1420,69 @@ button.opt:active{transform:scale(.96);border-color:var(--ion)}
 const MOON = 238900, EARTH = 24901;
 /* Spaceman avatars: one flat SVG astronaut head. 4 helmets × 4 visors × 4 suit accents × 3 faces = 192 looks. */
 const AV = {
-  h:{classic:'Classic', rounded:'Pilot', explorer:'Explorer', modern:'Tactical'},
-  v:{cyan:['Cyan','#5FE1F2'], blue:['Blue','#7C9CFF'], purple:['Purple','#B39CFF'], white:['White','#E9EDF5'], amber:['Amber','#F2B766'], red:['Red','#FF6B6B']},
-  s:{cyan:['Cyan','#5FE1F2'], purple:['Purple','#B39CFF'], blue:['Blue','#6E8CFF'], silver:['Silver','#AEB6C4'], amber:['Amber','#F2B766'], green:['Green','#62D9A6']},
-  f:{eyes:'Eyes', smile:'Grin', neutral:'Scan line'}
+  st:{stealth:['Stealth',['#3D4454','#1E2230','#0F1218'],'#141821','#262B38'], arctic:['Arctic',['#F4F6FA','#C3CAD6','#8E97A8'],'#CDD3DD','#AAB2C0'], navy:['Navy',['#3E5079','#1C2742','#0E1426'],'#17213A','#2A3A5E'],
+      olive:['Field',['#4D5C46','#263123','#121810'],'#1E281C','#33412F'], crimson:['Crimson',['#5E3842','#2F1A21','#170C10'],'#2A151B','#45252E'], chrome:['Chrome',['#E3E8F0','#7D8698','#2C313C'],'#3A404D','#5A6274']},
+  h:{classic:'Classic', rounded:'Pilot', explorer:'Explorer', modern:'Tactical', dome:'Dome', racer:'Racer', crest:'Commander', halo:'Halo'},
+  v:{cyan:['Cyan','#5FE1F2'], blue:['Blue','#7C9CFF'], purple:['Purple','#B39CFF'], white:['White','#E9EDF5'], amber:['Amber','#F2B766'], red:['Red','#FF6B6B'],
+     green:['Green','#62D9A6'], pink:['Pink','#FF8AD8'], orange:['Orange','#FF9E5E'], teal:['Teal','#3FD0C0'], lime:['Lime','#C3F26B']},
+  s:{cyan:['Cyan','#5FE1F2'], purple:['Purple','#B39CFF'], blue:['Blue','#6E8CFF'], silver:['Silver','#AEB6C4'], amber:['Amber','#F2B766'], green:['Green','#62D9A6'],
+     red:['Red','#FF6B6B'], pink:['Pink','#FF8AD8'], white:['White','#E9EDF5'], lime:['Lime','#C3F26B']},
+  a:{none:'None', headset:'Headset', antenna:'Antenna', lamp:'Head lamp', scarf:'Scarf', patch:'Mission patch', wings:'Pilot wings'},
+  f:{eyes:'Eyes', smile:'Grin', neutral:'Scan line', wink:'Wink', happy:'Happy', stern:'Focused', dots:'Thinking', ko:'Dizzy'}
 };
-const AV_KEYS = {h:Object.keys(AV.h), v:Object.keys(AV.v), s:Object.keys(AV.s), f:Object.keys(AV.f)};
-function hashAv(seed){ const r = rng('av:' + seed), p = k => AV_KEYS[k][Math.floor(r()*AV_KEYS[k].length)]; return {h:p('h'), v:p('v'), s:p('s'), f:p('f')}; }
+const AV_DEF = {st:'stealth', h:'classic', v:'blue', s:'cyan', a:'none', f:'eyes'};
+const AV_KEYS = Object.fromEntries(Object.keys(AV).map(k => [k, Object.keys(AV[k])]));
+function hashAv(seed){ const r = rng('av:' + seed), p = k => AV_KEYS[k][Math.floor(r()*AV_KEYS[k].length)]; return {h:p('h'), v:p('v'), s:p('s'), f:p('f'), a:r() < .5 ? 'none' : p('a'), st:r() < .6 ? 'stealth' : p('st')}; }
 /* v1.1 avatars: matte black tactical suits, graphite helmets and dark mirrored visors.
    The face is never drawn. Only a glowing HUD mark shows through the visor, in the player's colour. */
 function avatarSVG(c = {}){
   const h = AV.h[c.h] ? c.h : 'classic', vk = AV.v[c.v] ? c.v : 'blue', sk = AV.s[c.s] ? c.s : 'cyan', vis = AV.v[vk][1], acc = AV.s[sk][1];
-  const id = `av-${h}-${vk}-${sk}`, SUIT = '#141821', SEAM = '#262B38', RIM = '#3A4050';
+  const st = AV.st[c.st] ? c.st : 'stealth', [, HG, SUIT, SEAM] = AV.st[st], ak = AV.a[c.a] ? c.a : 'none', light = st === 'arctic' || st === 'chrome';
+  const id = `av-${h}-${vk}-${sk}-${st}`, RIM = light ? '#8E97A8' : '#3A4050';
   const shell = `fill="url(#${id}-h)" stroke="${RIM}" stroke-width=".9"`;
   const helmet = {
     classic:`<circle cx="32" cy="28" r="19" ${shell}/>`,
     rounded:`<rect x="11" y="10" width="42" height="37" rx="17" ${shell}/><path d="M18 14.5h28" stroke="${RIM}" stroke-width=".8" stroke-linecap="round"/>`,
     explorer:`<line x1="40" y1="12" x2="44" y2="4.5" stroke="${RIM}" stroke-width="1.8" stroke-linecap="round"/><circle cx="44.3" cy="4.2" r="1.9" fill="${acc}"/><rect x="9.5" y="22" width="6.5" height="13" rx="2" fill="#1A1E28" stroke="${RIM}" stroke-width=".8"/><rect x="48" y="22" width="6.5" height="13" rx="2" fill="#1A1E28" stroke="${RIM}" stroke-width=".8"/><rect x="11" y="27" width="3.5" height="1.6" rx=".8" fill="${acc}"/><circle cx="32" cy="29" r="18" ${shell}/>`,
-    modern:`<path d="M13.5 31C13.5 17 21.5 9 32 9s18.5 8 18.5 22v7.5c0 5.5-3.8 8.5-9.2 8.5H22.7c-5.4 0-9.2-3-9.2-8.5z" ${shell}/><path d="M32 9.3v6.2" stroke="${RIM}" stroke-width="1.2"/><rect x="29.6" y="10.8" width="4.8" height="1.6" rx=".8" fill="${acc}"/>`
+    modern:`<path d="M13.5 31C13.5 17 21.5 9 32 9s18.5 8 18.5 22v7.5c0 5.5-3.8 8.5-9.2 8.5H22.7c-5.4 0-9.2-3-9.2-8.5z" ${shell}/><path d="M32 9.3v6.2" stroke="${RIM}" stroke-width="1.2"/><rect x="29.6" y="10.8" width="4.8" height="1.6" rx=".8" fill="${acc}"/>`,
+    dome:`<circle cx="32" cy="27.5" r="21" ${shell}/><circle cx="32" cy="27.5" r="19.2" fill="none" stroke="${vis}" stroke-opacity=".22" stroke-width="1.2"/><path d="M19 15.5q6-5.5 13-5.5" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="1.6" stroke-linecap="round"/>`,
+    racer:`<circle cx="32" cy="28" r="19" ${shell}/><path d="M28.6 9.3h6.8v11.5h-6.8z" fill="${acc}" opacity=".9"/><path d="M27 9.6h1.2v11.2H27zM35.8 9.6H37v11.2h-1.2z" fill="${acc}" opacity=".45"/>`,
+    crest:`<path d="M32 2.8l3.6 8.4h-7.2z" fill="${acc}"/><path d="M13.5 31C13.5 17 21.5 9 32 9s18.5 8 18.5 22v7.5c0 5.5-3.8 8.5-9.2 8.5H22.7c-5.4 0-9.2-3-9.2-8.5z" ${shell}/><path d="M16 26.5l-2.4-6M48 26.5l2.4-6" stroke="${acc}" stroke-width="1.6" stroke-linecap="round"/>`,
+    halo:`<ellipse cx="32" cy="6.6" rx="11" ry="2.6" fill="none" stroke="${acc}" stroke-width="1.7"/><ellipse cx="32" cy="6.6" rx="11" ry="2.6" fill="none" stroke="${acc}" stroke-opacity=".3" stroke-width="4"/><circle cx="32" cy="28" r="19" ${shell}/>`
   }[h];
-  const [vx, vy, vw, vh] = {classic:[17,19.5,30,16.5], rounded:[15.5,19,33,17], explorer:[18.5,21,27,15.5], modern:[16.5,21,31,14]}[h];
+  const [vx, vy, vw, vh] = {classic:[17,19.5,30,16.5], rounded:[15.5,19,33,17], explorer:[18.5,21,27,15.5], modern:[16.5,21,31,14], dome:[15,18.5,34,18], racer:[14.5,21,35,13.5], crest:[16.5,21,31,14], halo:[17,19.5,30,16.5]}[h];
   const cx = vx + vw/2, cy = vy + vh/2;
+  const ln = d => `<path d="${d}" fill="none" stroke="${vis}" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>`;
   const hud = c.f === 'eyes' ? [cx - 5, cx + 5].map(x => `<rect x="${x - 2.1}" y="${cy - 1}" width="4.2" height="2" rx="1" fill="${vis}"/>`).join('')
-    : c.f === 'smile' ? `<path d="M${cx - 5.5} ${cy - .6}q5.5 4.4 11 0" fill="none" stroke="${vis}" stroke-width="1.7" stroke-linecap="round"/>`
-    : `<path d="M${cx - 7} ${cy}h14" stroke="${vis}" stroke-width="1.7" stroke-linecap="round"/>`;
+    : c.f === 'smile' ? ln(`M${cx - 5.5} ${cy - .6}q5.5 4.4 11 0`)
+    : c.f === 'wink' ? `<rect x="${cx - 7.1}" y="${cy - 1}" width="4.2" height="2" rx="1" fill="${vis}"/>` + ln(`M${cx + 2.8} ${cy + .6}q2.2-2.6 4.4 0`)
+    : c.f === 'happy' ? ln(`M${cx - 7.2} ${cy + .9}q2.2-3 4.4 0`) + ln(`M${cx + 2.8} ${cy + .9}q2.2-3 4.4 0`)
+    : c.f === 'stern' ? ln(`M${cx - 7.2} ${cy - 1}l4.4 1.6`) + ln(`M${cx + 7.2} ${cy - 1}l-4.4 1.6`)
+    : c.f === 'dots' ? [-5, 0, 5].map(d => `<circle cx="${cx + d}" cy="${cy}" r="1.25" fill="${vis}"/>`).join('')
+    : c.f === 'ko' ? [cx - 5, cx + 5].map(x => ln(`M${x - 1.8} ${cy - 1.8}l3.6 3.6M${x + 1.8} ${cy - 1.8}l-3.6 3.6`)).join('')
+    : ln(`M${cx - 7} ${cy}h14`);
+  const acs = {none:'',
+    headset:`<rect x="9.8" y="23.5" width="5.4" height="10.5" rx="2.2" fill="#1A1E28" stroke="${RIM}" stroke-width=".8"/><path d="M12.6 34v3.2q0 4.6 6 5.2h4.2" fill="none" stroke="${RIM}" stroke-width="1.5" stroke-linecap="round"/><circle cx="23.8" cy="42.4" r="1.7" fill="${acc}"/>`,
+    antenna:`<path d="M21.5 12.6L17.4 3.6" stroke="${RIM}" stroke-width="1.6" stroke-linecap="round"/><circle cx="17.2" cy="3.4" r="2" fill="${acc}"/><circle cx="17.2" cy="3.4" r="3.6" fill="${acc}" opacity=".22"/>`,
+    lamp:`<rect x="28" y="${h === 'dome' ? 5.6 : 8.6}" width="8" height="3.8" rx="1.3" fill="#1A1E28" stroke="${RIM}" stroke-width=".7"/><rect x="29.6" y="${h === 'dome' ? 6.5 : 9.5}" width="4.8" height="2" rx=".9" fill="#FFF4C2"/><circle cx="32" cy="${h === 'dome' ? 7.5 : 10.5}" r="5" fill="#FFF4C2" opacity=".14"/>`,
+    scarf:`<path d="M19.6 45.6q12.4 5.6 24.8 0l-.8 4.2q-11.6 4.6-23.2 0z" fill="${acc}"/><path d="M37.6 49.6l3.2 9.2-4.2.6-1.4-8.8z" fill="${acc}" opacity=".85"/>`,
+    patch:`<circle cx="21.8" cy="56.2" r="3.8" fill="#1C202B" stroke="${acc}" stroke-width="1.1"/><path d="M21.8 53.9l.8 1.6 1.7.2-1.3 1.2.4 1.7-1.6-.9-1.6.9.4-1.7-1.3-1.2 1.7-.2z" fill="${acc}"/>`,
+    wings:`<path d="M32 55.6l-8.6-2.8 2.4 4zM32 55.6l8.6-2.8-2.4 4z" fill="${acc}"/><circle cx="32" cy="55.8" r="1.5" fill="#fff"/>`
+  }[ak];
   return `<svg viewBox="0 0 64 64" aria-hidden="true"><defs>`
-    + `<linearGradient id="${id}-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3D4454"/><stop offset=".55" stop-color="#1E2230"/><stop offset="1" stop-color="#0F1218"/></linearGradient>`
+    + `<linearGradient id="${id}-h" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${HG[0]}"/><stop offset=".55" stop-color="${HG[1]}"/><stop offset="1" stop-color="${HG[2]}"/></linearGradient>`
     + `<linearGradient id="${id}-v" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${vis}" stop-opacity=".42"/><stop offset=".45" stop-color="#0A0D14"/><stop offset="1" stop-color="#030408"/></linearGradient>`
     + `<radialGradient id="${id}-g" cx=".5" cy="1" r=".75"><stop offset="0" stop-color="${acc}" stop-opacity=".32"/><stop offset="1" stop-color="${acc}" stop-opacity="0"/></radialGradient></defs>`
     + `<rect width="64" height="64" fill="#07090E"/><rect width="64" height="64" fill="url(#${id}-g)"/>`
     + `<path d="M6 64c1.6-11.6 11.2-17.4 26-17.4S56.4 52.4 58 64z" fill="${SUIT}"/><path d="M19 64l3.5-12.5M45 64l-3.5-12.5" stroke="${SEAM}" stroke-width="1"/>`
     + `<path d="M11.5 59.5l7.5-5.2" stroke="${acc}" stroke-width="2" stroke-linecap="round"/><rect x="40.5" y="55" width="7" height="3.6" rx="1" fill="${acc}" opacity=".9"/>`
     + `<ellipse cx="32" cy="47.2" rx="12.5" ry="3.3" fill="#1C202B" stroke="${RIM}" stroke-width=".7"/>`
+    + (ak === 'scarf' || ak === 'patch' || ak === 'wings' ? acs : '')
     + helmet
     + `<rect x="${vx}" y="${vy}" width="${vw}" height="${vh}" rx="${vh/2}" fill="url(#${id}-v)" stroke="${vis}" stroke-opacity=".55" stroke-width=".9"/>`
     + `<g opacity=".35" transform="translate(0 .3)">${hud.replace(/stroke-width="1.7"/g, 'stroke-width="3.6"').replace(/height="2"/g, 'height="3.4"')}</g>${hud}`
-    + `<path d="M${vx + 4.5} ${vy + 3.6}q3-2 7.5-1.7" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3" stroke-linecap="round"/></svg>`;
+    + `<path d="M${vx + 4.5} ${vy + 3.6}q3-2 7.5-1.7" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1.3" stroke-linecap="round"/>`
+    + (ak === 'headset' || ak === 'antenna' || ak === 'lamp' ? acs : '') + `</svg>`;
 }
 /* Spaceman: the same suit, a gold mirrored visor and one red scanning eye. Instantly recognisable at 24 px. */
 function smSVG(){
@@ -1932,7 +2033,7 @@ function memFeature(j){
 const memRow = j => { const a = (j.awards || [])[0]; return `<button class="mem-row press" data-mem="${j.id}" style="--h:${jHue(j.id)}">
   <span class="mem-thumb">${routeSvg(j.id,120,120)}</span>
   <span class="txt"><b>${esc(jTitle(j))}</b><span class="meta">${dShort(j.date)} · ${fmt(j.mi)} mi · ${dur(j.min)}</span>
-  <span class="row-crew">${avs(j.crew,24)}${j.spaceman ? `<span class="aw-mini">${ic('helmet',13)}${esc(whoName(j.spaceman))} · Spaceman</span>` : a ? `<span class="aw-mini">${ic(AWARDS[a.id].ic,13)}${esc(whoName(a.who))} · ${AWARDS[a.id].name}</span>` : ''}</span></span></button>`; };
+  <span class="row-crew">${avs(j.crew,24)}${j.spaceman ? `<span class="aw-mini">${av(j.spaceman,16)}🏆 ${esc(whoName(j.spaceman))} · Journey Spaceman</span>` : j.smWon ? `<span class="aw-mini sm">${av('sm',16)}Spaceman kept control</span>` : a ? `<span class="aw-mini">${ic(AWARDS[a.id].ic,13)}${esc(whoName(a.who))} · ${AWARDS[a.id].name}</span>` : ''}</span></span></button>`; };
 const summaryTiles = j => `<section class="grid2">
   <div class="tile"><span class="t-num">${fmt(j.mi)}<span class="unit">mi</span></span><span class="lbl">Distance</span></div>
   <div class="tile"><span class="t-num">${dur(j.min)}</span><span class="lbl">Duration</span></div>
@@ -2446,12 +2547,12 @@ function profileSheet(){
     <button class="btn btn-primary btn-lg btn-block" data-close>Done</button>`);
 }
 function avOptsHTML(c){
-  const opt = (k, val, inner, label) => `<button class="av-opt" role="radio" aria-checked="${c[k] === val}" data-avopt="${k}:${val}">${inner}<span>${label}</span></button>`;
+  const opt = (k, val, inner, label) => `<button class="av-opt" role="radio" aria-checked="${(c[k] || AV_DEF[k]) === val}" data-avopt="${k}:${val}">${inner}<span>${label}</span></button>`;
+  const mini = (k) => AV_KEYS[k].map(v => opt(k, v, `<span class="av av-mini">${avatarSVG({...c, [k]:v})}</span>`, Array.isArray(AV[k][v]) ? AV[k][v][0] : AV[k][v])).join('');
   const group = (title, items) => `<section class="stack-v"><h3 class="eyebrow">${title}</h3><div class="av-opts" role="radiogroup" aria-label="${title}">${items}</div></section>`;
   const swatch = (k) => AV_KEYS[k].map(v => opt(k, v, `<i class="sw-dot" style="background:${AV[k][v][1]}"></i>`, AV[k][v][0])).join('');
-  return group('Helmet', AV_KEYS.h.map(v => opt('h', v, `<span class="av av-mini">${avatarSVG({...c, h:v})}</span>`, AV.h[v])).join(''))
-    + group('Visor colour', swatch('v')) + group('Suit accent', swatch('s'))
-    + group('Face', AV_KEYS.f.map(v => opt('f', v, `<span class="av av-mini">${avatarSVG({...c, f:v})}</span>`, AV.f[v])).join(''))
+  return group('Helmet', mini('h')) + group('Visor colour', swatch('v')) + group('Expression', mini('f'))
+    + group('Suit style', mini('st')) + group('Suit accent', swatch('s')) + group('Accessory', mini('a'))
     + `<button class="link-btn" data-action="av-random" style="align-self:center">${ic('sparkle',15)}Surprise me</button>`;
 }
 function flashSaved(){ const el = $('#save-state'); if (!el) return; el.classList.remove('on'); void el.offsetWidth; el.classList.add('on'); clearTimeout(flashSaved.t); flashSaved.t = setTimeout(() => el.classList.remove('on'), 1400); }
@@ -2613,9 +2714,9 @@ const PT = {
   hijack:[3,6], fixWin:8, fixLose:6,       // Hijacked Supply Crate steal; Corrective Action success/failure
   silentSurvivor:3, silentFlawless:[2,4],
   supply:[3,8], flare:[2,5], strike:[3,5], direct:[6,8], major:[5,10], minor:[2,4], dent:[3,6],
-  lucky:[2,6], thief:[2,5],
+  lucky:[1,5], thief:[2,5],
   /* Co-Pilot perks: small, stackable, never a multiplier (docs/COPILOT.md) */
-  coWinBonus:1, coWinMode:'challenge', slots:2, coSlots:3, coShield:true, coSupply:1.3, promoBonus:5, capShield:true, capWinBonus:1,
+  coWinBonus:1, coWinMode:'challenge', slots:2, coSlots:3, coShield:true, coSupply:1.3, promoBonus:5, capShield:true, capWinBonus:1, capWinMax:6,
   /* v1.1: Spaceman Hijack, Seat Challenge, milestones and surprise events (docs/SPACEMAN.md) */
   hjSkim:.5,                               // share of a captive's winnings Spaceman skims
   hjRansom:[2,4,6,8],                      // credits Spaceman takes from the captive at each ransom tick
@@ -2625,12 +2726,19 @@ const PT = {
   defBonus:2,                              // Seat Challenge: the Co-Pilot's reward for every successful defence
   bounty:4, bountySurvive:3, underdog:4, audit:3, glitch:.33,
   jackpot:[5,8], overdrive:1, tax:3,
+  tailwind:3, claim:4, lottery:8, barrage:3, robin:4, raid:2,   /* v1.3 milestones */
+  spoils:.3,                               // chance the winner of a game also finds a power-up
   /* v1.2 party mechanics (docs/PARTY.md) */
   duel:5, duelBoth:2,                      // duel stake; what each loser pays Spaceman when both are wrong
   bribe:[6,8,2],                           // accepted: player +6, Spaceman +8. Refused: +2 for loyalty
   ally:3, fire:3, breaker:3, rush:5,       // alliance win each; on-fire win bonus; streak breaker; Final Approach rush
   bonusAward:6,                            // each end-of-mission Bonus Award
   smBonus:8,                               // Spaceman's Bonus, per hostage taken and per bribe accepted
+  /* v1.3: Spaceman plays alone against the whole crew, so everything it earns is multiplied by crew size (2–8 players).
+     Tuned so the crew wins about 80% of missions and Spaceman about 20% at every crew size (docs/BALANCE.md) */
+  smScale:{2:1.3, 3:1.7, 4:2.1, 5:2.2, 6:2.2, 7:2.3, 8:2.4},
+  smSim:.85,                               // Simulation Mode packs fewer games into a mission, so Spaceman's edge is trimmed
+  fury:2.2, furyAt:1.2, furyFrom:8,      // Spaceman Fury: ×2.2 while the crew total is more than 1.2× Spaceman’s (+10)
   priority:0                               // Captain questions are for glory, not points
 };
 const RULES = {
@@ -2797,11 +2905,52 @@ const POWERUPS = {
   double:{name:'Double Points', ic:'star',   line:'Your next credits are doubled.'},
   shield:{name:'Shield',        ic:'shield', line:'Blocks the next bad thing that happens to you.'},
   thief: {name:'Credit Thief',  ic:'mask',   line:'Steal 2–5 credits from another player, or from Spaceman.'},
-  lucky: {name:'Lucky Roll',    ic:'dice',   line:'Roll for 2–6 bonus credits. Roll a 6 and become Co-Pilot.'}
+  lucky: {name:'Lucky Roll',    ic:'dice',   line:'Roll a die. 1–5 pays that many credits. A 6 promotes you to Co-Pilot.'}
 };
 /* Discussion prompts. Need the crew to talk, so never during a Silent Mission.
    {p} passenger · {c} Captain · {a} {b} two different crew members */
 const TALK = [
+  /* v1.3: debates, hypotheticals, ridiculous situations and social questions */
+  'Debate: is a hot dog a sandwich? {a} argues yes, {b} argues no. Go.',
+  'Settle it: pineapple on pizza. Everyone votes, then {p} has to defend the losing side.',
+  'One horse-sized duck or a hundred duck-sized horses? {a} picks, {b} argues the other way.',
+  'Settle this once and for all: is cereal a soup? Captain {c} has the casting vote.',
+  'Is it acceptable to recline your seat on a plane? {a} for, {b} against. Thirty seconds each.',
+  'Who is the most overrated film character of all time? Everyone gets one nomination, then you vote.',
+  'Which is worse: always twenty minutes early, or always twenty minutes late? Pick a side and defend it.',
+  'You’re all stranded on a desert island. Who builds the shelter, who builds the raft, and who eats all the coconuts?',
+  'Zombie apocalypse. Who in this car goes first, and who secretly survives the longest?',
+  'You win the lottery, but {p} decides how half of it gets spent. What happens?',
+  'You can swap lives with anyone in this car for a week. Who, and what’s the first thing you do?',
+  'A genie grants this car one wish, but it has to be unanimous. What do you agree on?',
+  'If {a} and {b} had to run a pub together, what would it be called and how long would it last?',
+  'You can only eat one cuisine for the rest of your life. Go round the car. No changing answers.',
+  'Time travel is real, but you get one trip. Past or future, and where are you going?',
+  'What’s the most embarrassing thing that’s ever happened to {p} in public? Others can help if they know.',
+  'If you got arrested tonight, who in this car would you call first? And who would you definitely not call?',
+  'What’s the worst job each of you has ever had? Worst story wins.',
+  'What’s a hill you would happily die on? {p} goes first.',
+  'Best holiday you’ve ever had, and worst. Go round the car.',
+  'What’s the most useless talent in this car? Everyone demonstrates theirs. Captain excused.',
+  'What song plays when each of you walks into a room? The rest of the car decides.',
+  'A goose is now the Captain’s boss. What’s the goose’s first new rule for this car?',
+  'You’ve been replaced by a cardboard cutout for a whole day. Who in your life notices first?',
+  'Every time {p} speaks, a trumpet plays. Talk us through their day.',
+  '{a} is suddenly a famous influencer. What’s their niche, and how long until they get cancelled?',
+  'This car can talk. What’s the first thing it says about each of you?',
+  'You have to form a band. Band name, matching outfits, and who goes solo first?',
+  '{p} is now a professional wrestler. Name, entrance music and signature move.',
+  'Who in this car is most likely to be secretly famous online?',
+  'Who’s the worst person to share a bag of crisps with? Evidence required.',
+  'Who here would survive longest without their phone, and who cracks first?',
+  'Who in this car gives the best advice, and who gives the most confident bad advice?',
+  'Who’s most likely to start chatting to a stranger, and who’s most likely to hide behind them?',
+  'Who in this car is the biggest secret softie? Present your evidence.',
+  'Rank everyone in the car by how long they’d last on a reality TV show.',
+  'Everyone has to describe {p} using only a film title. Go.',
+  'If this car was a sitcom, what’s it called, and who’s the character everyone loves to hate?',
+  'You’ve all been given £100 and one hour in a service station. What does everyone come back with?',
+  'Which person in this car would be the worst at keeping a secret? They’re allowed to defend themselves.',
   'If this crew started a cult, who would become leader first?',
   'Which passenger is most likely to become Prime Minister completely by accident?',
   'If aliens landed tomorrow, who here would trust them immediately?',
@@ -3114,22 +3263,55 @@ const BLUFF = [
   {s:'Chameleons change colour mainly to blend in.', t:false, n:'It’s mostly about mood, signalling and temperature.'},
   {s:'Ostriches bury their heads in the sand when they’re scared.', t:false, n:'They don’t. They lie low or run very fast.'},
   {s:'A penny dropped from a skyscraper could kill someone.', t:false, n:'Air resistance slows it down far too much.'},
-  {s:'Old windows are thicker at the bottom because glass slowly flows.', t:false, n:'They were just made unevenly. Glass doesn’t flow at room temperature.'}
+  {s:'Old windows are thicker at the bottom because glass slowly flows.', t:false, n:'They were just made unevenly. Glass doesn’t flow at room temperature.'},
+  /* v1.3: true facts that sound made up, and false ones that sound right */
+  {s:'Wales has more sheep than people.', t:true, n:'Roughly three sheep for every person.'},
+  {s:'Sea otters hold hands while they sleep so they don’t drift apart.', t:true, n:'It’s called rafting. Adorable and practical.'},
+  {s:'The man who designed the Pringles can had some of his ashes buried in one.', t:true, n:'Fredric Baur. His family honoured his wishes.'},
+  {s:'The shortest war in history lasted less than an hour.', t:true, n:'The Anglo-Zanzibar War of 1896 lasted around 40 minutes.'},
+  {s:'Saturn is less dense than water.', t:true, n:'On average, yes. In a big enough bath it would float.'},
+  {s:'A bolt of lightning is several times hotter than the surface of the Sun.', t:true, n:'Around 30,000 °C against about 5,500 °C.'},
+  {s:'A pineapple plant takes around two years to grow one pineapple.', t:true, n:'Usually 18 months to two years. One fruit per plant at a time.'},
+  {s:'There are more possible games of chess than atoms in the observable universe.', t:true, n:'Roughly 10^120 games against about 10^80 atoms.'},
+  {s:'Koalas have fingerprints that are almost impossible to tell apart from ours.', t:true, n:'Even under a microscope, they look remarkably human.'},
+  {s:'The Moon is slowly drifting away from Earth.', t:true, n:'About 3.8 cm further every year.'},
+  {s:'Butterflies taste with their feet.', t:true, n:'Sensors on their feet tell them if a leaf is good for their eggs.'},
+  {s:'Cows have best friends, and get stressed when they’re separated.', t:true, n:'A study found their heart rates drop when they’re with a favourite partner.'},
+  {s:'There’s a village in Norway called Hell, and it freezes over most winters.', t:true, n:'Hell is near Trondheim. It gets plenty of snow.'},
+  {s:'A teaspoon of neutron star would weigh billions of tonnes.', t:true, n:'It’s an atom’s nucleus the size of a city.'},
+  {s:'A group of crows is called a parliament.', t:false, n:'That’s owls. Crows are a murder.'},
+  {s:'Sound travels faster through air than through water.', t:false, n:'It’s about four times faster in water.'},
+  {s:'Mars is the hottest planet in our solar system.', t:false, n:'Venus is. Its thick atmosphere traps the heat.'},
+  {s:'Diamonds are made from squashed coal.', t:false, n:'Most form from carbon deep in the mantle, far below any coal.'},
+  {s:'The Sahara is the largest desert on Earth.', t:false, n:'Antarctica is. A desert is about how little rain falls, not heat.'},
+  {s:'An adult has more bones than a newborn baby.', t:false, n:'Babies have around 300. Many fuse, leaving adults with 206.'},
+  {s:'Penguins live at the North Pole.', t:false, n:'Wild penguins live almost entirely in the Southern Hemisphere.'},
+  {s:'Tomatoes were first grown in Italy.', t:false, n:'They come from the Americas. Italy only got them in the 1500s.'},
+  {s:'Camels store water in their humps.', t:false, n:'The humps are fat. The water is in their bloodstream.'},
+  {s:'Big Ben is the name of the clock tower in London.', t:false, n:'Big Ben is the bell. The tower is the Elizabeth Tower.'},
+  {s:'Albert Einstein failed maths at school.', t:false, n:'He was excellent at it. The myth won’t die.'},
+  {s:'Vikings wore horned helmets into battle.', t:false, n:'No evidence at all. Horns came from 19th-century opera costumes.'},
+  {s:'Glass is made mostly from salt.', t:false, n:'It’s mostly sand: silica.'},
+  {s:'The Atlantic is the biggest ocean on Earth.', t:false, n:'The Pacific is bigger than all the land on Earth put together.'}
 ];
 /* Spaceman's voice. Playful, never toxic, never repeated within a mission. {n} player · {lead} leader · {sm} Spaceman's credits */
 const ROASTS = {
   intelfail:['Perhaps introductions are in order.','Reminder: friendships are supposed to involve knowing things about each other.','Nobody knew that about {n}. Fascinating. Who are you people?','I learned more about {n} in ten seconds than this crew has in years.','I asked about {n} and got silence. Lovely road trip, everyone.','Do you all actually know each other, or did you meet at the services?','Note to self: {n} is a mystery to this entire car.','{n}, your friends need to pay more attention. I did.','You’ve known {n} for years and nobody got that? Brutal.','{n}, you might need new friends. I’m available.'],
   bigloss:['{n} has now lost more credits than a cryptocurrency investor.','{n}, bold strategy. Let’s never do that again.','Thank you, {n}. Your credits have been safely transferred to me.','{n} is single-handedly funding my retirement.','{n}’s credits have left the vehicle.','{n}, I admire the confidence. I admire the credits more, now they’re mine.','Breaking news: {n} has discovered the downside of risk.','{n} gambled. I collected. Teamwork.','{n} just watched credits vanish faster than snacks at a services.','Breaking news: {n} has discovered gravity. The credits went down.'],
-  last:['{n} is currently treating the leaderboard like a sightseeing destination.','{n}, the bottom of the leaderboard is lovely this time of year.','Somebody check on {n}. Their credits have gone very quiet.','{n} is pacing themselves. For a different journey.','{n} is taking the scenic route through the leaderboard.','{n}, there’s still time. Not much. But some.','Spotted: {n}, at the bottom, waving.','{n} is pacing themselves. Very, very carefully.','{n} has {np} credits. I’ve seen parking meters with more.','{n} is playing the long game. Very long. Possibly endless.','Search party update: we still can’t find {n} on the leaderboard.'],
-  crewbad:['I have reviewed the data and can confirm this crew shares exactly one collective brain cell.','I’ve seen smarter decisions from a satnav with no signal.','Another round to me. Please, do keep going like this.','Three rounds in a row. I’m starting to feel sorry for you. Starting.','Mission log: the crew tried their best. The crew’s best was not enough.','I’d like to thank the crew for their generous donations.','I’ve analysed your answers. I’ve also analysed my credit balance. Thank you.','If confidence were credits, you’d all be winning.','Three games in a row feeding Spaceman. You’re basically my staff now.','I’m starting to think you’re losing on purpose. Is this a kindness?'],
-  smwinning:['Mission status update: I am carrying this entire operation.','Current standings: me, then a gap, then all of you.','I’d offer advice, but I’m enjoying winning too much.','{sm} credits and counting. Try to keep up.','Spaceman to crew: is this a road trip or a charity drive?','I’m not saying I’m the best player in this car. The leaderboard is.','Status report: still in charge. Snacks appreciated.','Just checking in from the top of the leaderboard. The view is great.','I’m {gap} ahead of {lead}. I’d say mind the gap, but you clearly can’t.','{mi} miles in and I’m winning. Shall we just call it?','If anyone needs me, I’ll be at the top of the leaderboard. As usual.'],
-  crewwinning:['{lead} is ahead of me. This is temporary.','Fine. {lead} is doing well. I’ve made a note of it. A permanent note.','Mission Control acknowledges {lead}’s lead. Mission Control is not happy about it.','{lead}, enjoy the view from the top. I’m coming for it.','{lead} thinks they’re winning. {lead} is correct. For now.','Interesting move, {lead}. Let’s see if it lasts until the next junction.','{lead}, enjoy the lead. I’ll be borrowing it shortly.','I see {lead} has been studying. Suspicious.','{lead} is {gap} ahead of me. Temporary. Like a sat nav’s confidence.','Enjoy the lead, {lead}. I know where you live. Well, where you’re going.'],
+  last:['{n} is playing the long game. Very long. Possibly never-ending.','Good news, {n}: from the bottom, every direction is up.','{n} has fewer credits than this car has cupholders.','I’ve studied {n}’s strategy. I’ve also seen a shopping trolley in a canal. Similar energy.','{n}, you’re not losing. You’re winning very, very slowly.','Spare a thought for {n}. Actually, spare them a credit.','If last place had a trophy, {n} would be polishing it.','{n} is the main reason I’m feeling confident.','{n} is currently treating the leaderboard like a sightseeing destination.','{n}, the bottom of the leaderboard is lovely this time of year.','Somebody check on {n}. Their credits have gone very quiet.','{n} is pacing themselves. For a different journey.','{n} is taking the scenic route through the leaderboard.','{n}, there’s still time. Not much. But some.','Spotted: {n}, at the bottom, waving.','{n} is pacing themselves. Very, very carefully.','{n} has {np} credits. I’ve seen parking meters with more.','{n} is playing the long game. Very long. Possibly endless.','Search party update: we still can’t find {n} on the leaderboard.'],
+  crewbad:['Another one for me. Thank you, crew. Truly generous.','That was less of a mission and more of a donation.','If losing was a sport, you’d finally be winning something.','I didn’t even need to cheat for that one.','Spectacular. Really. Spectacularly bad.','Mission Control would like that one wiped from the records.','I have reviewed the data and can confirm this crew shares exactly one collective brain cell.','I’ve seen smarter decisions from a satnav with no signal.','Another round to me. Please, do keep going like this.','Three rounds in a row. I’m starting to feel sorry for you. Starting.','Mission log: the crew tried their best. The crew’s best was not enough.','I’d like to thank the crew for their generous donations.','I’ve analysed your answers. I’ve also analysed my credit balance. Thank you.','If confidence were credits, you’d all be winning.','Three games in a row feeding Spaceman. You’re basically my staff now.','I’m starting to think you’re losing on purpose. Is this a kindness?'],
+  smwinning:['Leaderboard check: I’m comfortable. Very comfortable. Feet up.','{sm} credits. Not bragging. Just reading numbers out loud.','The crew total is looking a little… thin.','You’re all doing your best. That’s the sad part.','I’ve started drafting my victory speech. It’s mostly about me.','At this rate I’ll be naming the car.','Mission status update: I am carrying this entire operation.','Current standings: me, then a gap, then all of you.','I’d offer advice, but I’m enjoying winning too much.','{sm} credits and counting. Try to keep up.','Spaceman to crew: is this a road trip or a charity drive?','I’m not saying I’m the best player in this car. The leaderboard is.','Status report: still in charge. Snacks appreciated.','Just checking in from the top of the leaderboard. The view is great.','I’m {gap} ahead of {lead}. I’d say mind the gap, but you clearly can’t.','{mi} miles in and I’m winning. Shall we just call it?','If anyone needs me, I’ll be at the top of the leaderboard. As usual.'],
+  crewwinning:['The crew is ahead. Enjoy it. I’m warming up.','Fine, {lead}. Take the lead. I’ll take it back. Politely. Then not politely.','I’m not worried. This is my worried face. It looks the same.','Leaderboard update: {lead} is getting very confident. I’ve made a note.','Crew in front. Spaceman behind. Spaceman is plotting.','Please stop doing well. It’s unsettling.','{lead} is ahead of me. This is temporary.','Fine. {lead} is doing well. I’ve made a note of it. A permanent note.','Mission Control acknowledges {lead}’s lead. Mission Control is not happy about it.','{lead}, enjoy the view from the top. I’m coming for it.','{lead} thinks they’re winning. {lead} is correct. For now.','Interesting move, {lead}. Let’s see if it lasts until the next junction.','{lead}, enjoy the lead. I’ll be borrowing it shortly.','I see {lead} has been studying. Suspicious.','{lead} is {gap} ahead of me. Temporary. Like a sat nav’s confidence.','Enjoy the lead, {lead}. I know where you live. Well, where you’re going.'],
   hijack:['Someone has opened my supply crate. I will remember this.','My credits. My crate. My feelings.','That crate was clearly labelled “Spaceman”. Clearly.','Who opened the crate? Nobody? Everybody? I see.','Those were my emergency credits. This is an emergency.'],
   fixok:['Corrective action successful. I hate that it worked.','Teamwork. Disgusting. Well done.','The crew agreed on something and it was right. Historic.','Fine. That one’s yours. Enjoy it.','Corrective action complete. I’m filing a complaint with myself.'],
-  banter:['Spaceman here. {mi} miles done, {sm} credits in my pocket, and a very good feeling about it.','I’ve been analysing your faces. Well, your answers. Same thing really.','Fun fact: I’ve never lost a road trip. I’ve also never been on one. Still counts.','Somebody in this car just thought about quitting. I could hear it.','I’ve calculated your chances of beating me. I won’t share the number. It’s small.','Message to {lead}: the higher you climb, the more I enjoy the fall.','I’ve put a little something aside for the next milestone. Something nasty.','Hello from orbit. Everything is fine. Nothing is planned. Absolutely nothing.','Spaceman’s rule of the road: never trust a crew that says “I’ve got a good feeling”.','Atlas thinks he’s in charge. Adorable.'],
+  banter:['Mile {mi}. Still nobody has offered Spaceman a snack. Noted.','Minute {min}. I’ve done the maths, and you’re all in trouble.','Fun fact: I can hear every word you say about me. Keep going.','Is it just me, or does {p} look nervous?','Somebody in this car is about to make a terrible decision. I can feel it.','Captain {c}, eyes on the road. I’ll keep my eyes on your credits.','Spaceman here. {mi} miles done, {sm} credits in my pocket, and a very good feeling about it.','I’ve been analysing your faces. Well, your answers. Same thing really.','Fun fact: I’ve never lost a road trip. I’ve also never been on one. Still counts.','Somebody in this car just thought about quitting. I could hear it.','I’ve calculated your chances of beating me. I won’t share the number. It’s small.','Message to {lead}: the higher you climb, the more I enjoy the fall.','I’ve put a little something aside for the next milestone. Something nasty.','Hello from orbit. Everything is fine. Nothing is planned. Absolutely nothing.','Spaceman’s rule of the road: never trust a crew that says “I’ve got a good feeling”.','Atlas thinks he’s in charge. Adorable.'],
   rescued:['A rescue. In my mission. I’m reporting this.','The crew worked together. Please don’t make a habit of it.','Rescue successful. I already have my eye on someone else.'],
   rescuefail:['{n} is still mine. Anyone else want to join them?','That rescue had the energy of a sleepy sloth.','Your rescue attempt has been logged as “a cry for help”.'],
-  captive:['Quick update from the brig. {hj} has eaten all my biscuits.','{hj} is still with me. Every credit they win, I keep half. Lovely arrangement.','Crew, it’s been a while. Do you actually want {hj} back?','{hj} has started calling me Captain. I could get used to this.','Day one of {hj}’s captivity. They’ve already rearranged my playlists.'],
+  captive:['{hj} has asked me to tell you they’re fine. I made them say it.','Minute {min}. {hj} has started calling me sir.','{hj} is teaching me a card game. I’m winning. Obviously.','I’ve given {hj} a little badge. It says “property of Spaceman”.','Still no rescue. {hj} has taken up knitting.','Reminder: {hj}’s credits still count for me. Take your time.','{hj} wants to know if anyone has noticed they’re gone.','The crew’s rescue plan appears to be “hope”. Bold.','Quick update from the brig. {hj} has eaten all my biscuits.','{hj} is still with me. Every credit they win, I keep half. Lovely arrangement.','Crew, it’s been a while. Do you actually want {hj} back?','{hj} has started calling me Captain. I could get used to this.','Day one of {hj}’s captivity. They’ve already rearranged my playlists.'],
+  fury:['Right. That’s it. I’m angry now. Everything I win counts extra.','You’ve made me cross. You won’t like me when I’m cross.','Fury mode engaged. I did warn you.','Oh, you think you’re winning? Adorable. Watch this.','I’m not losing. I’m building suspense.','Spaceman Fury. Look it up. Actually, don’t. Just panic.'],
+  captured:['{n} has joined my side. Frankly, {n} seems more competent than the rest of you.','I’ve borrowed {n}. Try not to lose anyone else.','Reminder: hostages are expensive. {n} is very expensive.','{n} is with me now. So are their {np} credits. Funny how that works.','Don’t worry about {n}. I’ve given them a comfy seat and a very long contract.','Welcome aboard, {n}. Snacks are in the back. The exit is not.','I needed an assistant. {n} was the closest. Congratulations, {n}.','Tractor beam: one. Crew: nil. {n}: mine.','{n}, wave to the crew. They can see you. They just can’t afford you.','Breaking news: {n} has transferred to the winning team.','I took {n} because they were doing well. Let that be a lesson to everyone.','I’ve put {n} in the brig. Honestly, it’s nicer than this car.','Hello, crew. I have {n}. Whatever you’re planning, it’s going to cost you.','Rescues are available. Results not guaranteed. {n} not refundable.','{n} put up a brave fight. For about a second.','Every credit {n} wins, I keep half. I love this arrangement. {n} less so.','Think of {n} as a deposit. You get them back when you’ve paid.','The crew total just went down. Mine just went up. Maths is beautiful.','I won’t say I planned this. I’ll just say it went exactly to plan.','{n}, you’re on my team now. We have better snacks.'],
+  copilot:['{cp} is Co-Pilot. Which mostly means pressing buttons the Captain could press.','Co-Pilot {cp} has never once been asked for their opinion. Including now.','{cp}, Co-Pilot. Powers: snacks, directions and very occasional usefulness.','{cp} is guarding the Co-Pilot seat like a dragon on a pile of gold.','Co-Pilot {cp} is one wrong answer away from being crew again. Just saying.','If {cp} ever takes the wheel, I’m filing a complaint.','{cp} has held the Co-Pilot seat for a while. Somebody challenge that. Anybody.','Captain {c} trusts {cp} with the important things. Like the aux cable. Allegedly.'],
+  crew:['This crew has the teamwork of a supermarket trolley with one bad wheel.','You lot argue like a family and score like strangers.','I’ve analysed this crew. You’re a band where everyone wants to be the drummer.','Collectively this car has one brain cell, and {p} is borrowing it.','This crew could lose a staring contest to a sat nav.','Group chat energy. Motorway services decision-making.','The crew’s strategy is chaos. Respect. It doesn’t work, but respect.','I’ve seen better coordination in a drawer of loose cables.'],
   fixfail:['Corrective action failed. Lovely. More credits for me.','You had one job. One. Together.','The crew put their heads together. I heard a hollow knock.','A team effort, and a team miss. Thank you.','Close. Not close enough. My credits say hello.']
 };
 /* Spaceman's one-line verdict on every game. {n} the player it's about, {np} their credits, {lead} {low} {sm} {mi} {min} */
@@ -3229,10 +3411,14 @@ const Engine = (() => {
   }
   /* Spaceman gains and loses credits only through the rules above, and every change is logged with a reason */
   function smGain(S, n, why){ if (n <= 0) return 0; if (S.surgeAll || (S.ch && S.ch.surge && S.ch.phase !== 'done')) n *= 2;   /* surges double Spaceman too */
+    n = Math.max(1, Math.round(n*smMul(S)*(furious(S) ? PT.fury : 1)));   /* one against the whole crew, and angrier when it's losing badly */
     S.sm += n; S.smLog.push({t:Math.floor(S.min), n, why}); log(S, 'rocket', `Spaceman +${n}: ${why}`); say(S, {t:'sfx', k:'smgain'}); bump(S); return n; }
   function smLose(S, n, why){ const v = Math.min(S.sm, n); if (v <= 0) return 0; S.sm -= v; S.smLog.push({t:Math.floor(S.min), n:-v, why}); log(S, 'rocket', `Spaceman −${v}: ${why}`); bump(S); return v; }
   /* Wrong guesses feed Spaceman, scaled for crew size so a car of six isn't simply giving Spaceman more chances */
-  const smW = (S, k) => Math.round(k*PT.smWrong*Math.min(1, 4/S.crew.length));
+  const smMul = S => Math.round(PT.smScale[Math.max(2, Math.min(8, S.crew.length))]*(S.pace === 'sim' ? PT.smSim : 1)*10)/10;
+  /* Spaceman Fury: a catch-up rule for the opponent. Far enough behind and everything it earns counts extra, so it's never out of it */
+  const furious = S => S.min >= PT.furyFrom && crewTotal(S) > PT.furyAt*smTotal(S) + 10;
+  const smW = (S, k) => Math.round(k*PT.smWrong);
   const smTake = (S, r, why) => r && r.lost ? smGain(S, Math.ceil(r.lost*PT.smShare), why) : 0;     /* Spaceman keeps part of what it knocks off you */
   function roast(S, k, who){
     if (S.min - S.lastRoast < RULES.roastGap*S.tempo.cycle || S.q.some(x => x.type === 'roast')) return;
@@ -3267,7 +3453,7 @@ const Engine = (() => {
       decks:{}, log:[], results:[], seq:0, out:[], bots:[], txId:0,
       hj:null, hjLog:[], nextMile:RULES.milestone.every, miles:[], surge:0, bounty:null, coDef:0, revenge:null, qualified:false,
       st:Object.fromEntries(crew.map(id => [id, {lost:0, wins:0, hero:0, held:0, risky:0, stole:0, streakMax:0}])), streak:{}, snaps:[], nextSnap:5,
-      reacts:[], reactId:0, reactQ:[], lastReact:{}, mem:[], atlas:{mood:'excited', until:6}, betrayals:[], bribed:[], alliance:null, final:null, awards:null, surgeAll:false, bonusN:3};
+      reacts:[], reactId:0, reactQ:[], lastReact:{}, ae:{}, aeN:0, aeNext:{}, aeLast:{}, mem:[], atlas:{mood:'excited', until:6}, betrayals:[], bribed:[], alliance:null, final:null, awards:null, surgeAll:false, bonusN:3};
     S.crew.forEach(id => { S.pts[id] = 0; S.inv[id] = []; S.fx[id] = {}; S.src[id] = {challenge:0, copilot:0, event:0, power:0, captain:0}; });
     if (PT.capShield) S.fx[S.captain].shield = true;                                   /* the driver's seat starts shielded */
     S.agenda = agenda(0, S.tempo.cycle); S.nextDrop = RULES.dropEvery*S.tempo.cycle;
@@ -3444,10 +3630,11 @@ const Engine = (() => {
     if (PT.coWinBonus && PT.coWinMode === 'challenge' && S.copilot && chWinners(S, ch).includes(S.copilot)){
       const v = gain(S, S.copilot, PT.coWinBonus, 'copilot'); ch.coBonus = v; result += `. Co-Pilot bonus: ${nm(S, S.copilot)} +${v}`;
     }
-    if (PT.capWinBonus && S.crew.length <= 5 && chWinners(S, ch).includes(S.captain)){   /* v1.2: keeps the driver at a fair share in Real Journey Mode with small crews */ const v = gain(S, S.captain, PT.capWinBonus, 'captain'); result += `. Captain’s bonus: +${v}`; }
+    if (PT.capWinBonus && S.crew.length <= PT.capWinMax && chWinners(S, ch).includes(S.captain) && (S.capWins = (S.capWins || 0) + 1) % 2 === 1){   /* v1.3: on the Captain's 1st, 3rd, 5th… win. Keeps the driver at a fair share in Real Journey Mode */ const v = gain(S, S.captain, PT.capWinBonus, 'captain'); result += `. Captain’s bonus: +${v}`; }
     {  /* momentum: winners, streaks, streak breakers, alliances, and what Atlas will remember */
       const d = id => S.pts[id] - (ch.p0[id] || 0), byD = [...S.crew].sort((a, b) => d(b) - d(a)), w = d(byD[0]) > 0 && (byD.length < 2 || d(byD[0]) > d(byD[1])) ? byD[0] : null;
       if (!M.interrupt && w){ S.st[w].wins++;
+        if (R() < PT.spoils){ const g = givePU(S, w); if (g){ (ch.notes ||= []).push({id:w, t:'🎁 Found a power-up in the wreckage'}); say(S, {t:'toast', text:`Spoils of victory: you found ${POWERUPS[g].name}`, ids:[w]}); } }
         if ((S.streak[w] || 0) >= 2){ const v = gain(S, w, PT.fire, 'challenge'); result += `. 🔥 ${nm(S, w)} is on fire: +${v}`; (ch.notes ||= []).push({id:w, t:`🔥 On fire: +${v}`}); }
         S.crew.filter(x => x !== w && (S.streak[x] || 0) >= 2).forEach(x => { const v = gain(S, w, PT.breaker, 'challenge'); result += `. ${nm(S, w)} broke ${nm(S, x)}’s streak: +${v}`; (ch.notes ||= []).push({id:w, t:`Streak Breaker (ended ${nm(S, x)}’s run): +${v}`}); mem(S, 'streakEnd', x, {by:w}); });
         S.crew.forEach(x => { S.streak[x] = x === w ? (S.streak[x] || 0) + 1 : 0; }); S.st[w].streakMax = Math.max(S.st[w].streakMax, S.streak[w]);
@@ -3600,7 +3787,8 @@ const Engine = (() => {
   }
   /* The Spaceman Bluff: true or false, hidden until everyone's in. Wrong answers pay Spaceman. */
   function openBluff(S, first){
-    const ch = S.ch, f = deal(S, 'bluff', BLUFF);
+    const ch = S.ch, h = S.tfHist || (S.tfHist = []), want = h.length >= 2 && h[h.length - 1] === h[h.length - 2] ? !h[h.length - 1] : h.filter(Boolean).length*2 > h.length + 1 ? false : h.filter(Boolean).length*2 < h.length - 1 ? true : R() < .5;
+    const f = deal(S, 'bluff' + (want ? 'T' : 'F'), BLUFF, x => x.t === want); h.push(f.t);
     Object.assign(ch, {f, picks:{}, window:RULES.bluff.open, voters:S.crew.filter(x => x !== ch.captive), said:{}});
     if (!first){ ch.phase = 'tf'; ch.t0 = S.rt; ch.until = S.rt + ch.window; } else ch.phase = 'tf';
     ch.voters.forEach(p => { ch.bot[p] = {by:rr(RULES.bluff.by), v:R() < RULES.bluff.right ? f.t : !f.t}; }); bump(S);
@@ -3792,12 +3980,13 @@ const Engine = (() => {
     if (k === 'shield'){ S.fx[by].shield = true; msg = `${nm(S, by)} raised a Shield`; }
     let res = {k};
     if (k === 'lucky'){
-      const r = ri(1, 6), pts = Math.min(PT.lucky[1], Math.max(PT.lucky[0], r + 1)), v = gain(S, by, pts, 'power');   /* 1–5 → +2…+6 as before, 6 → +6 */
+      const r = ri(1, 6), can = r === 6 && by !== S.captain && by !== S.copilot, pts = r < 6 ? r : can ? 0 : 5, v = pts;   /* 1–5 = exactly that many credits, never doubled or skimmed. 6 = Co-Pilot promotion (+5 if the seat can't move) */
+      if (pts){ S.pts[by] += pts; S.src[by].power += pts; bump(S); }
       res = {k, roll:r, gain:v};
-      msg = `${nm(S, by)} rolled a ${r} on Lucky Roll${v !== pts ? ', doubled' : ''}: +${v}`;
-      if (r === 6 && by !== S.captain && by !== S.copilot){
+      msg = can ? `${nm(S, by)} rolled a 6 on Lucky Roll: Co-Pilot promotion` : `${nm(S, by)} rolled a ${r} on Lucky Roll: +${v}`;
+      if (can){
         const prev = S.copilot, hand = setCopilot(S, by, 'lucky'); res.promoted = true; res.prev = prev;
-        msg += `. A six! ${nm(S, by)} is promoted to Co-Pilot`; enqueue(S, 'news', {who:by, prev, hand, how:'lucky'});
+        msg += `. ${nm(S, by)} is the new Co-Pilot`; enqueue(S, 'news', {who:by, prev, hand, how:'lucky'});
       } else if (r === 6) res.why = by === S.captain ? 'captain' : 'already';
     }
     if (k === 'thief' && target === 'sm'){ const got = smLose(S, rng(PT.thief), `${nm(S, by)}’s Credit Thief`); gain(S, by, got, 'power'); S.st[by].stole += got; msg = `${nm(S, by)} stole ${got} from Spaceman`; }
@@ -3941,7 +4130,7 @@ const Engine = (() => {
     const right = [e.a, e.b].filter(id => e.ans[id] === e.cur.a).sort((x, y) => e.at2[x] - e.at2[y]);
     e.phase = 'done'; e.until = S.rt + RULES.evShow;
     if (right.length){ const w = right[0], l = w === e.a ? e.b : e.a; e.w = w; e.l = l; e.both = right.length === 2; e.n = moveCr(S, l, w, e.stake, 'duel');
-      e.atlas = atlasEv(S, 'duelDone', w, {m:l}); mem(S, 'duel', w); log(S, 'swap', `${nm(S, w)} won the duel${e.both ? ' (faster)' : ''} and took ${e.n} from ${nm(S, l)}`); say(S, {t:'sfx', k:'promoWin'}); }
+      e.atlas = atlasEv(S, 'duelDone', w, {m:l}); mem(S, 'duel', w); if (givePU(S, w)) e.pu = true; log(S, 'swap', `${nm(S, w)} won the duel${e.both ? ' (faster)' : ''} and took ${e.n} from ${nm(S, l)}`); say(S, {t:'sfx', k:'promoWin'}); }
     else { e.w = null; let got = 0; [e.a, e.b].forEach(id => { const r = loss(S, id, PT.duelBoth, 'event'); got += r.lost || 0; }); if (got) smGain(S, got, 'a duel nobody won');
       e.n = got; e.atlas = 'Both wrong. Spaceman thanks you both for your contribution.'; log(S, 'swap', `Duel: both wrong. Spaceman took ${got}`); say(S, {t:'sfx', k:'miss'}); }
     say(S, {t:'haptic'}); bump(S);
@@ -3955,7 +4144,7 @@ const Engine = (() => {
   function settleBribe(S, yes){
     const e = S.ev; if (!e || e.type !== 'bribe' || e.phase !== 'offer') return; e.phase = 'done'; e.yes = !!yes; e.until = S.rt + 7;
     if (yes){ S.pts[e.who] += PT.bribe[0]; S.src[e.who].event += PT.bribe[0]; smGain(S, PT.bribe[1], 'a secret deal'); }    /* Spaceman's own money: not skimmed */
-    else gain(S, e.who, PT.bribe[2], 'event');
+    else { gain(S, e.who, PT.bribe[2], 'event'); S.fx[e.who].shield = true; }   /* loyalty: a bonus and a Shield */
     S.betrayals.push({who:e.who, yes:!!yes, min:Math.round(S.min)}); bump(S);
   }
   function openAlliance(S){
@@ -4018,19 +4207,25 @@ const Engine = (() => {
     if (S.hj || S.crew.length < 2) return;
     const target = who || topCrew(S) || pick(S.crew);       /* Spaceman goes for the leader. Shields don't stop a tractor beam. */
     mem(S, 'hostage', target); setMood(S, 'concerned', 8);
-    S.hj = {who:target, at:S.min, lvl:0, skim:0, why, nextTick:S.min + RULES.hijack.tick*S.tempo.cycle, retryAt:S.min + rr(RULES.hijack.first)};
-    S.ev = {type:'hijack', phase:'start', who:target, why, until:S.rt + RULES.evShow + 3, id:++S.txId, atlas:atlasEv(S, 'hijack', target)};
+    S.hj = {who:target, at:S.min, lvl:0, skim:0, pool:0, target:30, donors:{}, why, nextTick:S.min + RULES.hijack.tick*S.tempo.cycle, retryAt:S.min + rr(RULES.hijack.first)};
+    S.ev = {type:'hijack', phase:'start', who:target, n:S.pts[target], why, until:S.rt + RULES.evShow + 7, id:++S.txId, atlas:atlasEv(S, 'hijack', target), sm:fillSm(S, deal(S, 'roast_captured', ROASTS.captured), target)}; S.lastRoast = S.min;
     log(S, 'rocket', `Spaceman hijacked ${nm(S, target)}. Half of everything they win now goes to Spaceman, and the ransom grows every ${Math.round(RULES.hijack.tick*S.tempo.cycle)} minutes`);
     say(S, {t:'sfx', k:'hijack'}); say(S, {t:'haptic'}); bump(S);
   }
   function hjTick(S){
-    const h = S.hj; h.lvl++; h.nextTick = S.min + RULES.hijack.tick*S.tempo.cycle;
+    const h = S.hj; h.lvl++; h.target = Math.min(70, 30 + 10*h.lvl); h.nextTick = S.min + RULES.hijack.tick*S.tempo.cycle;
     if (h.lvl > RULES.hijack.maxLvl){ const take = Math.ceil(S.pts[h.who]*PT.hjEnd); if (take){ S.pts[h.who] -= take; S.src[h.who].event -= take; smGain(S, take, `final ransom from ${nm(S, h.who)}`); }
       say(S, {t:'toast', text:`Spaceman got bored and released ${nm(S, h.who)}${take ? `, keeping ${take} of their credits` : ''}`}); return hjFree(S, 'released'); }
     const r = loss(S, h.who, PT.hjRansom[h.lvl - 1], 'event'); h.paid = (h.paid || 0) + (r.lost || 0); if (r.lost) smGain(S, r.lost, `ransom from captive ${nm(S, h.who)}`);
     let spread = 0; if (h.lvl >= 3) S.crew.filter(x => x !== h.who).forEach(x => { const q = loss(S, x, PT.hjSpread, 'event'); if (q.lost){ spread += q.lost; } }); if (spread) smGain(S, spread, `the crew failed to rescue ${nm(S, h.who)}`);
     const msg = `Ransom ${h.lvl}: Spaceman took ${r.blocked ? 'nothing (Shield)' : r.lost} from ${nm(S, h.who)}${spread ? `, and ${PT.hjSpread} from everyone else` : ''}. Rescue them!`;
     log(S, 'rocket', msg); say(S, {t:'toast', text:msg}); say(S, {t:'sfx', k:'smgain'}); bump(S);
+  }
+  function rescueDone(S){
+    const h = S.hj; if (!h) return; const ds = Object.entries(h.donors).sort((x, y) => y[1] - x[1]), who = h.who, top = ds.length ? ds[0][0] : null;
+    if (top){ gain(S, top, PT.hjRescuer, 'event'); S.st[top].hero++; } ds.forEach(([id]) => givePU(S, id));   /* everyone who chipped in finds a power-up */
+    mem(S, 'rescue', who); setMood(S, 'excited', 8); hjFree(S, 'rescued');
+    say(S, {t:'toast', text:`${nm(S, who)} is free! The crew paid the ransom together${top ? `. ${nm(S, top)} gave the most (+${PT.hjRescuer})` : ''}`}); roast(S, 'rescued', who);
   }
   function hjFree(S, how){
     const h = S.hj; if (!h) return; S.hj = null; S.st[h.who].held += Math.max(1, Math.round(S.min - h.at)); S.hjLog.push({who:h.who, mins:Math.round(S.min - h.at), how, skim:h.skim, paid:h.paid || 0});
@@ -4039,10 +4234,15 @@ const Engine = (() => {
   }
   /* ---- milestones: every 10 miles, something big ---- */
   function milestone(S, n){
-    const lead = leader(S), total = S.crew.reduce((a, id) => a + S.pts[id], 0), w = [['jackpot', 3], ['overdrive', 2], ['gamble', 3], ['supplies', 2]];
-    if (S.hj) w.push(['rescue', 6]); else if (S.min >= RULES.hijack.minAt) w.push(['hijack', lead && S.pts[lead] >= S.sm ? 4 : 2]);
-    if (total >= 20) w.push(['tax', 2]); if (lead && S.pts[lead] >= 6 && !S.bounty) w.push(['bounty', 2]);
-    const k = wpick(w, x => x[1])[0], out = []; let text = '';
+    const lead = leader(S), total = S.crew.reduce((a, id) => a + S.pts[id], 0), ranked = [...S.crew].sort((a, b) => S.pts[a] - S.pts[b] || R() - .5), low = ranked[0];
+    const w = [['jackpot', 2], ['overdrive', 1.5], ['gamble', 2], ['supplies', 1.5], ['shields', 1.5], ['boost', 1.5], ['tailwind', 1.2], ['lottery', 1.5], ['cache', 1.5], ['extra', 1.5], ['claim', 2.5]];
+    if (S.hj) w.push(['rescue', 5], ['discount', 2]); else if (S.min >= RULES.hijack.minAt) w.push(['hijack', lead && S.pts[lead] >= S.sm ? 3 : 1.5]);
+    if (total >= 20) w.push(['tax', 2]); if (lead && S.pts[lead] >= 6 && !S.bounty) w.push(['bounty', 1.5]);
+    if (lead && S.pts[lead] >= 8) w.push(['barrage', 2.5], ['robin', 1.5]);
+    if (S.crew.some(id => S.inv[id].length) && S.crew.length > 1) w.push(['pickpocket', 2], ['raid', 1.5]);
+    if (S.copilot && eligible(S).length) w.push(['seat', 1.5]); if (eligible(S).length) w.push(['promo', 1.2]);
+    const recent = S.miles.slice(-3).map(m => m.k);                    /* never the same thing twice in a row, rarely within three */
+    const k = wpick(w.filter(x => x[0] !== recent[recent.length - 1]).map(x => [x[0], recent.includes(x[0]) ? x[1]*.3 : x[1]]), x => x[1])[0], out = []; let text = '';
     S.miles.push({n, k}); setMood(S, 'excited'); S.evSay = {k:'milestone', n};
     log(S, 'flag', `Milestone: ${n} miles`);
     if (k === 'hijack') return hijackStart(S, 'milestone');
@@ -4055,6 +4255,23 @@ const Engine = (() => {
     if (k === 'tax'){ let got = 0; S.crew.filter(id => S.pts[id] >= 8).forEach(id => { const r = loss(S, id, PT.tax, 'event'); got += r.lost || 0; out.push({id, kind:'Road tax', text:'', d:lossText(r), c:lossClass(r)}); });
       if (got) smGain(S, got, 'milestone road tax'); text = 'Spaceman charges road tax on everyone with 8 credits or more.'; }
     if (k === 'bounty'){ S.bounty = {on:lead}; out.push({id:lead, kind:'Wanted', text:`Beat ${nm(S, lead)} in the next game to take ${PT.bounty} of their credits`, d:'Bounty', c:'bad'}); text = 'A bounty on the leader. The next game decides who collects.'; }
+    if (k === 'seat'){ S.nextStruggle = S.min; text = 'The Co-Pilot seat is up for grabs. A Seat Challenge is on its way.'; out.push({id:S.copilot, kind:'Defending', text:'Hold the seat or lose it', d:'Seat Challenge', c:'bad'}); }
+    if (k === 'promo'){ S.agenda.unshift({at:S.min + .3, type:'promo'}); S.agenda.sort((a, b) => a.at - b.at); text = 'Mission Promotion. Someone rolls for the Co-Pilot seat. Six takes it.'; }
+    if (k === 'extra'){ S.agenda.unshift({at:S.min + .3, type:'cosmic', k:pick(['chance', 'chance', 'duel', 'flare', 'glitch'].filter(x => x !== 'duel' || pass(S).length >= 2))}); S.agenda.sort((a, b) => a.at - b.at); text = 'Bonus event unlocked. Something else is coming. Right now.'; }
+    if (k === 'shields'){ S.crew.forEach(id => { const had = S.fx[id].shield; S.fx[id].shield = true; out.push({id, kind:'Deflector shields', text:'', d:had ? 'Already shielded' : 'Shield up', c:'ok'}); }); text = 'Deflector shields. Everyone’s next bad moment is blocked.'; }
+    if (k === 'boost'){ ranked.slice(0, Math.ceil(S.crew.length/2)).forEach(id => { S.fx[id].double = true; out.push({id, kind:'Afterburners', text:'', d:'2× next win', c:'ok'}); }); text = 'Afterburners for the bottom half. Their next credits count double.'; }
+    if (k === 'tailwind'){ S.crew.forEach(id => out.push({id, kind:'Tailwind', text:'', d:`+${gain(S, id, PT.tailwind, 'event')}`, c:'good'})); text = `Crew-wide bonus. Everyone +${PT.tailwind}.`; }
+    if (k === 'claim'){ const v = smGain(S, PT.claim, `claimed the ${n}-mile milestone`); text = `Spaceman got to the ${n}-mile marker first and planted a flag on it. Spaceman +${v}.`; roast(S, 'smwinning'); }
+    if (k === 'lottery'){ const who = pick(S.crew); out.push({id:who, kind:'Space lottery', text:'Random winner', d:`+${gain(S, who, PT.lottery, 'event')}`, c:'good'}); text = `The Space Lottery. One random winner. Today it’s ${nm(S, who)}.`; }
+    if (k === 'cache'){ sample(S.crew, Math.min(2, S.crew.length), id => 1 + ranked.indexOf(id) < 3 ? 3 : 1).forEach(id => { const g = givePU(S, id); out.push({id, kind:'Supply pod', text:'', d:g ? 'Power-up' : 'Inventory full', c:g ? 'ok' : 'zero'}); }); text = 'A supply pod with two power-ups in it. The back of the leaderboard is luckier.'; }
+    if (k === 'discount'){ S.hj.target = Math.max(S.hj.pool, Math.ceil(S.hj.target/2)); text = `Rescue discount. The rescue fund for ${nm(S, S.hj.who)} is now ${S.hj.target}. Get them back.`; out.push({id:S.hj.who, kind:'Rescue fund', text:'Half price', d:`${Math.min(S.hj.pool, S.hj.target)} / ${S.hj.target}`, c:'ok'}); if (S.hj.pool >= S.hj.target) rescueDone(S); }
+    if (k === 'barrage'){ let got = 0; [...S.crew].sort((a, b) => S.pts[b] - S.pts[a]).slice(0, 2).forEach(id => { const r = loss(S, id, PT.barrage, 'event'); const o = {id, kind:'Spaceman barrage', text:'', d:lossText(r), c:lossClass(r)}; const t = smTake(S, r, `barrage on ${nm(S, id)}`); if (t) o.sm = t; got += t; out.push(o); }); text = 'Spaceman opens fire on the top two. Shields help.'; roast(S, 'smwinning'); }
+    if (k === 'robin'){ const r = loss(S, lead, PT.robin, 'event'); if (r.lost) gain(S, low, r.lost, 'event'); out.push({id:lead, kind:'Fuel leak', text:'', d:lossText(r), c:lossClass(r)}, {id:low, kind:'Picked it up', text:'', d:r.lost ? `+${r.lost}` : '0', c:r.lost ? 'good' : 'zero'}); text = `The leader’s fuel tank springs a leak. Whoever’s last drives right through it.`; }
+    if (k === 'pickpocket'){ const thief = ranked.find(id => S.inv[id].length < slotsOf(S, id)), from = thief && [...S.crew].filter(id => id !== thief && S.inv[id].length).sort((a, b) => S.pts[b] - S.pts[a])[0], low = thief;
+      if (from && thief){ const it = S.inv[from].splice(Math.floor(R()*S.inv[from].length), 1)[0]; S.inv[low].push(it); out.push({id:low, kind:'Pickpocket', text:`Stole from ${nm(S, from)}`, d:'+1 power-up', c:'good'}, {id:from, kind:'Robbed', text:'', d:'−1 power-up', c:'bad'}); text = `${nm(S, low)} goes pickpocketing and lifts a power-up from ${nm(S, from)}.`; }
+      else { S.crew.forEach(id => { const g = givePU(S, id); if (g) out.push({id, kind:'Supply drop', text:'', d:'Power-up', c:'ok'}); }); text = 'Nobody worth robbing. A supply drop instead.'; } }
+    if (k === 'raid'){ let n2 = 0; S.crew.filter(id => S.inv[id].length).forEach(id => { if (S.fx[id].shield){ S.fx[id].shield = false; out.push({id, kind:'Raid', text:'', d:'Shield held', c:'ok'}); return; } S.inv[id].splice(Math.floor(R()*S.inv[id].length), 1); n2++; out.push({id, kind:'Raided', text:'', d:'−1 power-up', c:'bad'}); });
+      if (n2) smGain(S, n2*PT.raid, 'raided the crew’s power-ups'); text = 'Spaceman raids the lockers. One power-up from everyone holding one. Shields stop it.'; }
     S.ev = {type:'milestone', k, n, out, text, until:S.rt + RULES.evShow + 2, id:++S.txId, atlas:S.evSay ? atlasEv(S, 'milestone', null, {n}) : ''}; S.evSay = null; say(S, {t:'sfx', k:'milestone'}); say(S, {t:'haptic'}); bump(S);
   }
   function runStory(S, k){
@@ -4065,7 +4282,7 @@ const Engine = (() => {
   /* ---- transmissions ---- */
   function openTx(S, tx){
     tx.id = ++S.txId; tx.phase = tx.kind === 'captain' ? 'ask' : 'play'; tx.at = S.min; tx.reacts = {}; tx.said = {};
-    tx.atRt = S.rt; if (tx.kind === 'captain') tx.botAnswerAt = S.min + rr(RULES.answerBy); else tx.until = S.rt + RULES.txLen;
+    tx.atRt = S.rt; if (tx.kind === 'captain') tx.botAnswerAt = S.min + rr(RULES.answerBy); else { const words = [tx.pre, tx.text, tx.post].filter(Boolean).join(' ').split(/\s+/).length; tx.dur = Math.round(Math.min(22, Math.max(8, 5.5 + words*.42))*10)/10; tx.until = S.rt + tx.dur; }   /* long enough to hear it, then it dismisses itself */
     S.tx = tx;
     log(S, 'signal', tx.kind === 'roast' ? `Spaceman: ${tx.text}` : tx.kind === 'captain' ? `Captain question: ${tx.text}` : tx.kind === 'talk' ? `Discussion: ${tx.text}` : tx.kind === 'chatter' ? `Atlas: ${tx.text}` : `Transmission: “${tx.text}”`);
     say(S, {t:'tx', id:tx.id});
@@ -4133,9 +4350,17 @@ const Engine = (() => {
         S.reacts.push({by, e:a.e, rt:S.rt, id:++S.reactId}); if (S.reacts.length > 30) S.reacts.shift();
         if (S.ch && S.ch.phase === 'done'){ const r = S.ch.reacts ||= {}; r[a.e] = (r[a.e] || 0) + 1; if (a.e === '😂' && r[a.e] === 3) mem(S, 'funny', null, {game:MISSIONS[S.ch.id].name}); }
         bump(S); } break;
+      case 'avemote': { if (!AV_EMOTES.includes(a.e) || S.rt - (S.aeLast[by] || -9) < 1.2) break; S.aeLast[by] = S.rt;
+        S.ae[by] = {e:a.e, n:++S.aeN, until:S.rt + 4.5}; bump(S); } break;
       case 'final': if (!S.final && !S.q.some(x => x.type === 'final')) enqueue(S, 'final'); break;
       case 'qroll': { const e = S.ev; if (e && e.type === 'qualify' && e.phase === 'roll' && e.pool.includes(by) && !(by in e.rolls)){ e.rolls[by] = ri(1, 6); say(S, {t:'sfx', k:'dice'}); bump(S); if (e.pool.every(p => p in e.rolls)) settleQualify(S); } } break;
       case 'hj-ransom': if (S.hj && S.hj.who === by){ const cost = bail(S); if (S.pts[by] >= cost){ S.pts[by] -= cost; S.src[by].event -= cost; smGain(S, cost, `${nm(S, by)} paid a ransom`); hjFree(S, 'ransom'); } } break;
+      case 'hj-donate': { const h = S.hj, n = Math.round(+a.n);
+        if (h && h.who !== by && [2, 5, 10].includes(n) && S.pts[by] >= n){
+          S.pts[by] -= n; S.src[by].event -= n; h.pool += n; h.donors[by] = (h.donors[by] || 0) + n;
+          log(S, 'shield', `${nm(S, by)} put ${n} towards freeing ${nm(S, h.who)} (${Math.min(h.pool, h.target)} / ${h.target})`); say(S, {t:'sfx', k:'select'}); bump(S);
+          if (h.pool >= h.target) rescueDone(S);
+        } } break;
       case 'hj-swap': if (S.hj && S.hj.who !== by && !S.hj.swapped){ const was = S.hj.who; gain(S, by, PT.hjHero, 'event'); S.st[by].hero++; S.hj.who = by; S.hj.swapped = true; S.hj.hero = by;
         log(S, 'swap', `${nm(S, by)} swapped places with ${nm(S, was)}. ${nm(S, by)} is now Spaceman’s captive (+${PT.hjHero} for bravery)`); say(S, {t:'toast', text:`${nm(S, by)} took ${nm(S, was)}’s place as Spaceman’s captive`}); say(S, {t:'sfx', k:'reveal'}); bump(S); } break;
       case 'warp': S.min += a.mins; S.mi += a.mins*58/60; break;
@@ -4143,6 +4368,7 @@ const Engine = (() => {
     return null;
   }
 
+  const AV_EMOTES = ['😀','😂','🤣','😡','🫡','💀','😭','👀','🚀','☄️'];
   /* ---- bots: simulated players acting from their own devices ---- */
   /* A simulated Captain says its choice out loud. The Co-Pilot taps it in (a bot after a short delay, or you).
      owner.said[key] is what the Co-Pilot's phone shows as "Captain said". */
@@ -4156,6 +4382,7 @@ const Engine = (() => {
   function botGuess(q, spread = RULES.estimate.spread){ const g = q.a*Math.exp(gauss()*spread); return q.year ? Math.round(q.a + gauss()*6) : g >= 100 ? Math.round(g/10)*10 : g >= 10 ? Math.round(g) : Math.round(g*10)/10; }
   function bots(S){
     const B = new Set(S.bots), ch = S.ch, capBot = B.has(S.captain);
+    S.crew.forEach(id => { if (B.has(id) && S.rt >= (S.aeNext[id] ??= S.rt + rr([18, 70]))){ S.aeNext[id] = S.rt + rr([40, 120]); act(S, {type:'avemote', by:id, e:pick(AV_EMOTES)}); } });   /* simulated phones fidget too */
     const dueMin = id => ch && ch.bot[id] !== undefined && S.min >= ch.bot[id];
     if (ch){
       if (ch.phase === 'write') pass(S).forEach(p => { if (B.has(p) && dueMin(p) && !ch.answers[p]) act(S, {type:'answer', by:p, text:botAnswer(S)}); });
@@ -4214,6 +4441,8 @@ const Engine = (() => {
     if (S.reactQ.length){ const due = S.reactQ.filter(r => S.rt >= r.at); S.reactQ = S.reactQ.filter(r => S.rt < r.at); due.forEach(r => act(S, {type:'emote', by:r.by, e:r.e})); }
     if (pe && pe.type === 'qualify' && pe.phase === 'roll') pe.pool.forEach(p => { if (S.ev === pe && pe.phase === 'roll' && B.has(p) && !(p in pe.rolls) && S.rt >= pe.bot[p]) act(S, {type:'qroll', by:p}); });
     if (S.hj && B.has(S.hj.who) && S.hj.lvl >= 2 && !S.hj.botTried){ S.hj.botTried = true; const cost = bail(S); if (S.pts[S.hj.who] >= cost*2 && R() < .4) act(S, {type:'hj-ransom', by:S.hj.who}); }
+    if (S.hj && S.rt >= (S.hj.nextDon ??= S.rt + rr([10, 28]))){ S.hj.nextDon = S.rt + rr([14, 34]);   /* simulated crewmates chip in to a rescue */
+      const rich = S.crew.filter(x => B.has(x) && x !== S.hj.who && S.pts[x] >= 7); if (rich.length && R() < .6) act(S, {type:'hj-donate', by:pick(rich), n:S.pts[rich[0]] >= 14 ? 5 : 2}); }
     if (S.hj && !S.hj.swapped && S.hj.lvl >= 1 && !S.hj.botSwap){ S.hj.botSwap = true; const hero = pass(S).filter(x => x !== S.hj.who && B.has(x))[0]; if (hero && R() < .15) act(S, {type:'hj-swap', by:hero}); }
     const e = S.ev; if (e && e.type === 'decision' && !e.chosen && capBot && S.min >= e.botAt){ const c = e.botC || (e.botC = R() < .5 ? 'a' : 'b'); capSays(S, B, e, 'decide', {type:'decide', choice:c}, `${c.toUpperCase()}. ${e.d[c]}`); }
     const t = S.tx;
@@ -4239,6 +4468,7 @@ const Engine = (() => {
     S.txq.filter(t => S.min >= t.at).forEach(t => enqueue(S, 'crew', {to:t.to, text:t.text, from:t.from}));
     S.txq = S.txq.filter(t => S.min < t.at);
     bots(S);                                   /* players act before anything times out */
+    for (const id in S.ae) if (S.rt >= S.ae[id].until){ delete S.ae[id]; bump(S); }
     const ch = S.ch;
     if (ch){
       if (ch.phase === 'intro' && S.rt >= ch.introUntil) begin(S, ch);
@@ -4279,10 +4509,11 @@ const Engine = (() => {
       if (S.hj && S.min >= S.hj.retryAt && !S.q.some(x => x.type === 'rescue') && !(S.ch && S.ch.id === 'rescue' && S.ch.phase !== 'done')){ enqueue(S, 'rescue'); S.hj.retryAt = Infinity; }
     }
     if (S.min >= S.nextRoastCheck){ S.nextRoastCheck = S.min + 8*S.tempo.cycle; const lead = leader(S), low = [...S.crew].sort((a, b) => S.pts[a] - S.pts[b])[0];
-      if (R() < .25) roast(S, 'banter');
+      if (R() < .3) roast(S, pick(S.copilot ? ['banter', 'crew', 'copilot'] : ['banter', 'crew']));
       else if (S.hj && S.min - S.hj.at >= 4 && R() < .5) roast(S, 'captive', S.hj.who);
       else if (lead && S.sm > S.pts[lead]) roast(S, 'smwinning'); else if (lead && S.pts[lead] - S.sm >= 8) roast(S, 'crewwinning');
       else if (low && S.pts[lead] - S.pts[low] >= 10) roast(S, 'last', low); }
+    { const fu = furious(S); if (fu !== !!S.furyOn){ S.furyOn = fu; if (fu){ log(S, 'rocket', `Spaceman Fury: everything Spaceman earns counts ×${PT.fury} until the crew’s lead shrinks`); S.lastRoast = -99; roast(S, 'fury'); } bump(S); } }
     if (S.ev && S.ev.type === 'struggle' && S.ev.phase === 'q' && S.rt - S.ev.at >= RULES.struggle.open) settleStruggle(S);
     const e = S.ev;
     if (e && e.type === 'briefing' && S.rt >= e.until){ S.ev = null; S.nextAt = S.rt + 1.5; bump(S); }
@@ -4293,10 +4524,17 @@ const Engine = (() => {
   }
   /* Journey Spaceman: the player above everyone else AND above Spaceman. Otherwise Spaceman retains control. */
   function topCrew(S){ const max = Math.max(...S.crew.map(id => S.pts[id])); if (max <= 0) return null; return pick(S.crew.filter(id => S.pts[id] === max)); }
-  function winner(S){ const t = topCrew(S); return t && S.pts[t] > S.sm ? t : null; }
+  /* v1.3: a captive's credits count for Spaceman while they are held. The crew wins when the crew total beats Spaceman's total. */
+  const heldPts = S => S.hj ? S.pts[S.hj.who] : 0;
+  const crewTotal = S => S.crew.reduce((a, id) => a + S.pts[id], 0) - heldPts(S);
+  const smTotal = S => S.sm + heldPts(S);
+  const crewWins = S => crewTotal(S) > smTotal(S);
+  function topFree(S){ const ids = S.crew.filter(id => !(S.hj && S.hj.who === id)), max = Math.max(...ids.map(id => S.pts[id])); if (!ids.length || max <= 0) return null; return pick(ids.filter(id => S.pts[id] === max)); }
+  /* If the crew wins, the best individual player is crowned Journey Spaceman. */
+  function winner(S){ return crewWins(S) ? topFree(S) : null; }
   const timeLeft = S => S.ch && S.ch.phase === 'q' ? Math.max(0, RULES.trivia.open - (S.rt - S.ch.qAt)) : S.ch && S.ch.until ? Math.max(0, S.ch.until - S.rt) : 0;
   const slots = (S, id) => slotsOf(S, id);
-  return {create, act, step, winner, topCrew, lossText, timeLeft, slots, finale, hjCost:S => S.hj ? bail(S) : 0};
+  return {create, act, step, winner, topCrew, crewTotal, smTotal, crewWins, heldPts, smMul, furious, lossText, timeLeft, slots, finale, hjCost:S => S.hj ? bail(S) : 0};
 })();
 /* ENGINE:END */
 
@@ -4370,7 +4608,7 @@ const EL = {
     const a = await this.tts(body, voice, o.mood || 'curious'), z = sign ? await this.tts('Over.', voice, 'curious') : null; if (run !== Voice.run) return;
     const C = Voice.ac(); if (C.state === 'suspended') await C.resume(); Voice.squelch(); Voice.bedOn(); if (o.radio) Voice.crackle();
     let t = this.play(a, C.currentTime + .3); if (z) t = this.play(z, t + 1);      /* the one-second beat before "Over." */
-    setTimeout(() => { if (run === Voice.run){ Voice.bedOff(); Voice.squelch(true); } }, Math.max(0, (t - C.currentTime)*1000 + 80));
+    setTimeout(() => { if (run === Voice.run){ Voice.bedOff(); Voice.squelch(true); if (o.then) setTimeout(() => { if (run === Voice.run) o.then(); }, 450); } }, Math.max(0, (t - C.currentTime)*1000 + 80));
   }
 };
 function elSheet(){
@@ -4446,7 +4684,7 @@ const Voice = {
     }); });
     if (sign) ph.push({t:sign, sign:true});
     const v = this.pickVoice(o.role || 'atlas'), run = ++this.run; let i = 0;
-    const next = () => { if (run !== this.run) return; if (i >= ph.length){ this.bedOff(); this.squelch(true); return; }
+    const next = () => { if (run !== this.run) return; if (i >= ph.length){ this.bedOff(); this.squelch(true); if (o.then) setTimeout(() => { if (run === this.run) o.then(); }, 450); return; }
       const p = ph[i++], u = new SpeechSynthesisUtterance(p.t), drift = (Math.random() - .5)*.06;
       if (v) u.voice = v;
       u.rate = Math.min(1.25, Math.max(.75, MOOD[0]*(p.sign ? .9 : p.caps ? .86 : i === 1 ? .96 : 1)*(p.ex ? 1.06 : 1)));
@@ -4569,6 +4807,7 @@ function tick(now){
   drain();
   setText('lv-mi', S.mi.toFixed(1)); setText('lv-clock', clock());
   progress();
+  if (LJ.idle && performance.now() > (LJ.bubAt || 0)){ if (LJ.bubAt) nextBubble(); else LJ.bubAt = performance.now() + 1500; LJ.lastSeq = -1; }
   if (S.seq !== LJ.lastSeq) paint();
   if (LJ) LJ.raf = requestAnimationFrame(tick);
 }
@@ -4598,21 +4837,51 @@ function renderHud(){
     <footer class="lv-tray" id="lv-tray"></footer>`;
   paint();
 }
-/* Re-rendering never wipes what you're typing: when someone else locks in, the screen updates around your input.
-   Values only carry over within the same game, round and phase (fk), so a new question always starts blank. */
+/* Re-rendering never touches what a player is doing on THEIR phone.
+   Shared state arrives as HTML; morph() patches the live DOM to match it. Text fields, focus, caret, selection, scroll and
+   JS-driven animation state belong to this phone, so they are never replaced. A new game, round or phase (fk) starts fresh. */
+const KEEP_CLS = ['go','revealed','on','open'], KEEP_ATTR = ['data-go'];
+function morphAttrs(a, b){
+  for (const {name, value} of [...b.attributes]){
+    if (name === 'class'){ const keep = KEEP_CLS.filter(c => a.classList.contains(c) && !b.classList.contains(c)); const v = keep.length ? `${value} ${keep.join(' ')}` : value; if (a.getAttribute('class') !== v) a.setAttribute('class', v); }
+    else if (a.getAttribute(name) !== value) a.setAttribute(name, value);
+  }
+  for (const {name} of [...a.attributes]) if (!b.hasAttribute(name) && name !== 'class' && !KEEP_ATTR.includes(name)) a.removeAttribute(name);
+}
+function morphKids(a, b){
+  const old = [...a.childNodes], nw = [...b.childNodes], n = Math.max(old.length, nw.length);
+  for (let i = 0; i < n; i++){
+    const o = old[i], w = nw[i];
+    if (!w){ o.remove(); continue; }
+    if (!o){ a.appendChild(document.importNode(w, true)); continue; }
+    if (o.nodeType !== w.nodeType || o.nodeName !== w.nodeName || (o.id || '') !== (w.id || '')){ a.replaceChild(document.importNode(w, true), o); continue; }
+    if (o.nodeType !== 1){ if (o.nodeValue !== w.nodeValue) o.nodeValue = w.nodeValue; continue; }
+    morphAttrs(o, w);
+    if (o.nodeName === 'TEXTAREA' || o.nodeName === 'INPUT' || o.nodeName === 'SELECT') continue;   /* never touch a field the player is using */
+    morphKids(o, w);
+  }
+}
+/* What a seat is in the middle of (typed text, a chosen stake, a dismissed card, a "who was it?" picker) belongs to that seat.
+   It survives every remote update, and in the prototype it also survives switching phones and back. */
+const loc = () => { const all = LJ.locs || (LJ.locs = {}); return all[LJ.viewer] || (all[LJ.viewer] = {}); };
+const draftKey = id => `${LJ.viewer}|${LJ.fk['lv-ch'] || ''}|${id}`;
+function restoreDrafts(){ if (!LJ || !LJ.drafts) return; document.querySelectorAll('#lv-ch input[id], #lv-ch textarea[id]').forEach(el => { const v = LJ.drafts[draftKey(el.id)]; if (v !== undefined && !el.value) el.value = v; }); }
+document.addEventListener('input', e => { const el = e.target; if (LJ && el && el.id && el.closest && el.closest('#lv-ch')) (LJ.drafts || (LJ.drafts = {}))[draftKey(el.id)] = el.value; });
 function setHTML(id, html, fk){
   if (LJ.cache[id] === html) return; const el = document.getElementById(id); if (!el) return;
-  const keep = [], same = fk === undefined || LJ.fk[id] === fk, stage = el.closest('.lv-stage'), top = stage ? stage.scrollTop : 0;
-  if (same) el.querySelectorAll('input[id],textarea[id]').forEach(f => { if (f.value) keep.push([f.id, f.value, document.activeElement === f ? [f.selectionStart, f.selectionEnd] : null]); });
-  el.innerHTML = html; LJ.cache[id] = html; if (fk !== undefined) LJ.fk[id] = fk;
-  keep.forEach(([k, v, sel]) => { const f = document.getElementById(k); if (!f || f.value) return; f.value = v; if (sel){ try { f.focus({preventScroll:true}); f.setSelectionRange(sel[0], sel[1]); } catch {} } });
-  if (stage && same) stage.scrollTop = top;
+  const same = fk === undefined || LJ.fk[id] === fk;
+  if (same && el.firstChild){ const t = document.createElement('template'); t.innerHTML = html; morphKids(el, t.content); }
+  else el.innerHTML = html;
+  LJ.cache[id] = html; if (fk !== undefined) LJ.fk[id] = fk;
+  if (id === 'lv-ch') restoreDrafts();
 }
 function paint(){
   if (!LJ) return; const S = LJ.S; LJ.lastSeq = S.seq;
   setHTML('lv-me', meHTML()); setHTML('lv-vs', vsHTML()); setHTML('lv-board', boardHTML()); setHTML('lv-ch', stageHTML(), S.ch ? `${S.ch.uid}|${S.ch.round || 0}|${S.ch.phase}` : (S.ev ? `e${S.ev.id}` : '')); setHTML('lv-tray', trayHTML()); spinReels();
   /* Spaceman's verdict after each game, and the What Happens Next? endings read out for the Captain on the Co-Pilot's phone */
   if (S.ch && S.ch.phase === 'done' && S.ch.smSay && LJ.verdict !== S.ch.uid && !S.tx){ LJ.verdict = S.ch.uid; if (LJ.voice) Voice.speak(`${S.ch.smSay} Over.`, {role:'sm', mood:'smug'}); }
+  if (S.ev && S.ev.sm && LJ.smSaid !== S.ev.id && !S.tx){ const e = S.ev; LJ.smSaid = e.id; LJ.atlasSaid = `${e.id}:${e.atlas}`;
+    if (LJ.voice) Voice.speak(`${e.sm} Over.`, {role:'sm', mood:'smug', then:() => { if (LJ && LJ.voice && LJ.S.ev === e && e.atlas) Voice.speak(`${e.atlas} Over.`, {role:'atlas', mood:LJ.S.atlas.mood}); }}); }
   if (S.ev && S.ev.atlas && LJ.atlasSaid !== `${S.ev.id}:${S.ev.atlas}` && !S.tx && !(S.ev.type === 'bribe' && S.ev.who === LJ.viewer)){ LJ.atlasSaid = `${S.ev.id}:${S.ev.atlas}`; if (LJ.voice) Voice.speak(`${S.ev.atlas} Over.`, {role:'atlas', mood:S.atlas.mood}); }
   if (S.reacts.length && S.reactId > (LJ.emoteSeen ?? S.reactId - S.reacts.length)){ const from = LJ.emoteSeen ?? 0; S.reacts.filter(r => r.id > from).slice(-6).forEach(floatEmote); LJ.emoteSeen = S.reactId; }
   if (S.ch && S.ch.kind === 'whatnext' && S.ch.phase === 'guess' && LJ.readNext !== S.ch.uid && !S.tx && !(S.captain in S.ch.picks) && S.ch.voters.includes(S.captain)
@@ -4628,29 +4897,28 @@ function meHTML(){
 }
 /* Crew vs Spaceman, always on screen */
 function vsHTML(){
-  const S = LJ.S, total = S.crew.reduce((a, id) => a + S.pts[id], 0), top = Engine.topCrew(S), d = top ? S.pts[top] - S.sm : 0;
-  const me = top === LJ.viewer, who = esc(viewName(top));
-  const line = !top || (!S.sm && !S.pts[top]) ? 'Beat Spaceman' : d > 0 ? `${who} +${d}` : d === 0 ? `${who} level` : `${me ? 'You' : who} −${-d}`;
-  if (S.hj) return `<span class="vs-side crew"><small>Crew total</small><b class="t-num">${total}</b></span><span class="vs-mid"><b>VS</b><small class="down">🚨 ${S.hj.who === LJ.viewer ? 'You’re' : `${esc(viewName(S.hj.who))}’s`} captured</small></span><span class="vs-side sm"><b class="t-num">${S.sm}</b><small>Spaceman</small></span>`;
-  return `<span class="vs-side crew"><small>Crew total</small><b class="t-num">${total}</b></span><span class="vs-mid"><b>VS</b><small class="${d > 0 ? 'up' : d < 0 ? 'down' : ''}">${line}</small></span><span class="vs-side sm"><b class="t-num">${S.sm}</b><small>👨‍🚀 Spaceman</small></span>`;
+  const S = LJ.S, cT = Engine.crewTotal(S), sT = Engine.smTotal(S), d = cT - sT, h = S.hj, line = d > 0 ? `Crew +${d}` : d < 0 ? `Spaceman +${-d}` : cT === 0 ? 'Beat Spaceman' : 'Level';
+  const mid = h ? `<b>VS</b><small class="down">🚨 ${h.who === LJ.viewer ? 'You' : esc(viewName(h.who))} · ${Math.min(h.pool, h.target)}/${h.target}</small>` : `<b>VS</b><small class="${d > 0 ? 'up' : d < 0 ? 'down' : ''}">${line}</small>`;
+  return `<span class="vs-side crew"><small>Crew total</small><b class="t-num">${cT}</b></span><span class="vs-mid">${mid}</span><span class="vs-side sm ${S.furyOn ? 'fury' : ''}"><b class="t-num">${sT}</b><small>${av('sm',14)}${S.furyOn ? `Fury ×${PT.fury}` : 'Spaceman'}</small></span>`;
 }
 function smSheet(){
-  const S = LJ.S, rows = S.smLog.slice().reverse(), top = Engine.topCrew(S), d = top ? S.pts[top] - S.sm : 0, who = top ? viewName(top) : '';
-  const now = !top || (!S.sm && !S.pts[top]) ? 'Finish above everyone and above Spaceman to become Journey Spaceman.' : d > 0 ? `${who} ${top === LJ.viewer ? 'lead' : 'leads'} Spaceman by ${d}. Right now the crew has control.` : d === 0 ? `${who} ${top === LJ.viewer ? 'are' : 'is'} level with Spaceman.` : `Spaceman leads ${top === LJ.viewer ? 'you' : who} by ${-d}. Right now Spaceman has control.`;
-  openSheet(`<div class="sheet-title"><span class="eyebrow ion">👨‍🚀 Spaceman · ${S.sm} credits</span><h2 class="display" style="font-size:24px">Crew vs Spaceman</h2><p><b>${esc(now)}</b></p>
-    <p class="muted">Spaceman feeds on the crew’s mistakes: wrong guesses, failed gambles, missed glitches, wrong Bluff answers and asteroid hits. It also plays Estimation Station. Fight back with hijacked crates, Credit Thief and Corrective Action.</p></div>
+  const S = LJ.S, rows = S.smLog.slice().reverse(), cT = Engine.crewTotal(S), sT = Engine.smTotal(S), d = cT - sT, top = Engine.topCrew(S);
+  const now = !cT && !sT ? 'The crew wins if the crew total finishes above Spaceman.' : d > 0 ? `The crew leads Spaceman by ${d}. Right now the crew has control.` : d === 0 ? 'The crew is level with Spaceman.' : `Spaceman leads the crew by ${-d}. Right now Spaceman has control.`;
+  openSheet(`<div class="sheet-title"><span class="eyebrow ion">${av('sm',16)}Spaceman · ${sT} credits</span><h2 class="display" style="font-size:24px">Crew vs Spaceman</h2><p><b>${esc(now)}</b></p>
+    <p class="muted">The <b>crew total</b> (${cT}) is every player added together. If it finishes above Spaceman’s, the crew wins and the best player becomes Journey Spaceman${top ? ` (right now: ${esc(viewName(top))})` : ''}. A captive’s credits count for Spaceman while they’re held${S.hj ? `: ${Engine.heldPts(S)} from ${esc(viewName(S.hj.who))}` : ''}.</p>
+    <p class="muted">Spaceman plays alone against ${S.crew.length}, so everything it earns counts <b>×${Engine.smMul(S)}</b>${S.furyOn ? `, and right now it’s furious: <b>×${PT.fury}</b> on top until the crew’s lead shrinks` : `. If the crew gets too far ahead, Spaceman Fury kicks in (×${PT.fury})`}. It feeds on wrong guesses, failed gambles, missed glitches, wrong Bluff answers, hostages and asteroid hits. Fight back with hijacked crates, Credit Thief and Corrective Action.</p></div>
     <div class="card mlog">${rows.length ? rows.slice(0, 14).map(r => `<div class="lg"><span class="mono">min ${r.t}</span><span class="${r.n > 0 ? 'sm-up' : 'sm-down'} mono">${r.n > 0 ? '+' : ''}${r.n}</span><span>${esc(r.why)}</span></div>`).join('') : '<p class="small muted">No credits yet. Keep it that way.</p>'}</div>`);
 }
 function boardHTML(){
   const S = LJ.S, order = [...S.crew].sort((a, b) => S.pts[b] - S.pts[a] || S.crew.indexOf(a) - S.crew.indexOf(b)), max = S.pts[order[0]];
-  const smChip = `<button class="lb-p sm" data-live="sm" aria-label="Spaceman, ${S.sm} credits"><span class="lb-r mono"></span><span class="lb-av">${av('sm',30)}</span><span class="lb-t"><b>Spaceman</b><small>Opponent</small></span><span class="lb-pts t-num">${S.sm}</span></button>`;
+  const held0 = Engine.heldPts(S), smChip = `<button class="lb-p sm" data-live="sm" aria-label="Spaceman, ${S.sm} credits${held0 ? `, plus ${held0} held` : ''}"><span class="lb-r mono"></span><span class="lb-av">${av('sm',30)}</span><span class="lb-t"><b>Spaceman</b><small>${held0 ? `+${held0} held` : 'Opponent'}</small></span><span class="lb-pts t-num">${S.sm}</span></button>`;
   const n = S.crew.length + 1, cols = n <= 4 ? n : n <= 6 ? 3 : 4;
   const smAt = order.findIndex(id => S.pts[id] < S.sm), list = [...order]; list.splice(smAt < 0 ? order.length : smAt, 0, 'sm');
   return `<div class="lb ${n >= 5 ? 'tight' : ''}" style="--cols:${cols}">${list.map((id, i) => { if (id === 'sm') return smChip; const fx = S.fx[id], mine = id === LJ.viewer;
     const badge = id === S.captain ? `<i class="rb cap" title="Captain">${ic('steer',11,2.2)}</i>` : id === S.copilot ? '<i class="rb co" title="Co-Pilot">CP</i>' : '';
     const held = S.hj && S.hj.who === id;
     return `<button class="lb-p ${max > 0 && S.pts[id] === max ? 'lead' : ''} ${mine ? 'mine' : ''} ${id === S.copilot ? 'co' : ''} ${held ? 'held' : ''}" data-live="${held ? 'sm' : `pu|${id}`}" aria-label="${esc(viewName(id))}, ${held ? 'captured by Spaceman' : roleOf(id)}, ${S.pts[id]} credits">
-      <span class="lb-r mono">${i + 1}</span><span class="lb-av">${av(id,30)}${badge}</span>
+      <span class="lb-r mono">${i + 1}</span><span class="lb-av">${av(id,30)}${badge}${S.ae[id] ? `<i class="ae" id="ae-${id}-${S.ae[id].n}" aria-hidden="true">${S.ae[id].e}</i>` : ''}</span>
       <span class="lb-t"><b>${(S.streak[id] || 0) >= 2 ? '🔥' : ''}${esc(viewName(id))}</b><small>${held ? 'Captured' : fx.shield ? 'Shielded' : mine && fx.double ? '2× ready' : roleOf(id)}</small></span>
       <span class="lb-pts t-num">${S.pts[id]}</span></button>`; }).join('')}</div>`;
 }
@@ -4664,7 +4932,7 @@ function trayHTML(){
 
 /* ---------- the stage: whatever is happening right now ---------- */
 const lgRow = x => `<div class="lg"><span class="mono">min ${x.t}</span>${ic(x.ic,16)}<span>${esc(x.text)}</span></div>`;
-const outHTML = out => out && out.length ? `<div class="ev-out">${out.map(o => `<span class="ev-row ${o.c}">${av(o.id,30)}<span class="ev-txt"><b>${esc(viewName(o.id))}${o.kind ? ` · ${o.kind}` : ''}</b>${o.text ? `<small>${esc(o.text)}</small>` : ''}</span><span class="ev-d">${esc(o.d)}${o.sm ? `<small class="sm-up">Spaceman +${o.sm}</small>` : ''}</span></span>`).join('')}</div>` : '';
+const outHTML = out => out && out.length >= 4 && out.every(o => !o.text) ? `<div class="ev-grid">${out.map(o => `<span class="ev-chip ${o.c}">${av(o.id,26)}<b>${esc(viewName(o.id))}</b><span class="ev-d">${esc(o.d)}${o.sm ? ` <small class="sm-up">SM +${o.sm}</small>` : ''}</span></span>`).join('')}</div>` : out && out.length ? `<div class="ev-out">${out.map(o => `<span class="ev-row ${o.c}">${av(o.id,30)}<span class="ev-txt"><b>${esc(viewName(o.id))}${o.kind ? ` · ${o.kind}` : ''}</b>${o.text ? `<small>${esc(o.text)}</small>` : ''}</span><span class="ev-d">${esc(o.d)}${o.sm ? `<small class="sm-up">Spaceman +${o.sm}</small>` : ''}</span></span>`).join('')}</div>` : '';
 const said = (owner, key) => owner && owner.said && owner.said[key] && !owner.said[key].done ? owner.said[key] : null;
 /* What the Co-Pilot sees when it's their job to tap something in for the Captain */
 const coPanel = (owner, key, body, hint) => { const s = said(owner, key);
@@ -4676,9 +4944,10 @@ const phones = (ids, done) => `<div class="phone-row">${ids.map(p => `<span clas
 const waiting = t => `<p class="waiting">${t}<i></i><i></i><i></i></p>`;
 
 function stageHTML(){
-  const S = LJ.S, e = S.ev;
-  if (e && e.id !== LJ.hiddenEv) return eventHTML(e);
-  if (S.ch && !(S.ch.phase === 'done' && !S.ch.result)) return chHTML(S.ch);
+  const S = LJ.S, e = S.ev; LJ.idle = false;
+  const busy = h => { LJ.bub = null; LJ.bubAt = 0; return h; };   /* bubbles are for the breather only, and start fresh next time */
+  if (e && e.id !== loc().hiddenEv) return busy(eventHTML(e));
+  if (S.ch && !(S.ch.phase === 'done' && !S.ch.result)) return busy(chHTML(S.ch));
   return upNextHTML(true);
 }
 /* ---------- the Co-Pilot seat: reveals, promotion dice, Co-Pilot Challenge ---------- */
@@ -4757,19 +5026,29 @@ function qualifyHTML(e){
     ${mine ? `<button class="btn btn-primary btn-xl btn-block roll-btn" data-live="qroll">🎲 Roll</button>` : waiting(isCap() ? 'The passengers are rolling for the Co-Pilot seat' : `${e.pool.filter(p => !(p in e.rolls)).map(p => esc(viewName(p))).join(', ') || 'Everyone'} rolling`)}</div>`;
 }
 /* Spaceman Hijack */
+/* Rescue Progress: the crew can pay a captive out together */
+function rescueHTML(h){
+  const S = LJ.S, v = LJ.viewer, me = h.who === v, pct = Math.min(100, Math.round(h.pool/h.target*100)), mine = S.pts[v];
+  const donors = Object.entries(h.donors).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([id, n]) => `${esc(viewName(id))} ${n}`).join(' · ');
+  return `<div class="rescue"><div class="rs-top"><b>Rescue progress · give credits</b><span class="mono">${Math.min(h.pool, h.target)} / ${h.target}${h.pool >= h.target ? ' ✅' : ''}</span></div><div class="rs-bar"><i style="width:${pct}%"></i></div>
+    ${donors ? `<p class="small muted">${donors}</p>` : ''}
+    ${me ? '<p class="small muted">Your crew can pay for your freedom. Wait for them.</p>' : `<div class="rs-give">${[2, 5, 10].map(n => `<button class="btn btn-secondary" data-live="hj-donate|${n}" ${mine >= n ? '' : 'disabled'}>+${n}</button>`).join('')}</div>`}</div>`;
+}
 function hijackHTML(e){
   const S = LJ.S, v = LJ.viewer, w = e.who, me = w === v, h = S.hj, cost = Engine.hjCost(S);
-  const pic = `<div class="hj-pic">${av('sm',56)}<span class="hj-beam" aria-hidden="true"></span>${av(w,56)}</div>`;
-  const acts = !h || h.who !== w ? '' : me ? (S.pts[v] >= cost ? `<button class="btn btn-secondary btn-block" data-live="hj-ransom">Pay ${cost} to escape now</button>` : `<p class="small muted">Escape costs ${cost}. You can’t afford it yet. Wait for a rescue.</p>`)
-    : !h.swapped ? `<button class="btn btn-secondary btn-block" data-live="hj-swap">Take ${esc(viewName(w))}’s place (+${PT.hjHero})</button>` : '';
-  return `<div class="ev-card hijack" data-ev="h${e.id}"><span class="eyebrow sm-up">🚨 Spaceman Hijack</span>${pic}<b class="display cp-title">${me ? 'You’ve been captured' : `Spaceman has captured ${esc(viewName(w))}`}</b>
-    <p class="m-desc">${me ? 'You’re still playing, but' : `${esc(viewName(w))} keeps playing, but`} Spaceman skims <b>half of everything</b> ${me ? 'you win' : 'they win'}. Every ${Math.round(RULES.hijack.tick*S.tempo.cycle)} minutes the ransom grows. A rescue mission is coming. Shields can’t stop a tractor beam.</p>
-    ${atlasSay(e.atlas)}${acts}<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div>`;
+  const pic = `<div class="hj-pic hj-sm">${av('sm',40)}<span class="hj-beam" aria-hidden="true"></span>${av(w,40)}</div>`;
+  const acts = !h || h.who !== w ? '' : me ? (S.pts[v] >= cost ? `<button class="btn btn-secondary" data-live="hj-ransom">Pay ${cost} to escape</button>` : '')
+    : !h.swapped ? `<button class="btn btn-secondary" data-live="hj-swap">Swap in (+${PT.hjHero})</button>` : '';
+  return `<div class="ev-card hijack" data-ev="h${e.id}"><div class="hj-top"><span class="grow"><span class="eyebrow sm-up">🚨 Spaceman Hijack</span><b class="m-title">${me ? 'You’ve been captured' : `Spaceman has captured ${esc(viewName(w))}`}</b></span>${pic}</div>
+    ${e.n ? `<div class="hj-move"><span class="down">Crew −${e.n}</span><span class="mono">${esc(me ? 'your' : `${viewName(w)}’s`)} credits →</span><span class="up">Spaceman +${e.n}</span></div>` : ''}
+    <p class="small muted">${me ? 'You keep playing, but Spaceman' : 'They keep playing, but Spaceman'} skims half of every win. The ransom grows every ${Math.round(RULES.hijack.tick*S.tempo.cycle)} min.</p>
+    ${e.sm ? `<div class="sm-say">${av('sm',24)}<span>${esc(e.sm)}</span></div>` : ''}${h && h.who === w ? rescueHTML(h) : ''}<div class="hj-acts ${acts ? 'two' : ''}">${acts}<button class="btn btn-secondary" data-live="ev-hide">Got it</button></div></div>`;
 }
 function hjSheet(){
   const S = LJ.S, h = S.hj; if (!h) return smSheet(); const v = LJ.viewer, cost = Engine.hjCost(S), me = h.who === v, next = Math.max(0, Math.ceil(h.nextTick - S.min));
   openSheet(`<div class="sheet-title"><span class="eyebrow sm-up">🚨 Held by Spaceman</span><h2 class="display" style="font-size:24px">${me ? 'You’re a captive' : `${esc(viewName(h.who))} is a captive`}</h2>
     <p class="muted">Held for ${Math.max(1, Math.round(S.min - h.at))} min. Spaceman has skimmed ${h.skim} from their winnings${h.paid ? ` and taken ${h.paid} in ransom` : ''}. ${h.lvl < RULES.hijack.maxLvl ? `Next ransom (${PT.hjRansom[h.lvl]}) in about ${next} min.` : 'Spaceman will release them soon, keeping a quarter of their credits.'}${h.lvl >= 2 ? ` From ransom 3, everyone else pays ${PT.hjSpread} too.` : ''}</p></div>
+    ${rescueHTML(h)}
     <div class="stack-v">${me ? (S.pts[v] >= cost ? `<button class="btn btn-primary btn-block" data-live="hj-ransom">Pay ${cost} to escape</button>` : `<p class="small muted">Escaping costs ${cost}. Not enough credits yet.</p>`) : !h.swapped ? `<button class="btn btn-primary btn-block" data-live="hj-swap">Take their place (+${PT.hjHero} for bravery)</button>` : '<p class="small muted">Someone already swapped in. No more swaps.</p>'}
     <p class="small muted">Or win the Rescue Mission: three true-or-false questions, and the crew needs most of them right.</p></div>`);
 }
@@ -4794,16 +5073,15 @@ function duelHTML(e){
   if (e.phase === 'q') return `<div class="ev-card struggle" data-ev="d${e.id}">${top}<p class="q-text">${esc(c.q)}</p>
     ${mine && !done ? `<div class="opts">${c.o.map((o, i) => `<button class="opt" data-live="duel|${i}"><b class="mono">${L4[i]}</b>${esc(o)}</button>`).join('')}</div>` : optStatic(c.o)}
     ${mine && done ? `<div class="m-done">${ic('lock',16)}<span>Locked in: ${L4[e.ans[v]]}.</span></div>` : mine ? '' : waiting(`${Object.keys(e.ans).length} of 2 answered`)}${atlasSay(e.atlas)}</div>`;
-  const mark = i => i === c.a ? 'right' : (e.ans[e.a] === i || e.ans[e.b] === i) ? 'wrong' : '';
-  return `<div class="ev-card struggle">${top}${optStatic(c.o, mark)}<div class="m-done">${ic('swap',16)}<span>${e.w ? `${me(e.w) ? 'You take' : `${esc(viewName(e.w))} takes`} ${e.n} from ${me(e.l) ? 'you' : esc(viewName(e.l))}${e.both ? ', by being faster' : ''}.` : `Both wrong. Spaceman takes ${e.n}.`}</span></div>${atlasSay(e.atlas)}<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div>`;
+  return `<div class="ev-card struggle">${top}<p class="q-text small-q">${esc(c.q)}</p><p class="co-hint">${ic('check',14,2.4)} Answer: <b>${esc(c.o[c.a])}</b></p><div class="m-done">${ic('swap',16)}<span>${e.w ? `${me(e.w) ? 'You take' : `${esc(viewName(e.w))} takes`} ${e.n} from ${me(e.l) ? 'you' : esc(viewName(e.l))}${e.both ? ', by being faster' : ''}.${e.pu ? ' Plus a power-up.' : ''}` : `Both wrong. Spaceman takes ${e.n}.`}</span></div>${atlasSay(e.atlas)}<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div>`;
 }
 /* The bribe: private for one phone, paranoia for the rest */
 function bribeHTML(e){
   const v = LJ.viewer, me = e.who === v;
   if (me && e.phase === 'offer') return `<div class="ev-card bribe"><span class="eyebrow sm-up">🤫 Private · only your phone shows this</span><div class="hj-pic">${av('sm',52)}</div>
-    <b class="m-title">Spaceman has an offer</b><p class="m-desc">“Take <b>${PT.bribe[0]} credits</b> now. I’ll take ${PT.bribe[1]}. Nobody needs to know… until the recap.”</p>
-    <div class="tf"><button class="btn btn-primary btn-lg" data-live="bribe|1">Take it</button><button class="btn btn-secondary btn-lg" data-live="bribe|0">Refuse</button></div><p class="small muted">Refusing pays ${PT.bribe[2]} for loyalty. Keep a straight face.</p></div>`;
-  if (me) return `<div class="ev-card bribe"><span class="eyebrow sm-up">🤫 Private</span><b class="m-title">${e.yes ? 'Deal done' : 'You refused'}</b><p class="m-desc">${e.yes ? 'Your secret is safe. Until the recap.' : `Loyalty bonus: +${PT.bribe[2]}. The recap will say so.`}</p><button class="btn btn-secondary btn-block" data-live="ev-hide">Act natural</button></div>`;
+    <b class="m-title">Spaceman has an offer</b><p class="m-desc">“Take <b>${PT.bribe[0]} credits</b> now. I’ll take ${Math.round(PT.bribe[1]*Engine.smMul(LJ.S))}. Nobody needs to know… until the recap.”</p>
+    <div class="tf"><button class="btn btn-primary btn-lg" data-live="bribe|1">Take it</button><button class="btn btn-secondary btn-lg" data-live="bribe|0">Refuse</button></div><p class="small muted">Refusing pays ${PT.bribe[2]} and a Shield for loyalty. Keep a straight face.</p></div>`;
+  if (me) return `<div class="ev-card bribe"><span class="eyebrow sm-up">🤫 Private</span><b class="m-title">${e.yes ? 'Deal done' : 'You refused'}</b><p class="m-desc">${e.yes ? 'Your secret is safe. Until the recap.' : `Loyalty bonus: +${PT.bribe[2]} and a Shield. The recap will say so.`}</p><button class="btn btn-secondary btn-block" data-live="ev-hide">Act natural</button></div>`;
   return `<div class="ev-card bribe"><span class="eyebrow sm-up">🤫 Private channel</span><div class="hj-pic whisper">${av('sm',52)}<span class="dots" aria-hidden="true"><i></i><i></i><i></i></span></div>
     <b class="m-title">${e.phase === 'offer' ? 'Spaceman is whispering to someone' : 'The whispering has stopped'}</b><p class="m-desc">${e.phase === 'offer' ? 'One of you is getting an offer right now. Look around the car. Act natural.' : 'Someone just made a decision. You’ll find out in the recap.'}</p>${atlasSay(e.atlas)}</div>`;
 }
@@ -4819,7 +5097,8 @@ function finalHTML(e){
     ${e.phase === 'done' && e.out && e.out.length ? outHTML(e.out) : ''}${e.phase === 'done' && e.k === 'smhalf' ? `<div class="m-done">${ic('rocket',16)}<span>Spaceman −${e.n || 0}</span></div>` : ''}${atlasSay(e.atlas)}${e.phase === 'done' ? '<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button>' : ''}</div>`;
 }
 /* Milestones, story callbacks */
-const MS_NAME = {jackpot:'Milestone Jackpot', overdrive:'Overdrive', supplies:'Supply Run', tax:'Road Tax', bounty:'Bounty on the Leader'};
+const MS_NAME = {claim:'Spaceman Claims It', jackpot:'Milestone Jackpot', overdrive:'Overdrive', supplies:'Supply Run', tax:'Road Tax', bounty:'Bounty on the Leader', shields:'Deflector Shields', boost:'Afterburners', tailwind:'Tailwind',
+  lottery:'Space Lottery', cache:'Supply Pod', discount:'Rescue Discount', barrage:'Spaceman Barrage', robin:'Fuel Leak', pickpocket:'Pickpocket', raid:'Locker Raid', seat:'Seat Challenge', promo:'Mission Promotion', extra:'Bonus Event'};
 function milestoneHTML(e){
   return `<div class="ev-card milestone"><div class="m-head"><span class="trophy ev-ic">${ic('flag',22)}</span><span class="grow"><span class="eyebrow" style="color:var(--flare)">🚀 Milestone · ${e.n} miles</span><b class="m-title">${MS_NAME[e.k] || 'Milestone'}</b></span></div><p class="m-desc">${esc(e.text)}</p>${outHTML(e.out)}${atlasSay(e.atlas)}<button class="btn btn-secondary btn-block" data-live="ev-hide">Got it</button></div>`;
 }
@@ -4871,11 +5150,44 @@ function eventHTML(e){
   return `<div class="ev-card decision"><div class="m-head"><span class="ic-tile ion ev-ic">${ic(d.ic,22)}</span><span class="grow"><span class="eyebrow ion">Captain decision</span><b class="m-title">${d.title}</b></span></div><p class="m-desc">${d.line}</p>${body}</div>`;
 }
 function upNextHTML(idle){
-  if (idle) return `<div class="idle">${av('sm',64)}<span class="eyebrow ion">Breather</span><b class="m-title">Spaceman is choosing what happens next</b><p class="m-desc">Talk, snack, look out of the window. The next game starts by itself.</p></div>`;
+  if (idle) return breatherHTML();
   const S = LJ.S, next = S.pick ? MISSIONS[S.pick] : null;
   return `${idle ? `<div class="m-head"><span class="grow"><span class="eyebrow ion">Breather</span><b class="m-title">${next ? `Up next: ${next.name}` : 'Pick the next challenge'}</b></span></div><p class="m-desc hide-short">Anyone can choose. Otherwise Spaceman picks. Something else might arrive first.</p>` : `<span class="m-sub">${next ? `Up next: ${next.name}` : 'Choose what’s next'}</span>`}
     <div class="pick-list ${idle ? 'tight' : 'mini'}">${S.opts.map(id => { const M = MISSIONS[id]; return `<button class="pick-m" data-live="choose|${id}" aria-pressed="${S.pick === id}"><span class="cat-ic" style="--h:${CAT_H[M.cat]}">${ic(M.ic,18)}</span><span class="grow"><b>${M.name}</b>${idle ? `<span>${M.cat === 'Featured' ? 'Featured' : M.cat}</span>` : ''}</span></button>`; }).join('')}
     ${idle ? PLANNED.map(p => `<div class="pick-m planned" aria-disabled="true"><span class="cat-ic" style="--h:${CAT_H.Music}">${ic(p.ic,18)}</span><span class="grow"><b>${p.name}</b><span>🎵 ${p.tag} · Future Spotify integration</span></span></div>`).join('') : ''}</div>`;
+}
+/* Breather: the crew floating along in a pixel ship, with the odd bit of chatter */
+function shipSVG(xs){
+  const R = [], px = (x, y, w, h, c) => R.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`), HULL = '#C3CCDD', LIT = '#E6ECF6', SHADE = '#8893AA', DARK = '#262C3B', ION = '#7C9CFF';
+  px(9,1,3,1,SHADE); px(9,2,5,1,SHADE); px(9,3,7,1,SHADE); px(9,12,7,1,SHADE); px(9,13,5,1,SHADE); px(9,14,3,1,SHADE);   /* fins */
+  px(9,4,24,1,LIT); px(8,5,25,5,HULL); px(9,10,24,1,ION); px(9,11,24,1,SHADE);                                       /* hull, highlight, stripe */
+  px(33,4,1,8,HULL); px(34,5,2,6,HULL); px(36,6,2,4,HULL); px(38,7,1,2,ION); px(33,5,2,3,'#5FE1F2'); px(33,5,1,1,'#E9FBFF');   /* nose and cockpit */
+  px(5,5,3,6,DARK); px(4,6,1,4,'#4A5266');                                                                               /* engine */
+  xs.forEach(x => px(Math.round(x) - 2, 5, 4, 4, DARK));                                                                  /* portholes */
+  const f1 = [[0,7,1,2,'#FFD27A'],[1,6,1,4,'#FF9E5E'],[2,6,2,4,'#FFD27A'],[3,7,1,2,'#FFF4C2']], f2 = [[1,7,1,2,'#FF9E5E'],[2,6,1,4,'#FFD27A'],[3,6,1,4,'#FFF4C2']];
+  const g = list => list.map(([x, y, w, h, c]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`).join('');
+  return `<svg viewBox="0 0 40 16" shape-rendering="crispEdges" aria-hidden="true"><g class="fl f1">${g(f1)}</g><g class="fl f2">${g(f2)}</g>${R.join('')}</svg>`;
+}
+function bubbleLine(who){
+  const S = LJ.S, o = pickOne(S.crew.filter(x => x !== who)), lead = Engine.topCrew(S), n = id => viewName(id);
+  const L = ['Nice one.', 'We’re cooked.', 'Who’s got snacks?', 'Are we nearly there yet?', 'Spaceman’s up to something.', 'Next game’s mine.', 'I want a rematch.', 'That was rigged.', 'Somebody open a window.', 'I’m getting good at this.', 'Bagsy the front seat next time.'];
+  if (o) L.push(`Don’t trust ${n(o)}.`, `${n(o)}, that was rubbish.`, `Keep an eye on ${n(o)}.`, `${n(o)} is plotting something.`);
+  if (S.inv[who] && S.inv[who].length) L.push('I’m keeping this power-up.', 'Saving mine for later.');
+  if (lead && lead !== who) L.push(`${n(lead)} is getting cocky.`, `Somebody stop ${n(lead)}.`); if (lead === who) L.push('Bow to your leader.', 'Top of the table. Lovely view.');
+  if (S.hj) L.push(...(S.hj.who === who ? ['Can someone rescue me?', 'Spaceman’s snacks are terrible.'] : [`Free ${n(S.hj.who)}!`, `We should rescue ${n(S.hj.who)}. Probably.`]));
+  if (Engine.smTotal(S) >= Engine.crewTotal(S) && S.sm > 0) L.push('Spaceman is winning. Not ideal.', 'We need to pull together.'); else L.push('We’ve got this, crew.');
+  if ((S.streak[who] || 0) >= 2) L.push('I’m on fire 🔥');
+  if (who === S.captain) L.push('Eyes on the road. I’m listening.', 'Driver picks the music. Rules.');
+  const seen = LJ.bubSeen || (LJ.bubSeen = []), fresh = L.filter(x => !seen.includes(x)), t = pickOne(fresh.length ? fresh : L); seen.push(t); if (seen.length > 8) seen.shift(); return t;
+}
+function nextBubble(){ const S = LJ.S, who = pickOne(S.crew); LJ.bub = {n:(LJ.bub ? LJ.bub.n : 0) + 1, who, text:bubbleLine(who)}; LJ.bubAt = performance.now() + 4200 + Math.random()*2600; }
+function breatherHTML(){
+  const S = LJ.S, n = S.crew.length, xs = S.crew.map((_, i) => n === 1 ? 20 : 12 + i*(19/(n - 1))), b = LJ.bub && S.crew.includes(LJ.bub.who) ? LJ.bub : null, at = x => `${(x/40*100).toFixed(1)}%`;
+  LJ.idle = true;
+  return `<div class="idle breather"><span class="eyebrow ion">Breather</span><b class="m-title">Spaceman is choosing what happens next</b><p class="m-desc">Talk, snack, look out of the window. The next game starts by itself.</p>
+    <div class="ship-scene" aria-hidden="true"><i class="px-stars s1"></i><i class="px-stars s2"></i><span class="sm-chase">${av('sm',22)}</span>
+      <div class="ship">${shipSVG(xs)}${S.crew.map((id, i) => `<span class="pt ${S.hj && S.hj.who === id ? 'held' : ''}" style="left:${at(xs[i])}">${av(id,24)}</span>`).join('')}
+      ${b ? `<span class="bub" id="bub-${b.n}" style="left:${at(Math.min(31, Math.max(9, xs[S.crew.indexOf(b.who)])))}">${esc(b.text)}</span>` : ''}</div></div></div>`;
 }
 function chHTML(ch){
   const S = LJ.S, M = MISSIONS[ch.id], v = LJ.viewer, cap = isCap(), co = isCo();
@@ -4885,7 +5197,7 @@ function chHTML(ch){
   if (ch.kind === 'risk') return riskHTML(ch, M);
   if (ch.kind === 'bluff') return bluffHTML(ch, M);
   if (ch.kind === 'corrective') return fixHTML(ch, M);
-  if (ch.kind === 'estimate' && ch.phase === 'reveal') return `${head(M, `Round ${ch.round + 1} of ${ch.rounds} · results`, false)}${estPodium(ch)}${ch.poor ? `<p class="co-hint sm-up">👨‍🚀 Everyone was way off. Spaceman +${ch.poor}</p>` : ''}`;
+  if (ch.kind === 'estimate' && ch.phase === 'reveal') return `${head(M, `Round ${ch.round + 1} of ${ch.rounds} · results`, false)}${estPodium(ch)}${ch.poor ? `<p class="co-hint sm-up">${av('sm',18)}Everyone was way off. Spaceman +${ch.poor}</p>` : ''}`;
   if (ch.kind === 'blackbox') return boxHTML(ch, M);
   if (ch.kind === 'answers'){
     const P = `<p class="ca-prompt">${esc(ch.prompt)}</p>`, mine = ch.answers[v];
@@ -4924,12 +5236,12 @@ function chHTML(ch){
     const box = (id, flag, ph) => `<div class="est-row"><label class="field est" for="${id}"><input id="${id}" type="text" inputmode="decimal" autocomplete="off" placeholder="${ph}" maxlength="12"></label><button class="btn btn-primary btn-lg" data-live="est|${id}${flag}">Lock in</button></div>`;
     const own = mine !== undefined ? `<div class="m-done">${ic('lock',16)}<span>Your number: ${mine.toLocaleString('en-GB')}</span></div>` : box('est-in', '', q.year ? 'A year' : 'Your best guess');
     const capPart = co ? (capG !== undefined ? `<p class="co-hint">${ic('check',14,2.4)} Captain’s number is in</p>` : coPanel(ch, 'est', box('est-cap', '|cap', 'Captain’s number'), 'What does the Captain reckon?')) : cap && mine === undefined ? capNote() : '';
-    return `${head(M, `Round ${ch.round + 1} of ${ch.rounds}`)}<p class="q-text">${esc(q.q)}</p><p class="small muted">Talk it through. 🥇 +${PT.estClosest} · 🥈 +${PT.estSecond} · 👨‍🚀 guesses too</p>${own}${capPart}${phones(S.crew, p => p in ch.guesses)}`;
+    return `${head(M, `Round ${ch.round + 1} of ${ch.rounds}`)}<p class="q-text">${esc(q.q)}</p><p class="small muted">Talk it through. 🥇 +${PT.estClosest} · 🥈 +${PT.estSecond} · ${av('sm',16)}Spaceman guesses too</p>${own}${capPart}${phones(S.crew, p => p in ch.guesses)}`;
   }
   if (ch.kind === 'spot'){
     const t = ch.target, canNew = S.min >= ch.rerollAt;
     return `${head(M, 'Incoming mission challenge', false)}<div class="spot"><span class="spot-e" aria-hidden="true">${t.e}</span><span class="eyebrow">Find</span><b class="display spot-n">${esc(t.n)}</b><small class="muted">Shout it out. The car agrees who saw it first.</small></div>
-      ${LJ.pickWho === 'spot' ? `<span class="m-sub">Who saw it first? +${PT.spot}</span>${whoGrid(S.crew, 'spot-found', 'compact')}<button class="link-btn" data-live="pick-cancel" style="align-self:center">Not yet</button>`
+      ${loc().pickWho === 'spot' ? `<span class="m-sub">Who saw it first? +${PT.spot}</span>${whoGrid(S.crew, 'spot-found', 'compact')}<button class="link-btn" data-live="pick-cancel" style="align-self:center">Not yet</button>`
         : `<button class="btn btn-primary btn-lg btn-block" data-live="pick-who|spot">${ic('check',18,2.4)}Someone found it</button>${canNew ? `<button class="btn btn-ghost btn-block" data-live="spot-new">${ic('swap',16)}Not seeing one? New target</button>` : ''}`}`;
   }
   if (ch.kind === 'vote'){
@@ -4940,7 +5252,7 @@ function chHTML(ch){
   }
   if (ch.kind === 'silent'){
     if (ch.phase === 'idle') return `${head(M)}<p class="m-desc">${mmss(ch.len)} of total silence. Nobody speaks on purpose. Mission Control stays quiet too.</p><button class="btn btn-primary btn-lg btn-block" data-live="silent-start">${ic('moon',18)}Start the silence</button>`;
-    return `${head(M, 'Silence in progress', false)}<div class="silent"><span class="t-num" id="silent-left">${mmss(ch.len - (S.min - ch.runAt))}</span><span class="muted">to go. If someone cracks, everyone else scores.</span></div>${LJ.pickWho === 'talk' ? `<span class="m-sub">Who cracked?</span>${whoGrid(S.crew, 'talked', 'compact')}` : '<button class="btn btn-secondary btn-lg btn-block" data-live="pick-who|talk">Someone talked</button>'}`;
+    return `${head(M, 'Silence in progress', false)}<div class="silent"><span class="t-num" id="silent-left">${mmss(ch.len - (S.min - ch.runAt))}</span><span class="muted">to go. If someone cracks, everyone else scores.</span></div>${loc().pickWho === 'talk' ? `<span class="m-sub">Who cracked?</span>${whoGrid(S.crew, 'talked', 'compact')}` : '<button class="btn btn-secondary btn-lg btn-block" data-live="pick-who|talk">Someone talked</button>'}`;
   }
   return head(M);
 }
@@ -4957,11 +5269,11 @@ const shortD = r => r.ok ? r.d : r.c === 'ok' ? 'Shield' : r.c === 'zero' ? '0' 
 /* The Spaceman Bluff */
 function bluffHTML(ch, M){
   const S = LJ.S, v = LJ.viewer, cap = isCap(), co = isCo(), f = ch.f, rs = ch.rescue;
-  const top = `<p class="q-text bluff-s">👨‍🚀 “${esc(f.s)}”</p>`, H = (sk = true) => head(M, rs ? `Round ${ch.round + 1} of ${ch.rounds} · free ${esc(viewName(ch.captive))}` : `Round ${ch.round + 1} of ${ch.rounds} · Spaceman says`, sk && !rs);
+  const top = `<p class="q-text bluff-s">${av('sm',26)}“${esc(f.s)}”</p>`, H = (sk = true) => head(M, rs ? `Round ${ch.round + 1} of ${ch.rounds} · free ${esc(viewName(ch.captive))}` : `Round ${ch.round + 1} of ${ch.rounds} · Spaceman says`, sk && !rs);
   const tally = rs && ch.rc.total ? `<p class="co-hint ${ch.rc.right*2 > ch.rc.total ? 'sm-down' : 'sm-up'}">${ic('shield',14)} ${ch.rc.right} of ${ch.rc.total} right so far. The crew needs more than half.</p>` : '';
   if (ch.phase === 'reveal'){ const L = ch.last;
     return `${H(false)}${top}<div class="tf-ans ${f.t ? 'true' : 'false'}"><b>${f.t ? 'TRUE' : 'FALSE'}</b><small>${esc(f.n)}</small></div>
-      <div class="tf-res">${L.res.map(r => `<span class="tf-r ${r.ok ? 'good' : 'bad'}">${av(r.id,24)}<b>${esc(viewName(r.id))}</b><span class="mono">${rs ? (r.ok ? '✓' : '✗') : shortD(r)}</span></span>`).join('') || '<p class="small muted">Nobody answered.</p>'}</div>${tally}${L.toSm ? `<p class="co-hint sm-up">👨‍🚀 Spaceman takes ${L.toSm}</p>` : ''}`; }
+      <div class="tf-res">${L.res.map(r => `<span class="tf-r ${r.ok ? 'good' : 'bad'}">${av(r.id,24)}<b>${esc(viewName(r.id))}</b><span class="mono">${rs ? (r.ok ? '✓' : '✗') : shortD(r)}</span></span>`).join('') || '<p class="small muted">Nobody answered.</p>'}</div>${tally}${L.toSm ? `<p class="co-hint sm-up">${av('sm',18)}Spaceman takes ${L.toSm}</p>` : ''}`; }
   const btns = flag => `<div class="tf"><button class="btn btn-primary btn-lg" data-live="tf|1${flag}">True</button><button class="btn btn-secondary btn-lg" data-live="tf|0${flag}">False</button></div>`;
   if (rs && v === ch.captive) return `${H()}<div class="drive-safe hj">${av('sm',36)}<span><b>You’re being held</b><small>Your crew is answering to free you. Shout the answer if you know it. Spaceman can’t stop you talking.</small></span></div>${top}${tally}${phones(ch.voters, p => p in ch.picks)}`;
   const mine = v in ch.picks;
@@ -4971,7 +5283,7 @@ function bluffHTML(ch, M){
 }
 /* Corrective Action: the whole crew agrees on one number */
 function fixHTML(ch, M){
-  return `${head(M, '', false)}<div class="box-q det"><span class="eyebrow ion">👨‍🚀 Crew vs Spaceman</span><b>${esc(ch.q.q)}</b><small class="muted">One answer for the whole crew. Talk it through first. Within ${ch.q.year ? '5 years' : '25%'}: Spaceman loses ${PT.fixWin}. Miss: Spaceman gains ${PT.fixLose}.</small></div>
+  return `${head(M, '', false)}<div class="box-q det"><span class="eyebrow ion">${av('sm',16)}Crew vs Spaceman</span><b>${esc(ch.q.q)}</b><small class="muted">One answer for the whole crew. Talk it through first. Within ${ch.q.year ? '5 years' : '25%'}: Spaceman loses ${PT.fixWin}. Miss: Spaceman gains ${PT.fixLose}.</small></div>
     <div class="est-row"><label class="field est" for="fix-in"><input id="fix-in" type="text" inputmode="decimal" autocomplete="off" placeholder="The crew’s answer" maxlength="12"></label><button class="btn btn-primary btn-lg" data-live="fix">Submit</button></div>
     <p class="small muted">Anyone can submit, once. Captain: say your number out loud.</p>`;
 }
@@ -5014,7 +5326,7 @@ function riskHTML(ch, M){
   if (ch.phase === 'reveal'){ const L = ch.last;
     return `${H(false)}${top}<div class="m-done">${ic('check',18,2.4)}<span>It’s ${q.year ? q.a : fmtN(q.a)}${q.u ? ` ${esc(q.u)}` : ''}. <b>${L.ans === 'higher' ? 'Higher' : 'Lower'}</b>.</span></div>
       <div class="tf-res">${L.res.map(r => `<span class="tf-r ${r.ok ? 'good' : r.c === 'bad' ? 'bad' : ''}">${av(r.id,24)}<span class="tf-n"><b>${esc(viewName(r.id))}</b><small>${r.hl === 'higher' ? 'Higher' : 'Lower'} · ${STAKES[r.stake][0]}</small></span><span class="mono">${shortD(r)}</span></span>`).join('')}</div>`; }
-  const stakeRow = key => `<div class="stakes" role="radiogroup" aria-label="Stake">${Object.entries(STAKES).map(([k, [n, odds]]) => `<button class="stake ${k}" role="radio" aria-checked="${(LJ[key] || 'bold') === k}" data-live="stake|${k}${key === 'capStake' ? '|cap' : ''}"><b>${n}</b><small class="mono">${odds}</small></button>`).join('')}</div>`;
+  const stakeRow = key => `<div class="stakes" role="radiogroup" aria-label="Stake">${Object.entries(STAKES).map(([k, [n, odds]]) => `<button class="stake ${k}" role="radio" aria-checked="${(loc()[key] || 'bold') === k}" data-live="stake|${k}${key === 'capStake' ? '|cap' : ''}"><b>${n}</b><small class="mono">${odds}</small></button>`).join('')}</div>`;
   const hl = flag => `<div class="hl"><button class="btn btn-primary btn-lg" data-live="bet|higher${flag}">${ic('chevR',18)}Higher</button><button class="btn btn-secondary btn-lg" data-live="bet|lower${flag}">Lower</button></div>`;
   const b = ch.bets[v];
   const own = b ? `<div class="m-done">${ic('lock',16)}<span>Locked in: ${b.hl === 'higher' ? 'Higher' : 'Lower'} · ${STAKES[b.stake][0]}</span></div>` : `${stakeRow('stake')}${hl('')}${cap ? capNote() : ''}`;
@@ -5054,11 +5366,11 @@ function doneHTML(ch, M){
       <div class="btn-row">${ch.right.length ? `<span class="chip ok">+${ch.kind === 'intel' ? PT.intelRight : PT.nextRight} each: ${ch.right.map(id => esc(viewName(id))).join(', ')}</span>` : `<span class="chip">Nobody saw it coming</span>`}${ch.kind === 'intel' && ch.right.length ? `<span class="chip ion">${esc(viewName(ch.who))} +${PT.intelKnown*ch.right.length} for being known</span>` : ''}${ch.kind === 'whatnext' && ch.starPts ? `<span class="chip ion">${esc(viewName(ch.who))} +${ch.starPts}</span>` : ''}</div>`; }
   if (ch.kind === 'blackbox' && ch.tally) extra = `<div class="box-reveal">${av(ch.glitch,52)}<span><span class="eyebrow ion">The glitch</span><b class="display">${esc(ch.glitch === v ? 'You!' : fullOf(ch.glitch))}</b></span></div>
     <div class="box-qs"><span><small class="eyebrow">Everyone else got</small>${esc(ch.qa)}</span><span><small class="eyebrow">The glitch got</small>${esc(ch.qb)}</span></div>`;
-  if (ch.kind === 'risk' && ch.rows){ const P = ch.pts || {}; extra = `<div class="ev-out">${Object.keys(P).sort((a, b) => P[b] - P[a]).map(id => `<span class="ev-row ${P[id] > 0 ? 'good' : P[id] < 0 ? 'bad' : 'zero'}">${av(id,28)}<span class="ev-txt"><b>${esc(viewName(id))}</b></span><span class="ev-d">${P[id] > 0 ? '+' : ''}${P[id]}</span></span>`).join('')}</div>`; }
+  if (ch.kind === 'risk' && ch.rows){ const P = ch.pts || {}; extra = outHTML(Object.keys(P).sort((a, b) => P[b] - P[a]).map(id => ({id, c:P[id] > 0 ? 'good' : P[id] < 0 ? 'bad' : 'zero', d:`${P[id] > 0 ? '+' : ''}${P[id]}`}))); }
   if (ch.id === 'rescue') extra = `<div class="tf-ans ${ch.ok ? 'true' : 'false'}"><b>${ch.ok ? 'Rescued!' : 'Rescue failed'}</b><small>${ch.rc.right} of ${ch.rc.total} answers right. ${ch.ok ? `${esc(viewName(ch.captive))} is free.` : `${esc(viewName(ch.captive))} is still captured. Another chance will come.`}</small></div>`;
   if (ch.kind === 'corrective') extra = `<div class="tf-ans ${ch.ok ? 'true' : 'false'}"><b>${ch.ok ? 'Corrective action successful' : 'Corrective action failed'}</b><small>Crew said ${ch.crewAns === null ? 'nothing' : ch.crewAns.toLocaleString('en-GB')}. The answer is ${ch.answer.toLocaleString('en-GB')}.</small></div>`;
   if (ch.kind === 'spot' && ch.winner) extra = `<div class="spot small-spot"><span class="spot-e" aria-hidden="true">${ch.target.e}</span>${av(ch.winner,44)}</div>`;
-  return `${head(M, 'Challenge complete', false)}${extra}${r || ch.kind === 'intel' || ch.kind === 'risk' || ch.id === 'rescue' ? '' : `<div class="m-done">${ic('check',18,2.4)}<span>${esc(ch.result)}</span></div>`}${smD ? `<p class="co-hint ${smD > 0 ? 'sm-up' : 'sm-down'}">👨‍🚀 Spaceman ${smD > 0 ? '+' : '−'}${Math.abs(smD)} this game</p>` : ''}${(ch.notes || []).map(n => `<p class="co-hint party-note">${n.id ? av(n.id, 20) : ''}<span>${n.id ? `<b>${esc(viewName(n.id))}</b> ` : ''}${esc(n.t)}</span></p>`).join('')}${ch.smSay ? `<div class="sm-say">${av('sm',24)}<span>${esc(ch.smSay)}</span></div>` : ''}`;
+  return `${head(M, 'Challenge complete', false)}${extra}${r || ch.kind === 'intel' || ch.kind === 'risk' || ch.id === 'rescue' ? '' : `<div class="m-done">${ic('check',18,2.4)}<span>${esc(ch.result)}</span></div>`}${smD ? `<p class="co-hint ${smD > 0 ? 'sm-up' : 'sm-down'}">${av('sm',18)}Spaceman ${smD > 0 ? '+' : '−'}${Math.abs(smD)} this game</p>` : ''}${(ch.notes || []).map(n => `<p class="co-hint party-note">${n.id ? av(n.id, 20) : ''}<span>${n.id ? `<b>${esc(viewName(n.id))}</b> ` : ''}${esc(n.t)}</span></p>`).join('')}${ch.smSay ? `<div class="sm-say">${av('sm',24)}<span>${esc(ch.smSay)}</span></div>` : ''}`;
 }
 function progress(){
   if (!LJ) return; const S = LJ.S, ch = S.ch, e = S.ev; let t = '';
@@ -5097,11 +5409,37 @@ function progress(){
 }
 
 /* Emoji reactions float up on every phone */
+const AV_EMOTES = ['😀','😂','🤣','😡','🫡','💀','😭','👀','🚀','☄️'];
+function closeEmoteTray(){ $('#etray', live)?.remove(); }
+function emoteTray(){
+  if ($('#etray', live)) return closeEmoteTray();
+  const bd = $('#lv-board', live), r = bd ? bd.getBoundingClientRect() : {bottom:150}, el = document.createElement('div');
+  el.id = 'etray'; el.innerHTML = `<div class="etray-bk" data-live="etray-x"></div><div class="etray" role="menu" aria-label="Emotes" style="top:${Math.round(r.bottom + 6)}px">${AV_EMOTES.map(e => `<button role="menuitem" data-live="avemote|${e}" aria-label="Emote ${e}">${e}</button>`).join('')}</div>`;
+  live.appendChild(el);
+}
+/* Tap a player: who they are, how they're doing, how you two get on */
+function playerCard(id){
+  const S = LJ.S, st = S.st[id], held = S.hj && S.hj.who === id, p = PEOPLE[id], f = FRIENDS.find(x => x.id === id), role = roleOf(id);
+  const order = [...S.crew].sort((a, b) => S.pts[b] - S.pts[a]), rank = order.indexOf(id) + 1, js = JOURNEYS.filter(j => j.crew.includes(id));
+  const scored = js.filter(j => j.scores && j.scores[id] !== undefined), avg = scored.length ? Math.round(scored.reduce((a, j) => a + j.scores[id], 0)/scored.length) : null, crowns = js.filter(j => j.spaceman === id).length;
+  const chips = [`<span class="chip">${role}</span>`, held ? '<span class="chip bad">Captured</span>' : '', S.fx[id].shield ? '<span class="chip ion">Shielded</span>' : '', (S.streak[id] || 0) >= 2 ? '<span class="chip">🔥 On fire</span>' : '', rank === 1 && S.pts[id] > 0 ? '<span class="chip ion">Leading</span>' : rank === order.length && order.length > 2 ? '<span class="chip">Last</span>' : ''].join('');
+  openSheet(`<div class="pc-head">${av(id,64)}<div><h2 class="display" style="font-size:24px">${esc(viewName(id))}</h2><span class="muted">${esc(p.full || p.name)}</span></div></div>
+    <div class="pc-chips">${chips}</div>
+    <section class="stack-v"><h3 class="eyebrow">This mission</h3><div class="tiles">
+      <div class="tile"><span class="t-num">${S.pts[id]}</span><span class="lbl">Credits · #${rank}</span></div>
+      <div class="tile"><span class="t-num">${st.wins}</span><span class="lbl">Games won</span></div>
+      <div class="tile"><span class="t-num">${st.streakMax}</span><span class="lbl">Best streak</span></div></div>
+      <p class="small muted">${st.lost} lost to Spaceman and events${st.stole ? ` · stole ${st.stole}` : ''}${st.hero ? ` · ${st.hero} act${st.hero > 1 ? 's' : ''} of heroism` : ''}${st.held ? ` · held ${st.held} min` : ''}</p></section>
+    <section class="stack-v"><h3 class="eyebrow">Journey history</h3>${js.length ? `<div class="tiles"><div class="tile"><span class="t-num">${js.length}</span><span class="lbl">Journeys</span></div><div class="tile"><span class="t-num">${crowns}</span><span class="lbl">Journey Spaceman</span></div><div class="tile"><span class="t-num">${avg ?? '–'}</span><span class="lbl">Avg credits</span></div></div>
+      <div class="card pc-rows">${js.slice(0, 3).map(j => `<div class="pc-row"><span class="mono">${esc(dShort(j.date))}</span><span class="grow">${esc(jTitle(j))}</span><b class="mono">${j.scores && j.scores[id] !== undefined ? j.scores[id] : '–'}</b></div>`).join('')}</div>` : '<p class="small muted">No journeys together yet. This could be the first.</p>'}</section>
+    <section class="stack-v"><h3 class="eyebrow">Friendship</h3>${f ? `<div class="card fs-level">${lvBadge(f.mi,64,5)}<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><b class="display" style="font-size:19px">${lvInfo(f.mi).name}</b><span class="small muted">Level ${lvInfo(f.mi).l} · ${fmt(f.mi)} mi together · ${f.j} journeys</span></div></div>` : '<p class="small muted">Not in your crew yet. Miles together will change that.</p>'}</section>
+    ${id === S.captain && isCo() ? `<button class="row card" data-live="cap-pu" style="width:100%">${ic('steer',20)}<span class="grow"><b>Captain’s power-ups</b><span>Use them when the Captain says so</span></span><span class="chev">${ic('chevR',18)}</span></button>` : ''}`);
+}
 function floatEmote(r){ try { const host = typeof live !== 'undefined' ? live : null; if (!host) return; const el = document.createElement('span'); el.className = 'emote-float'; el.textContent = r.e;
   el.style.left = `${12 + Math.random()*76}%`; host.appendChild(el); setTimeout(() => el.remove(), 2600); } catch {} }
 const readNext = ch => `Captain. ${ch.q} What happens next? ${ch.o.map((o, i) => `${L4[i]}. ${o}.`).join(' ')} A, B, C, or D?`;
 /* ---------- transmissions (each phone shows and reads them out on its own) ---------- */
-const txKind = k => k === 'roast' ? '👨‍🚀 Spaceman' : k === 'captain' ? 'Atlas · Captain interview' : k === 'talk' ? 'Atlas · crew discussion' : k === 'chatter' ? '🎧 Commander Atlas' : 'Incoming transmission';
+const txKind = k => k === 'roast' ? 'Spaceman' : k === 'captain' ? 'Atlas · Captain interview' : k === 'talk' ? 'Atlas · crew discussion' : k === 'chatter' ? '🎧 Commander Atlas' : 'Incoming transmission';
 const vary = (tx, a) => a[tx.id % a.length];
 function txSpeech(tx){
   if (tx.kind === 'captain') return `${tx.pre || 'Captain, quick one for you.'} ${tx.text} Over.`;
@@ -5119,7 +5457,7 @@ function txTo(tx){
 }
 function txActions(tx){
   const read = `<button class="btn btn-secondary btn-lg btn-block" data-action="tx-read">${ic('speaker',18)}Read aloud</button>`, close = `<button class="btn btn-ghost btn-block" data-action="tx-close">Close on this phone</button>`;
-  if (tx.kind !== 'captain') return `${read}<button class="btn btn-primary btn-lg btn-block" data-action="tx-close">End transmission</button>`;
+  if (tx.kind !== 'captain') return `<div class="tx-bar" aria-hidden="true"><i style="animation-duration:${tx.dur || 12}s"></i></div><button class="link-btn" data-action="tx-close" style="align-self:center">Skip</button>`;
   if (tx.phase === 'ask'){
     if (isCap()) return `${read}<button class="btn btn-primary btn-lg btn-block" data-live="answered">I’ve answered out loud</button>${LJ.S.copilot ? `<p class="small muted">Or Co-Pilot ${esc(coName())} can tap it for you.</p>` : ''}`;
     if (isCo()){ const s = said(tx, 'answered'); return `${s ? `<p class="said">${esc(s.text)}</p>` : `<p class="co-hint">Tap once the Captain has answered.</p>`}<button class="btn btn-primary btn-lg btn-block" data-live="answered|cap">${ic('steer',18)}Captain has answered</button>${close}`; }
@@ -5131,14 +5469,14 @@ function txActions(tx){
 }
 function txOverlay(){
   const tx = LJ.S.tx, el = $('#tx', live);
-  if (!tx || tx.id === LJ.hiddenTx){ if (el){ el.remove(); Voice.stop(); } return; }
+  if (!tx || tx.id === loc().hiddenTx){ if (el){ el.remove(); if (tx) Voice.stop(); } return; }   /* a transmission that ends by itself lets the voice finish */
   if (el && +el.dataset.id === tx.id){ setHTML('tx-actions', txActions(tx)); return; }
   el?.remove();
   const box = document.createElement('div');
   box.className = `tx ${tx.kind}`; box.id = 'tx'; box.dataset.id = tx.id; box.setAttribute('role','dialog'); box.setAttribute('aria-modal','true'); box.setAttribute('aria-label', txKind(tx.kind));
   box.innerHTML = `<div class="tx-in">
-    <div class="radar" aria-hidden="true"><i></i><i></i><i></i><span class="core">${ic('signal',28)}</span></div>
-    <span class="eyebrow tx-kind">${txKind(tx.kind)}</span><span class="tx-status" id="tx-status">Incoming signal</span>
+    <div class="radar" aria-hidden="true"><i></i><i></i><i></i><span class="core">${tx.kind === 'roast' ? av('sm',48) : ic('signal',28)}</span></div>
+    <span class="eyebrow tx-kind">${tx.kind === 'roast' ? av('sm',16) : ''}${txKind(tx.kind)}</span><span class="tx-status" id="tx-status">Incoming signal</span>
     <div class="wave" aria-hidden="true">${Array.from({length:14}, (_,i) => `<i style="--d:${(i*67) % 480}ms"></i>`).join('')}</div>
     <div class="tx-body"><span class="tx-to">${txTo(tx)}</span><p class="tx-msg">“${esc(tx.text)}”</p><span class="tx-from">${tx.kind === 'crew' ? (tx.from === LJ.viewer ? 'From: you (they don’t know that)' : 'From: someone in this car') : tx.kind === 'roast' ? 'From: Spaceman' : 'From: Commander Atlas, Mission Control'}</span><div class="tx-actions" id="tx-actions">${txActions(tx)}</div></div></div>`;
   live.appendChild(box); delete LJ.cache['tx-actions']; haptic();
@@ -5150,19 +5488,16 @@ function txOverlay(){
 }
 
 function txSheet(){
-  const d = S.tx, St = LJ.S, names = shuffle(St.crew.filter(id => id !== LJ.viewer)).map(id => St.names[id]);
-  const n = i => names[i % Math.max(1, names.length)] || 'The Captain';
-  const ideas = [`${n(0)} still owes me £20.`, `If ${n(1)} was an animal they’d definitely be a pigeon.`, `${n(2)} has somehow forgotten their wallet again.`];
-  const targets = [['crew','Entire crew',ic('users',15)], ['captain',`Captain ${esc(capName())}`,ic('steer',15)], ...St.crew.filter(id => id !== St.captain && id !== LJ.viewer).map(id => [id, esc(viewName(id)), av(id,24)])];
-  if (!targets.some(t => t[0] === d.to)) d.to = 'crew';
-  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Transmission</span><h2 class="display" style="font-size:24px">Send a transmission</h2><p class="muted">Sent from ${LJ.viewer === ME.id ? 'your' : `${esc(viewName(LJ.viewer))}’s`} phone. It interrupts every phone later and gets read out. Nobody will know who sent it.</p></div>
-    <section class="stack-v"><h3 class="eyebrow">To</h3><div class="tx-targets">${targets.map(([v,l,i]) => `<button class="chip filter" data-txto="${v}" aria-pressed="${d.to === v}">${i}${l}</button>`).join('')}</div></section>
-    <section class="stack-v"><h3 class="eyebrow">Message</h3>
-      <label class="field area" for="tx-text"><textarea id="tx-text" maxlength="140" rows="3" placeholder="Something the crew needs to hear"></textarea></label>
-      <div class="tx-ideas">${ideas.map(t => `<button class="chip" data-txidea="${esc(t)}">${ic('sparkle',13)}${esc(t)}</button>`).join('')}</div></section>
-    <section class="stack-v"><h3 class="eyebrow">When</h3><nav class="seg" aria-label="When">${[['2','In 2 min'],['5','In 5 min'],['rand','Surprise']].map(([v,l]) => `<button data-txwhen="${v}" aria-pressed="${d.when === v}">${l}</button>`).join('')}</nav></section>
+  const d = S.tx, St = LJ.S;
+  const targets = [['crew','Entire crew'], ['captain',`Captain ${capName()}`], ...St.crew.filter(id => id !== St.captain && id !== LJ.viewer).map(id => [id, viewName(id)])];
+  if (!targets.some(t => t[0] === d.to)) d.to = 'crew'; if (!['1','2','5','custom'].includes(d.when)) d.when = '2';
+  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Transmission</span><h2 class="display" style="font-size:22px">Send a transmission</h2></div>
+    <label class="field area" for="tx-text"><textarea id="tx-text" maxlength="140" rows="2" placeholder="Message. It gets read out. Nobody knows it was you."></textarea></label>
+    <div class="tx-row"><label class="tx-to-sel" for="tx-to"><span class="eyebrow">To</span><select id="tx-to" data-txsel>${targets.map(([v, l]) => `<option value="${v}" ${d.to === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label></div>
+    <section class="stack-v"><h3 class="eyebrow">Send in</h3><nav class="seg" aria-label="Send time">${[['1','1 min'],['2','2 min'],['5','5 min'],['custom','Custom']].map(([v,l]) => `<button data-txwhen="${v}" aria-pressed="${d.when === v}">${l}</button>`).join('')}</nav>
+      <label class="field tx-custom" for="tx-min" ${d.when === 'custom' ? '' : 'hidden'}><input id="tx-min" type="number" inputmode="numeric" min="1" max="60" placeholder="Minutes (1–60)"></label></section>
     <p class="auth-err" id="tx-err" role="alert"></p>
-    <button class="btn btn-primary btn-lg btn-block" data-action="tx-queue">${ic('signal',18)}Queue transmission</button>`);
+    <button class="btn btn-primary btn-lg btn-block" data-action="tx-queue">${ic('signal',18)}Send</button>`);
 }
 
 
@@ -5181,16 +5516,16 @@ function powerSheet(stealIdx=null, forCap=false){
     ${fx.double || fx.shield ? `<div class="btn-row" style="justify-content:flex-start">${fx.double ? `<span class="chip ion">${ic('star',13)}Double Points ready</span>` : ''}${fx.shield ? `<span class="chip ion">${ic('shield',13)}Shield up</span>` : ''}</div>` : ''}
     ${inv.length ? `<div class="list">${inv.map((k,i) => `<div class="row"><span class="ic-tile ion">${ic(POWERUPS[k].ic)}</span><span class="grow"><b>${POWERUPS[k].name}</b><span>${POWERUPS[k].line}</span></span><button class="btn btn-primary" style="height:48px;padding:0 20px" data-live="use|${i}${flag}">Use</button></div>`).join('')}</div>`
       : `<p class="muted">Empty for now. The next drop is at minute ${S.nextDrop}.</p>`}
-    <div class="list">${Object.values(POWERUPS).map(p => `<div class="row"><span class="ic-tile">${ic(p.ic,18)}</span><span class="grow"><b>${p.name}</b><span>${p.line}</span></span></div>`).join('')}</div>`);
+`);
 }
 function luckySheet(r, owner){
   const me = owner === LJ.viewer, who = me ? 'You' : viewName(owner);
   const after = r.promoted ? `<span class="eyebrow ion">🛰 Co-Pilot promotion</span><b class="display cp-title">${me ? 'A six! You’re the Co-Pilot' : `A six! ${esc(who)} is Co-Pilot`}</b>
       <p class="m-desc">${r.prev ? `${esc(viewName(r.prev))} stands down. ` : ''}The crew sees the news once the current game ends.</p>${perksHTML()}`
-    : r.roll === 6 ? `<p class="m-desc">${r.why === 'captain' ? 'A six! But the Captain can’t leave the driver’s seat.' : 'A six! Already Co-Pilot, so the seat stays put.'}</p>`
-    : `<p class="m-desc">Roll a 6 and the Co-Pilot seat is yours.</p>`;
+    : r.roll === 6 ? `<p class="m-desc">${r.why === 'captain' ? 'A six! The Captain can’t leave the driver’s seat, so it pays +5 instead.' : 'A six! You already hold the Co-Pilot seat, so it pays +5 instead.'}</p>`
+    : `<p class="m-desc">The roll is the prize: 1 pays 1, 5 pays 5. A 6 is a Co-Pilot promotion.</p>`;
   openSheet(`<div class="lucky"><span class="eyebrow" style="color:var(--flare)">🎲 Lucky Roll</span><div class="die-wrap">${dieSVG(r.roll, 'tumble')}</div>
-    <div class="cp-after ${r.promoted ? 'promo-win' : ''}">${r.promoted ? sparks(14) : ''}<b class="display cp-title">+${r.gain} credits</b>${after}<button class="btn btn-primary btn-lg btn-block" data-close>${r.promoted ? 'Take the seat' : 'Nice'}</button></div></div>`);
+    <div class="cp-after ${r.promoted ? 'promo-win' : ''}">${r.promoted ? sparks(14) : ''}<b class="display cp-title">${r.promoted ? 'Promotion!' : `+${r.gain} credit${r.gain === 1 ? '' : 's'}`}</b>${after}<button class="btn btn-primary btn-lg btn-block" data-close>${r.promoted ? 'Take the seat' : 'Nice'}</button></div></div>`);
   SFX.play('dice', r.promoted ? 'promoWin' : 'powerup');
 }
 function devicesSheet(){
@@ -5201,6 +5536,7 @@ function devicesSheet(){
 function menuSheet(){
   const S = LJ.S;
   openSheet(`<div class="sheet-title"><span class="eyebrow ion">${S.dest ? `Mission to ${esc(S.dest)}` : 'Mystery mission'} · ${VIBES[S.mode].name}</span><h2 class="display" style="font-size:24px">Mission menu</h2></div>
+    <details class="guide"><summary>${ic('star',18)}<span class="grow"><b>Power-up guide</b><span>What every power-up does</span></span>${ic('chevR',16)}</summary><div class="list">${Object.values(POWERUPS).map(p => `<div class="row"><span class="ic-tile">${ic(p.ic,18)}</span><span class="grow"><b>${p.name}</b><span>${p.line}</span></span></div>`).join('')}</div></details>
     <div class="list">
       <button class="row" data-action="voice">${ic(LJ.voice ? 'speaker' : 'mute',20)}<span class="grow"><b>Read transmissions aloud</b><span>${LJ.voice ? 'On for this phone' : 'Off for this phone'}</span></span><span class="chip ${LJ.voice ? 'ion' : ''}">${LJ.voice ? 'On' : 'Off'}</span></button>
       <button class="row" data-action="day">${ic('sun',20)}<span class="grow"><b>Daylight mode</b><span>Higher contrast for bright sun</span></span><span class="chip ${LJ.day ? 'ion' : ''}">${LJ.day ? 'On' : 'Off'}</span></button>
@@ -5221,12 +5557,15 @@ function liveAct(spec){
   switch (a){
     case 'devices': return devicesSheet();
     case 'menu': return menuSheet();
-    case 'view': LJ.viewer = x; LJ.pickWho = null; closeSheet(); renderHud(); return toast(x === ME.id ? 'Back on your phone' : `Now on ${S.names[x]}’s phone · ${roleOf(x)}`);
-    case 'pu': if (x === v) return powerSheet(); if (x === S.captain && isCo()) return powerSheet(null, true); return toast(`Only ${S.names[x]} can see and use their power-ups.`);
+    case 'view': LJ.viewer = x; closeSheet(); renderHud(); return toast(x === ME.id ? 'Back on your phone' : `Now on ${S.names[x]}’s phone · ${roleOf(x)}`);
+    case 'pu': return x === v ? emoteTray() : playerCard(x);
+    case 'avemote': Transport.send({type:'avemote', e:x}); haptic(); return closeEmoteTray();
+    case 'etray-x': return closeEmoteTray();
     case 'cap-pu': return powerSheet(null, true);
     case 'sm': return LJ.S.hj ? hjSheet() : smSheet();
     case 'hj-ransom': closeSheet(); Transport.send({type:'hj-ransom'}); return haptic();
     case 'hj-swap': closeSheet(); Transport.send({type:'hj-swap'}); return haptic();
+    case 'hj-donate': Transport.send({type:'hj-donate', n:+x}); haptic(); LJ.cache = {}; if (document.querySelector('#sheet:not([hidden]) .rescue')) hjSheet(); return;
     case 'qroll': Transport.send({type:'qroll'}); return haptic();
     case 'duel': Transport.send({type:'duel-ans', opt:+x}); return haptic();
     case 'bribe': Transport.send({type:'bribe', yes:x === '1'}); return haptic();
@@ -5235,11 +5574,11 @@ function liveAct(spec){
     case 'roll': Transport.send({type:'roll'}); return haptic();
     case 'intel': Transport.send({type:'intel-ans', qi:+x, opt:+y}); return haptic();
     case 'pick-a': Transport.send({type:'pick-a', opt:+x, ...as}); return haptic();
-    case 'stake': LJ[cap ? 'capStake' : 'stake'] = x; LJ.cache['lv-ch'] = null; return paint();
+    case 'stake': loc()[cap ? 'capStake' : 'stake'] = x; LJ.cache['lv-ch'] = null; return paint();
     case 'tf': Transport.send({type:'tf', v:x === '1', ...as}); return haptic();
     case 'fix': { const el = $('#fix-in'), raw = (el?.value || '').replace(/[,\s]/g, ''), n = Number(raw);
       if (!raw || !Number.isFinite(n) || n < 0){ toast('Type the crew’s number first'); el?.focus(); return; } Transport.send({type:'fix', value:n}); return haptic(); }
-    case 'bet': Transport.send({type:'bet', hl:x, stake:LJ[cap ? 'capStake' : 'stake'] || 'bold', ...as}); return haptic();
+    case 'bet': Transport.send({type:'bet', hl:x, stake:loc()[cap ? 'capStake' : 'stake'] || 'bold', ...as}); return haptic();
     case 'box-ready': Transport.send({type:'box-ready'}); return haptic();
     case 'box-talked': return Transport.send({type:'box-talked'});
     case 'box-vote': Transport.send({type:'box-vote', who:x, ...as}); return toast(cap ? 'Captain’s vote locked in' : 'Vote locked in');
@@ -5247,7 +5586,7 @@ function liveAct(spec){
     case 'struggle': Transport.send({type:'struggle-ans', opt:+x}); return haptic();
     case 'use': { const owner = cap ? S.captain : v, k = S.inv[owner][+x]; if (k === 'thief') return powerSheet(+x, cap); const r = Transport.send({type:'use', idx:+x, ...as}); if (r && r.k === 'lucky') return luckySheet(r, owner); return closeSheet(); }
     case 'steal': { const r = Transport.send({type:'use', idx:+x, target:y, ...as}); if (!r) toast('That didn’t work. Pick someone with credits.'); return closeSheet(); }
-    case 'ev-hide': LJ.hiddenEv = S.ev && S.ev.id; return paint();
+    case 'ev-hide': loc().hiddenEv = S.ev && S.ev.id; return paint();
     case 'decide': Transport.send({type:'decide', choice:x, ...as}); return haptic();
     case 'answer': { const t = ($('#ca-input')?.value || '').trim(); if (!t){ setText('ca-err', 'Write something first. Anything.'); return; } Transport.send({type:'answer', text:t}); return haptic(); }
     case 'idea': { const i = $('#ca-input'); if (i) i.value = pickOne(S.ch.ideas); return; }
@@ -5258,13 +5597,13 @@ function liveAct(spec){
     case 'est': { const el = $('#' + x), raw = (el?.value || '').replace(/[,\s]/g, ''), n = Number(raw);
       if (!raw || !Number.isFinite(n) || n < 0){ toast('Type a number first'); el?.focus(); return; }
       Transport.send({type:'est', value:n, ...as}); return haptic(); }
-    case 'pick-who': LJ.pickWho = x; LJ.cache['lv-ch'] = null; return paint();
-    case 'pick-cancel': LJ.pickWho = null; LJ.cache['lv-ch'] = null; return paint();
-    case 'spot-found': LJ.pickWho = null; Transport.send({type:'spot-found', who:x}); return haptic();
+    case 'pick-who': loc().pickWho = x; LJ.cache['lv-ch'] = null; return paint();
+    case 'pick-cancel': loc().pickWho = null; LJ.cache['lv-ch'] = null; return paint();
+    case 'spot-found': loc().pickWho = null; Transport.send({type:'spot-found', who:x}); return haptic();
     case 'spot-new': return Transport.send({type:'spot-new'});
     case 'vote': Transport.send({type:'vote', who:x, ...as}); return toast(cap ? 'Captain’s vote locked in' : 'Secret vote locked in');
     case 'silent-start': return Transport.send({type:'silent-start'});
-    case 'talked': LJ.pickWho = null; return Transport.send({type:'talked', who:x});
+    case 'talked': loc().pickWho = null; return Transport.send({type:'talked', who:x});
     case 'choose': Transport.send({type:'choose', id:x}); return toast(`${MISSIONS[x].name} is up next`);
     case 'skip': return Transport.send({type:'skip'});
     case 'answered': return Transport.send({type:'answered', ...as});
@@ -5285,20 +5624,22 @@ const LIVE_ACTIONS = {
   'tx-queue': () => {
     const text = ($('#tx-text')?.value || '').replace(/\s+/g, ' ').trim();
     if (!text){ setText('tx-err', 'Write a message first.'); return; }
-    Transport.send({type:'tx-send', to:S.tx.to, text, when:S.tx.when}); S.tx = {to:'crew', when:'5'};
-    closeSheet(); toast('Transmission queued. Act natural.');
+    const to = $('#tx-to')?.value || S.tx.to, mins = S.tx.when === 'custom' ? Math.round(Number($('#tx-min')?.value)) : +S.tx.when;
+    if (!Number.isFinite(mins) || mins < 1 || mins > 60){ setText('tx-err', 'Pick a time between 1 and 60 minutes.'); return; }
+    Transport.send({type:'tx-send', to, text, when:mins}); S.tx = {to:'crew', when:'2'};
+    closeSheet(); toast(`Transmission queued for ${mins} min. Act natural.`);
   },
   'tx-read': () => { if (LJ && LJ.S.tx && !Voice.speak(txSpeech(LJ.S.tx))) toast('Voice isn’t available in this browser. Read it out.'); },
-  'tx-close': () => { if (!LJ || !LJ.S.tx) return; LJ.hiddenTx = LJ.S.tx.id; Voice.stop(); txOverlay(); }
+  'tx-close': () => { if (!LJ || !LJ.S.tx) return; loc().hiddenTx = LJ.S.tx.id; Voice.stop(); txOverlay(); }
 };
 function endJourney(){
   if (!LJ) return; cancelAnimationFrame(LJ.raf); Voice.stop(); $('#tx', live)?.remove(); try { if (LJ.geo !== undefined) navigator.geolocation.clearWatch(LJ.geo); } catch {}
-  const S = LJ.S, s = LJ.startedAt, awards = Engine.finale(S), top = Engine.winner(S);   /* Bonus Awards land before the winner is decided */
-  const best = Engine.topCrew(S);
-  S.log.push({t:Math.floor(S.min), ic:'flag', text:top ? `Mission complete. ${S.names[top]} beat Spaceman and is the Journey Spaceman.` : `Mission complete. Spaceman retains control.`});
+  const S = LJ.S, s = LJ.startedAt, awards = Engine.finale(S), top = Engine.winner(S), crewWin = Engine.crewWins(S);   /* Bonus Awards land before the winner is decided */
+  const best = top || Engine.topCrew(S);
+  S.log.push({t:Math.floor(S.min), ic:'flag', text:crewWin ? `Mission complete. The crew beat Spaceman ${Engine.crewTotal(S)} to ${Engine.smTotal(S)}${top ? `. ${S.names[top]} is the Journey Spaceman` : ''}.` : `Mission complete. Spaceman retains control, ${Engine.smTotal(S)} to ${Engine.crewTotal(S)}.`});
   const j = {id:'j' + Date.now().toString(36), title:'', dest:S.dest, date:isoToday(), start:`${String(s.getHours()).padStart(2,'0')}:${String(s.getMinutes()).padStart(2,'0')}`,
     mi:Math.max(1, Math.round(S.mi)), min:Math.max(1, Math.round(S.min)), crew:[...S.crew], mode:S.mode, ch:S.results, songs:[],
-    captain:S.captain, copilot:S.copilot, sm:S.sm, smWon:!top, bonus:awards.map(a => ({...a})), betrayals:S.betrayals.map(b => ({...b})), smBonus:S.smBonus || 0, hostages:S.hjLog.length + (S.hj ? 1 : 0), rescues:S.hjLog.filter(h => h.how === 'rescued').length, best, crewTotal:S.crew.reduce((a, id) => a + S.pts[id], 0), coLog:S.coLog.map(x => ({...x, to:x.to === null ? Math.round(S.min*10)/10 : x.to})), promos:[...S.promos], scores:{...S.pts}, spaceman:top, rating:null, log:S.log.slice(-14)};
+    captain:S.captain, copilot:S.copilot, sm:Engine.smTotal(S), smBase:S.sm, held:S.hj ? {who:S.hj.who, n:S.pts[S.hj.who]} : null, smWon:!crewWin, bonus:awards.map(a => ({...a})), betrayals:S.betrayals.map(b => ({...b})), smBonus:S.smBonus || 0, hostages:S.hjLog.length + (S.hj ? 1 : 0), rescues:S.hjLog.filter(h => h.how === 'rescued').length, best, crewTotal:Engine.crewTotal(S), coLog:S.coLog.map(x => ({...x, to:x.to === null ? Math.round(S.min*10)/10 : x.to})), promos:[...S.promos], scores:{...S.pts}, spaceman:top, rating:null, log:S.log.slice(-14)};
   j.awards = makeAwards(j, S.pts);
   const info = recordJourney(j);
   trackCoPilot(j);
@@ -5322,7 +5663,7 @@ function bonusHTML(j){
   if (!j.bonus || !j.bonus.length) return ''; const nm = id => id === ME.id ? 'You' : (PEOPLE[id] || {}).first || (PEOPLE[id] || {}).full || id;
   return `<section class="awards"><span class="eyebrow" style="color:var(--flare)">⭐ Bonus Awards · these can change everything</span>
     ${j.bonus.map((a, i) => `<div class="award-row" style="animation-delay:${.4 + i*.9}s"><span class="aw-star">⭐</span><span class="grow"><b>${esc(a.name)}</b><small>${esc(a.line)}</small></span><span class="aw-who">${a.ids.map(id => av(id, 26)).join('')}<b>${a.ids.map(id => esc(nm(id))).join(' & ')}</b><span class="mono">+${a.n}</span></span></div>`).join('')}
-    ${j.smBonus ? `<div class="award-row sm" style="animation-delay:${.4 + j.bonus.length*.9}s"><span class="aw-star">👨‍🚀</span><span class="grow"><b>Spaceman’s Bonus</b><small>For every hostage taken and every bribe accepted</small></span><span class="aw-who"><span class="mono">+${j.smBonus}</span></span></div>` : ''}</section>`;
+    ${j.smBonus ? `<div class="award-row sm" style="animation-delay:${.4 + j.bonus.length*.9}s"><span class="aw-star">${av('sm',30)}</span><span class="grow"><b>Spaceman’s Bonus</b><small>For every hostage taken and every bribe accepted</small></span><span class="aw-who"><span class="mono">+${j.smBonus}</span></span></div>` : ''}</section>`;
 }
 /* Secrets revealed: who took Spaceman's bribe */
 function secretsHTML(j){
@@ -5332,13 +5673,14 @@ function secretsHTML(j){
 /* Crew vs Spaceman result. Older journeys without Spaceman data skip it. */
 function vsResultHTML(j){
   if (j.sm === undefined) return '';
-  const best = j.best, bestPts = best ? j.scores[best] : 0, nm = id => id === ME.id ? ME.full : PEOPLE[id].full;
-  return `<section class="vs-result ${j.smWon ? 'lost' : 'won'}">${j.smWon ? '' : sparks(10)}
-    <span class="vs-emo" aria-hidden="true">${j.smWon ? '👨‍🚀' : '🏆'}</span>
-    <h2 class="display">${j.smWon ? 'Spaceman Retains Control' : 'The crew has taken control'}</h2>
-    <p class="muted">${j.smWon ? 'The crew failed to seize command.' : 'Spaceman has been beaten. For now.'}</p>
-    <div class="vs-final"><span><small>Crew total</small><b class="t-num">${j.crewTotal}</b></span><span class="vs-x">VS</span><span><small>👨‍🚀 Spaceman</small><b class="t-num">${j.sm}</b></span></div>
-    ${best ? `<p class="small">${j.smWon ? `Best of the crew: ${esc(nm(best))}, ${bestPts} vs Spaceman’s ${j.sm}.` : `${esc(nm(best))} finished ${bestPts - j.sm} ahead of Spaceman.`}</p>` : ''}
+  const crewWon = !j.smWon, best = j.best, bestPts = best ? j.scores[best] : 0, nm = id => id === ME.id ? ME.full : PEOPLE[id].full;
+  return `<section class="vs-result ${crewWon ? 'won' : 'lost'}">${crewWon ? sparks(10) : ''}
+    <span class="vs-emo" aria-hidden="true">${crewWon ? '🏆' : av('sm',60)}</span>
+    <h2 class="display">${crewWon ? 'The crew has taken control' : 'Spaceman Retains Control'}</h2>
+    <p class="muted">${crewWon ? 'Spaceman has been beaten. For now.' : 'The crew failed to seize command.'}</p>
+    <div class="vs-final"><span><small>Crew total</small><b class="t-num">${j.crewTotal}</b></span><span class="vs-x">VS</span><span><small>${av('sm',14)}Spaceman</small><b class="t-num">${j.sm}</b></span></div>
+    ${j.held ? `<p class="small muted">Spaceman’s total includes ${j.held.n} from ${esc(nm(j.held.who))}, still captive at the finish.</p>` : ''}
+    ${crewWon && best ? `<div class="crown">${av(best,40)}<span><small>🏆 Journey Spaceman</small><b>${esc(nm(best))}</b><i>${bestPts} credits, the highest of any player</i></span></div>` : best ? `<p class="small">Best of the crew: ${esc(nm(best))} with ${bestPts}.</p>` : ''}
     ${j.hostages ? `<p class="small muted">Spaceman took ${j.hostages} hostage${j.hostages > 1 ? 's' : ''}. The crew rescued ${j.rescues || 'none'}.</p>` : ''}
     <div class="sm-say">${av('sm',28)}<span>${esc((j.smWon ? ['Same time next journey. I’ll be waiting.','Control retained. As predicted. By me.','Better luck next time, crew. You’ll need it.','I’d say it was close. It wasn’t.'] : ['Fine. You win. This time.','Enjoy it. I’m already planning the rematch.','Congratulations. I hate it.','I let you win. Obviously. Obviously I did.'])[(j.sm + (j.crewTotal || 0)) % 4])}</span></div>
   </section>`;
@@ -5544,7 +5886,7 @@ document.addEventListener('click', e => {
   if (d.seat){ launchCfg().seat = d.seat; document.querySelectorAll('[data-seat]').forEach(b => b.setAttribute('aria-pressed', b.dataset.seat === d.seat)); persist(); return; }
   if (d.live){ if (!t.disabled) liveAct(d.live); return; }
   if (d.txto){ S.tx.to = d.txto; document.querySelectorAll('[data-txto]').forEach(b => b.setAttribute('aria-pressed', b.dataset.txto === d.txto)); return; }
-  if (d.txwhen){ S.tx.when = d.txwhen; document.querySelectorAll('[data-txwhen]').forEach(b => b.setAttribute('aria-pressed', b.dataset.txwhen === d.txwhen)); return; }
+  if (d.txwhen){ S.tx.when = d.txwhen; document.querySelectorAll('[data-txwhen]').forEach(b => b.setAttribute('aria-pressed', b.dataset.txwhen === d.txwhen)); const c = $('.tx-custom'); if (c){ c.hidden = d.txwhen !== 'custom'; if (!c.hidden) $('#tx-min')?.focus(); } return; }
   if (d.txidea){ const a = $('#tx-text'); if (a) a.value = d.txidea; setText('tx-err',''); return; }
   if (d.rate){ const [jid, k, n] = d.rate.split('|'); return setRating(jid, k, +n); }
   if (d.cap){ const L = launchCfg(); L.captain = d.cap; L.seat = d.cap === ME.id ? 'driver' : 'passenger'; document.querySelectorAll('[data-cap]').forEach(b => b.setAttribute('aria-pressed', b.dataset.cap === d.cap));

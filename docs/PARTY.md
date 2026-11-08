@@ -39,11 +39,22 @@
 | **Last Five Turns** | 🏁 **Final Approach** (mission menu, when you're nearly there) | Last place spins a roulette: double credits until the end · four Bonus Awards instead of three · everyone but the leader +5 · Spaceman loses half its credits · Chance Time right now. |
 | **Bonus Stars** | ⭐ **Bonus Awards** (end of mission) | Three random awards from eight (Game Star, Unlucky Star, Hero, Spaceman's Favourite, High Roller, Master Thief, On Fire, Late Surge), +6 each, ties share. **Revealed one by one before the result**, and they decide it. Spaceman gets its own bonus too (+8 for every hostage it took and every bribe accepted). |
 | **The room reacting** | 😂 😱 👏 🔥 **Reactions** | Tap on any game result. Emojis float up on every phone. Three 😂 on a result makes it a "funny moment" Commander Atlas will bring up later. |
-| **Bowser** | 👨‍🚀 **Spaceman** (already) | Hijacks, audits, road tax and roasts. v1.2 adds surges that double Spaceman too. |
+| **Bowser** | **Spaceman** (already) | Hijacks, audits, road tax and roasts. v1.2 adds surges that double Spaceman too. |
 
 Already in place from v1.1 and kept: milestones every 10 miles (the closest thing to "landing on a space"), bounties, power surges, underdog signals, hostages and rescues, Seat Challenges, 28 Captain decisions with gambles.
 
 **Prototype note:** the bribe is private on screen only. In the current host-authoritative prototype every phone receives the full mission state, so a determined player with developer tools could see who was offered it. A production build should send private events only to their recipient.
+
+## v1.3 additions (Phase 11)
+
+| Board moment | Spaceman, in real time |
+|---|---|
+| **Comeback rules for the villain** (Bowser getting stronger late on) | **Spaceman Fury**: when the crew total runs more than 1.2× ahead, everything Spaceman earns counts ×2.2 and the banner turns red. Spaceman is never out of it, so it wins about one mission in five. |
+| **Boo stealing Stars** | Hostages now *move* credits: the captive's credits leave the crew total and count for Spaceman until they're freed. |
+| **Team rescue minigames** | The **rescue fund**: anyone can give 2, 5 or 10 credits. `15 / 30` → `30 / 30 ✅` and the captive walks free. Everyone who chipped in finds a power-up. |
+| **Landing on a space** | 22 milestone outcomes instead of 8: lottery, tailwind, fuel leak, barrage, Shields for all, Afterburners, pickpocket, locker raid, supply pod, bonus event, Seat Challenge, Mission Promotion, rescue discount, Spaceman claiming the marker… never the same twice in a row. |
+| **Item spaces** | Power-ups also come from winning a game (30%), winning a duel, rescuing a captive and refusing a bribe. |
+| **The sofa** | Tap your own avatar for a tray of 10 emotes that float over your avatar on every phone. The breather shows the crew in a little pixel ship, chatting. |
 
 ## What we deliberately did *not* copy
 

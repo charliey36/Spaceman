@@ -2,6 +2,32 @@
 
 **Question:** with equally skilled, equally engaged players, does the Captain (driver), the Co-Pilot or a Crew member have a built-in advantage in becoming Journey Spaceman?
 
+**v1.3 update (Phase 11: crew total vs Spaceman):** the mission is now decided by the **crew total against Spaceman's total**, with a captive's credits counting for Spaceman (`SPACEMAN.md`). Under that rule v1.2's Spaceman was far too weak: it won **0–19%** of missions in Real Journey Mode and almost never with 5–6 players, because the crew total grows with every extra player and Spaceman's income didn't.
+
+What changed: everything Spaceman earns is multiplied by crew size (`PT.smScale`: ×1.7 for 3, ×2.1 for 4, ×2.2 for 5–6; ×0.85 of that in Simulation Mode), the old ×4/n damping on wrong guesses was removed, and **Spaceman Fury** (×2.2 while the crew total is more than 1.2× Spaceman's + 10) keeps long missions from running away. New milestones were balanced with Spaceman outcomes (claim, barrage, raid). The Captain's +1 now lands on their 1st, 3rd, 5th… game won, for crews of up to 6.
+
+Real Journey Mode, Balanced pacing, 400 simulated missions per cell (noise about ±4 points):
+
+| Crew | 30 min | 60 min | 90 min |
+|---|---|---|---|
+| 3 players | 23% | 22% | 18% |
+| 4 players | 22% | 26% | 18% |
+| 5 players | 26% | 27% | 21% |
+| 6 players | 29% | 18% | 15% |
+
+**Spaceman wins 15–29% of missions, 22% on average; the crew wins the other 78%.** Simulation Mode (45 min, 300 per row): 25% / 25% / 21% / 21% for 3–6 players. Relaxed and Chaotic pacing (4 players, 60 min): 23% and 22%.
+
+Who becomes Journey Spaceman, 60 minutes (share of all missions; fair share = crew win rate ÷ players):
+
+| Crew | Captain | Fair | Final Co-Pilot | Everyone else, each |
+|---|---|---|---|---|
+| 3 | 21% | 26% | 29% | 28% |
+| 4 | 16% | 19% | 25% | 17% |
+| 5 | 17% | 15% | 17% | 13% |
+| 6 | 14% | 14% | 22% | 12% |
+
+The Captain is at a fair share from 5 players and a few points under with 3–4 (watch in real play); the seat-holding Co-Pilot keeps its deliberate small edge. Hostages: 0.2–0.8 a mission depending on length. Re-run with `tools/balance-sim.js`.
+
 **v1.2 update (party mechanics and Commander Atlas):** Chance Time, Duels, Spaceman's bribe, Alliances, hot streaks, Final Approach and end-of-mission Bonus Awards add swing late in a mission (`PARTY.md`). Real Journey Mode, 60 minutes, Final Approach used 12 minutes before the end, about 150 missions per row (noise about ±5 points):
 
 | Crew | Spaceman wins | Bonus Awards change the top crew member | Captain is the best crew member (fair share) |
@@ -149,7 +175,7 @@ The allowance only matters in Quickfire Trivia. Every other challenge either has
 | Asteroid Field | Direct hit −6 to −8 · Strike −3 to −5 · Near miss: no damage |
 | Supply Drop / Solar Flare | +3 to +8 / +2 to +5 |
 | Captain decisions | Minor +2 to +4 · Major +5 to +10 · Dents −3 to −6 |
-| Lucky Roll / Point Thief | +2 to +6 / steals 2–5 |
+| Lucky Roll / Credit Thief | the roll, 1–5 (6 = Co-Pilot promotion) / steals 2–5 |
 
 **Deduction safety (unchanged).** The engine never shows "−0":
 

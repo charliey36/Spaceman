@@ -49,9 +49,9 @@ Research: king-of-the-hill and possession games stay exciting when (1) the holde
 
 Role moments get their own slot in the event queue, next to one event and one voice moment between two challenges, and still with at least 10 real seconds between events.
 
-**🎲 Lucky Roll** (v0.8)
-- The power-up rolls a real die: a roll of 1–5 gives +2 to +6 points as before.
-- A **6** gives +6 *and* promotes the roller to Co-Pilot. The roller sees a dice animation straight away, and everyone else sees a "🎲 Lucky Roll · 🛰 New Co-Pilot" reveal once the current game ends.
+**🎲 Lucky Roll** (v1.3)
+- The power-up rolls a real die and the roll is the prize: 1 pays 1, 2 pays 2 … 5 pays 5, never doubled or skimmed.
+- A **6** promotes the roller to Co-Pilot (the Captain, or a Co-Pilot who already holds the seat, gets +5 instead). The roller sees a dice animation straight away, and everyone else sees a "🎲 Lucky Roll · 🛰 New Co-Pilot" reveal once the current game ends.
 - The Captain can't leave the driver's seat, and a Co-Pilot who rolls a 6 just keeps the seat.
 
 ## Keeping it fair

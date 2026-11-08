@@ -1,6 +1,6 @@
-# Crew vs Spaceman (v1.1)
+# Crew vs Spaceman (v1.3)
 
-Every mission now has one more player: **👨‍🚀 Spaceman**, the mission's own AI. Players compete with each other *and* against Spaceman.
+Every mission now has one more player: **Spaceman** (the astronaut with the gold visor and one red eye), the mission's own AI. Players compete with each other *and* against Spaceman.
 
 | Who | What they are |
 |---|---|
@@ -8,6 +8,31 @@ Every mission now has one more player: **👨‍🚀 Spaceman**, the mission's o
 | Co-Pilot | Taps things in for the Captain. Small perks. |
 | Crew | Everyone else. |
 | **Spaceman** | The opponent. Has credits, sits on the leaderboard, can win or lose. |
+
+## v1.3 changes (Phase 11)
+
+**Winning is the crew total against Spaceman.** v1.2 still compared the *best single player* with Spaceman, so a crew could finish 284 to 248 and be told "Spaceman Retains Control". Now:
+
+| At the end | Result |
+|---|---|
+| Crew total > Spaceman's total | 🏆 **The crew has taken control.** The highest-scoring free player is crowned **Journey Spaceman** (ties broken at random). |
+| Otherwise | **Spaceman Retains Control.** The recap still names the crew's best player. |
+
+`Engine.crewWins(S)` decides the result; `Engine.winner(S)` returns the Journey Spaceman, or `null` when Spaceman wins.
+
+**Hostages move credits.** A captured player's credits leave the crew total and count for Spaceman while they're held (crew 100, Megan 40, Spaceman 50 → crew 60, Spaceman 90). The hijack card says so in one line ("Crew −40 · Megan's credits → Spaceman +40"), the VS banner shows the new totals, and Spaceman's chip shows "+40 held". When the captive is freed their credits come back.
+
+**Rescue fund.** Anyone except the captive can give 2, 5 or 10 credits towards a rescue target (30, rising 10 with every ransom, to 70). The card shows `15 / 30`, then `30 / 30 ✅` and the captive walks free. The biggest donor gets +2 and everyone who chipped in finds a power-up.
+
+**Spaceman reacts.** Capturing someone triggers one of 20 spoken lines ("Megan has joined my side. Frankly, she seems more competent than the rest of you."), then Commander Atlas replies. Roasts grew from 98 to 180 lines, with new pools for capture, the Co-Pilot, the whole crew and Spaceman Fury, and sharper last-place, leaderboard and failure lines. Discussion prompts grew from 54 to 94: debates, hypotheticals, ridiculous situations and social questions built to start stories.
+
+**Spaceman is one against the whole crew**, so everything it earns is multiplied by crew size (×1.7 with 3 players up to ×2.2 with 5 or 6; ×0.85 of that in Simulation Mode). **Spaceman Fury**: while the crew total is more than 1.2× Spaceman's (+10), its gains count ×2.2 on top. The banner turns red ("Fury ×2.2") and Spaceman says so. This is the board-game catch-up rule pointed at the opponent: it stays threatening all mission and wins about one mission in five.
+
+**Milestones** now draw from 22 outcomes (up from 8), never the same one twice in a row: credits (jackpot, lottery, tailwind), losses (fuel leak, Spaceman barrage, road tax), power-ups (supply run, supply pod, pickpocket), power-up theft (locker raid), Shields for everyone, Afterburners (double next win for the bottom half), Overdrive, Spaceman claiming the marker, a bonus event, a Seat Challenge, a Mission Promotion, a rescue mission, a rescue discount, a bounty or a hijack.
+
+**More power-ups.** A game's outright winner finds one 30% of the time, a duel winner always does, rescuers do, and refusing Spaceman's bribe now earns a Shield.
+
+**The Spaceman Bluff** has 52 facts, 26 true and 26 false. The new true ones sound made up and the new false ones sound right, and each mission deals true and false evenly, never three of the same in a row.
 
 ## v1.2 additions
 
@@ -94,9 +119,9 @@ Captain decisions now number 28, most with a gamble (a chance of a big win or a 
 
 Balanced now allows two events between games (Chaotic three). In Real Journey Mode, a simulated hour with 4 players has about 17 games, 6 Captain decisions, 6 cosmic events, 3 milestones, 1.3 hostage situations and 2.5 Seat Challenges. Surprises that wait too long in the queue are dropped, so nothing stale ever fires.
 
-## Balance (v1.1)
+## Balance (v1.1, historical; v1.3 numbers are in `BALANCE.md`)
 
-Spaceman now retains control in **35–47%** of missions (Real Journey Mode, 60 minutes, 150 simulated missions per row): 3 players 38%, 4 players 35%, 5 players 39%, 6 players 47%. It's a real opponent that the crew beats more often than not. To stop bigger crews simply handing Spaceman more wrong guesses, the per-wrong-guess payment now scales with crew size (full value up to 4 players, ×4/n above that).
+Spaceman then retained control in **35–47%** of missions (Real Journey Mode, 60 minutes, 150 simulated missions per row): 3 players 38%, 4 players 35%, 5 players 39%, 6 players 47%. It's a real opponent that the crew beats more often than not. To stop bigger crews simply handing Spaceman more wrong guesses, the per-wrong-guess payment now scales with crew size (full value up to 4 players, ×4/n above that).
 
 In Simulation Mode (time compressed, so fewer games fit between events) the rate is 24–59%, rising with crew size and mission length; treat those numbers as a stress test, not the real experience.
 
@@ -104,16 +129,16 @@ In Simulation Mode (time compressed, so fewer games fit between events) the rate
 
 At the end of the mission:
 
-- **A player finishes above everyone else AND above Spaceman** → 🏆 **Journey Spaceman**. The recap says *"The crew has taken control of the mission."*
-- **Otherwise** → 👨‍🚀 **Spaceman Retains Control**. *"The crew failed to seize command."* Nobody is crowned. The recap still names the best crew member and how far behind Spaceman they finished.
+- **The crew total beats Spaceman's total** → *"The crew has taken control of the mission."* The best free player becomes 🏆 **Journey Spaceman**.
+- **Otherwise** → **Spaceman Retains Control**. *"The crew failed to seize command."* Nobody is crowned. The recap still names the best crew member.
 
-`Engine.winner(S)` returns the winner only if they beat `S.sm`. `Engine.topCrew(S)` always returns the best crew member (used for the recap and balance tools).
+(v1.3. Before that, the best single player had to beat Spaceman, which produced wrong results. See "v1.3 changes" above.) `Engine.crewWins(S)` decides it, `Engine.winner(S)` returns the Journey Spaceman, `Engine.topCrew(S)` always returns the best crew member.
 
 ## Always on screen
 
 - **The VS banner** sits under the mission header for the whole mission: **Crew total** vs **Spaceman**, with one line underneath: "Megan leads Spaceman by 5", "Spaceman leads you by 3" or "level". Tap it to see Spaceman's log.
 - **The leaderboard** includes Spaceman as a chip, slotted in by score.
-- **Every game's results card** shows "👨‍🚀 Spaceman +N this game" when Spaceman scored during it.
+- **Every game's results card** shows "Spaceman +N this game" when Spaceman scored during it.
 - **Asteroid rows** show the part Spaceman kept ("Spaceman +3").
 
 ## How Spaceman earns (never at random)

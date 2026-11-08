@@ -65,6 +65,10 @@ All major events go through one queue in the engine: challenges, spot challenges
 - Between two challenges there is at most one event and one voice moment (two events if they're piling up). Waiting items gain priority over time, and stale chat prompts are dropped.
 - During a Silent Mission only passive events (cosmic events, power-up drops) can play. Discussion prompts, Captain questions and transmissions wait.
 
+### Local state belongs to a seat (v1.3)
+
+Another player's answer must never reset this phone. Shared state reaches the screen as HTML, and `morph()` patches the live DOM to match it, so text fields, focus, the caret and selections are never replaced. What a seat is in the middle of (a typed draft, a chosen Risk It stake, a "who saw it first?" picker, a dismissed card) is stored per seat (`loc()`), so in the prototype it also survives switching phones and back. Validated with every game: bots submitting around a half-typed answer leave the text, focus and stake untouched.
+
 ## Production design
 
 ### Authority
