@@ -13,7 +13,7 @@
 | **Moods** | Each line is spoken with a baseline: *smug* for Spaceman's roasts and verdicts (×0.94 rate, ×0.9 pitch), *host* for Mission Control and readings (brighter), *neutral* otherwise. |
 | **Emphasis** | Words written in capitals (JACKPOT, EXACT) are spoken on their own, slower and higher, after a short beat. |
 | **Natural drift** | Each phrase gets a tiny random pitch change (±3%), so long lines don't sound flat. The first phrase starts slightly slower. Questions lift at the end, exclamations speed up. |
-| **Radio processing** | A squelch and tone open the channel. A faint band-limited hiss with the odd crackle runs under the voice and fades out with a click. (Browsers can't filter `speechSynthesis` itself, so the radio feel is built around the voice, never on top of it.) |
+| **Radio processing** | One short squelch and tone (about 0.3 s) open the channel; nothing plays under or after the voice. Phase 13 removed the looping hiss bed: it ran for the whole of every spoken line (round intros included) and, when a browser stalled the speech queue, kept going through the round as a wind-like noise. (Browsers can't filter `speechSynthesis` itself, so the radio feel is built around the voice, never on top of it.) |
 | **Voice choice** | Natural/Neural/Online voices first, then Premium/Enhanced, with a preference for a British male voice for Spaceman where one exists. |
 | **Openers** | Spaceman varies how it starts ("Ahem.", "Right.", "Hello, crew.", "This is Spaceman.") so it never opens the same way twice in a row. |
 
