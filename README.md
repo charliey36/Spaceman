@@ -43,3 +43,10 @@ Places where real functionality will plug in later (GPS, Spotify, voice, sharing
 | `docs/AUDIO.md`, `docs/VOICE.md` | Sound and voice plans |
 | `docs/SPOTIFY.md` | Phase 12 Spotify integration: PKCE sign-in, Share Spotify Data, music commentary, Aux King, and the Developer Policy switches |
 | `docs/GAME-DESIGN-ROADMAP.md` | Long-term direction for the games |
+
+
+## Phase 14
+
+- `docs/CLOUD.md`: cross-device accounts (Supabase) and shared config.
+- `docs/ELEVENLABS.md`: proxy mode (`worker/`), voice roles, and the "response blocked" cause.
+- `docs/SPOTIFY.md`: real-only Spotify and listening-together limits.

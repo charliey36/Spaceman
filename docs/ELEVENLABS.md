@@ -112,3 +112,24 @@ Settings → Voice shows ElevenLabs's own answer: **HTTP status, error code, err
 A real Test Voice run returned **HTTP 402 `paid_plan_required`: "Free users cannot use library voices via the API."** for voice `21m00Tcm4TlvDq8ikWAM` (Rachel). That proved the key, the network and the endpoint all worked; the only problem was the voice. Rachel is a Voice Library voice, and library voices need a paid plan through the API. (That ID was also the example in earlier docs and the field placeholder, which was misleading. Both are replaced.)
 
 Use a voice from **your own account** instead: ElevenLabs → Voices → *My Voices* → ⋯ → *Copy voice ID*. The Voice settings sheet also has **Fill in free British voices**, which enters George (`JBFqnCBsd6RMkjVDRZzb`, warm British male, suits Atlas) and Daniel (`onwK4e9ZLuTAKqWW03F9`, deeper British male, suits Spaceman). They are premade voices, which Free accounts can use. If Test Voice says "Voice Not Found", copy a voice ID from My Voices instead.
+
+## v1.8 (Phase 14): proxy mode and the "response blocked" cause
+
+**Root cause.** "Request failed (response blocked)" means the browser refused to hand the response (or the request) to the page. The app can only see this as a generic `TypeError`. Real causes, in the order we found them:
+1. The page's own Content-Security-Policy forbids `connect-src` to `api.elevenlabs.io`. This is the case inside a claude.ai artifact frame. It is not fixable from inside the artifact.
+2. A browser/network layer between the phone and ElevenLabs (VPN, content blocker, school or work network) drops cross-origin calls to `api.elevenlabs.io`.
+3. Missing or wrong CORS preflight handling, which only happens on a custom proxy.
+
+ElevenLabs itself does allow browser calls (the earlier 402 `paid_plan_required` came from its servers, so the path works from GitHub Pages). Direct browser calls also mean the key sits in every phone, so the app now supports a proxy.
+
+**Proxy architecture:** App → Cloudflare Worker (`worker/elevenlabs-proxy.js`) → ElevenLabs → audio back. The Worker holds `ELEVENLABS_API_KEY`, only forwards TTS and read-only account paths, caps text at 600 characters and allows only listed origins. The page then talks to one origin you control.
+
+**Set up (about 5 minutes):**
+1. `cd worker && npm i -g wrangler && wrangler login`
+2. `wrangler secret put ELEVENLABS_API_KEY` (paste your key)
+3. `wrangler deploy`, then copy the `https://spaceman-elevenlabs-proxy.<you>.workers.dev` URL.
+4. Put it in `config.json` as `"elevenLabsBase"` and push. Every device now uses the proxy with no key and no setup.
+
+In proxy mode the key field is not needed, ElevenLabs is on by default, and test diagnostics run through the proxy too (`/health` on the Worker confirms it is up).
+
+**Voices.** Atlas = Daniel (`onwK4e9ZLuTAKqWW03F9`, calm, authoritative British male). Spaceman = Callum (`N2lVS1w4EtoT3dr4eOWO`, gravelly, theatrical), run slower, less stable and more stylised so it sounds menacing. Both are free premade voices on `eleven_multilingual_v2`, with automatic fallback to Flash/Turbo. Override with `"voices": {"atlas": "…", "sm": "…"}` in `config.json`. These IDs are from memory, so use **Test Voice** to confirm they exist on your account.

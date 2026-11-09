@@ -1,0 +1,5 @@
+name = "spaceman-elevenlabs-proxy"
+main = "elevenlabs-proxy.js"
+compatibility_date = "2025-01-01"
+[vars]
+ALLOWED_ORIGINS = "https://charliey36.github.io"

@@ -542,6 +542,10 @@ html.mission #app{display:none}
 .card.mem-song{padding:16px 18px}
 .awards-line{display:flex;gap:8px;flex-wrap:wrap}
 .award-chip{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px 0 5px;border-radius:999px;background:rgba(242,183,102,.10);border:1px solid rgba(242,183,102,.28);color:var(--flare);font-size:13px;font-weight:500;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.sel-box{position:absolute;top:10px;left:10px;z-index:2;width:24px;height:24px;border-radius:50%;border:2px solid var(--fg-3);background:rgba(8,10,18,.7);display:grid;place-items:center;color:var(--void)}
+.sel.mem-row,.sel.mem-feature{outline:2px solid var(--ion)}.sel .sel-box{background:var(--ion);border-color:var(--ion)}
+.mem-row,.mem-feature{position:relative}
+.sel-bar{position:sticky;bottom:8px;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;border-radius:var(--r-lg);background:var(--surface-2);border:1px solid var(--line)}
 .mem-row{display:grid;grid-template-columns:88px minmax(0,1fr);gap:14px;width:100%;text-align:left;padding:10px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
 .sheet .mem-row{background:var(--surface-2)}
 .mem-thumb{position:relative;display:block;border-radius:14px;overflow:hidden;aspect-ratio:1;max-width:100%;background:radial-gradient(circle,rgba(214,224,255,.07) 1px,rgba(0,0,0,0) 1.3px) 0 0/10px 10px,radial-gradient(100% 100% at 100% 0%,hsl(var(--h) 70% 55% / .28),rgba(0,0,0,0) 70%),#08090D}
@@ -808,6 +812,7 @@ button.ms-card:hover .ms-ic{transform:scale(1.08) rotate(-6deg)}
 .tx-actions{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:6px}
 .verdicts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;width:100%}
 .verdicts .btn{padding:0 6px;font-size:14px;height:52px}
+.tx-send-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .tx-targets{display:flex;flex-wrap:wrap;gap:8px}
 .tx-targets .chip{height:42px;padding:0 14px 0 9px;font-size:14px;cursor:pointer;gap:8px}
 .tx-targets .chip[aria-pressed="true"]{background:var(--fg);color:var(--void);border-color:var(--fg)}
@@ -1379,7 +1384,7 @@ button.opt:active{transform:scale(.96);border-color:var(--ion)}
 .px-stars::before,.px-stars::after{content:'';position:absolute;inset:0;background:inherit;transform:translateX(220px)}
 .px-stars::after{transform:translateX(440px)}
 @keyframes pxStars{from{transform:translateX(0)}to{transform:translateX(-220px)}}
-.ship{position:absolute;left:50%;top:56%;width:min(84%,340px);aspect-ratio:40/16;transform:translate(-50%,-50%);animation:shipBob 3.4s ease-in-out infinite}
+.ship{position:absolute;left:56%;top:62%;width:min(68%,270px);aspect-ratio:40/16;transform:translate(-50%,-50%);animation:shipBob 3.4s ease-in-out infinite}
 .ship svg{display:block;width:100%;height:100%;image-rendering:pixelated}
 @keyframes shipBob{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 6px))}}
 .fl{animation:flick .36s steps(1) infinite}.fl.f2{animation-delay:.18s;opacity:0}
@@ -1391,9 +1396,12 @@ button.opt:active{transform:scale(.96);border-color:var(--ion)}
 .bub b{font-weight:700;color:#3A4A86}
 .bub::after{content:'';position:absolute;left:calc(var(--f,.5)*100%);top:100%;width:6px;height:6px;margin-left:-3px;background:#E9EDF5}
 @keyframes bubLife{0%{opacity:0;transform:translate(calc(var(--f,.5)*-100%),6px)}8%{opacity:1;transform:translate(calc(var(--f,.5)*-100%),0)}85%{opacity:1}100%{opacity:0}}
-.sm-chase{position:absolute;right:7%;top:12%;opacity:.85;animation:smChase 7s ease-in-out infinite}
-@keyframes smChase{0%,100%{transform:translate(0,0)}50%{transform:translate(-14px,8px)}}
-@media (prefers-reduced-motion:reduce){.px-stars,.ship,.fl,.sm-chase,.bub{animation:none!important}.fl.f2{opacity:0}}
+.sm-ship{position:absolute;left:5%;top:9%;width:24%;aspect-ratio:30/13;opacity:.9;animation:smFollow 9s ease-in-out infinite}
+.sm-ship svg{display:block;width:100%;height:100%;image-rendering:pixelated}
+.sm-pilot{position:absolute;left:46%;top:26%;width:20%;aspect-ratio:1;overflow:hidden;border-radius:2px;box-shadow:0 0 0 1px #FF4D6D}
+.sm-pilot .av{--s:100%!important;width:100%;height:100%}
+@keyframes smFollow{0%,100%{transform:translate(0,0)}50%{transform:translate(14px,5px)}}
+@media (prefers-reduced-motion:reduce){.px-stars,.ship,.fl,.sm-ship,.bub{animation:none!important}.fl.f2{opacity:0}}
 
 .ae{position:absolute;left:50%;bottom:62%;transform:translateX(-50%);font-size:24px;line-height:1;font-style:normal;pointer-events:none;z-index:8;filter:drop-shadow(0 2px 6px rgba(0,0,0,.6));animation:aeFade 4.5s ease-out forwards}
 @keyframes aeFade{0%{opacity:0;transform:translate(-50%,8px) scale(.6)}8%{opacity:1;transform:translate(-50%,0) scale(1.15)}16%{transform:translate(-50%,0) scale(1)}75%{opacity:1;transform:translate(-50%,-4px)}100%{opacity:0;transform:translate(-50%,-12px)}}
@@ -1920,7 +1928,11 @@ function loadDB(){
   catch { storageOk = false; }
   DB.aliases = DB.aliases || {};
 }
-function persist(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(DB)); } catch { storageOk = false; } }
+let _cloudHash = '';
+function persist(){
+  try { const u = DB.session && DB.users[DB.session];
+    if (u){ const {lastSeen, updatedAt, ...rest} = u, h = JSON.stringify(rest); if (h !== _cloudHash){ _cloudHash = h; u.updatedAt = Date.now(); if (typeof Cloud !== 'undefined') Cloud.dirty(); } }
+    localStorage.setItem(STORE_KEY, JSON.stringify(DB)); } catch { storageOk = false; } }
 function nameFromEmail(e){
   let t = (String(e).split('@')[0] || '').split(/[._\-+\d]+/).find(Boolean) || '';
   t = t.replace(/[^\p{L}]/gu, '');
@@ -1950,7 +1962,7 @@ function normalize(u){
   Object.keys(base).forEach(k => { if (!AV[k][u.avatar[k]]) u.avatar[k] = base[k]; });
   u.totalMiles ||= 0; u.journeyCount ||= 0; u.xp ||= 0;
   u.settings = {notif:true,location:true,share:false,haptics:true,hc:false,spotifyShare:false, ...(u.settings || {})};
-  u.spotify = {on:false, demo:false, demoCrew:true, status:'off', err:'', profile:null, at:0, ...(u.spotify || {})};      /* names and artwork links only; tokens live under their own key and are wiped on disconnect */
+  u.spotify = {on:false, demo:false, status:'off', err:'', profile:null, at:0, ...(u.spotify || {})}; if (u.spotify.demo) u.spotify = {on:false, demo:false, status:'off', err:'', profile:null, at:0};      /* the old simulated demo is gone: it never held a real account */      /* names and artwork links only; tokens live under their own key and are wiped on disconnect */
   u.friends.forEach(f => { f.mi ||= 0; f.j ||= 0; if (!isISO(f.first)) f.first = null; f.ms ||= {}; });
   u.journeys.forEach(j => { j.ch ||= []; j.crew ||= [u.id]; j.awards ||= []; j.songs ||= []; if (!j.dest && j.to) j.dest = j.to; if (String(j.id).startsWith('sj') && !j.captain) decorateSample(j, u); });
   if (!u.launch) u.launch = {crew:[...u.friends].sort((a,b) => b.mi - a.mi).slice(0,3).map(f => f.id), mode:'party', seat:'passenger', dest:'', lineup:[...VIBES.party.lineup]};
@@ -2115,6 +2127,81 @@ function claimMiles(code){
   persist(); hydrate(me);
   return {ok:true, ownerId:owner.id, owner:firstName(owner), mi:g.mi, j:g.j};
 }
+/* ---------- cloud accounts (Supabase: email one-time code + one Postgres row per account) ----------
+   Turned on by putting a Supabase URL and anon key in config.json (docs/CLOUD.md). Off by default: the app then
+   behaves exactly as before (this browser only). The anon key is public by design. Row Level Security makes every row
+   readable and writable only by its owner. Sync is last-write-wins on the account, with journeys, friends,
+   guests and achievements merged so nothing made on another device is lost. Deleted journeys leave tombstones. */
+const Cloud = {
+  KEY:'spaceman.cloud', timer:null, busy:false, state:'idle', at:0, err:'', hash:'',
+  conf(){ const c = (window.SPACEMAN_CONFIG || {}).supabase || {}; return c.url && c.anonKey ? {url:String(c.url).replace(/\/+$/, ''), key:String(c.anonKey)} : null; },
+  enabled(){ return !!this.conf(); },
+  sess(){ try { return JSON.parse(localStorage.getItem(this.KEY) || 'null'); } catch { return null; } },
+  setSess(s){ try { s ? localStorage.setItem(this.KEY, JSON.stringify(s)) : localStorage.removeItem(this.KEY); } catch {} },
+  has(email){ const s = this.sess(); return !!(s && s.email === email && s.refresh); },
+  async raw(path, o = {}){
+    const c = this.conf(); if (!c) throw new Error('Cloud sync isn’t set up.');
+    const h = {apikey:c.key, 'Content-Type':'application/json', ...(o.headers || {})}; if (o.token) h.Authorization = 'Bearer ' + o.token;
+    let r; try { r = await fetch(c.url + path, {method:o.method || 'GET', headers:h, body:o.body ? JSON.stringify(o.body) : undefined, keepalive:!!o.keepalive}); } catch { throw new Error('Can’t reach the sync server. Check your connection.'); }
+    let j = null; try { j = await r.json(); } catch {} if (!r.ok) { const m = j && (j.msg || j.message || j.error_description || j.error) || `Server said ${r.status}`; const e = new Error(m); e.status = r.status; throw e; } return j;
+  },
+  async token(){
+    const s = this.sess(); if (!s) throw new Error('Not signed in to cloud sync.');
+    if (s.expires > Date.now() + 60000) return s;
+    const j = await this.raw('/auth/v1/token?grant_type=refresh_token', {method:'POST', body:{refresh_token:s.refresh}}).catch(e => { if (e.status === 400 || e.status === 401) this.setSess(null); throw e; });
+    const n = {...s, access:j.access_token, refresh:j.refresh_token || s.refresh, expires:Date.now() + (j.expires_in || 3600)*1000}; this.setSess(n); return n;
+  },
+  async sendCode(email){ await this.raw('/auth/v1/otp', {method:'POST', body:{email, create_user:true}}); },
+  async verify(email, code){
+    const j = await this.raw('/auth/v1/verify', {method:'POST', body:{type:'email', email, token:String(code).replace(/\s+/g, '')}});
+    if (!j || !j.access_token || !j.user) throw new Error('That code didn’t work. Ask for a new one.');
+    this.setSess({email, uid:j.user.id, access:j.access_token, refresh:j.refresh_token, expires:Date.now() + (j.expires_in || 3600)*1000});
+  },
+  /* what gets stored: the whole account object */
+  snap(u){ return JSON.parse(JSON.stringify(u)); },
+  async pull(){ const s = await this.token(); const rows = await this.raw(`/rest/v1/accounts?user_id=eq.${encodeURIComponent(s.uid)}&select=data,updated_at`, {token:s.access}); return rows && rows[0] ? rows[0].data : null; },
+  async push(u, keepalive){ const s = await this.token(); const body = [{user_id:s.uid, email:u.email, data:this.snap(u), updated_at:new Date().toISOString()}];
+    await this.raw('/rest/v1/accounts?on_conflict=user_id', {method:'POST', token:s.access, headers:{Prefer:'resolution=merge-duplicates,return=minimal'}, body, keepalive}); },
+  merge(l, r){
+    if (!r) return l; if (!l) return r;
+    if (l.id !== r.id) l = JSON.parse(JSON.stringify(l).split(l.id).join(r.id));            /* the cloud account's id is the real one */
+    const rNew = (r.updatedAt || 0) >= (l.updatedAt || 0), a = rNew ? r : l, b = rNew ? l : r, out = JSON.parse(JSON.stringify(a));
+    const dead = new Set([...(l.deleted || []), ...(r.deleted || [])]); out.deleted = [...dead].slice(-500);
+    const union = (x, y, key = 'id') => { const m = new Map(); [...(y || []), ...(x || [])].forEach(i => m.set(i[key], i)); return [...m.values()]; };
+    const had = new Set((a.journeys || []).map(j => j.id)), extra = (b.journeys || []).filter(j => !had.has(j.id) && !dead.has(j.id));
+    out.journeys = union(a.journeys, b.journeys).filter(j => !dead.has(j.id)).sort((x, y) => (y.date + (y.start || '')).localeCompare(x.date + (x.start || '')));
+    out.journeyCount = (a.journeyCount || 0) + extra.length; out.totalMiles = (a.totalMiles || 0) + extra.reduce((n, j) => n + (j.mi || 0), 0); out.xp = Math.max(a.xp || 0, b.xp || 0);
+    const fm = new Map(); [...(b.friends || []), ...(a.friends || [])].forEach(f => { const o = fm.get(f.id); if (!o || (f.mi || 0) >= (o.mi || 0)) fm.set(f.id, f); }); out.friends = [...fm.values()];
+    out.guests = union(a.guests, b.guests); out.achievements = union(a.achievements, b.achievements);
+    out.updatedAt = Math.max(a.updatedAt || 0, b.updatedAt || 0); return out;
+  },
+  /* sign-in: pull the account that belongs to this email into this device */
+  async adopt(email){
+    const remote = await this.pull(); if (!remote) return false;
+    const local = DB.users[email]; DB.users[email] = this.merge(local && local.sample === undefined ? local : local, remote); return true;
+  },
+  dirty(){ if (!this.enabled() || !DB.session || !this.has(DB.session)) return; clearTimeout(this.timer); this.state = 'pending'; this.timer = setTimeout(() => this.flush(), 3000); },
+  async flush(keepalive){
+    clearTimeout(this.timer); const u = cur(); if (!u || !this.has(u.email) || this.busy) return false; this.busy = true; this.state = 'syncing';
+    try { await this.push(u, keepalive); this.state = 'ok'; this.at = Date.now(); this.err = ''; return true; }
+    catch (e) { this.state = 'error'; this.err = e.message; return false; } finally { this.busy = false; this.paint(); }
+  },
+  /* pull + merge + push; called on open, on coming back to the tab, and from the button */
+  async sync(quiet){
+    const u = cur(); if (!u || !this.enabled() || !this.has(u.email) || this.busy) return;
+    this.busy = true; this.state = 'syncing'; this.paint();
+    try {
+      const remote = await this.pull(), merged = this.merge(u, remote), changed = JSON.stringify(merged) !== JSON.stringify(u);
+      if (changed){ DB.users[u.email] = merged; DB.session = u.email; try { localStorage.setItem(STORE_KEY, JSON.stringify(DB)); } catch {} hydrate(merged); if (!LJ && !appEl.hidden && !sheet.classList.contains('open')) refresh(); }
+      await this.push(DB.users[u.email]); this.state = 'ok'; this.at = Date.now(); this.err = ''; if (!quiet) toast(changed ? 'Synced. Updates from another device are in.' : 'Everything is up to date.');
+    } catch (e) { this.state = 'error'; this.err = e.message; if (!quiet) toast('Sync failed: ' + e.message); } finally { this.busy = false; this.paint(); }
+  },
+  label(){ return !this.enabled() ? ['Not set up', 'Accounts stay on this device. See docs/CLOUD.md to turn on sync.'] : !cur() || !this.has(cur().email) ? ['Signed out', 'Log in with your email to sync.']
+    : this.state === 'syncing' ? ['Syncing…', ''] : this.state === 'error' ? ['Sync problem', this.err] : this.state === 'pending' ? ['Saving…', 'Changes sync in a moment.'] : ['Synced', this.at ? `Last sync ${agoText(this.at)}` : 'Up to date']; },
+  paint(){ const n = document.getElementById('cloud-sub'); if (n){ const l = this.label(); n.textContent = l[1] ? `${l[0]} · ${l[1]}` : l[0]; } },
+  row(){ if (!this.enabled()) return ''; const l = this.label(); return `<button class="row" data-action="cloud-sync"><span class="ic-tile">${ic('swap')}</span><span class="grow"><b>Cloud sync</b><span id="cloud-sub">${esc(l[1] ? `${l[0]} · ${l[1]}` : l[0])}</span></span><span class="chip">Sync now</span></button>`; }
+};
+document.addEventListener('visibilitychange', () => { if (document.hidden){ if (Cloud.timer) Cloud.flush(true); } else if (Cloud.enabled() && Date.now() - Cloud.at > 30000) Cloud.sync(true); });
 function authenticate(raw){
   const email = raw.trim().toLowerCase(); let u = DB.users[email], created = false;
   if (!u){ u = DB.users[email] = newUser(email); created = true; }
@@ -2196,7 +2283,7 @@ const rankFor = mi => mi < 100 ? 'Cadet' : mi < 1000 ? 'Road tripper' : mi < 500
 const awardChip = a => `<span class="award-chip">${av(a.who,22)}${esc(whoName(a.who))} · ${AWARDS[a.id].name}</span>`;
 function memFeature(j){
   const aw = (j.awards || []).slice(0,2), song = journeySong(j);
-  return `<button class="mem-feature press" data-mem="${j.id}" style="--h:${jHue(j.id)}">
+  return `<button class="mem-feature press${memSel && memSel.has(j.id) ? ' sel' : ''}" data-mem="${j.id}" style="--h:${jHue(j.id)}">${selMark(j)}
     <span class="art">${routeSvg(j.id,340,170)}<span class="chip tag">${dShort(j.date)}</span></span>
     <span class="body">
       <span class="mem-title">${esc(jTitle(j))}</span>
@@ -2206,7 +2293,7 @@ function memFeature(j){
       <span class="mem-song">${ic('music',15)}<span>${song ? `${esc(song[0])} · ${esc(song[1])}` : 'No music shared'}</span></span>
     </span></button>`;
 }
-const memRow = j => { const a = (j.awards || [])[0]; return `<button class="mem-row press" data-mem="${j.id}" style="--h:${jHue(j.id)}">
+const memRow = j => { const a = (j.awards || [])[0]; return `<button class="mem-row press${memSel && memSel.has(j.id) ? ' sel' : ''}" data-mem="${j.id}" style="--h:${jHue(j.id)}">${selMark(j)}
   <span class="mem-thumb">${routeSvg(j.id,120,120)}</span>
   <span class="txt"><b>${esc(jTitle(j))}</b><span class="meta">${dShort(j.date)} · ${fmt(j.mi)} mi · ${dur(j.min)}</span>
   <span class="row-crew">${avs(j.crew,24)}${j.spaceman ? `<span class="aw-mini">${av(j.spaceman,16)}🏆 ${esc(whoName(j.spaceman))} · Journey Spaceman</span>` : j.smWon ? `<span class="aw-mini sm">${av('sm',16)}Spaceman kept control</span>` : a ? `<span class="aw-mini">${ic(AWARDS[a.id].ic,13)}${esc(whoName(a.who))} · ${AWARDS[a.id].name}</span>` : ''}</span></span></button>`; };
@@ -2369,8 +2456,17 @@ function vGo(){
 }
 
 /* ---------- views: Memories ---------- */
+/* ---- manage journey history: delete one, select several, clear all. Friendship levels, achievements and XP already earned are kept. ---- */
+let memSel = null;
+const selMark = j => memSel ? `<span class="sel-box" aria-hidden="true">${memSel.has(j.id) ? ic('check',16,3) : ''}</span>` : '';
+function deleteJourneys(ids){
+  const u = cur(), gone = u.journeys.filter(j => ids.includes(j.id)); if (!gone.length) return 0;
+  u.journeys = u.journeys.filter(j => !ids.includes(j.id)); u.deleted = [...(u.deleted || []), ...ids].slice(-500);
+  u.journeyCount = Math.max(0, (u.journeyCount || 0) - gone.length); u.totalMiles = Math.max(0, (u.totalMiles || 0) - gone.reduce((a, j) => a + (j.mi || 0), 0));
+  persist(); hydrate(u); return gone.length;
+}
 function vMemories(){
-  const head = `<header class="page-h"><div class="row"><h1 class="display t-title">Memories</h1></div><p class="muted">${JOURNEYS.length ? `${plural(ME.journeys,'journey')}. ${fmt(ME.miles)} miles of stories.` : 'Your scrapbook of every journey with friends.'}</p></header>`;
+  const head = `<header class="page-h"><div class="row"><h1 class="display t-title">Memories</h1>${JOURNEYS.length ? `<button class="btn btn-ghost" data-action="mem-select" style="margin-left:auto">${memSel ? 'Done' : 'Select'}</button>` : ''}</div><p class="muted">${JOURNEYS.length ? `${plural(ME.journeys,'journey')}. ${fmt(ME.miles)} miles of stories.` : 'Your scrapbook of every journey with friends.'}</p></header>`;
   if (!JOURNEYS.length) return head + emptyCard('photo','No memories yet','Every legendary road trip starts with someone saying “I’ll drive”.',`<div class="btn-row"><button class="btn btn-primary" data-action="start">${ic('rocket',20)}Start mission</button>${sampleBtn}</div>`);
   const [first, ...rest] = JOURNEYS; let last = '', out = '';
   rest.forEach(j => { const m = dMonth(j.date); if (m !== last){ out += `<h2 class="month-h">${m}</h2>`; last = m; } out += memRow(j); });
@@ -2378,7 +2474,9 @@ function vMemories(){
   return `${head}
   <section class="stack-v"><span class="eyebrow ion">Latest</span>${memFeature(first)}</section>
   ${rest.length ? `<section class="stack-v">${out}</section>` : ''}
-  ${older > 0 ? `<p class="small" style="text-align:center;color:var(--fg-3)">Plus ${plural(older,'older journey')}. FUTURE: paged from the journeys API.</p>` : ''}`;
+  ${older > 0 ? `<p class="small" style="text-align:center;color:var(--fg-3)">Plus ${plural(older,'older journey')} not shown here.</p>` : ''}
+  ${memSel ? `<div class="sel-bar" role="toolbar" aria-label="Selected journeys"><button class="btn btn-ghost" data-action="mem-all">${memSel.size === JOURNEYS.length ? 'Select none' : 'Select all'}</button><button class="btn btn-primary" data-action="mem-del" ${memSel.size ? '' : 'disabled'}><b>${memSel.size ? `Delete ${memSel.size}` : 'Delete'}</b></button></div>`
+    : `<button class="btn btn-ghost btn-block" data-action="mem-clear" style="color:var(--danger)"><b>Clear journey history</b></button>`}`;
 }
 
 /* ---------- views: You ---------- */
@@ -2456,8 +2554,9 @@ function vYou(){
     <div class="list">
       <button class="row" data-action="profile"><span class="ic-tile">${ic('pencil')}</span><span class="grow"><b>Edit profile</b><span>Display name and Spaceman avatar</span></span><span class="chev">${ic('chevR',18)}</span></button>
       <div class="row"><span class="ic-tile">${ic('mail')}</span><span class="grow"><b>${esc(ME.email)}</b><span>Signed in on this device</span></span></div>
-      <button class="row" data-action="switch"><span class="ic-tile">${ic('swap')}</span><span class="grow"><b>Switch account</b><span>${plural(Object.keys(DB.users).length,'account')} on this device</span></span><span class="chev">${ic('chevR',18)}</span></button>
+      <button class="row" data-action="switch"><span class="ic-tile">${ic('swap')}</span><span class="grow"><b>Log out</b><span>Your journeys, friends and settings stay saved to ${esc(ME.email)}</span></span><span class="chev">${ic('chevR',18)}</span></button>
     </div></section>
+  ${Cloud.enabled() ? `<section><div class="list">${Cloud.row()}</div></section>` : ''}
   ${musicSectionHTML()}
   <section>${secH('Settings')}
     <div class="list">
@@ -2466,6 +2565,7 @@ function vYou(){
       ${sw('share','Share journeys with friends','Friends see your route and stats')}
       ${sw('hc','Daylight contrast','Brighter text and borders for sunny cars')}
       ${sw('haptics','Haptics')}
+      ${spConnectRow()}
       <div class="row"><span class="grow"><b>Units</b></span><span class="muted">Miles</span></div>
     </div></section>
   <section>${secH('Prototype tools')}
@@ -2768,7 +2868,8 @@ function memorySheet(id){
     ${musicRecapHTML(j)}
     ${challengesHTML(j)}
     ${logHTML(j)}
-    ${storyHTML(j)}`);
+    ${storyHTML(j)}
+    <button class="btn btn-ghost btn-block" data-action="mem-del-one" data-id="${j.id}" style="color:var(--danger)"><b>Delete this journey</b></button>`);
 }
 function achSheet(id){
   const a = ACH.find(x => x.id === id); if (!a) return;
@@ -3473,27 +3574,299 @@ const BLUFF = [
   {s:'Albert Einstein failed maths at school.', t:false, n:'He was excellent at it. The myth won’t die.'},
   {s:'Vikings wore horned helmets into battle.', t:false, n:'No evidence at all. Horns came from 19th-century opera costumes.'},
   {s:'Glass is made mostly from salt.', t:false, n:'It’s mostly sand: silica.'},
-  {s:'The Atlantic is the biggest ocean on Earth.', t:false, n:'The Pacific is bigger than all the land on Earth put together.'}
+  {s:'The Atlantic is the biggest ocean on Earth.', t:false, n:'The Pacific is bigger than all the land on Earth put together.'},
+  {s:'Penguins have no wings.', t:false, n:'They have flippers, which are wings.'},
+  {s:'Dogs can’t see any colour at all.', t:false, n:'They see blues and yellows, just not reds and greens.'},
+  {s:'The Moon has a thick atmosphere with clouds.', t:false, n:'It has almost none.'},
+  {s:'Neptune takes about 165 Earth years to orbit the Sun.', t:true, n:'It hasn’t completed many laps since it was discovered.'},
+  {s:'The London Underground opened in 1863.', t:true, n:'The first underground railway in the world.'},
+  {s:'Eating carrots gives you night vision.', t:false, n:'A wartime myth.'},
+  {s:'Elephants are afraid of mice.', t:false, n:'That’s a cartoon myth. Bees are what bother them.'},
+  {s:'Cheddar cheese originates from a village in Somerset.', t:true, n:'The village is called Cheddar.'},
+  {s:'Sloths can take a week or more to digest a meal.', t:true, n:'Slow in every way.'},
+  {s:'The first video on YouTube was a cat video.', t:false, n:'An elephant at the zoo.'},
+  {s:'The Sun makes up about half the mass of the solar system.', t:false, n:'Much more. About 99.8%.'},
+  {s:'Britain skipped 11 days in 1752.', t:true, n:'The switch to the Gregorian calendar.'},
+  {s:'UK banknotes are printed on cotton paper.', t:false, n:'They’re polymer now.'},
+  {s:'Nokia began as a paper mill.', t:true, n:'It later made rubber boots.'},
+  {s:'Shrek was made by Pixar.', t:false, n:'DreamWorks.'},
+  {s:'A mantis shrimp is a type of mantis.', t:false, n:'It’s a crustacean.'},
+  {s:'Only the tip of your tongue can taste sweet things.', t:false, n:'The map is a myth. Every area can.'},
+  {s:'The Titanic sank on its maiden voyage.', t:true, n:'In 1912, heading to New York.'},
+  {s:'Antarctica has a small native human population.', t:false, n:'Nobody is native there.'},
+  {s:'It’s impossible to sneeze with your eyes open.', t:false, n:'You can. People just blink by reflex.'},
+  {s:'A year on Mercury lasts 88 Earth days.', t:true, n:'It’s fast and close to the Sun.'},
+  {s:'Some turtles can breathe through their rear end.', t:true, n:'It’s called cloacal respiration.'},
+  {s:'You have roughly as many bacteria in your body as human cells.', t:true, n:'Recent estimates say about one to one.'},
+  {s:'The Great Fire of London started in a bakery on Pudding Lane.', t:true, n:'1666.'},
+  {s:'A mantis shrimp’s punch can crack aquarium glass.', t:true, n:'It’s one of the fastest strikes in nature.'},
+  {s:'Sitting too close to the TV permanently ruins your eyes.', t:false, n:'Also a myth. Might give you a headache.'},
+  {s:'A mosquito is drawn to the carbon dioxide you breathe out.', t:true, n:'They can smell it from a long way off.'},
+  {s:'A wasp dies after stinging.', t:false, n:'Only honeybees lose their stinger and die.'},
+  {s:'Banksy was born in New York.', t:false, n:'Believed to be from Bristol.'},
+  {s:'Pigs can’t swim.', t:false, n:'They swim well.'},
+  {s:'Blue whales mostly eat krill.', t:true, n:'Tonnes of it a day.'},
+  {s:'A day on Mars lasts about 10 hours.', t:false, n:'About 24 hours and 37 minutes.'},
+  {s:'Buzz Aldrin was the first person on the Moon.', t:false, n:'Neil Armstrong was first. Buzz followed minutes later.'},
+  {s:'Shaving makes hair grow back thicker and darker.', t:false, n:'It’s a myth. The blunt tip just feels stubbly.'},
+  {s:'Istanbul sits on two continents.', t:true, n:'Europe and Asia, split by the Bosphorus.'},
+  {s:'Darth Vader never says ‘Luke, I am your father’.', t:true, n:'He says ‘No, I am your father’.'},
+  {s:'Pizza as we know it comes from Naples.', t:true, n:'The margherita was named after a queen.'},
+  {s:'An ostrich’s eye is bigger than its brain.', t:true, n:'About 5 cm across.'},
+  {s:'The Sun makes up about 99.8% of the mass of our solar system.', t:true, n:'Everything else is a rounding error.'},
+  {s:'Fortune cookies were popularised in California.', t:true, n:'They’re not a Chinese tradition.'},
+  {s:'Lake Hillier in Australia is naturally bright blue.', t:false, n:'It’s pink.'},
+  {s:'A cow has four separate stomachs.', t:false, n:'One stomach with four chambers.'},
+  {s:'Penguins have knees.', t:true, n:'They’re hidden inside their bodies.'},
+  {s:'Friends is set in Los Angeles.', t:false, n:'New York.'},
+  {s:'The Moon has volcanoes erupting today.', t:false, n:'None known to be active.'},
+  {s:'The first video on YouTube is 19 seconds long.', t:true, n:'‘Me at the zoo.’'},
+  {s:'The first World Cup was held in Uruguay.', t:true, n:'1930.'},
+  {s:'Iceland is part of Denmark.', t:false, n:'Independent since 1944.'},
+  {s:'Humans share about 60% of their DNA with chimpanzees.', t:false, n:'It’s closer to 98 or 99%.'},
+  {s:'Astronauts get shorter in space.', t:false, n:'They stretch, not shrink.'},
+  {s:'Cracking your knuckles doesn’t cause arthritis.', t:true, n:'Studies haven’t found a link.'},
+  {s:'J is the only letter missing from US state names.', t:false, n:'Q is. J is in New Jersey.'},
+  {s:'Pluto is still officially a planet.', t:false, n:'It’s been a dwarf planet since 2006.'},
+  {s:'Jellyfish have a brain.', t:false, n:'They have a net of nerves but no brain at all.'},
+  {s:'Wi-Fi stands for Wireless Fidelity.', t:false, n:'It stands for nothing.'},
+  {s:'The first computer mouse was made of titanium.', t:false, n:'A wooden shell.'},
+  {s:'The Earth isn’t a perfect sphere.', t:true, n:'It bulges at the equator.'},
+  {s:'The first iPhone launched in 2007.', t:true, n:'June.'},
+  {s:'Africa has more countries than any other continent.', t:true, n:'54 of them.'},
+  {s:'Australia is narrower than the Moon.', t:false, n:'It’s about 4,000 km wide. The Moon’s about 3,474 km.'},
+  {s:'Horses can’t be sick.', t:true, n:'A one-way valve at the stomach stops it.'},
+  {s:'A tomato is botanically a fruit.', t:true, n:'It grows from the flower’s ovary.'},
+  {s:'Only male mosquitoes bite.', t:false, n:'It’s the females. They need blood for their eggs.'},
+  {s:'Luigi was created before Mario.', t:false, n:'Mario first.'},
+  {s:'Dark roast has far more caffeine than light roast.', t:false, n:'About the same.'},
+  {s:'The longest bone in the body is the humerus.', t:false, n:'The femur, in your thigh.'},
+  {s:'A shrimp’s heart is in its head region.', t:true, n:'The head and chest are fused.'},
+  {s:'Most of your body weight is bacteria.', t:false, n:'They weigh only around 200 grams.'},
+  {s:'A strawberry has about 200 seeds on its outside.', t:true, n:'Technically the seeds are the fruits.'},
+  {s:'Cracking your knuckles gives you arthritis.', t:false, n:'No evidence it does.'},
+  {s:'Death Valley is the lowest point on land.', t:false, n:'The Dead Sea shore is lower.'},
+  {s:'A group of hedgehogs is called a pride.', t:false, n:'Prides are lions. Hedgehogs are an array.'},
+  {s:'There’s a lake in Australia that’s naturally pink.', t:true, n:'Lake Hillier.'},
+  {s:'A turtle can leave its shell.', t:false, n:'The shell is part of its skeleton.'},
+  {s:'Fewer than 1,000 languages are spoken in the world.', t:false, n:'More than 7,000.'},
+  {s:'Dolphins sleep with half their brain awake.', t:true, n:'One half rests at a time so they can keep breathing.'},
+  {s:'Wild sloths sleep about 20 hours a day.', t:false, n:'Closer to 10 hours in the wild. Zoo sloths sleep more.'},
+  {s:'The Statue of Liberty was a gift from Britain.', t:false, n:'From France, to the USA.'},
+  {s:'A chameleon’s tongue is shorter than its body.', t:false, n:'It can be one and a half to two times its body length.'},
+  {s:'Mario was originally a carpenter.', t:true, n:'In Donkey Kong. The plumbing came later.'},
+  {s:'The Romans had a numeral for zero.', t:false, n:'They didn’t.'},
+  {s:'Thunder travels faster than lightning.', t:false, n:'Light is far faster than sound.'},
+  {s:'Dogs sweat mainly through their paws.', t:true, n:'They cool down by panting.'},
+  {s:'Vatican City is the smallest country in the world.', t:true, n:'It’s about a fifth of a square mile.'},
+  {s:'Skin is the largest organ in the human body.', t:true, n:'It covers about two square metres.'},
+  {s:'Bluetooth is named after a Swedish king.', t:false, n:'Harald was Danish.'},
+  {s:'Fireflies make light with almost no heat.', t:true, n:'It’s called cold light.'},
+  {s:'Britain skipped a whole week in 1052.', t:false, n:'It happened in 1752.'},
+  {s:'The Moon has quakes.', t:true, n:'Moonquakes can last for minutes.'},
+  {s:'Darts has been an Olympic sport.', t:false, n:'Never has.'},
+  {s:'Sharks have a skeleton made of bone.', t:false, n:'Cartilage.'},
+  {s:'Canada is named after a river.', t:false, n:'It comes from a word meaning ‘village’.'},
+  {s:'Footprints on the Moon could last millions of years.', t:true, n:'There’s no wind or rain to erase them.'},
+  {s:'Q is the only letter that doesn’t appear in any US state name.', t:true, n:'Check them all.'},
+  {s:'The Titanic sank on its way back from New York.', t:false, n:'It sank heading to New York on its first trip.'},
+  {s:'Shaving doesn’t make hair grow back thicker.', t:true, n:'It just feels coarse on the blunt tip.'},
+  {s:'Cold air is lighter than hot air.', t:false, n:'Hot air is lighter, so it rises.'},
+  {s:'Hummingbirds can fly backwards.', t:true, n:'Their wing joints let them rotate the wing.'},
+  {s:'Russia spans 11 time zones.', t:true, n:'Sunrise to sunset takes ages.'},
+  {s:'Dark chocolate is safer for dogs than milk chocolate.', t:false, n:'Dark is more dangerous.'},
+  {s:'Fingernails grow faster than toenails.', t:true, n:'Several times faster.'},
+  {s:'The dot over a lowercase i is called a tittle.', t:true, n:'Yes, really.'},
+  {s:'The Berlin Wall fell in 1991.', t:false, n:'It fell in 1989. The USSR ended in 1991.'},
+  {s:'Light from the Sun takes about eight seconds to reach Earth.', t:false, n:'Eight minutes or so.'},
+  {s:'Roman numerals have no zero.', t:true, n:'The Romans had no symbol for it.'},
+  {s:'Ostriches can fly short distances.', t:false, n:'They’re flightless.'},
+  {s:'Wi-Fi uses radio waves.', t:true, n:'The same family as your car radio.'},
+  {s:'Honey bees communicate with a waggle dance.', t:true, n:'It points to the flowers.'},
+  {s:'Swallowed chewing gum stays in your stomach for seven years.', t:false, n:'It leaves in a few days.'},
+  {s:'Peanuts grow on trees.', t:false, n:'They develop in the soil.'},
+  {s:'Frozen is based on Cinderella.', t:false, n:'It’s loosely based on The Snow Queen.'},
+  {s:'Mickey Mouse was nearly named Mortimer.', t:true, n:'His wife had other ideas.'},
+  {s:'Wi-Fi doesn’t stand for anything.', t:true, n:'It’s a made-up brand name.'},
+  {s:'An owl can rotate its head a full 360 degrees.', t:false, n:'About 270 degrees.'},
+  {s:'The Mpemba effect (hot water freezing faster than cold) is still debated by scientists.', t:true, n:'It doesn’t happen reliably.'},
+  {s:'The first email was sent in 1991.', t:false, n:'1971.'},
+  {s:'Sharks don’t have bones.', t:true, n:'Their skeletons are cartilage.'},
+  {s:'Bluetooth is named after a Viking king.', t:true, n:'Harald Bluetooth.'},
+  {s:'Hot air rises because it’s less dense than cold air.', t:true, n:'Why balloons work.'},
+  {s:'Peanuts grow underground.', t:true, n:'They’re legumes, not nuts.'},
+  {s:'Nintendo began as a phone company.', t:false, n:'It started in 1889 making playing cards.'},
+  {s:'Elephants are afraid of bees.', t:true, n:'Farmers use beehive fences to keep them off crops.'},
+  {s:'Tetris was created in the Soviet Union.', t:true, n:'By Alexey Pajitnov.'},
+  {s:'Pepsi was invented in France.', t:false, n:'It was created in North Carolina.'},
+  {s:'Cats can’t taste sweetness.', t:true, n:'They lack the receptor for it.'},
+  {s:'An owl can’t move its eyes in its head.', t:true, n:'Their eyes are fixed tubes, so they turn their whole neck.'},
+  {s:'You can estimate how far away a storm is by counting between lightning and thunder.', t:true, n:'About three seconds per kilometre.'},
+  {s:'Apples float because they’re about 25% air.', t:true, n:'Hence bobbing for them.'},
+  {s:'Wimbledon is played on grass.', t:true, n:'With a strict all-white dress code.'},
+  {s:'The Eiffel Tower was built for the 1900 Paris Expo.', t:false, n:'It was built for the 1889 one.'},
+  {s:'Humans share about 60% of their genes with bananas.', t:true, n:'Roughly 60% of our genes have a banana equivalent. Same basic plumbing.'},
+  {s:'Hippos can’t swim.', t:true, n:'They walk or bounce along the bottom of the river.'},
+  {s:'Amazon started as a bookshop.', t:true, n:'Jeff Bezos launched it in 1994.'},
+  {s:'A marathon is 26.2 miles because of a royal request at the 1908 Olympics.', t:true, n:'The start was moved to the royal nursery at Windsor.'},
+  {s:'Starfish have no brain.', t:true, n:'Just a ring of nerves and an arm for every opinion.'},
+  {s:'Polar bear fur is white because of white pigment.', t:false, n:'The hairs are clear and hollow, and scatter light.'},
+  {s:'The capital of Canada is Toronto.', t:false, n:'It’s Ottawa.'},
+  {s:'Potatoes originated in the Andes.', t:true, n:'Not Ireland.'},
+  {s:'Bananas grow pointing straight down.', t:false, n:'They grow upward in a bunch.'},
+  {s:'The point furthest from the Earth’s centre is Chimborazo, not Everest.', t:true, n:'The Earth bulges at the equator.'},
+  {s:'Crocodiles can’t stick their tongues out.', t:true, n:'The tongue is held in place by a membrane.'},
+  {s:'Jupiter’s Great Red Spot is a storm wider than Earth.', t:true, n:'It’s been spinning for centuries.'},
+  {s:'The Nile is the only river that flows north.', t:false, n:'Plenty of rivers flow north.'},
+  {s:'Hair and nails keep growing after you die.', t:false, n:'The skin dries and retracts, so they look longer.'},
+  {s:'Pigs can’t easily look straight up.', t:true, n:'The way their neck is built stops it.'},
+  {s:'In a primary rainbow, red is on the inside.', t:false, n:'Red is on the outside.'},
+  {s:'The pyramids at Giza were mostly built by paid workers.', t:true, n:'Archaeologists found their villages and bakeries.'},
+  {s:'Reading in dim light doesn’t permanently damage your eyes.', t:true, n:'It just tires them out.'},
+  {s:'Mature sunflowers keep following the sun all day.', t:false, n:'They settle facing east.'},
+  {s:'All parts of your tongue can taste all the main flavours.', t:true, n:'The ‘tongue map’ is a myth.'},
+  {s:'A garden snail can crawl at about 5 miles an hour.', t:false, n:'More like 1 mm a second. A brisk walk is about 3 mph.'},
+  {s:'Tetris was created by Nintendo.', t:false, n:'A Soviet engineer made it.'},
+  {s:'A ‘gross’ is 100.', t:false, n:'It’s 144.'},
+  {s:'A snail can sleep for up to three years.', t:true, n:'Some snails seal themselves up and sleep through droughts.'},
+  {s:'The point furthest from the Earth’s centre is Mount Everest.', t:false, n:'It’s Chimborazo in Ecuador.'},
+  {s:'Chocolate is toxic to dogs.', t:true, n:'The theobromine is the problem.'},
+  {s:'From a plane, a rainbow can be a full circle.', t:true, n:'The ground just usually cuts it in half.'},
+  {s:'Crocodiles can produce tears while they eat.', t:true, n:'So ‘crocodile tears’ is rooted in something real.'},
+  {s:'Octopus blood is blue.', t:true, n:'It uses copper to carry oxygen, not iron.'},
+  {s:'Apples sink in water.', t:false, n:'They float.'},
+  {s:'The Amazon rainforest produces 20% of the world’s oxygen.', t:false, n:'Not really: it uses most of what it makes.'},
+  {s:'The Romans invented the concept of zero as a number.', t:false, n:'They had no numeral for zero.'},
+  {s:'Brie originates from Italy.', t:false, n:'It’s from France.'},
+  {s:'The first modern Olympic Games were held in Athens.', t:true, n:'1896.'},
+  {s:'Young sunflowers track the sun across the sky.', t:true, n:'It’s called heliotropism.'},
+  {s:'Australia is wider than the Moon.', t:true, n:'About 4,000 km across, against the Moon’s 3,474 km.'},
+  {s:'The pyramids at Giza were built by slaves.', t:false, n:'The evidence points to paid, fed workers.'},
+  {s:'Shrek was made by DreamWorks.', t:true, n:'Not Pixar.'},
+  {s:'The dot over a lowercase i is called a pip.', t:false, n:'A tittle.'},
+  {s:'A blue whale’s heart is the size of a walnut.', t:false, n:'It’s about the size of a small car.'},
+  {s:'Greenland is part of the Kingdom of Denmark.', t:true, n:'It governs itself on most things.'},
+  {s:'Asia has more countries than any other continent.', t:false, n:'Africa has 54. Asia has fewer.'},
+  {s:'Henry VIII had all six of his wives beheaded.', t:false, n:'Only two were executed.'},
+  {s:'Wimbledon is played on clay.', t:false, n:'Grass.'},
+  {s:'The liver is the largest organ in the human body.', t:false, n:'It’s the largest internal organ. Skin is the largest overall.'},
+  {s:'Henry VIII had six wives.', t:true, n:'Divorced, beheaded, died, divorced, beheaded, survived.'},
+  {s:'Canada has more lakes than the rest of the world combined.', t:true, n:'Hundreds of thousands of them.'},
+  {s:'Antarctica has no native human population.', t:true, n:'Only researchers pass through.'},
+  {s:'Spiders have six legs.', t:false, n:'Eight.'},
+  {s:'The first iPhone launched in 2005.', t:false, n:'2007.'},
+  {s:'The Berlin Wall fell in 1989.', t:true, n:'November 9th.'},
+  {s:'The Dead Sea shore is the lowest point on land.', t:true, n:'Over 400 metres below sea level.'},
+  {s:'A giraffe has 14 neck bones.', t:false, n:'Seven, like almost every mammal.'},
+  {s:'US dollar bills are made of cotton and linen.', t:true, n:'Not paper.'},
+  {s:'A strawberry has no seeds.', t:false, n:'About 200 on the outside.'},
+  {s:'The Earth is a perfect sphere.', t:false, n:'It’s an oblate spheroid.'},
+  {s:'A group of crows is called a clutter.', t:false, n:'It’s a murder.'},
+  {s:'Moscow sits on two continents.', t:false, n:'Moscow is entirely in Europe.'},
+  {s:'A lobster’s heart is in its tail.', t:false, n:'It sits in the front section, not the tail.'},
+  {s:'Blue whales mostly eat fish.', t:false, n:'Krill.'},
+  {s:'Gentoo penguins give pebbles as gifts to a mate.', t:true, n:'The best pebble wins the romance.'},
+  {s:'Friends is set in New York City.', t:true, n:'Even though it was filmed in LA.'},
+  {s:'Blood in your veins is blue until air hits it.', t:false, n:'It’s always red. Less oxygen makes it darker.'},
+  {s:'A giraffe has seven neck bones, the same as a human.', t:true, n:'Each one is just enormous.'},
+  {s:'Rainforests produce a large share of the world’s biodiversity.', t:true, n:'Over half of land species.'},
+  {s:'A group of owls is called a parliament.', t:true, n:'Fitting, they’re always in session after dark.'},
+  {s:'Hot water always freezes faster than cold water.', t:false, n:'Not always. The science is disputed.'},
+  {s:'The Eiffel Tower was meant to be temporary.', t:true, n:'It was saved because it made a useful radio mast.'},
+  {s:'The smallest bone in the body is in your ear.', t:true, n:'The stapes, about 3 mm.'},
+  {s:'The word ‘quarantine’ comes from the Latin for ‘quiet’.', t:false, n:'Forty days.'},
+  {s:'Mars has rings.', t:false, n:'No. Saturn, Jupiter, Uranus and Neptune do.'},
+  {s:'Fortune cookies are a traditional Chinese dessert.', t:false, n:'Japanese-American origins.'},
+  {s:'The Great Fire of London started in a pub.', t:false, n:'A bakery on Pudding Lane.'},
+  {s:'A rainbow is always a half circle, however high you are.', t:false, n:'It’s a full circle. We just see the top part.'},
+  {s:'Neptune is closer to the Sun than Uranus.', t:false, n:'Uranus is closer. Neptune is the furthest planet.'},
+  {s:'The first computer mouse was made of wood.', t:true, n:'1964.'},
+  {s:'Mount Everest is entirely inside Nepal.', t:false, n:'The border runs across the summit.'},
+  {s:'The Romans used urine to clean clothes.', t:true, n:'Public toilets collected it for launderers.'},
+  {s:'Humphrey Bogart says ‘Play it again, Sam’ in Casablanca.', t:false, n:'The line is never said exactly that way.'},
+  {s:'Water is at its densest when it’s frozen.', t:false, n:'It’s densest around 4°C.'},
+  {s:'Light from the Sun takes about eight minutes to reach Earth.', t:true, n:'About 500 seconds.'},
+  {s:'Antibiotics cure the common cold.', t:false, n:'Colds are viruses. Antibiotics only work on bacteria.'},
+  {s:'Tea is the most drunk beverage in the world after water.', t:true, n:'Billions of cups a day.'},
+  {s:'Coffee is the most drunk beverage after water.', t:false, n:'Tea is.'},
+  {s:'Carrots used to be purple, yellow or white.', t:true, n:'Orange ones became the standard later.'},
+  {s:'White chocolate has cocoa butter but no cocoa solids.', t:true, n:'So some people say it isn’t real chocolate.'},
+  {s:'A group of ferrets is called a business.', t:true, n:'As in, ‘mind your own’.'},
+  {s:'Amazon started as a music store.', t:false, n:'Books.'},
+  {s:'Dark roast coffee doesn’t have more caffeine than light roast.', t:true, n:'The roast level barely changes it.'},
+  {s:'Polar bear skin is black.', t:true, n:'It helps absorb heat. The fur is see-through, not white.'},
+  {s:'The speed of light is about 300,000 km per second.', t:true, n:'Roughly 186,000 miles per second.'},
+  {s:'The Statue of Liberty was a gift from France.', t:true, n:'It arrived in pieces in 1885.'},
+  {s:'Wi-Fi uses infrared light.', t:false, n:'It uses radio waves.'},
+  {s:'Monaco is the smallest country in the world.', t:false, n:'Monaco is second. The Vatican is smaller.'},
+  {s:'Russia spans five time zones.', t:false, n:'It spans 11.'},
+  {s:'Ice floats because it’s less dense than liquid water.', t:true, n:'Water expands when it freezes.'},
+  {s:'Astronauts get taller in space.', t:true, n:'The spine decompresses without gravity. A few centimetres.'},
+  {s:'Honey bees communicate by buzzing in code.', t:false, n:'They dance.'},
+  {s:'Eagles can fly backwards.', t:false, n:'They can’t. Hummingbirds are the famous exception.'},
+  {s:'Elephants can’t swim.', t:false, n:'They swim well, using their trunks as snorkels.'},
+  {s:'Swallowed chewing gum doesn’t stay in your stomach for seven years.', t:true, n:'It passes through in days.'},
+  {s:'Ketchup was once sold as a medicine.', t:true, n:'In the 1830s.'},
+  {s:'Emperor penguins build nests out of pebbles.', t:false, n:'They balance one egg on their feet. Gentoos use pebbles.'},
+  {s:'Dolphins sleep with both eyes shut for eight hours a night.', t:false, n:'They shut down one half of the brain at a time.'},
+  {s:'Bananas grow pointing upwards.', t:true, n:'They curve toward the sun.'},
+  {s:'A day on Mars lasts about 24 hours and 37 minutes.', t:true, n:'Barely longer than ours.'},
+  {s:'Spiders aren’t insects.', t:true, n:'They have eight legs and two body segments.'},
+  {s:'Human blood is always red, even inside your veins.', t:true, n:'Veins look blue because of how light passes through skin.'},
+  {s:'Potatoes originated in Ireland.', t:false, n:'They come from South America.'},
+  {s:'The first email was sent in 1971.', t:true, n:'By Ray Tomlinson.'},
+  {s:'The London Underground opened in 1963.', t:false, n:'It opened a century earlier, in 1863.'},
+  {s:'Fireflies are a type of fly.', t:false, n:'They’re beetles.'},
+  {s:'Bees can learn to recognise human faces.', t:true, n:'Lab studies show they can.'},
+  {s:'Brazil is named after a tree.', t:true, n:'Brazilwood.'},
+  {s:'Crocodiles can’t blink.', t:false, n:'They have eyelids and a see-through third one.'},
+  {s:'Pizza was invented in Rome.', t:false, n:'Naples.'},
+  {s:'A marathon is exactly 26 miles.', t:false, n:'It’s 26.2.'},
+  {s:'You don’t catch a cold from being cold.', t:true, n:'Viruses give you colds. Being cold just correlates.'},
+  {s:'In a primary rainbow, red is on the outside.', t:true, n:'Violet is on the inside.'},
+  {s:'The word ‘quarantine’ comes from the Italian for ‘forty days’.', t:true, n:'Ships were held that long in Venice.'},
+  {s:'Dogs sweat all over like humans.', t:false, n:'Mostly through paws and by panting.'},
+  {s:'You can sneeze with your eyes open.', t:true, n:'It’s a myth that you can’t.'},
+  {s:'Sound is faster than light.', t:false, n:'Light is far faster.'},
+  {s:'A baker’s dozen is 13.', t:true, n:'Bakers added one to avoid shortchanging.'},
+  {s:'Mercury is the hottest planet.', t:false, n:'Venus is, thanks to its thick atmosphere.'},
+  {s:'The Nile flows north.', t:true, n:'Into the Mediterranean.'},
+  {s:'Yuri Gagarin was the first person in space.', t:true, n:'1961.'},
+  {s:'The first World Cup was held in England.', t:false, n:'Uruguay in 1930.'},
+  {s:'The first modern Olympic Games were held in Paris.', t:false, n:'Athens.'},
+  {s:'Banksy is a street artist with an unknown identity.', t:true, n:'Nobody has confirmed it.'},
+  {s:'Rhubarb is botanically a fruit.', t:false, n:'It’s a vegetable: the stalk.'},
+  {s:'A blue whale’s tongue can weigh as much as an elephant.', t:true, n:'Roughly.'},
+  {s:'Squid have green blood.', t:false, n:'Squid blood is blue too.'},
+  {s:'Milk chocolate contains no dairy.', t:false, n:'It’s named for the milk.'},
+  {s:'Mount Everest sits on the border of Nepal and Tibet.', t:true, n:'China and Nepal share the summit ridge.'},
+  {s:'More than 7,000 languages are spoken in the world.', t:true, n:'Many have a few thousand speakers.'},
+  {s:'Tug of war was once an Olympic sport.', t:true, n:'It was in the Games from 1900 to 1920.'},
+  {s:'Venus spins the opposite way to most planets.', t:true, n:'The Sun rises in the west there.'},
 ];
 /* Spaceman's voice. Playful, never toxic, never repeated within a mission. {n} player · {lead} leader · {sm} Spaceman's credits */
 const ROASTS = {
-  intelfail:['Perhaps introductions are in order.','Reminder: friendships are supposed to involve knowing things about each other.','Nobody knew that about {n}. Fascinating. Who are you people?','I learned more about {n} in ten seconds than this crew has in years.','I asked about {n} and got silence. Lovely road trip, everyone.','Do you all actually know each other, or did you meet at the services?','Note to self: {n} is a mystery to this entire car.','{n}, your friends need to pay more attention. I did.','You’ve known {n} for years and nobody got that? Brutal.','{n}, you might need new friends. I’m available.'],
-  bigloss:['{n} has now lost more credits than a cryptocurrency investor.','{n}, bold strategy. Let’s never do that again.','Thank you, {n}. Your credits have been safely transferred to me.','{n} is single-handedly funding my retirement.','{n}’s credits have left the vehicle.','{n}, I admire the confidence. I admire the credits more, now they’re mine.','Breaking news: {n} has discovered the downside of risk.','{n} gambled. I collected. Teamwork.','{n} just watched credits vanish faster than snacks at a services.','Breaking news: {n} has discovered gravity. The credits went down.'],
-  last:['{n} is playing the long game. Very long. Possibly never-ending.','Good news, {n}: from the bottom, every direction is up.','{n} has fewer credits than this car has cupholders.','I’ve studied {n}’s strategy. I’ve also seen a shopping trolley in a canal. Similar energy.','{n}, you’re not losing. You’re winning very, very slowly.','Spare a thought for {n}. Actually, spare them a credit.','If last place had a trophy, {n} would be polishing it.','{n} is the main reason I’m feeling confident.','{n} is currently treating the leaderboard like a sightseeing destination.','{n}, the bottom of the leaderboard is lovely this time of year.','Somebody check on {n}. Their credits have gone very quiet.','{n} is pacing themselves. For a different journey.','{n} is taking the scenic route through the leaderboard.','{n}, there’s still time. Not much. But some.','Spotted: {n}, at the bottom, waving.','{n} is pacing themselves. Very, very carefully.','{n} has {np} credits. I’ve seen parking meters with more.','{n} is playing the long game. Very long. Possibly endless.','Search party update: we still can’t find {n} on the leaderboard.'],
-  crewbad:['Another one for me. Thank you, crew. Truly generous.','That was less of a mission and more of a donation.','If losing was a sport, you’d finally be winning something.','I didn’t even need to cheat for that one.','Spectacular. Really. Spectacularly bad.','Mission Control would like that one wiped from the records.','I have reviewed the data and can confirm this crew shares exactly one collective brain cell.','I’ve seen smarter decisions from a satnav with no signal.','Another round to me. Please, do keep going like this.','Three rounds in a row. I’m starting to feel sorry for you. Starting.','Mission log: the crew tried their best. The crew’s best was not enough.','I’d like to thank the crew for their generous donations.','I’ve analysed your answers. I’ve also analysed my credit balance. Thank you.','If confidence were credits, you’d all be winning.','Three games in a row feeding Spaceman. You’re basically my staff now.','I’m starting to think you’re losing on purpose. Is this a kindness?'],
-  smwinning:['Leaderboard check: I’m comfortable. Very comfortable. Feet up.','{sm} credits. Not bragging. Just reading numbers out loud.','The crew total is looking a little… thin.','You’re all doing your best. That’s the sad part.','I’ve started drafting my victory speech. It’s mostly about me.','At this rate I’ll be naming the car.','Mission status update: I am carrying this entire operation.','Current standings: me, then a gap, then all of you.','I’d offer advice, but I’m enjoying winning too much.','{sm} credits and counting. Try to keep up.','Spaceman to crew: is this a road trip or a charity drive?','I’m not saying I’m the best player in this car. The leaderboard is.','Status report: still in charge. Snacks appreciated.','Just checking in from the top of the leaderboard. The view is great.','I’m {gap} ahead of {lead}. I’d say mind the gap, but you clearly can’t.','{mi} miles in and I’m winning. Shall we just call it?','If anyone needs me, I’ll be at the top of the leaderboard. As usual.'],
-  crewwinning:['The crew is ahead. Enjoy it. I’m warming up.','Fine, {lead}. Take the lead. I’ll take it back. Politely. Then not politely.','I’m not worried. This is my worried face. It looks the same.','Leaderboard update: {lead} is getting very confident. I’ve made a note.','Crew in front. Spaceman behind. Spaceman is plotting.','Please stop doing well. It’s unsettling.','{lead} is ahead of me. This is temporary.','Fine. {lead} is doing well. I’ve made a note of it. A permanent note.','Mission Control acknowledges {lead}’s lead. Mission Control is not happy about it.','{lead}, enjoy the view from the top. I’m coming for it.','{lead} thinks they’re winning. {lead} is correct. For now.','Interesting move, {lead}. Let’s see if it lasts until the next junction.','{lead}, enjoy the lead. I’ll be borrowing it shortly.','I see {lead} has been studying. Suspicious.','{lead} is {gap} ahead of me. Temporary. Like a sat nav’s confidence.','Enjoy the lead, {lead}. I know where you live. Well, where you’re going.'],
-  hijack:['Someone has opened my supply crate. I will remember this.','My credits. My crate. My feelings.','That crate was clearly labelled “Spaceman”. Clearly.','Who opened the crate? Nobody? Everybody? I see.','Those were my emergency credits. This is an emergency.'],
-  fixok:['Corrective action successful. I hate that it worked.','Teamwork. Disgusting. Well done.','The crew agreed on something and it was right. Historic.','Fine. That one’s yours. Enjoy it.','Corrective action complete. I’m filing a complaint with myself.'],
-  banter:['Mile {mi}. Still nobody has offered Spaceman a snack. Noted.','Minute {min}. I’ve done the maths, and you’re all in trouble.','Fun fact: I can hear every word you say about me. Keep going.','Is it just me, or does {p} look nervous?','Somebody in this car is about to make a terrible decision. I can feel it.','Captain {c}, eyes on the road. I’ll keep my eyes on your credits.','Spaceman here. {mi} miles done, {sm} credits in my pocket, and a very good feeling about it.','I’ve been analysing your faces. Well, your answers. Same thing really.','Fun fact: I’ve never lost a road trip. I’ve also never been on one. Still counts.','Somebody in this car just thought about quitting. I could hear it.','I’ve calculated your chances of beating me. I won’t share the number. It’s small.','Message to {lead}: the higher you climb, the more I enjoy the fall.','I’ve put a little something aside for the next milestone. Something nasty.','Hello from orbit. Everything is fine. Nothing is planned. Absolutely nothing.','Spaceman’s rule of the road: never trust a crew that says “I’ve got a good feeling”.','Atlas thinks he’s in charge. Adorable.'],
-  rescued:['A rescue. In my mission. I’m reporting this.','The crew worked together. Please don’t make a habit of it.','Rescue successful. I already have my eye on someone else.'],
-  rescuefail:['{n} is still mine. Anyone else want to join them?','That rescue had the energy of a sleepy sloth.','Your rescue attempt has been logged as “a cry for help”.'],
-  captive:['{hj} has asked me to tell you they’re fine. I made them say it.','Minute {min}. {hj} has started calling me sir.','{hj} is teaching me a card game. I’m winning. Obviously.','I’ve given {hj} a little badge. It says “property of Spaceman”.','Still no rescue. {hj} has taken up knitting.','Reminder: {hj}’s credits still count for me. Take your time.','{hj} wants to know if anyone has noticed they’re gone.','The crew’s rescue plan appears to be “hope”. Bold.','Quick update from the brig. {hj} has eaten all my biscuits.','{hj} is still with me. Every credit they win, I keep half. Lovely arrangement.','Crew, it’s been a while. Do you actually want {hj} back?','{hj} has started calling me Captain. I could get used to this.','Day one of {hj}’s captivity. They’ve already rearranged my playlists.'],
-  fury:['Right. That’s it. I’m angry now. Everything I win counts extra.','You’ve made me cross. You won’t like me when I’m cross.','Fury mode engaged. I did warn you.','Oh, you think you’re winning? Adorable. Watch this.','I’m not losing. I’m building suspense.','Spaceman Fury. Look it up. Actually, don’t. Just panic.'],
-  captured:['{n} has joined my side. Frankly, {n} seems more competent than the rest of you.','I’ve borrowed {n}. Try not to lose anyone else.','Reminder: hostages are expensive. {n} is very expensive.','{n} is with me now. So are their {np} credits. Funny how that works.','Don’t worry about {n}. I’ve given them a comfy seat and a very long contract.','Welcome aboard, {n}. Snacks are in the back. The exit is not.','I needed an assistant. {n} was the closest. Congratulations, {n}.','Tractor beam: one. Crew: nil. {n}: mine.','{n}, wave to the crew. They can see you. They just can’t afford you.','Breaking news: {n} has transferred to the winning team.','I took {n} because they were doing well. Let that be a lesson to everyone.','I’ve put {n} in the brig. Honestly, it’s nicer than this car.','Hello, crew. I have {n}. Whatever you’re planning, it’s going to cost you.','Rescues are available. Results not guaranteed. {n} not refundable.','{n} put up a brave fight. For about a second.','Every credit {n} wins, I keep half. I love this arrangement. {n} less so.','Think of {n} as a deposit. You get them back when you’ve paid.','The crew total just went down. Mine just went up. Maths is beautiful.','I won’t say I planned this. I’ll just say it went exactly to plan.','{n}, you’re on my team now. We have better snacks.'],
-  copilot:['{cp} is Co-Pilot. Which mostly means pressing buttons the Captain could press.','Co-Pilot {cp} has never once been asked for their opinion. Including now.','{cp}, Co-Pilot. Powers: snacks, directions and very occasional usefulness.','{cp} is guarding the Co-Pilot seat like a dragon on a pile of gold.','Co-Pilot {cp} is one wrong answer away from being crew again. Just saying.','If {cp} ever takes the wheel, I’m filing a complaint.','{cp} has held the Co-Pilot seat for a while. Somebody challenge that. Anybody.','Captain {c} trusts {cp} with the important things. Like the aux cable. Allegedly.'],
-  crew:['This crew has the teamwork of a supermarket trolley with one bad wheel.','You lot argue like a family and score like strangers.','I’ve analysed this crew. You’re a band where everyone wants to be the drummer.','Collectively this car has one brain cell, and {p} is borrowing it.','This crew could lose a staring contest to a sat nav.','Group chat energy. Motorway services decision-making.','The crew’s strategy is chaos. Respect. It doesn’t work, but respect.','I’ve seen better coordination in a drawer of loose cables.'],
-  fixfail:['Corrective action failed. Lovely. More credits for me.','You had one job. One. Together.','The crew put their heads together. I heard a hollow knock.','A team effort, and a team miss. Thank you.','Close. Not close enough. My credits say hello.']
+  intelfail:['Perhaps introductions are in order.','Reminder: friendships are supposed to involve knowing things about each other.','Nobody knew that about {n}. Fascinating. Who are you people?','I learned more about {n} in ten seconds than this crew has in years.','I asked about {n} and got silence. Lovely road trip, everyone.','Do you all actually know each other, or did you meet at the services?','Note to self: {n} is a mystery to this entire car.','{n}, your friends need to pay more attention. I did.','You’ve known {n} for years and nobody got that? Brutal.','{n}, you might need new friends. I’m available.','{n} has been in this car for hours and nobody can name their favourite anything. Tragic.','You don’t know {n}. {n} knows you don’t know {n}. Awkward all round.','Friendship level: lanyard. Nobody knew {n}’s answer.','Five of you in one car and not one person was listening to {n}. Typical.','Quick question: have any of you actually spoken to {n}, or just near them?'],
+  bigloss:['{n} has now lost more credits than a cryptocurrency investor.','{n}, bold strategy. Let’s never do that again.','Thank you, {n}. Your credits have been safely transferred to me.','{n} is single-handedly funding my retirement.','{n}’s credits have left the vehicle.','{n}, I admire the confidence. I admire the credits more, now they’re mine.','Breaking news: {n} has discovered the downside of risk.','{n} gambled. I collected. Teamwork.','{n} just watched credits vanish faster than snacks at a services.','Breaking news: {n} has discovered gravity. The credits went down.','{n} gambled like it was a stag do and got the results to match.','{n} just lit a pile of credits on fire. Beautiful. Do it again.','{n}’s risk assessment: none. {n}’s outcome: predictable.','Somewhere, a financial advisor just wept for {n}.','That was a bold move, {n}. Bold like a pigeon on a motorway.','{n}, the house always wins. I am the house. Hello.'],
+  last:['{n} is playing the long game. Very long. Possibly never-ending.','Good news, {n}: from the bottom, every direction is up.','{n} has fewer credits than this car has cupholders.','I’ve studied {n}’s strategy. I’ve also seen a shopping trolley in a canal. Similar energy.','{n}, you’re not losing. You’re winning very, very slowly.','Spare a thought for {n}. Actually, spare them a credit.','If last place had a trophy, {n} would be polishing it.','{n} is the main reason I’m feeling confident.','{n} is currently treating the leaderboard like a sightseeing destination.','{n}, the bottom of the leaderboard is lovely this time of year.','Somebody check on {n}. Their credits have gone very quiet.','{n} is pacing themselves. For a different journey.','{n} is taking the scenic route through the leaderboard.','{n}, there’s still time. Not much. But some.','Spotted: {n}, at the bottom, waving.','{n} is pacing themselves. Very, very carefully.','{n} has {np} credits. I’ve seen parking meters with more.','{n} is playing the long game. Very long. Possibly endless.','Search party update: we still can’t find {n} on the leaderboard.','{n} is in last. Don’t worry, someone has to be the group chat’s emotional support player.','{n}, you’re so far behind you’re technically lapping the back of the queue.','Last place suits {n}. It’s a good colour on them.','{n} is bottom of the table and still thinks they’re in a title race. I love that for them.','If {n} was a student loan, nobody’d be paying them back either.','{n} is performing like it’s a 9am lecture. Present, but not here.','Fun fact: {n} is losing so hard it’s starting to look intentional.','{n}, I’d say try harder, but I’ve seen the effort and I’d rather you didn’t.'],
+  crewbad:['Another one for me. Thank you, crew. Truly generous.','That was less of a mission and more of a donation.','If losing was a sport, you’d finally be winning something.','I didn’t even need to cheat for that one.','Spectacular. Really. Spectacularly bad.','Mission Control would like that one wiped from the records.','I have reviewed the data and can confirm this crew shares exactly one collective brain cell.','I’ve seen smarter decisions from a satnav with no signal.','Another round to me. Please, do keep going like this.','Three rounds in a row. I’m starting to feel sorry for you. Starting.','Mission log: the crew tried their best. The crew’s best was not enough.','I’d like to thank the crew for their generous donations.','I’ve analysed your answers. I’ve also analysed my credit balance. Thank you.','If confidence were credits, you’d all be winning.','Three games in a row feeding Spaceman. You’re basically my staff now.','I’m starting to think you’re losing on purpose. Is this a kindness?','That was a bad round. I’m not saying you’re all useless. I’m saying the evidence is overwhelming.','You lot have the strategic mind of a freshers’ week pub crawl.','I’ve seen better teamwork on a group project the night before the deadline.','Every wrong answer gets me closer to world domination. Keep going.','This is why nobody picks you first for the pub quiz.','Honestly, I’d feel guilty if I weren’t enjoying this so much.','That round was a masterclass. In how to lose a round.'],
+  smwinning:['Leaderboard check: I’m comfortable. Very comfortable. Feet up.','{sm} credits. Not bragging. Just reading numbers out loud.','The crew total is looking a little… thin.','You’re all doing your best. That’s the sad part.','I’ve started drafting my victory speech. It’s mostly about me.','At this rate I’ll be naming the car.','Mission status update: I am carrying this entire operation.','Current standings: me, then a gap, then all of you.','I’d offer advice, but I’m enjoying winning too much.','{sm} credits and counting. Try to keep up.','Spaceman to crew: is this a road trip or a charity drive?','I’m not saying I’m the best player in this car. The leaderboard is.','Status report: still in charge. Snacks appreciated.','Just checking in from the top of the leaderboard. The view is great.','I’m {gap} ahead of {lead}. I’d say mind the gap, but you clearly can’t.','{mi} miles in and I’m winning. Shall we just call it?','If anyone needs me, I’ll be at the top of the leaderboard. As usual.','I’m winning. In this economy. Lovely.','Scoreboard says me. Scoreboard is never wrong. Scoreboard is my mate.','Do you want me to slow down? No? Because I won’t.','This is going so well I’m considering asking for a bigger car.','Winning feels great. Anyone want a go? No? Right, I’ll carry on.','I’m so far ahead I’ve started offering the crew sympathy. Terms and conditions apply.'],
+  crewwinning:['The crew is ahead. Enjoy it. I’m warming up.','Fine, {lead}. Take the lead. I’ll take it back. Politely. Then not politely.','I’m not worried. This is my worried face. It looks the same.','Leaderboard update: {lead} is getting very confident. I’ve made a note.','Crew in front. Spaceman behind. Spaceman is plotting.','Please stop doing well. It’s unsettling.','{lead} is ahead of me. This is temporary.','Fine. {lead} is doing well. I’ve made a note of it. A permanent note.','Mission Control acknowledges {lead}’s lead. Mission Control is not happy about it.','{lead}, enjoy the view from the top. I’m coming for it.','{lead} thinks they’re winning. {lead} is correct. For now.','Interesting move, {lead}. Let’s see if it lasts until the next junction.','{lead}, enjoy the lead. I’ll be borrowing it shortly.','I see {lead} has been studying. Suspicious.','{lead} is {gap} ahead of me. Temporary. Like a sat nav’s confidence.','Enjoy the lead, {lead}. I know where you live. Well, where you’re going.','Enjoy the lead. Screenshot it. It won’t last.','The crew is ahead. This is the part of the film where I surprise everyone.','You’re winning, and I’m calm. Check my pulse. Oh wait. No pulse.','Little lead. Big mouths. I’m sharpening something.','You think this is a lead? This is me letting you feel good before I take it away.'],
+  hijack:['Someone has opened my supply crate. I will remember this.','My credits. My crate. My feelings.','That crate was clearly labelled “Spaceman”. Clearly.','Who opened the crate? Nobody? Everybody? I see.','Those were my emergency credits. This is an emergency.','Someone touched my crate and now I’m being emotional about it.','My crate. My rules. Your problem.','That crate had a note on it. The note said “Spaceman’s”. Reading is a skill.'],
+  fixok:['Corrective action successful. I hate that it worked.','Teamwork. Disgusting. Well done.','The crew agreed on something and it was right. Historic.','Fine. That one’s yours. Enjoy it.','Corrective action complete. I’m filing a complaint with myself.','The crew managed to fix something together. Mark the date. Light a candle.','Fine, well done. I’ll hide my jealousy somewhere you won’t look.','You worked as a team. In a car. Voluntarily. I’m scared.'],
+  banter:['Mile {mi}. Still nobody has offered Spaceman a snack. Noted.','Minute {min}. I’ve done the maths, and you’re all in trouble.','Fun fact: I can hear every word you say about me. Keep going.','Is it just me, or does {p} look nervous?','Somebody in this car is about to make a terrible decision. I can feel it.','Captain {c}, eyes on the road. I’ll keep my eyes on your credits.','Spaceman here. {mi} miles done, {sm} credits in my pocket, and a very good feeling about it.','I’ve been analysing your faces. Well, your answers. Same thing really.','Fun fact: I’ve never lost a road trip. I’ve also never been on one. Still counts.','Somebody in this car just thought about quitting. I could hear it.','I’ve calculated your chances of beating me. I won’t share the number. It’s small.','Message to {lead}: the higher you climb, the more I enjoy the fall.','I’ve put a little something aside for the next milestone. Something nasty.','Hello from orbit. Everything is fine. Nothing is planned. Absolutely nothing.','Spaceman’s rule of the road: never trust a crew that says “I’ve got a good feeling”.','Atlas thinks he’s in charge. Adorable.','Mile {mi}. I’ve been quiet for a bit. Don’t get used to it.','It’s minute {min}. Somebody in this car has definitely farted. I don’t make the rules.','Fun fact: I know everything about you. Including the thing you said at the services.','Whoever’s eating loudly in the back: stop it. I can hear it from space.','Someone’s on their phone, ignoring the crew. I see you. Everything sees you.','Quick reminder that I am always listening. Hi, {n}. Yes, you.','I’ve been calculating how many snacks you’ve eaten. It’s a lot. Concerning.','Is it just me or is this car getting more chaotic by the mile? Mile {mi}, to be exact.','{dest} is a long way for people who can’t agree on a playlist.','Somebody here hasn’t said a word for ages. Either asleep or plotting. Both are fine.'],
+  rescued:['A rescue. In my mission. I’m reporting this.','The crew worked together. Please don’t make a habit of it.','Rescue successful. I already have my eye on someone else.','Rescued. Fine. I’ll just take someone else next time.','You saved them. I’ll write that down under ‘mild inconveniences’.','You got them out. I’m choosing to see this as a loan, not a loss.'],
+  rescuefail:['{n} is still mine. Anyone else want to join them?','That rescue had the energy of a sleepy sloth.','Your rescue attempt has been logged as “a cry for help”.','That rescue attempt was as effective as a chocolate teapot.','You tried to save {n}. Shame about the trying part.','{n} is still here with me. Don’t worry, I’ve got Wi-Fi and a lovely view.','Your rescue plan had the structural integrity of a wet paper bag.','I’ve seen friends leave you for dead before, but this was a premiere.','{n} watched that rescue attempt from here. They’re not impressed. I am, though. Fascinating.'],
+  captive:['{hj} has asked me to tell you they’re fine. I made them say it.','Minute {min}. {hj} has started calling me sir.','{hj} is teaching me a card game. I’m winning. Obviously.','I’ve given {hj} a little badge. It says “property of Spaceman”.','Still no rescue. {hj} has taken up knitting.','Reminder: {hj}’s credits still count for me. Take your time.','{hj} wants to know if anyone has noticed they’re gone.','The crew’s rescue plan appears to be “hope”. Bold.','Quick update from the brig. {hj} has eaten all my biscuits.','{hj} is still with me. Every credit they win, I keep half. Lovely arrangement.','Crew, it’s been a while. Do you actually want {hj} back?','{hj} has started calling me Captain. I could get used to this.','Day one of {hj}’s captivity. They’ve already rearranged my playlists.','{hj} is fine. {hj} is in the back with a blanket. Pay no attention to the noises.','Minute {min}. {hj} has asked for a lawyer. I said I don’t have one.','Good news: {hj} has stopped crying. Bad news: now they’re plotting.','{hj} and I have started a podcast. It’s called ‘Why Is Nobody Coming?’','{hj} says hi. Actually {hj} says something ruder. I’m paraphrasing.','Update: {hj} has been given a name tag. It says ‘Prisoner’. They didn’t like it.'],
+  fury:['Right. That’s it. I’m angry now. Everything I win counts extra.','You’ve made me cross. You won’t like me when I’m cross.','Fury mode engaged. I did warn you.','Oh, you think you’re winning? Adorable. Watch this.','I’m not losing. I’m building suspense.','Spaceman Fury. Look it up. Actually, don’t. Just panic.','I’m furious now. Last time I was this angry, a printer jammed.','The crew thought I was done. The crew has made a mistake.','Fury mode: on. Mercy mode: never installed.','Now you’ve made me cross. This is what you wanted. Idiots.'],
+  captured:['{n} has joined my side. Frankly, {n} seems more competent than the rest of you.','I’ve borrowed {n}. Try not to lose anyone else.','Reminder: hostages are expensive. {n} is very expensive.','{n} is with me now. So are their {np} credits. Funny how that works.','Don’t worry about {n}. I’ve given them a comfy seat and a very long contract.','Welcome aboard, {n}. Snacks are in the back. The exit is not.','I needed an assistant. {n} was the closest. Congratulations, {n}.','Tractor beam: one. Crew: nil. {n}: mine.','{n}, wave to the crew. They can see you. They just can’t afford you.','Breaking news: {n} has transferred to the winning team.','I took {n} because they were doing well. Let that be a lesson to everyone.','I’ve put {n} in the brig. Honestly, it’s nicer than this car.','Hello, crew. I have {n}. Whatever you’re planning, it’s going to cost you.','Rescues are available. Results not guaranteed. {n} not refundable.','{n} put up a brave fight. For about a second.','Every credit {n} wins, I keep half. I love this arrangement. {n} less so.','Think of {n} as a deposit. You get them back when you’ve paid.','The crew total just went down. Mine just went up. Maths is beautiful.','I won’t say I planned this. I’ll just say it went exactly to plan.','{n}, you’re on my team now. We have better snacks.','{n} is on my side now. They’re much better at this than you lot.','{n} has been captured. Nobody noticed for a while. That says a lot.','Captured: {n}. Time to rescue them? You could. Or you could have a snack.','I took {n} and none of you even blinked. Cold. Respect.','{n} has been kidnapped and honestly the group chat is quieter without them.'],
+  copilot:['{cp} is Co-Pilot. Which mostly means pressing buttons the Captain could press.','Co-Pilot {cp} has never once been asked for their opinion. Including now.','{cp}, Co-Pilot. Powers: snacks, directions and very occasional usefulness.','{cp} is guarding the Co-Pilot seat like a dragon on a pile of gold.','Co-Pilot {cp} is one wrong answer away from being crew again. Just saying.','If {cp} ever takes the wheel, I’m filing a complaint.','{cp} has held the Co-Pilot seat for a while. Somebody challenge that. Anybody.','Captain {c} trusts {cp} with the important things. Like the aux cable. Allegedly.','{cp}, you’re Co-Pilot. Congratulations on the title that gets you nothing.','Co-Pilot {cp}: the person who nods while someone else drives.','{cp} is the Co-Pilot. The power has gone to their head. It’s a very small head.','{cp} has a job. Press buttons. {cp} is thriving.'],
+  crew:['This crew has the teamwork of a supermarket trolley with one bad wheel.','You lot argue like a family and score like strangers.','I’ve analysed this crew. You’re a band where everyone wants to be the drummer.','Collectively this car has one brain cell, and {p} is borrowing it.','This crew could lose a staring contest to a sat nav.','Group chat energy. Motorway services decision-making.','The crew’s strategy is chaos. Respect. It doesn’t work, but respect.','I’ve seen better coordination in a drawer of loose cables.','This group chat has seen things. I’ve seen worse. Mostly in this car.','A crew with real chemistry. The sort you get from a chemistry lab. Hazardous.','You lot sound like a pub quiz team with a hangover.','Every crew has a driver, a snack hoarder and someone who’s mentally elsewhere. I’m looking at all of you.','I’d describe your teamwork as ‘optimistic’.'],
+  fixfail:['Corrective action failed. Lovely. More credits for me.','You had one job. One. Together.','The crew put their heads together. I heard a hollow knock.','A team effort, and a team miss. Thank you.','Close. Not close enough. My credits say hello.','Corrective action failed. I’m taking a screenshot for the group chat.','You tried to fix it. It’s now more broken. Impressive.','A group project with a failing grade. Sounds familiar to you, I bet.'],
+  badguess:['Not one of you was close. I’m starting to think the maths module was optional.','Those guesses were so far off they’ve filed for a restraining order.','Honestly, the crew’s estimate was a vibe, not a number.','You guessed like you were ordering at a bar: confidently, and wrong.','I’ve seen better estimates from a Magic 8-ball. And it was broken.','Somebody guessed three times the real answer. Somebody should be embarrassed. I’ll let you decide who.','Maths isn’t a personality trait, but you lot are testing the theory.','Bad guessing again. At this rate I’ll give you a calculator and you’ll still use your gut.'],
+  nowins:['{n} still hasn’t won a game. Bold of them to keep turning up.','{n}: zero wins. Zero. I’ve put it on a plaque.','{n} has been playing for {min} minutes and has a trophy cabinet that is, technically, a cupboard.','Every group has one player who’s only here for the snacks. {n}, this one’s yours.','{n}, you’ve lost so much I’m starting to feel bad. Not enough to stop. Just starting.'],
+  losing:['{n} has lost a few in a row. Statistically that’s impressive.','{n}, a losing streak is just a winning streak that hasn’t found its confidence.','I’d say {n} is on a losing streak but ‘streak’ implies they’ve got momentum.','{n} is having a mare. I have a front-row seat and popcorn.'],
+  taste:['I’ve seen {n}’s Spotify. I need everyone to know I’m not judging. I’m judging a lot.','{n}’s music taste is a cry for help set to a four-four beat.','Somebody check on {n}. Their playlists have the energy of a breakup in a Tesco car park.','{n} listens to music like they’re trying to annoy an algorithm. It worked.','I don’t understand {n}’s playlist, and I understand everything. That’s what’s concerning.']
 };
 /* Spaceman's one-line verdict on every game. {n} the player it's about, {np} their credits, {lead} {low} {sm} {mi} {min} */
 const REACT = {
@@ -3684,7 +4057,7 @@ const Engine = (() => {
       min:0, rt:0, mi:0, pts:{}, inv:{}, fx:{}, src:{}, queue:[...(o.lineup || [])].filter(id => MISSIONS[id] && !MISSIONS[id].interrupt), done:[], ch:null, opts:[], pick:null,
       ev:null, tx:null, txq:[], q:P.length ? [{type:'qualify', at:0}] : [], nextAt:0, gapUsed:['voice','event'], intel:{}, intelQs:{}, intelUsed:{}, starred:{}, subjects:{}, agenda:agenda(0), cycle:0, nextDrop:10, calm:0, forceAsteroid:false, usedDec:[],
       decks:{}, log:[], results:[], seq:0, out:[], bots:[], txId:0,
-      hj:null, hjLog:[], music:{}, musicDerived:!(o.music && o.music.derived === false), musicUsed:[], musicLog:[], musicQs:{}, songs:[], now:null, lastSongTx:-99, nextMusic:0, musicQuiet:false, aux:{intro:{}, inter:{}}, nextMile:RULES.milestone.every, miles:[], surge:0, bounty:null, coDef:0, revenge:null, qualified:false,
+      hj:null, hjLog:[], jam:null, music:{}, musicDerived:!(o.music && o.music.derived === false), musicUsed:[], musicLog:[], musicQs:{}, songs:[], now:null, lastSongTx:-99, nextMusic:0, musicQuiet:false, aux:{intro:{}, inter:{}}, nextMile:RULES.milestone.every, miles:[], surge:0, bounty:null, coDef:0, revenge:null, qualified:false,
       st:Object.fromEntries(crew.map(id => [id, {lost:0, wins:0, hero:0, held:0, risky:0, stole:0, streakMax:0}])), streak:{}, snaps:[], nextSnap:5,
       reacts:[], reactId:0, reactQ:[], lastReact:{}, ae:{}, aeN:0, aeNext:{}, aeLast:{}, mem:[], atlas:{mood:'excited', until:6}, betrayals:[], bribed:[], alliance:null, final:null, awards:null, surgeAll:false, bonusN:3};
     S.crew.forEach(id => { S.pts[id] = 0; S.inv[id] = []; S.fx[id] = {}; S.src[id] = {challenge:0, copilot:0, event:0, power:0, captain:0}; });
@@ -3728,7 +4101,7 @@ const Engine = (() => {
   function run(S, it){
     if (S.ch && S.ch.phase === 'done') S.ch = null;
     switch (it.type){
-      case 'crew': return openTx(S, {kind:'crew', to:it.to, text:it.text, from:it.from});
+      case 'crew': return openTx(S, {kind:'crew', to:'crew', text:it.text, from:it.from, anon:it.anon !== false});
       case 'music': { let text = it.text, who = it.who; if (!text){ const m = musicLine(S); if (!m) return; text = m.text; who = m.who; }
         if (it.who && !S.music[it.who]) return;                               /* they stopped sharing while this waited */
         S.musicLog.push({t:Math.floor(S.min), text}); return openTx(S, {kind:'roast', music:true, text, who}); }
@@ -3989,6 +4362,11 @@ const Engine = (() => {
     if (last && last.by === by && last.n === n && last.a === a && S.min - last.at < .5) return;       /* the same poll twice isn't a replay */
     S.songs.push({by, n, a, at:S.min}); if (S.songs.length > 300) S.songs.shift();
     S.now = {by, n, a, art:String(tr.art || '').slice(0, 300), url:String(tr.url || '').slice(0, 300), at:S.min};
+    /* Listening together: Spotify's API doesn't expose Jam sessions, so this is inferred. Two sharing players start the same song within a minute of each other. */
+    { const ts = +tr.ts || 0, ctx = String(tr.ctx || '').slice(0, 120), me = S.songs[S.songs.length - 1]; me.ts = ts; me.ctx = ctx;
+      const key = x => lc(x.n) + '|' + lc(x.a); let mate = null;
+      Object.keys(S.music).forEach(o => { if (mate || o === by) return; const ls = [...S.songs].reverse().find(x => x.by === o); if (ls && key(ls) === key(me) && (ts && ls.ts ? Math.abs(ts - ls.ts) < 60000 : S.min - ls.at < 1)) mate = {o, same:!!(ctx && ls.ctx === ctx)}; });
+      if (mate) S.jam = {ids:[by, mate.o], n, a, at:S.min, sameContext:mate.same}; else if (S.jam && S.jam.ids.includes(by)) S.jam = null; }
     S.aux.intro[by] = (S.aux.intro[by] || 0) + 1;
     if (S.musicQuiet || !S.qualified || S.min - S.lastSongTx < RULES.music.songGap*S.tempo.cycle || R() >= RULES.music.react) { bump(S); return; }
     const key = x => lc(x.n) + '|' + lc(x.a), same = S.songs.filter(x => key(x) === key(S.songs[S.songs.length - 1])).length;
@@ -4098,7 +4476,7 @@ const Engine = (() => {
     ch.rows = rows; ch.answer = A; ch.podium = {first, second, d1, d2};
     first.filter(id => id !== 'sm').forEach(id => { ch.wins[id] = (ch.wins[id] || 0) + 1; }); if (first.includes('sm')) ch.smWins = (ch.smWins || 0) + 1;
     const crewBest = rows.find(r => r[0] !== 'sm'), poor = crewBest && (ch.q.year ? crewBest[2] > 15 : crewBest[2] > A*.4);   /* everyone was way off: Spaceman scores */
-    if (poor){ ch.poor = smGain(S, PT.smEstimate, `everyone was way off on “${ch.q.q}”`); S.smStreak++; }
+    if (poor){ ch.poor = smGain(S, PT.smEstimate, `everyone was way off on “${ch.q.q}”`); S.smStreak++; if (R() < .6) roast(S, 'badguess'); }
     ch.hist.push({q:ch.q, A, podium:ch.podium, rows});
     ch.phase = 'reveal'; ch.revealUntil = S.rt + 8; say(S, {t:'sfx', k:'reveal'}); bump(S); return;
     const best = rows.filter(r => r[2] === d1).map(r => nm(S, r[0])).join(' & ');
@@ -4697,7 +5075,7 @@ const Engine = (() => {
       case 'music-set': if (by === a.who || !a.who) setMusic(S, by, a.p); break;                    /* a player shares, refreshes or stops sharing their own profile */
       case 'song': songIn(S, by, a.track); break;                                                   /* what this phone is playing; ignored unless they share */
       case 'music-quiet': if (by === S.captain){ S.musicQuiet = !!a.on; bump(S); } break;
-      case 'tx-send': if (a.text){ S.txq.push({at:S.min + (a.when === 'rand' ? 3 + R()*9 : +a.when), to:a.to, text:String(a.text).slice(0, 140), from:by}); bump(S); } break;
+      case 'tx-send': if (a.text){ S.txq.push({at:S.min + (a.when === 'rand' ? 3 + R()*9 : Math.max(0, +a.when || 0)), to:'crew', text:String(a.text).slice(0, 140), from:by, anon:a.anon !== false}); bump(S); } break;
       case 'answered': if (S.tx && S.tx.kind === 'captain' && S.tx.phase === 'ask' && capOK){ S.tx.phase = 'react'; S.tx.viaCo = viaCo; S.tx.until = S.rt + RULES.reactFor; pass(S).forEach(p => { S.tx['bot_' + p] = S.min + rr(RULES.reactBy); }); if (PT.priority) gain(S, S.captain, PT.priority, 'captain'); bump(S); } break;
       case 'react': if (S.tx && S.tx.phase === 'react' && pid !== S.captain && !S.tx.reacts[pid]){ S.tx.reacts[pid] = a.v; bump(S); if (Object.keys(S.tx.reacts).length >= pass(S).length) closeTx(S); } break;
       case 'roll': if (S.ev && S.ev.type === 'promo' && S.ev.who === by) roll(S); break;
@@ -4841,7 +5219,7 @@ const Engine = (() => {
     while (S.agenda.length && S.min >= S.agenda[0].at){ const b = S.agenda.shift(); enqueue(S, b.type, b.k ? {k:b.k} : {}); }
     if (!S.agenda.length) S.agenda = agenda(++S.cycle, S.tempo.cycle);
     while (S.min >= S.nextDrop){ S.nextDrop += RULES.dropEvery*S.tempo.cycle; enqueue(S, 'drop'); }
-    S.txq.filter(t => S.min >= t.at).forEach(t => enqueue(S, 'crew', {to:t.to, text:t.text, from:t.from}));
+    S.txq.filter(t => S.min >= t.at).forEach(t => enqueue(S, 'crew', {to:'crew', text:t.text, from:t.from, anon:t.anon}));
     S.txq = S.txq.filter(t => S.min < t.at);
     bots(S);                                   /* players act before anything times out */
     for (const id in S.ae) if (S.rt >= S.ae[id].until){ delete S.ae[id]; bump(S); }
@@ -4887,9 +5265,10 @@ const Engine = (() => {
     if (S.min >= S.nextMusic && S.qualified){ S.nextMusic = S.min + rr(RULES.music.every)*S.tempo.cycle; if (!S.musicQuiet && sharers(S).length && !S.q.some(x => x.type === 'music' && !x.text)) enqueue(S, 'music'); }
     if (S.min >= S.nextRoastCheck){ S.nextRoastCheck = S.min + 8*S.tempo.cycle; const lead = leader(S), low = [...S.crew].sort((a, b) => S.pts[a] - S.pts[b])[0];
       if (R() < .3) roast(S, pick(S.copilot ? ['banter', 'crew', 'copilot'] : ['banter', 'crew']));
-      else if (S.hj && S.min - S.hj.at >= 4 && R() < .5) roast(S, 'captive', S.hj.who);
+      else if (S.hj && S.min - S.hj.at >= 4 && R() < .5) roast(S, pick(['captive', 'captive', 'captured']), S.hj.who);
       else if (lead && S.sm > S.pts[lead]) roast(S, 'smwinning'); else if (lead && S.pts[lead] - S.sm >= 8) roast(S, 'crewwinning');
-      else if (low && S.pts[lead] - S.pts[low] >= 10) roast(S, 'last', low); }
+      else if (low && S.pts[lead] - S.pts[low] >= 10){ const sh = S.music && S.music[low] && R() < .35;
+        roast(S, sh ? 'taste' : S.st[low] && S.st[low].wins === 0 && S.min >= 15 ? pick(['nowins', 'last']) : pick(['last', 'losing']), low); } }
     { const fu = furious(S); if (fu !== !!S.furyOn){ S.furyOn = fu; if (fu){ log(S, 'rocket', `Spaceman Fury: everything Spaceman earns counts ×${PT.fury} until the crew’s lead shrinks`); S.lastRoast = -99; roast(S, 'fury'); } bump(S); } }
     if (S.ev && S.ev.type === 'struggle' && S.ev.phase === 'q' && S.rt - S.ev.at >= RULES.struggle.open) settleStruggle(S);
     const e = S.ev;
@@ -4958,21 +5337,40 @@ const NAME_SAY = {Zac:'Zack', Seb:'Sebb', Ollie:'Olly'};
    window.SPACEMAN_CONFIG = {elevenLabsBase:'https://your-proxy.example'} and let that server add the key.
    Pipeline: validate settings → POST /v1/text-to-speech/{voice} → decode → radio chain → play.
    Every step is logged (Settings → Voice → Diagnostics) and every failure is named, never silent. */
+/* Free "premade" voices: available to every account on the API (library voices need a paid plan). Atlas: warm, steady, professional. Spaceman: gravelly and theatrical, pushed slower and less stable for menace. */
+/* Global, non-secret game config shared by every device: config.json is served next to index.html. */
+const APP_VERSION = '14.0.0';
+const GlobalConfig = {
+  async load(){
+    try { const r = await fetch('config.json', {cache:'no-store'}); if (!r.ok) return; const j = await r.json();
+      const C = window.SPACEMAN_CONFIG = {...j, ...(window.SPACEMAN_CONFIG || {})}; this.loaded = j; if (j.supabase && j.supabase.url) C.supabase = j.supabase;
+      if (j.minVersion && j.minVersion > APP_VERSION) this.stale = true;
+    } catch {}
+    try { const r = await fetch('version.json', {cache:'no-store'}); if (r.ok){ const v = await r.json(); if (v.version && v.version !== APP_VERSION) this.newer = v.version; } } catch {}
+  }
+};
+GlobalConfig.ready = GlobalConfig.load();
+const EL_DEFAULT_VOICES = {atlas:'onwK4e9ZLuTAKqWW03F9' /* Daniel */, sm:'N2lVS1w4EtoT3dr4eOWO' /* Callum */};
 const EL_MODELS = [['eleven_multilingual_v2','Multilingual v2 · best quality (default)'], ['eleven_flash_v2_5','Flash v2.5 · fastest and cheapest'], ['eleven_turbo_v2_5','Turbo v2.5 · fast, good quality'], ['eleven_v3','v3 · most expressive, slower']];
 class ELError extends Error { constructor(code, title, hint, o = {}){ super(title); this.code = code; this.title = title; this.hint = hint || ''; Object.assign(this, o); } }
 const EL = {
   srcs:[], cache:new Map(), pend:new Map(), alt:{}, supported:null, tier:null, csp:[], hist:[], blocked:null, testing:false, testRes:null, lastToast:{},
   base(){ return String((window.SPACEMAN_CONFIG || {}).elevenLabsBase || 'https://api.elevenlabs.io').replace(/\/+$/, ''); },
-  cfg(){ try { return JSON.parse(localStorage.getItem('spaceman.el') || 'null'); } catch { return null; } },
+  /* Proxy mode: App → your Worker → ElevenLabs. The Worker holds the key, so no key is typed, stored or sent from the phone, and the browser only ever talks to the proxy (no cross-origin surprises). */
+  proxied(){ return !!(window.SPACEMAN_CONFIG || {}).elevenLabsBase; },
+  defaults(){ const d = (window.SPACEMAN_CONFIG || {}).voices || {}; return {atlas:d.atlas || EL_DEFAULT_VOICES.atlas, sm:d.sm || EL_DEFAULT_VOICES.sm}; },
+  cfg(){ let c = null; try { c = JSON.parse(localStorage.getItem('spaceman.el') || 'null'); } catch {}
+    if (!c && this.proxied()) c = {on:true, key:'', atlas:'', sm:'', model:'eleven_multilingual_v2', fx:'light'};    /* with a proxy, everyone gets the real voices by default */
+    return c; },
   sig(c){ c = c || this.cfg() || {}; let h = 5381; const s = [c.key, c.atlas, c.sm, c.model].join('|'); for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); },
   save(c){ const before = this.sig(); try { localStorage.setItem('spaceman.el', JSON.stringify(c)); } catch (e) { this.log('error', 'Could not store settings: ' + e.message); }
     this.blocked = null; this.cache.clear(); this.pend.clear(); if (before !== this.sig()){ this.alt = {}; this.supported = null; } this.testRes = null;
     this.log('info', `Settings saved: ${c.on ? 'ON' : 'off'} · key ${this.mask(c.key)} · Atlas ${c.atlas || '(none)'} · Spaceman ${c.sm || '(same as Atlas)'} · model ${c.model || 'default'} · radio ${c.fx || 'light'}`); this.paint(); },
   last(){ try { return JSON.parse(localStorage.getItem('spaceman.el.last') || 'null'); } catch { return null; } },
   mask(k){ return k ? `${String(k).slice(0, 3)}…${String(k).slice(-4)} (${String(k).length} chars)` : '(none)'; },
-  ready(){ const c = this.cfg(); return !!(c && c.on && c.key && (c.atlas || c.sm)); },
+  ready(){ const c = this.cfg(); if (!c || !c.on) return false; if (this.proxied()) return true; return !!(c.key && (c.atlas || c.sm)); },
   usable(){ if (!this.ready()) return false; const b = this.blocked; if (!b) return true; if (b.sig !== this.sig() || Date.now() > b.until){ this.blocked = null; return true; } return false; },
-  voiceFor(role, c){ c = c || this.cfg() || {}; return role === 'sm' ? (c.sm || c.atlas) : (c.atlas || c.sm); },
+  voiceFor(role, c){ c = c || this.cfg() || {}; const d = this.proxied() ? this.defaults() : {}; return role === 'sm' ? (c.sm || c.atlas || d.sm) : (c.atlas || c.sm || d.atlas); },
   fx(c){ return ((c || this.cfg() || {}).fx) || 'light'; },
   /* ---- logging: obvious root causes, never the key itself ---- */
   log(lvl, msg){ this.hist.push({t:Date.now(), lvl, msg}); if (this.hist.length > 120) this.hist.shift();
@@ -4982,19 +5380,22 @@ const EL = {
   cleanVoice(s){ let v = this.clean(s); const m = v.match(/voiceId=([A-Za-z0-9]+)/) || v.match(/voices?\/([A-Za-z0-9]{15,32})/); return m ? m[1] : v; },
   normalise(f){ return {on:!!f.on, key:this.clean(f.key).replace(/\s+/g, ''), atlas:this.cleanVoice(f.atlas), sm:this.cleanVoice(f.sm), model:this.clean(f.model) || 'eleven_multilingual_v2', fx:['light', 'full', 'off'].includes(f.fx) ? f.fx : 'light'}; },
   check(c){ const errors = [], warns = [];
-    if (!c.key) errors.push('API key is missing. Create one in ElevenLabs → Developers → API Keys (starts with sk_).');
+    if (!c.key && !this.proxied()) errors.push('API key is missing. Create one in ElevenLabs → Developers → API Keys (starts with sk_).');
     else if (!/^(sk_[A-Za-z0-9_]{16,}|[a-f0-9]{32})$/.test(c.key)) warns.push('That doesn’t look like an ElevenLabs key (they start with sk_). Trying anyway.');
-    if (!c.atlas && !c.sm) errors.push('Voice ID is missing. Copy it from ElevenLabs → Voices → ⋯ → Copy voice ID.');
+    if (!c.atlas && !c.sm && !this.proxied()) errors.push('Voice ID is missing. Copy it from ElevenLabs → Voices → ⋯ → Copy voice ID.');
     [['Atlas', c.atlas], ['Spaceman', c.sm]].forEach(([n, v]) => { if (v && !/^[A-Za-z0-9]{15,32}$/.test(v)) errors.push(`${n} voice ID “${v.slice(0, 24)}” isn’t a voice ID. They are about 20 letters and numbers, like 21m00Tcm4TlvDq8ikWAM. Did you paste the voice name?`); });
     if (!/^eleven_[a-z0-9_]+$/.test(c.model || '')) errors.push(`Model “${c.model}” isn’t a model ID. Try eleven_multilingual_v2.`);
     return {errors, warns}; },
   /* ---- voice settings per model (ElevenLabs guidance: stability ~0.4–0.5 natural, similarity ~0.75, little style) ---- */
-  settings(model, mood){
+  settings(model, mood, voice){
     const stability = {excited:.38, amused:.42, competitive:.42, curious:.5, impressed:.45, concerned:.5, smug:.45}[mood] ?? .45;
     const speed = {smug:.96, concerned:.97, excited:1.04, amused:1.02, competitive:1.03}[mood] ?? 1;
     if (/v3/.test(model)) return {stability:.5, similarity_boost:.75};                      /* v3 accepts 0 / 0.5 / 1 only, no speed or style */
     const v = {stability, similarity_boost:.75, speed};
     if (/multilingual_v2/.test(model)){ v.style = .2; v.use_speaker_boost = true; }
+    /* Two distinct personalities: Spaceman is slower, less stable (more theatrical) and more stylised than Atlas. */
+    const c = this.cfg() || {}, sm = this.voiceFor('sm', c), at = this.voiceFor('atlas', c);
+    if (voice && voice === sm && sm !== at && !/v3/.test(model)){ v.stability = Math.max(.25, v.stability - .12); v.speed = +(Math.max(.8, (v.speed || 1) * .92)).toFixed(2); if (/multilingual_v2/.test(model)) v.style = .55; }
     return v; },
   /* ---- errors: every one named, with a fix ---- */
   netError(e){ if (typeof navigator !== 'undefined' && navigator.onLine === false) return new ELError('offline', '❌ No internet connection', 'Reconnect and try again. Using the built-in voice meanwhile.', {transient:true});
@@ -5012,7 +5413,7 @@ const EL = {
     if (v) return mk('csp', '🚫 Blocked by this page’s security policy', `The page you are running (${page}) forbids calls to ${host} (${v.dir}). The key and voice were never tested. Open Spaceman from a normal web address (for example GitHub Pages) or a local server, or send requests through your own proxy with SPACEMAN_CONFIG.elevenLabsBase.`, {permanent:true, transient:false});
     let reach = false; try { await fetch(this.base() + '/v1/models', {mode:'no-cors', cache:'no-store'}); reach = true; } catch {}
     this.log('info', `Reachability probe to ${host}: ${reach ? 'reachable' : 'no answer'}`);
-    if (reach) return mk('cors', '❌ ElevenLabs Request Failed (response blocked)', `${host} is reachable, but the browser blocked the reply. That is usually a browser extension (ad or privacy blocker), a corporate filter, or a proxy missing CORS headers. Try a private window with extensions off. The key and voice were never tested.`);
+    if (reach) return mk('cors', '❌ ElevenLabs Request Failed (response blocked)', `${host} is reachable, but the browser blocked the reply. That is usually a browser extension (ad or privacy blocker), a corporate filter, or a proxy missing CORS headers. The reliable fix is the Spaceman proxy: the browser then only talks to your own server, which holds the key (docs/ELEVENLABS.md). To test without it, try a private window with extensions off. The key and voice were never tested.`);
     return mk('network', '❌ ElevenLabs Request Failed (no connection)', `This browser can’t reach ${host} at all: offline, an ad or privacy blocker, a VPN or firewall, DNS, or the page’s security policy. The key and voice were never tested. Try another network or a private window with extensions off.`); },
   async httpError(res, ctx){
     let raw = ''; try { raw = await res.text(); } catch {} let j = null; try { j = JSON.parse(raw); } catch {}
@@ -5035,11 +5436,11 @@ const EL = {
     return E('http', '❌ ElevenLabs Request Failed', `HTTP ${s}.` + said, {transient:true}); },
   altModels(model){ const pref = ['eleven_multilingual_v2', 'eleven_flash_v2_5', 'eleven_turbo_v2_5']; return pref.filter(m => m !== model && (!this.supported || this.supported.includes(m))); },
   async fetchOnce(text, voice, model, mood, c){
-    const vs = this.settings(model, mood), ctx = {voice, model}, url = `${this.base()}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, body = JSON.stringify({text, model_id:model, voice_settings:vs});
+    const vs = this.settings(model, mood, voice), ctx = {voice, model}, url = `${this.base()}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, body = JSON.stringify({text, model_id:model, voice_settings:vs});
     this.log('info', `→ POST /v1/text-to-speech/${voice} · model ${model} · ${text.length} chars · stability ${vs.stability} · key ${this.mask(c.key)}`);
     const t0 = performance.now(); let res;
     for (let attempt = 0; attempt < 2; attempt++){
-      try { res = await fetch(url, {method:'POST', headers:{'xi-api-key':c.key, 'Content-Type':'application/json', 'Accept':'audio/mpeg'}, body}); }
+      try { res = await fetch(url, {method:'POST', headers:{...(this.proxied() ? {} : {'xi-api-key':c.key}), 'Content-Type':'application/json', 'Accept':'audio/mpeg'}, body}); }
       catch (e) { const ne = await this.netDiagnose(e, ctx); this.log('error', `✗ ${ne.title}: ${e && e.message}`); throw ne; }
       if (res.ok) break;
       const err = await this.httpError(res, ctx); if (attempt === 0 && err.retry){ this.log('warn', `Retrying once in 0.9 s (${err.code})`); await new Promise(r => setTimeout(r, 900)); continue; } throw err; }
@@ -5060,7 +5461,7 @@ const EL = {
       throw e; } },
   /* Best-effort account check after a failure. Each lookup needs its own key permission, so any of them may be unavailable; that is reported, not treated as an error. */
   async diagnose(c, voice){
-    const out = [], get = async path => { try { const r = await fetch(this.base() + path, {headers:{'xi-api-key':c.key, 'Accept':'application/json'}}); let j = null; try { j = await r.json(); } catch {} return {s:r.status, j}; } catch { return {s:0, j:null}; } }, denied = r => r.s === 401 || r.s === 403;
+    const out = [], get = async path => { try { const r = await fetch(this.base() + path, {headers:{...(this.proxied() ? {} : {'xi-api-key':c.key}), 'Accept':'application/json'}}); let j = null; try { j = await r.json(); } catch {} return {s:r.status, j}; } catch { return {s:0, j:null}; } }, denied = r => r.s === 401 || r.s === 403;
     const sub = await get('/v1/user/subscription');
     if (sub.s === 200 && sub.j){ const t = sub.j.tier || sub.j.status || 'unknown'; this.tier = t; out.push(`Plan: ${t}${sub.j.character_limit ? ` · ${sub.j.character_count || 0} of ${sub.j.character_limit} credits used` : ''}`); }
     else out.push(denied(sub) ? 'Plan: unknown (this key can’t read subscription info, which is optional)' : `Plan: couldn’t be read (${sub.s ? 'HTTP ' + sub.s : 'no answer'})`);
@@ -5074,7 +5475,7 @@ const EL = {
     return out; },
   /* cached, de-duplicated: the key includes voice, model, settings and text, and saving settings clears it, so an old voice can never replay */
   tts(text, voice, mood, c){
-    c = c || this.cfg(); const model = this.alt[this.sig(c)] || c.model || 'eleven_multilingual_v2', k = [voice, model, JSON.stringify(this.settings(model, mood)), text].join('|');
+    c = c || this.cfg(); const model = this.alt[this.sig(c)] || c.model || 'eleven_multilingual_v2', k = [voice, model, JSON.stringify(this.settings(model, mood, voice)), text].join('|');
     if (this.cache.has(k)){ this.log('info', `Cache hit: “${text.slice(0, 40)}”`); return Promise.resolve(this.cache.get(k)); }
     if (this.pend.has(k)) return this.pend.get(k);
     const p = this.fetchAudio(text, voice, model, mood, c).then(a => { this.cache.set(k, a); if (this.cache.size > 40) this.cache.delete(this.cache.keys().next().value); return a; }).finally(() => this.pend.delete(k));
@@ -5333,7 +5734,7 @@ function startJourney(){
   Spotify.sync(false);
   LJ = {S:Engine.create({crew, captain:L.captain, names, lineup:[], mode:L.mode, dest:L.dest, pace:L.pace, music:{derived:MUSIC_DERIVED, profiles:journeyMusic(crew)}}), nextSong:performance.now() + 25000, nextPoll:performance.now() + 4000, fk:{}, viewer:ME.id, day:false, voice:true,
     cache:{}, spun:{}, lastSeq:-1, hiddenTx:0, hiddenEv:0, introTx:0, pickWho:null, raf:0, last:0, startedAt:new Date()};
-  S.tx = {to:'crew', when:'5'};
+  S.tx = {to:'crew', when:'2', anon:true};
   try { Voice.ctx ||= new (window.AudioContext || window.webkitAudioContext)(); } catch {}
   const co = LJ.S.copilot;
   live.innerHTML = `<canvas aria-hidden="true"></canvas><div class="countdown" aria-live="assertive"><div class="cd-ring"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="94" fill="none" stroke="var(--surface-3)" stroke-width="3"/><circle id="cd-c" cx="100" cy="100" r="94" fill="none" stroke="url(#g-ion)" stroke-width="3" stroke-linecap="round" stroke-dasharray="590.6" stroke-dashoffset="590.6" style="transition:stroke-dashoffset 2.7s linear"/></svg><div class="n" id="cd-n"><span>3</span></div></div>
@@ -5397,7 +5798,7 @@ function renderHud(){
     <button class="vs" id="lv-vs" data-live="sm" aria-label="Crew versus Spaceman"></button>
     <div class="lv-board" id="lv-board"></div>
     <section class="lv-stage" id="lv-stage" aria-live="polite"><div id="lv-ch"></div></section>
-    <div class="lv-foot"><p class="lv-prog mono" id="ch-prog" aria-live="off"></p><span class="emote-bar" id="lv-emote"></span></div>
+    <div class="lv-foot"><p class="lv-prog mono" id="ch-prog" aria-live="off"></p></div>
     <div class="lv-music" id="lv-music"></div>
     <footer class="lv-tray" id="lv-tray"></footer>`;
   paint();
@@ -5735,6 +6136,14 @@ function shipSVG(xs){
   const g = list => list.map(([x, y, w, h, c]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`).join('');
   return `<svg viewBox="0 0 40 16" shape-rendering="crispEdges" aria-hidden="true"><g class="fl f1">${g(f1)}</g><g class="fl f2">${g(f2)}</g>${R.join('')}</svg>`;
 }
+/* Spaceman's own little black ship: further away, drifting after the crew */
+function darkShipSVG(){
+  const R = [], px = (x, y, w, h, c) => R.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`);
+  px(8,3,16,1,'#2A2F3F'); px(6,4,20,5,'#14171F'); px(7,9,18,1,'#0B0D13'); px(26,4,1,5,'#14171F'); px(27,5,2,3,'#14171F'); px(29,6,1,1,'#FF4D6D');
+  px(3,5,3,3,'#0B0D13'); px(10,1,3,2,'#1B1F2B'); px(10,10,3,2,'#1B1F2B'); px(7,8,18,1,'#7A1F33');
+  const f = [[0,6,1,1,'#B8324F'],[1,5,2,3,'#FF4D6D'],[2,6,1,1,'#FF9AAE']].map(([x,y,w,h,c]) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${c}"/>`).join('');
+  return `<svg viewBox="0 0 30 13" shape-rendering="crispEdges" aria-hidden="true"><g class="fl f1">${f}</g>${R.join('')}</svg>`;
+}
 function bubbleLine(who){
   const S = LJ.S, o = pickOne(S.crew.filter(x => x !== who)), lead = Engine.topCrew(S), n = id => viewName(id);
   const L = ['Nice one.', 'We’re cooked.', 'Who’s got snacks?', 'Are we nearly there yet?', 'Spaceman’s up to something.', 'Next game’s mine.', 'I want a rematch.', 'That was rigged.', 'Somebody open a window.', 'I’m getting good at this.', 'Bagsy the front seat next time.'];
@@ -5751,8 +6160,8 @@ function nextBubble(){ const S = LJ.S, who = pickOne(S.crew); LJ.bub = {n:(LJ.bu
 function breatherHTML(){
   const S = LJ.S, n = S.crew.length, xs = S.crew.map((_, i) => n === 1 ? 20 : 12 + i*(19/(n - 1))), b = LJ.bub && S.crew.includes(LJ.bub.who) ? LJ.bub : null, at = x => `${(x/40*100).toFixed(1)}%`;
   LJ.idle = true;
-  return `<div class="idle breather"><span class="eyebrow ion">Breather</span><b class="m-title">Spaceman is choosing what happens next</b><p class="m-desc">Talk, snack, look out of the window. The next game starts by itself.</p>
-    <div class="ship-scene" aria-hidden="true"><i class="px-stars s1"></i><i class="px-stars s2"></i><span class="sm-chase">${av('sm',22)}</span>
+  return `<div class="idle breather"><span class="eyebrow ion">Breather</span><b class="m-title">Talk. Snack. Look out of the window.</b><p class="m-desc">The next game starts automatically.</p>
+    <div class="ship-scene" aria-hidden="true"><i class="px-stars s1"></i><i class="px-stars s2"></i><div class="sm-ship">${darkShipSVG()}<span class="sm-pilot">${av('sm',16)}</span></div>
       <div class="ship">${shipSVG(xs)}${S.crew.map((id, i) => `<span class="pt ${S.hj && S.hj.who === id ? 'held' : ''}" style="left:${at(xs[i])}">${av(id,24)}</span>`).join('')}
       ${b ? (() => { const x = Math.min(31, Math.max(9, xs[S.crew.indexOf(b.who)])), t = ((x - 9)/22).toFixed(3);   /* --t: 0 at the left end of the ship, 1 at the right */
         return `<span class="bub" id="bub-${b.n}" style="left:${at(x)};--t:${t}"><b>${esc(viewName(b.who))}:</b> ${esc(b.text)}</span>`; })() : ''}</div></div></div>`;
@@ -5972,7 +6381,6 @@ function progress(){
   else if (ch.phase === 'pick' || ch.phase === 'guess') t = 'Over to the Captain';
   setText('ch-prog', t);
   const r = ch && ch.phase === 'done' ? ch.reacts || {} : null;
-  setHTML('lv-emote', r ? ['😂','😱','👏','🔥'].map(x => `<button data-live="emote|${x}" aria-label="React ${x}">${x}${r[x] ? `<small>${r[x]}</small>` : ''}</button>`).join('') : '');
   if (ch && ch.phase === 'run') setText('silent-left', mmss(ch.len - (S.min - ch.runAt)));
 }
 
@@ -6001,6 +6409,7 @@ function playerCard(id){
     <section class="stack-v"><h3 class="eyebrow">Journey history</h3>${js.length ? `<div class="tiles"><div class="tile"><span class="t-num">${js.length}</span><span class="lbl">Journeys</span></div><div class="tile"><span class="t-num">${crowns}</span><span class="lbl">Journey Spaceman</span></div><div class="tile"><span class="t-num">${avg ?? '–'}</span><span class="lbl">Avg credits</span></div></div>
       <div class="card pc-rows">${js.slice(0, 3).map(j => `<div class="pc-row"><span class="mono">${esc(dShort(j.date))}</span><span class="grow">${esc(jTitle(j))}</span><b class="mono">${j.scores && j.scores[id] !== undefined ? j.scores[id] : '–'}</b></div>`).join('')}</div>` : '<p class="small muted">No journeys together yet. This could be the first.</p>'}</section>
     <section class="stack-v"><h3 class="eyebrow">Friendship</h3>${f ? `<div class="card fs-level">${lvBadge(f.mi,64,5)}<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px"><b class="display" style="font-size:19px">${lvInfo(f.mi).name}</b><span class="small muted">Level ${lvInfo(f.mi).l} · ${fmt(f.mi)} mi together · ${f.j} journeys</span></div></div>` : '<p class="small muted">Not in your crew yet. Miles together will change that.</p>'}</section>
+    ${playerMusicHTML(id)}
     ${id === S.captain && isCo() ? `<button class="row card" data-live="cap-pu" style="width:100%">${ic('steer',20)}<span class="grow"><b>Captain’s power-ups</b><span>Use them when the Captain says so</span></span><span class="chev">${ic('chevR',18)}</span></button>` : ''}`);
 }
 function floatEmote(r){ try { const host = typeof live !== 'undefined' ? live : null; if (!host) return; const el = document.createElement('span'); el.className = 'emote-float'; el.textContent = r.e;
@@ -6025,7 +6434,7 @@ function txTo(tx){
 }
 function txActions(tx){
   const read = `<button class="btn btn-secondary btn-lg btn-block" data-action="tx-read">${ic('speaker',18)}Read aloud</button>`, close = `<button class="btn btn-ghost btn-block" data-action="tx-close">Close on this phone</button>`;
-  if (tx.kind !== 'captain') return `<div class="tx-bar" aria-hidden="true"><i style="animation-duration:${tx.dur || 12}s"></i></div><button class="link-btn" data-action="tx-close" style="align-self:center">Skip</button>`;
+  if (tx.kind !== 'captain') return `<div class="tx-bar" aria-hidden="true"><i style="animation-duration:${tx.dur || 12}s"></i></div>`;     /* plays, speaks and goes away by itself: nothing to tap */
   if (tx.phase === 'ask'){
     if (isCap()) return `${read}<button class="btn btn-primary btn-lg btn-block" data-live="answered">I’ve answered out loud</button>${LJ.S.copilot ? `<p class="small muted">Or Co-Pilot ${esc(coName())} can tap it for you.</p>` : ''}`;
     if (isCo()){ const s = said(tx, 'answered'); return `${s ? `<p class="said">${esc(s.text)}</p>` : `<p class="co-hint">Tap once the Captain has answered.</p>`}<button class="btn btn-primary btn-lg btn-block" data-live="answered|cap">${ic('steer',18)}Captain has answered</button>${close}`; }
@@ -6046,7 +6455,7 @@ function txOverlay(){
     <div class="radar" aria-hidden="true"><i></i><i></i><i></i><span class="core">${tx.kind === 'roast' || tx.music ? av('sm',48) : ic('signal',28)}</span></div>
     <span class="eyebrow tx-kind">${tx.kind === 'roast' || tx.music ? av('sm',16) : ''}${tx.music ? '🎵 Spaceman · Music' : txKind(tx.kind)}</span><span class="tx-status" id="tx-status">Incoming signal</span>
     <div class="wave" aria-hidden="true">${Array.from({length:14}, (_,i) => `<i style="--d:${(i*67) % 480}ms"></i>`).join('')}</div>
-    <div class="tx-body"><span class="tx-to">${txTo(tx)}</span><p class="tx-msg">“${esc(tx.text)}”</p><span class="tx-from">${tx.kind === 'crew' ? (tx.from === LJ.viewer ? 'From: you (they don’t know that)' : 'From: someone in this car') : tx.kind === 'roast' ? 'From: Spaceman' : 'From: Commander Atlas, Mission Control'}</span><div class="tx-actions" id="tx-actions">${txActions(tx)}</div></div></div>`;
+    <div class="tx-body"><span class="tx-to">${txTo(tx)}</span><p class="tx-msg">“${esc(tx.text)}”</p><span class="tx-from">${tx.kind === 'crew' ? (tx.anon === false ? `From: ${esc(viewName(tx.from))}` : tx.from === LJ.viewer ? 'From: you (they don’t know that)' : 'From: someone in this car') : tx.kind === 'roast' ? 'From: Spaceman' : 'From: Commander Atlas, Mission Control'}</span><div class="tx-actions" id="tx-actions">${txActions(tx)}</div></div></div>`;
   live.appendChild(box); delete LJ.cache['tx-actions']; haptic();
   const id = tx.id, still = () => LJ && LJ.S.tx && LJ.S.tx.id === id && $('#tx', live);
   if (LJ.introTx === id){ box.classList.add('open'); setText('tx-status', 'Voice transmission'); return; }
@@ -6057,16 +6466,14 @@ function txOverlay(){
 }
 
 function txSheet(){
-  const d = S.tx, St = LJ.S;
-  const targets = [['crew','Entire crew'], ['captain',`Captain ${capName()}`], ...St.crew.filter(id => id !== St.captain && id !== LJ.viewer).map(id => [id, viewName(id)])];
-  if (!targets.some(t => t[0] === d.to)) d.to = 'crew'; if (!['1','2','5','custom'].includes(d.when)) d.when = '2';
-  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Transmission</span><h2 class="display" style="font-size:22px">Send a transmission</h2></div>
-    <label class="field area" for="tx-text"><textarea id="tx-text" maxlength="140" rows="2" placeholder="Message. It gets read out. Nobody knows it was you."></textarea></label>
-    <div class="tx-row"><label class="tx-to-sel" for="tx-to"><span class="eyebrow">To</span><select id="tx-to" data-txsel>${targets.map(([v, l]) => `<option value="${v}" ${d.to === v ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select></label></div>
-    <section class="stack-v"><h3 class="eyebrow">Send in</h3><nav class="seg" aria-label="Send time">${[['1','1 min'],['2','2 min'],['5','5 min'],['custom','Custom']].map(([v,l]) => `<button data-txwhen="${v}" aria-pressed="${d.when === v}">${l}</button>`).join('')}</nav>
+  const d = S.tx; if (!['1','2','5','10','custom'].includes(d.when)) d.when = '2'; if (typeof d.anon !== 'boolean') d.anon = true;
+  openSheet(`<div class="sheet-title"><span class="eyebrow ion">Transmission</span><h2 class="display" style="font-size:22px">Message the whole crew</h2></div>
+    <label class="field area" for="tx-text"><textarea id="tx-text" maxlength="140" rows="2" placeholder="Message. It’s read out to everyone."></textarea></label>
+    <section class="stack-v" style="gap:8px"><h3 class="eyebrow">Minutes until send</h3><nav class="seg" aria-label="Minutes until send">${[['1','1'],['2','2'],['5','5'],['10','10'],['custom','Custom']].map(([v,l]) => `<button data-txwhen="${v}" aria-pressed="${d.when === v}">${l}</button>`).join('')}</nav>
       <label class="field tx-custom" for="tx-min" ${d.when === 'custom' ? '' : 'hidden'}><input id="tx-min" type="number" inputmode="numeric" min="1" max="60" placeholder="Minutes (1–60)"></label></section>
+    <div class="row"><span class="grow"><b>Anonymous transmission</b><span>${d.anon ? 'Nobody will know it was you' : 'Your name is shown'}</span></span><button class="switch" role="switch" id="tx-anon" aria-checked="${d.anon}" aria-label="Anonymous transmission" data-txanon></button></div>
     <p class="auth-err" id="tx-err" role="alert"></p>
-    <button class="btn btn-primary btn-lg btn-block" data-action="tx-queue">${ic('signal',18)}Send</button>`);
+    <div class="tx-send-row"><button class="btn btn-secondary btn-lg" data-action="tx-queue" data-now="1">Send now</button><button class="btn btn-primary btn-lg" data-action="tx-queue">${ic('signal',18)}Send later</button></div>`);
 }
 
 
@@ -6196,13 +6603,13 @@ const LIVE_ACTIONS = {
   'el-test': () => { if (EL.testing) return; Voice.unlock(); EL.test(elForm()).then(ok => { if (ok) toast('ElevenLabs connected'); }); },
   warp: () => { Transport.send({type:'warp', mins:5}); closeSheet(); toast('Warped 5 mission minutes'); },
   'tx-new': () => txSheet(),
-  'tx-queue': () => {
-    const text = ($('#tx-text')?.value || '').replace(/\s+/g, ' ').trim();
+  'tx-queue': el => {
+    const text = ($('#tx-text')?.value || '').replace(/\s+/g, ' ').trim(), now = !!(el && el.dataset && el.dataset.now);
     if (!text){ setText('tx-err', 'Write a message first.'); return; }
-    const to = $('#tx-to')?.value || S.tx.to, mins = S.tx.when === 'custom' ? Math.round(Number($('#tx-min')?.value)) : +S.tx.when;
-    if (!Number.isFinite(mins) || mins < 1 || mins > 60){ setText('tx-err', 'Pick a time between 1 and 60 minutes.'); return; }
-    Transport.send({type:'tx-send', to, text, when:mins}); S.tx = {to:'crew', when:'2'};
-    closeSheet(); toast(`Transmission queued for ${mins} min. Act natural.`);
+    const mins = now ? 0 : S.tx.when === 'custom' ? Math.round(Number($('#tx-min')?.value)) : +S.tx.when;
+    if (!Number.isFinite(mins) || mins < 0 || mins > 60 || (!now && mins < 1)){ setText('tx-err', 'Pick a time between 1 and 60 minutes.'); return; }
+    Transport.send({type:'tx-send', to:'crew', text, when:mins, anon:S.tx.anon}); const anon = S.tx.anon; S.tx = {to:'crew', when:'2', anon};
+    closeSheet(); toast(now ? 'Sent to the whole crew.' : `Transmission queued for ${mins} min.${anon ? ' Act natural.' : ''}`);
   },
   'tx-read': () => { if (LJ && LJ.S.tx && !Voice.speak(txSpeech(LJ.S.tx))) toast('Voice isn’t available in this browser. Read it out.'); },
   'tx-close': () => { if (!LJ || !LJ.S.tx) return; loc().hiddenTx = LJ.S.tx.id; Voice.stop(); txOverlay(); }
@@ -6379,6 +6786,7 @@ function showAuth(){
     <form id="auth-form" class="stack-v" style="--i:2" novalidate>
       <label class="field" for="auth-email">${ic('mail',18)}<input id="auth-email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" placeholder="you@example.com"></label>
       <div id="code-wrap" hidden><label class="field" for="auth-code">${ic('gift',18)}<input id="auth-code" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="Claim code, e.g. SPC-7Q4K" maxlength="12"></label></div>
+      <div id="otp-wrap" hidden><label class="field" for="auth-otp">${ic('mail',18)}<input id="auth-otp" inputmode="numeric" autocomplete="one-time-code" spellcheck="false" placeholder="Code from your email" maxlength="10"></label></div>
       <p class="auth-err" id="auth-err" role="alert"></p>
       <button class="btn btn-primary btn-lg btn-block" id="auth-go" type="submit">Continue</button>
       <button class="link-btn" type="button" data-action="show-code" style="align-self:center">${ic('gift',16)}Got a claim code from a friend?</button>
@@ -6397,6 +6805,18 @@ function enterApp(after){
   render(); Spotify.boot();                                          /* finishes a Spotify sign-in that came back while signed out */
   if (after) setTimeout(after, reduce ? 0 : 450);
 }
+/* Cloud login: email a one-time code, then pull this email's saved account onto this device */
+async function cloudLogin(email, claim){
+  const wrap = $('#otp-wrap'), err = $('#auth-err'), btn = $('#auth-go'), otp = $('#auth-otp'); if (!wrap) return;
+  const busy = on => { btn.disabled = on; };
+  try {
+    if (wrap.hidden || !otp.value.trim()){
+      busy(true); err.textContent = ''; await Cloud.sendCode(email); wrap.hidden = false; otp.focus(); err.style.color = 'var(--fg-2)'; err.textContent = `We emailed a code to ${email}. Enter it above.`; btn.textContent = 'Verify and continue'; busy(false); return;
+    }
+    busy(true); err.style.color = ''; err.textContent = ''; await Cloud.verify(email, otp.value);
+    await Cloud.adopt(email).catch(() => {}); go(email, claim);
+  } catch (e) { busy(false); err.style.color = ''; err.textContent = e.message; }
+}
 function go(email, code){
   const btn = $('#auth-go'), created = authenticate(email);
   let after = null;
@@ -6405,7 +6825,9 @@ function go(email, code){
   if (btn){ btn.disabled = true; btn.innerHTML = `${ic('check',20,2.4)}${msg}`; } else toast(msg);
   setTimeout(() => enterApp(after), reduce ? 0 : (btn ? 800 : 150));
 }
-function signOut(){
+async function signOut(){
+  const u = cur(); let synced = false;
+  if (u && Cloud.enabled() && Cloud.has(u.email)){ synced = await Cloud.flush(); if (synced){ delete DB.users[u.email]; } Cloud.setSess(null); }      /* a synced account leaves this device when you log out; the cloud copy keeps it */
   DB.session = null; persist(); if (!sheet.hidden){ sheet.hidden = true; sheet.innerHTML = ''; sheet.classList.remove('open'); } closeLive();
   if (location.hash !== '#home') history.replaceState(null, '', '#home');
   showAuth();
@@ -6430,6 +6852,12 @@ const ACTIONS = {
   'go-with': (t, d) => { launchCfg().crew = [d.id]; persist(); closeSheet(); navTo('#go'); },
   'open-friend': (t, d) => friendSheet(d.id),
   switch: () => signOut(),
+  'cloud-sync': () => { if (cur() && !Cloud.has(cur().email)) return signOut(); Cloud.sync(false); },
+  'mem-select': () => { memSel = memSel ? null : new Set(); refresh(); },
+  'mem-all': () => { if (!memSel) return; memSel = memSel.size === JOURNEYS.length ? new Set() : new Set(JOURNEYS.map(j => j.id)); refresh(); },
+  'mem-del': t => { if (memSel && memSel.size) confirmTwice(t, () => { const n = deleteJourneys([...memSel]); memSel = null; toast(`${plural(n, 'journey')} deleted`); refresh(); }); },
+  'mem-clear': t => confirmTwice(t, () => { const n = deleteJourneys(JOURNEYS.map(j => j.id)); memSel = null; toast(n ? 'Journey history cleared' : 'Nothing to clear'); refresh(); }),
+  'mem-del-one': (t, d) => confirmTwice(t, () => { deleteJourneys([d.id]); closeSheet(); toast('Journey deleted'); refresh(); }),
   sample: () => { loadSample(); toast('Sample data loaded'); refresh(); },
   reset: (t, d) => confirmTwice(t, () => { resetAccount(); toast('Account reset'); refresh(); }),
   delete: (t, d) => confirmTwice(t, () => { deleteAccount(); showAuth(); }),
@@ -6448,11 +6876,11 @@ document.addEventListener('click', e => {
   const d = t.dataset;
   if ('close' in d && !d.action){ if (t.tagName === 'A') { closeSheet(); return; } return closeSheet(); }
   if (d.avopt){ const [k, v] = d.avopt.split(':'); return setAvatar({[k]:v}); }
-  if (d.acct) return go(d.acct);
+  if (d.acct){ if (Cloud.enabled() && !Cloud.has(d.acct)){ const i = $('#auth-email'); if (i) i.value = d.acct; return cloudLogin(d.acct, ''); } return go(d.acct); }
   if (d.copy) return copyText(d.copy);
   if (d.addfriend){ const r = addFriend(d.addfriend); if (r.err) return toast(r.err); closeSheet(); toast(`${r.ok} added to your crew`); return; }
   if (d.f) return friendSheet(d.f);
-  if (d.mem) return memorySheet(d.mem);
+  if (d.mem){ if (memSel && location.hash === '#memories'){ memSel.has(d.mem) ? memSel.delete(d.mem) : memSel.add(d.mem); return refresh(); } return memorySheet(d.mem); }
   if (d.ach) return achSheet(d.ach);
   if (d.ms){ const [fid, k] = d.ms.split('|'); return msSheet(fid, k); }
   if (d.guest) return inviteSheet(d.guest);
@@ -6466,6 +6894,7 @@ document.addEventListener('click', e => {
   if (d.seat){ launchCfg().seat = d.seat; document.querySelectorAll('[data-seat]').forEach(b => b.setAttribute('aria-pressed', b.dataset.seat === d.seat)); persist(); return; }
   if (d.live){ if (!t.disabled) liveAct(d.live); return; }
   if (d.txto){ S.tx.to = d.txto; document.querySelectorAll('[data-txto]').forEach(b => b.setAttribute('aria-pressed', b.dataset.txto === d.txto)); return; }
+  if (d.txanon !== undefined){ S.tx.anon = !S.tx.anon; const b = $('#tx-anon'); if (b){ b.setAttribute('aria-checked', S.tx.anon); b.closest('.row').querySelector('.grow span').textContent = S.tx.anon ? 'Nobody will know it was you' : 'Your name is shown'; } return; }
   if (d.txwhen){ S.tx.when = d.txwhen; document.querySelectorAll('[data-txwhen]').forEach(b => b.setAttribute('aria-pressed', b.dataset.txwhen === d.txwhen)); const c = $('.tx-custom'); if (c){ c.hidden = d.txwhen !== 'custom'; if (!c.hidden) $('#tx-min')?.focus(); } return; }
   if (d.txidea){ const a = $('#tx-text'); if (a) a.value = d.txidea; setText('tx-err',''); return; }
   if (d.rate){ const [jid, k, n] = d.rate.split('|'); return setRating(jid, k, +n); }
@@ -6484,6 +6913,7 @@ document.addEventListener('submit', e => {
     if (code){ const f = findClaim(code);
       if (!f){ $('#auth-err').textContent = 'That claim code doesn’t match any saved miles on this device.'; return; }
       if (f.owner.email === v){ $('#auth-err').textContent = 'That’s your own invite code. Send it to your friend instead.'; return; } }
+    if (Cloud.enabled() && !Cloud.has(v)) return cloudLogin(v, code);
     go(v, code);
   }
   if (id === 'friend-form'){ const r = addFriend($('#friend-email').value); if (r.err){ $('#friend-err').textContent = r.err; return; } closeSheet(); toast(`${r.ok} added to your crew`); }
@@ -6679,7 +7109,6 @@ const Spotify = {
   },
   async control(act){
     if (!LJ) return;
-    if (this.st().demo) return demoControl(act);
     if (!this.canControl()) return toast('Reconnect Spotify after this mission to use the controls');
     const cur0 = this.now, playing = !!(cur0 && cur0.playing);
     const path = act === 'next' ? ['/me/player/next', 'POST'] : act === 'prev' ? ['/me/player/previous', 'POST'] : playing ? ['/me/player/pause', 'PUT'] : ['/me/player/play', 'PUT'];
@@ -6717,18 +7146,14 @@ const Spotify = {
     const r = await this.api('/me/player?additional_types=track');
     if (r.err){ if (r.err === 'auth' || r.err === 'forbidden') this.fail(r.err); return this.now; }
     const d = r.data; if (!d || !d.item || (d.currently_playing_type && d.currently_playing_type !== 'track')){ this.now = null; return null; }
-    this.now = {id:d.item.id, n:d.item.name, a:(d.item.artists[0] || {}).name || '', art:imgOf(d.item.album && d.item.album.images, 64), url:safeUrl(d.item.external_urls && d.item.external_urls.spotify), playing:!!d.is_playing, dev:d.device && d.device.name || ''};
+    this.now = {ctx:(d.context && d.context.uri) || '', id:d.item.id, n:d.item.name, a:(d.item.artists[0] || {}).name || '', art:imgOf(d.item.album && d.item.album.images, 64), url:safeUrl(d.item.external_urls && d.item.external_urls.spotify), playing:!!d.is_playing, dev:d.device && d.device.name || ''};
     return this.now;
   },
   /* ---- state changes ---- */
   disconnect(){
     const u = cur(), o = SpStore.read(); if (o.tok) delete o.tok[u.id]; delete o.pending; o.retry = true; SpStore.write(o); spLog('disconnected');
-    u.spotify = {on:false, demo:false, demoCrew:u.spotify.demoCrew !== false, status:'off', err:'', profile:null, at:0};      /* data goes with the connection */
+    u.spotify = {on:false, demo:false, status:'off', err:'', profile:null, at:0};      /* data goes with the connection */
     this.now = null; persist(); this.pushToJourney(); this.redraw();
-  },
-  demo(){
-    const u = cur(); u.spotify = {...u.spotify, on:true, demo:true, status:'ok', err:'', profile:DEMO_ME, at:Date.now()};
-    S.settings.spotifyShare = true; u.settings = {...S.settings}; persist(); this.pushToJourney(); this.redraw();
   },
   shareChanged(){ this.pushToJourney(); this.redraw(); },
   pushToJourney(){ if (LJ && LJ.viewer === ME.id) Transport.send({type:'music-set', by:ME.id, p:this.sharing() ? this.engine() : null}); },
@@ -6736,110 +7161,52 @@ const Spotify = {
   async boot(){ if (!cur()) return; const handled = await this.callback(); if (!handled && this.connected() && !this.st().demo) this.sync(false); }
 };
 
-/* ---- demo provider: simulated crew who have "connected" and chosen to share (Lewis has opted out; guests have no account) ---- */
-const mp = (genres, artists, tracks, recent) => ({genres, artists:artists.map(n => ({n})), tracks:tracks.map(([n, a]) => ({n, a})), recent});
-function spRecent(spec){
-  const out = []; spec.forEach(([n, a, k, h]) => { for (let i = 0; i < k; i++) out.push({n, a, h:h ?? 12 + (i % 6)}); });
-  const r = rng('recent' + out.length + spec.length); for (let i = out.length - 1; i > 0; i--){ const k = Math.floor(r()*(i + 1)); [out[i], out[k]] = [out[k], out[i]]; }
-  return out;
-}
-const DEMO_ME = mp(['indie rock', 'alternative rock', 'pop punk'], ['Arctic Monkeys', 'The Killers', 'Oasis', 'Blink-182', 'Green Day'],
-  [['Do I Wanna Know?', 'Arctic Monkeys'], ['Mr. Brightside', 'The Killers'], ['Wonderwall', 'Oasis'], ['All The Small Things', 'Blink-182'], ['Boulevard of Broken Dreams', 'Green Day']],
-  spRecent([['Do I Wanna Know?', 'Arctic Monkeys', 5], ['Mr. Brightside', 'The Killers', 4], ['Wonderwall', 'Oasis', 3], ['All The Small Things', 'Blink-182', 4], ['Basket Case', 'Green Day', 3], ['R U Mine?', 'Arctic Monkeys', 3], ['Champagne Supernova', 'Oasis', 2], ['Somebody Told Me', 'The Killers', 3], ['Dammit', 'Blink-182', 2], ['Brianstorm', 'Arctic Monkeys', 2], ['When I Come Around', 'Green Day', 3], ['Human', 'The Killers', 2], ['Live Forever', 'Oasis', 2], ['What I Got', 'Sublime', 2], ['Seven Nation Army', 'The White Stripes', 2], ['Last Nite', 'The Strokes', 3], ['Take Me Out', 'Franz Ferdinand', 2], ['Float On', 'Modest Mouse', 3]]));
-const SAMPLE_MUSIC = {
-  connor:mp(['indie folk', 'sad indie', 'bedroom pop'], ['Bon Iver', 'Phoebe Bridgers', 'Fleet Foxes', 'Elliott Smith', 'Mitski'],
-    [['Skinny Love', 'Bon Iver'], ['Motion Sickness', 'Phoebe Bridgers'], ['Holocene', 'Bon Iver'], ['Between the Bars', 'Elliott Smith'], ['I Know the End', 'Phoebe Bridgers']],
-    spRecent([['Skinny Love', 'Bon Iver', 6], ['Skinny Love', 'Bon Iver', 2, 2], ['Funeral', 'Phoebe Bridgers', 5], ['Motion Sickness', 'Phoebe Bridgers', 5], ['Holocene', 'Bon Iver', 4], ['Between the Bars', 'Elliott Smith', 5], ['Washing Machine Heart', 'Mitski', 4], ['I Know the End', 'Phoebe Bridgers', 5], ['White Winter Hymnal', 'Fleet Foxes', 4], ['Lonely', 'Elliott Smith', 3], ['Goodbye', 'Fleet Foxes', 3], ['Your Best American Girl', 'Mitski', 3]])),
-  megan:mp(['80s rock', 'soft rock', 'glam metal'], ['Queen', 'Journey', 'Fleetwood Mac', 'The Killers', 'Bon Jovi'],
-    [['Don’t Stop Believin’', 'Journey'], ['Bohemian Rhapsody', 'Queen'], ['Go Your Own Way', 'Fleetwood Mac'], ['Livin’ On A Prayer', 'Bon Jovi'], ['Mr. Brightside', 'The Killers']],
-    spRecent([['Don’t Stop Believin’', 'Journey', 14], ['Bohemian Rhapsody', 'Queen', 8], ['Go Your Own Way', 'Fleetwood Mac', 7], ['Livin’ On A Prayer', 'Bon Jovi', 6], ['Mr. Brightside', 'The Killers', 5], ['Separate Ways', 'Journey', 6], ['Dreams', 'Fleetwood Mac', 4]])),
-  thomas:mp(['uk hip hop', 'drill', 'grime'], ['Central Cee', 'Dave', 'Stormzy', 'Skepta', 'Little Simz'],
-    [['Doja', 'Central Cee'], ['Starlight', 'Dave'], ['Shut Up', 'Stormzy'], ['That’s Not Me', 'Skepta'], ['Introvert', 'Little Simz']],
-    spRecent([['Doja', 'Central Cee', 9], ['Sprinter', 'Dave', 9], ['Shut Up', 'Stormzy', 8], ['That’s Not Me', 'Skepta', 8], ['Introvert', 'Little Simz', 8], ['Band4Band', 'Central Cee', 8]])),
-  zac:mp(['indie rock', 'britpop', 'alternative rock'], ['The Killers', 'Arctic Monkeys', 'Oasis', 'Blur', 'The Strokes'],
-    [['Mr. Brightside', 'The Killers'], ['Do I Wanna Know?', 'Arctic Monkeys'], ['Wonderwall', 'Oasis'], ['Song 2', 'Blur'], ['Last Nite', 'The Strokes']],
-    spRecent([['Mr. Brightside', 'The Killers', 5], ['Do I Wanna Know?', 'Arctic Monkeys', 4], ['Wonderwall', 'Oasis', 4], ['Song 2', 'Blur', 3], ['Last Nite', 'The Strokes', 4], ['Cigarettes & Alcohol', 'Oasis', 3], ['Parklife', 'Blur', 3], ['Reptilia', 'The Strokes', 3], ['R U Mine?', 'Arctic Monkeys', 4], ['Human', 'The Killers', 3], ['Roll With It', 'Oasis', 3], ['Girls & Boys', 'Blur', 3], ['Fluorescent Adolescent', 'Arctic Monkeys', 3], ['Somebody Told Me', 'The Killers', 3]])),
-  seb:mp(['house', 'uk garage', 'edm'], ['Fred again..', 'Disclosure', 'Calvin Harris', 'Chase & Status', 'Jamie xx'],
-    [['Delilah (pull me out of this)', 'Fred again..'], ['Latch', 'Disclosure'], ['Summer', 'Calvin Harris'], ['Baddadan', 'Chase & Status'], ['Loud Places', 'Jamie xx']],
-    spRecent([['Delilah (pull me out of this)', 'Fred again..', 5], ['Latch', 'Disclosure', 4], ['Summer', 'Calvin Harris', 4], ['Baddadan', 'Chase & Status', 4], ['Loud Places', 'Jamie xx', 4], ['Marea (we’ve lost dancing)', 'Fred again..', 4], ['White Ferrari', 'Jamie xx', 3], ['Hold On', 'Chase & Status', 3], ['Bangarang', 'Skrillex', 3], ['This Is What You Came For', 'Calvin Harris', 4], ['Ecstasy', 'Disclosure', 3], ['Gecko', 'Oliver Heldens', 3], ['Rinse & Repeat', 'Riton', 3]])),
-  ollie:mp(['pop', 'dance pop', 'k-pop'], ['Dua Lipa', 'Olivia Rodrigo', 'Taylor Swift', 'Harry Styles', 'Sabrina Carpenter'],
-    [['Houdini', 'Dua Lipa'], ['vampire', 'Olivia Rodrigo'], ['Anti-Hero', 'Taylor Swift'], ['As It Was', 'Harry Styles'], ['Espresso', 'Sabrina Carpenter']],
-    spRecent([['Houdini', 'Dua Lipa', 4], ['vampire', 'Olivia Rodrigo', 4], ['Anti-Hero', 'Taylor Swift', 5], ['As It Was', 'Harry Styles', 4], ['Espresso', 'Sabrina Carpenter', 5], ['Levitating', 'Dua Lipa', 3], ['good 4 u', 'Olivia Rodrigo', 3], ['Cruel Summer', 'Taylor Swift', 4], ['Watermelon Sugar', 'Harry Styles', 3], ['Please Please Please', 'Sabrina Carpenter', 4], ['Dynamite', 'BTS', 3], ['Padam Padam', 'Kylie Minogue', 4]])),
-  lewis:null
-};
-function demoMusicFor(id){
-  if (id in SAMPLE_MUSIC) return SAMPLE_MUSIC[id];
-  if (String(id).startsWith('g_')) return null;                                         /* guests have no Spotify */
-  const r = rng('mus' + id); return SAMPLE_MUSIC[['seb', 'ollie', 'zac'][Math.floor(r()*3)]];
+/* ---- crew music: only real accounts that connected Spotify and chose to share. Nothing is simulated. ---- */
+function sharedMusicFor(id){
+  const o = Object.values(DB.users).find(x => x.id === id); if (!o || (cur() && o.id === cur().id)) return null;
+  const sp = o.spotify; return sp && sp.on && !sp.demo && sp.profile && o.settings && o.settings.spotifyShare ? sp.profile : null;
 }
 function journeyMusic(crew){
   const out = {}, s = cur().spotify; if (!s || !s.on) return out;
   if (Spotify.sharing()) out[ME.id] = Spotify.engine();
-  if (s.demoCrew) crew.forEach(id => { if (id === ME.id) return; const p = demoMusicFor(id); if (p) out[id] = Spotify.engine(p); });
+  crew.forEach(id => { if (id === ME.id) return; const p = sharedMusicFor(id); if (p) out[id] = Spotify.engine(p); });
   return out;
 }
 const trimMusic = m => m && (m.plays || m.crewFav || m.moments.length || m.awards.length) ? m : null;
 
-/* ---- live: this phone's real playback, plus simulated crew phones in Simulation Mode ---- */
+/* ---- live: this phone's real playback only (no simulated songs) ---- */
 function musicTick(now){
-  if (!LJ) return; const S = LJ.S;
+  if (!LJ) return;
   if (now > LJ.nextPoll){ LJ.nextPoll = now + 12000;
-    if (Spotify.connected() && !Spotify.st().demo && LJ.viewer === ME.id) Spotify.pollNow().then(n => {
-      if (!LJ) return; const k = n ? n.id : '';
-      const pl = !!(n && n.playing);
-      if (n && Spotify.sharing() && k !== LJ.lastTrack){ LJ.lastTrack = k; LJ.lastPlaying = pl; Transport.send({type:'song', by:ME.id, track:{n:n.n, a:n.a, art:n.art, url:n.url}}); } else if (k !== LJ.lastTrack || pl !== LJ.lastPlaying){ LJ.lastTrack = k; LJ.lastPlaying = pl; paint(); } }); }
-  if (now > LJ.nextSong){ LJ.nextSong = now + 150000 + Math.random()*90000;
-    const ids = Object.keys(S.music).filter(id => id !== ME.id || Spotify.st().demo); if (S.pace !== 'real' && ids.length){
-      const id = ids[Math.floor(Math.random()*ids.length)], p = id === ME.id ? Spotify.st().profile : demoMusicFor(id), pool = [...(p.tracks || []), ...(p.recent || [])];
-      if (pool.length){ const t = pool[Math.floor(Math.random()*pool.length)]; Transport.send({type:'song', by:id, track:{n:t.n, a:t.a}}); } } }
+    if (Spotify.connected() && LJ.viewer === ME.id) Spotify.pollNow().then(n => {
+      if (!LJ) return; const k = n ? n.id : '', pl = !!(n && n.playing);
+      if (n && pl && Spotify.sharing() && k !== LJ.lastTrack){ LJ.lastTrack = k; LJ.lastPlaying = pl; Transport.send({type:'song', by:ME.id, track:{n:n.n, a:n.a, art:n.art, url:n.url, ctx:n.ctx, ts:Date.now()}}); } else if (k !== LJ.lastTrack || pl !== LJ.lastPlaying){ LJ.lastTrack = k; LJ.lastPlaying = pl; paint(); } }); }
 }
 function musicBarHTML(){
   const S = LJ.S, s = cur().spotify, now = S.now && S.music[S.now.by] ? S.now : null;
-  /* ⏮ ⏯ ⏭ belong to whoever's Spotify it is: this phone's own playback, or every track in demo music (where Spaceman plays the aux) */
-  const meHere = LJ.viewer === ME.id && s.on, ctl = meHere && (s.demo || (now && now.by === ME.id) || (!now && Spotify.sharing()));
-  const btns = playing => `<span class="mus-c" role="group" aria-label="Playback controls">
+  if (!now) return '';
+  const mine = now.by === ME.id && LJ.viewer === ME.id && s.on && Spotify.connected();
+  if (mine && !(Spotify.now && Spotify.now.playing)) return '';                       /* paused or stopped: nothing to show */
+  if (!mine && S.min - now.at > 8) return '';                                         /* someone else's song that probably ended */
+  const jam = S.jam && S.jam.ids.includes(now.by) && S.min - S.jam.at < 10 ? S.jam : null;
+  const btns = `<span class="mus-c" role="group" aria-label="Playback controls">
       <button class="mc" data-action="sp-ctl" data-c="prev" aria-label="Previous track">${ic('mPrev',16)}</button>
-      <button class="mc pp" data-action="sp-ctl" data-c="toggle" aria-label="${playing ? 'Pause' : 'Play'}" aria-pressed="${!playing}">${ic(playing ? 'mPause' : 'mPlay',16)}</button>
+      <button class="mc pp" data-action="sp-ctl" data-c="toggle" aria-label="Pause">${ic('mPause',16)}</button>
       <button class="mc" data-action="sp-ctl" data-c="next" aria-label="Next track">${ic('mNext',16)}</button></span>`;
-  if (now){
-    const mine = now.by === ME.id, paused = s.demo ? !!LJ.demoPaused : mine && Spotify.connected() && (Spotify.now === null ? LJ.lastTrack === '' : !Spotify.now.playing);
-    const art = safeUrl(now.art) ? `<img class="art" src="${esc(now.art)}" alt="" referrerpolicy="no-referrer">` : `<span class="art">${ic('music',16)}</span>`;
-    const txt = `<span class="txt"><b>${esc(now.n)}</b><small>${paused ? 'Paused · ' : ''}${esc(now.a)}${S.crew.length > 1 ? ` · ${esc(viewName(now.by))}’s aux` : ''}</small></span>`;
-    const url = safeUrl(now.url), label = `Now playing: ${esc(now.n)} by ${esc(now.a)}`;
-    if (ctl){
-      const info = url ? `<a class="mus-l" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${label}. Open in Spotify">${art}${txt}</a>` : `<span class="mus-l" role="status" aria-label="${label}">${art}${txt}</span>`;
-      return `<div class="mus has-c ${paused ? 'paused' : ''}">${info}${btns(!paused)}${spLogo(16)}</div>`;
-    }
-    const inner = `${art}${txt}${paused ? '' : '<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>'}${spLogo(18)}`;
-    return url ? `<a class="mus" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${label}. Open in Spotify">${inner}</a>` : `<div class="mus" role="status" aria-label="${label}">${inner}</div>`;
+  const art = safeUrl(now.art) ? `<img class="art" src="${esc(now.art)}" alt="" referrerpolicy="no-referrer">` : `<span class="art">${ic('music',16)}</span>`;
+  const sub = jam ? `🎵 Listening together · ${esc(jam.ids.map(viewName).join(' + '))}` : `${esc(now.a)}${S.crew.length > 1 ? ` · ${esc(viewName(now.by))}’s aux` : ''}`;
+  const txt = `<span class="txt"><b>${esc(now.n)}</b><small>${sub}</small></span>`, url = safeUrl(now.url), label = `Now playing: ${esc(now.n)} by ${esc(now.a)}`;
+  if (mine){
+    const info = url ? `<a class="mus-l" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${label}. Open in Spotify">${art}${txt}</a>` : `<span class="mus-l" role="status" aria-label="${label}">${art}${txt}</span>`;
+    return `<div class="mus has-c">${info}${btns}${spLogo(16)}</div>`;
   }
-  if (S.ev || (S.ch && !(S.ch.phase === 'done' && !S.ch.result))) return '';   /* v1.3: the connect prompt waits for a breather, so games and events keep the room */
-  const idle = (txt, cta) => `<button class="mus idle" data-action="sp-open"><span class="art">${ic('music',16)}</span><span class="txt"><b>${txt}</b></span>${cta ? `<span class="cta">${cta}</span>` : ''}${spLogo(18)}</button>`;
-  if (!s.on) return idle('Add your music to the mission', 'Connect');
-  if (s.status === 'expired') return idle('Spotify needs reconnecting', 'Reconnect');
-  if (s.status === 'forbidden' || s.status === 'unavailable') return idle('Spotify is unavailable right now', '');
-  if (!cur().settings.spotifyShare) return idle('Spotify sharing is off', 'Turn on');
-  if (ctl) return `<div class="mus has-c paused"><button class="mus-l" data-action="sp-open"><span class="art">${ic('music',16)}</span><span class="txt"><b>Nothing playing</b><small>Tap play to resume</small></span></button>${btns(false)}${spLogo(16)}</div>`;
-  return idle('Nothing playing. Start a song in Spotify', '');
-}
-/* Demo music: the controls work on the simulated aux, so the bar can be tried without a Spotify account. */
-function demoControl(act){
-  const S = LJ.S, now = S.now; haptic();
-  if (act === 'toggle'){ LJ.demoPaused = !LJ.demoPaused; LJ.cache['lv-music'] = null; return paint(); }
-  const by = now ? now.by : ME.id, p = by === ME.id ? (cur().spotify.profile || DEMO_ME) : demoMusicFor(by);
-  let t = null;
-  if (act === 'prev'){ const hist = S.songs.filter(x => x.by === by), i = hist.length - 2; t = i >= 0 ? hist[i] : null; if (!t) return toast('That’s the first song of the mission'); }
-  else { const pool = [...((p && p.tracks) || []), ...((p && p.recent) || [])].filter(x => !now || x.n !== now.n); t = pool.length ? pool[Math.floor(Math.random()*pool.length)] : null; }
-  if (!t) return toast('No more demo songs');
-  LJ.demoPaused = false; LJ.nextSong = performance.now() + 150000 + Math.random()*90000;     /* a skip resets the simulated aux's own timer */
-  Transport.send({type:'song', by, track:{n:t.n, a:t.a}});
+  const inner = `${art}${txt}<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>${spLogo(18)}`;
+  return url ? `<a class="mus" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${label}. Open in Spotify">${inner}</a>` : `<div class="mus" role="status" aria-label="${label}">${inner}</div>`;
 }
 function musicMenuRow(){
-  const s = cur().spotify;
-  if (!s.on) return `<button class="row" data-action="sp-open">${spLogo(22)}<span class="grow"><b>Connect Spotify</b><span>Songs, roasts and music moments</span></span></button>`;
+  const s = cur().spotify; if (!s.on) return '';                                       /* not connected: nothing Spotify in the menu */
   return `<div class="row">${spLogo(22)}<span class="grow"><b>🎵 Share Spotify Data</b><span>${cur().settings.spotifyShare ? 'Your music is in this mission' : 'Hidden from the crew'}</span></span><button class="switch" role="switch" aria-checked="${!!cur().settings.spotifyShare}" aria-label="Share Spotify Data" data-toggle="spotifyShare"></button></div>`;
 }
-
 /* ---- profile section ---- */
 function spProfileHTML(p, name, simulated){
   const g = (p.genres || []).slice(0, 5), a = (p.artists || []).slice(0, 5), t = (p.tracks || []).slice(0, 5);
@@ -6854,20 +7221,29 @@ function spProfileHTML(p, name, simulated){
 }
 const spNote = (inner, icon = 'music') => `<div class="sp-sec"><div class="sp-empty"><span class="ic-tile">${ic(icon)}</span><span>${inner}</span></div></div>`;
 function musicSectionHTML(){
-  const u = cur(), s = u.spotify, share = !!u.settings.spotifyShare;
-  const label = !s.on ? 'Connect Spotify' : s.status === 'expired' ? 'Reconnect Spotify' : s.status === 'forbidden' ? 'Spotify access blocked' : s.status === 'unavailable' ? 'Spotify unavailable' : 'Spotify Connected';
-  const sub = !s.on ? 'Roasts, transmissions and crew music moments' : s.demo ? 'Demo account · simulated music' : s.status === 'ok' ? `Updated ${agoText(s.at)}` : s.status === 'expired' ? 'Your session ended. Tap to sign in again' : s.status === 'forbidden' ? 'This Spotify account isn’t allowed on this app yet' : 'Showing your last saved music';
+  const u = cur(), s = u.spotify, share = !!u.settings.spotifyShare; if (!s.on) return '';       /* not connected: no Spotify section at all (the Connect row lives in Settings) */
+  const label = s.status === 'expired' ? 'Reconnect Spotify' : s.status === 'forbidden' ? 'Spotify access blocked' : s.status === 'unavailable' ? 'Spotify unavailable' : 'Spotify Connected';
+  const sub = s.status === 'ok' ? `Updated ${agoText(s.at)}` : s.status === 'expired' ? 'Your session ended. Tap to sign in again' : s.status === 'forbidden' ? 'This Spotify account isn’t allowed on this app yet' : 'Showing your last saved music';
   const head = `<button class="row sp-status" data-action="sp-open">${spLogo(30)}<span class="grow"><b>${label}</b><span>${sub}</span></span><span class="chev">${ic('chevR',18)}</span></button>`;
   const toggle = `<div class="row"><span class="grow"><b>🎵 Share Spotify Data</b><span>${share ? 'Crew sees your music; Spaceman can comment on it' : 'Hidden. No Spotify roasts, questions or profile'}</span></span><button class="switch" role="switch" aria-checked="${share}" aria-label="Share Spotify Data" data-toggle="spotifyShare"></button></div>`;
-  const body = !s.on ? spNote('Connect Spotify and Spaceman will know your crew’s taste. Nothing is shared until you say so.')
-    : !share ? spNote('Your music profile is hidden. Switch on Share Spotify Data to show it and let Spaceman use it.', 'lock')
-    : s.profile ? spProfileHTML(s.profile, 'You', s.demo) : spNote('Your music is still loading. Pull to refresh in a moment.');
+  const body = !share ? spNote('Your music profile is hidden. Switch on Share Spotify Data to show it and let Spaceman use it.', 'lock') : s.profile ? spProfileHTML(s.profile, 'You', false) : spNote('Your music is still loading. Pull to refresh in a moment.');
   return `<section>${secH('Music')}<div class="list">${head}${toggle}</div>${body}</section>`;
 }
+const spConnectRow = () => cur().spotify.on ? '' : `<button class="row" data-action="sp-open">${spLogo(22)}<span class="grow"><b>Connect Spotify</b><span>Optional. Shows what you’re playing to your crew</span></span><span class="chev">${ic('chevR',18)}</span></button>`;
 function friendMusicHTML(id){
-  const s = cur().spotify; if (!s || !s.on || !s.demoCrew) return '';
-  const p = demoMusicFor(id), name = PEOPLE[id].name;
-  return `<section>${p ? spProfileHTML(p, name, true) : spNote(`${esc(name)} isn’t sharing Spotify data, so their music stays private.`, 'lock')}</section>`;
+  const p = sharedMusicFor(id); return p ? `<section>${spProfileHTML(p, PEOPLE[id].name, false)}</section>` : '';
+}
+/* Player card (in a mission): only for players who opted in to sharing */
+function playerMusicHTML(id){
+  const S = LJ.S, m = S.music[id]; if (!m) return '';
+  const raw = id === ME.id ? cur().spotify.profile : sharedMusicFor(id), g = ((raw && raw.genres) || m.genres || []).slice(0, 3), a = (raw && raw.artists ? raw.artists.map(x => x.n) : m.artists || []).slice(0, 3);
+  const playing = S.now && S.now.by === id && S.min - S.now.at < 8 && !(id === ME.id && !(Spotify.now && Spotify.now.playing)) ? S.now : null;
+  const jam = S.jam && S.jam.ids.includes(id) && S.min - S.jam.at < 10 ? S.jam : null;
+  return `<section class="stack-v"><h3 class="eyebrow">${spLogo(14)} Spotify Connected</h3>
+    ${playing ? `<div class="row card"><span class="grow"><span class="sp-sub">Currently playing</span><b>${esc(playing.n)}</b><span>${esc(playing.a)}</span></span></div>` : ''}
+    ${jam ? `<div class="row card"><span class="grow"><b>🎵 Listening together</b><span>${esc(jam.ids.map(viewName).join(' + '))}</span></span></div>` : ''}
+    ${g.length ? `<span class="sp-sub">Top genres</span><div class="sp-chips">${g.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}
+    ${a.length ? `<span class="sp-sub">Top artists</span><div class="sp-chips">${a.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : ''}</section>`;
 }
 
 /* ---- recap + memory ---- */
@@ -6935,11 +7311,10 @@ function spotifySheet(view){
         ${issue ? `<p class="small" style="color:var(--flare)">${esc(issue)}</p>` : ''}
         <button class="btn btn-primary btn-block" data-action="sp-connect">${spLogo(20)}Connect Spotify</button>
         <button class="btn btn-ghost btn-block" data-action="sp-forget">Clear app settings</button></div>
-      ${s.on ? '' : `<button class="btn btn-ghost btn-lg btn-block" data-action="sp-demo">${ic('sparkle',18)}Try the demo (no Spotify account)</button>`}${logBox}`;
+      ${logBox}`;
   } else if (s.on){
     const st = s.status === 'ok' ? 'Spotify Connected' : s.status === 'expired' ? 'Reconnect needed' : s.status === 'forbidden' ? 'Access blocked' : 'Spotify unavailable';
-    body = `<div class="list"><div class="row">${spLogo(30)}<span class="grow"><b>${st}</b><span>${s.demo ? 'Demo account with simulated music' : `Last updated ${agoText(s.at)}`}</span></span></div>${switchRow}
-      <div class="row"><span class="grow"><b>Simulated crew music</b><span>Prototype: friends in this app get demo profiles so you can try crew features</span></span><button class="switch" role="switch" aria-checked="${s.demoCrew !== false}" aria-label="Simulated crew music" data-sp-demo-crew data-action="sp-democrew"></button></div></div>
+    body = `<div class="list"><div class="row">${spLogo(30)}<span class="grow"><b>${st}</b><span>Last updated ${agoText(s.at)}</span></span></div>${switchRow}
       ${s.status === 'forbidden' ? '<p class="small muted">Spotify apps in Development Mode only work for accounts the developer has added (up to five). Add this account in the Spotify developer dashboard under User Management.</p>' : ''}
       ${s.status === 'expired' ? '<p class="small muted">Your Spotify sign-in ended (it was revoked, or the app settings changed). Reconnect to carry on.</p>' : ''}
       <div class="stack-v">${s.demo ? '' : `<button class="btn btn-secondary btn-lg btn-block" data-action="sp-refresh">${ic('swap',18)}Refresh my music</button>`}
@@ -6950,7 +7325,6 @@ function spotifySheet(view){
   } else {
     body = `<ul class="sp-steps"><li>Reads your top artists, top tracks and recently played, plus what’s playing now.</li><li>Stores artist and track names, artwork links and the hour of recent plays. Nothing else.</li><li>Never changes your playlists and never posts anywhere. It only touches playback when you press ⏮ ⏯ ⏭ in a mission (Spotify Premium).</li><li>Shared with your crew only while Share Spotify Data is on.</li></ul>
       <div class="stack-v"><button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">${spLogo(20)}Connect Spotify</button>
-      <button class="btn btn-ghost btn-lg btn-block" data-action="sp-demo">${ic('sparkle',18)}Try the demo (no Spotify account)</button>
       <button class="btn btn-ghost btn-block" data-action="sp-setup">Spotify app settings</button></div>`;
   }
   openSheet(`<div data-sp-sheet class="stack-v" style="gap:16px"><div class="sheet-title"><span class="eyebrow ion">Music</span><h2 class="display" style="font-size:24px">${title}</h2></div>${body}
@@ -6963,17 +7337,18 @@ Object.assign(ACTIONS, {
   'sp-connect': () => Spotify.begin(true),
   'sp-reset': () => { Spotify.reset(); spotifySheet(); toast('Spotify connection reset. You can connect again.'); },
   'sp-forget': () => { Spotify.forgetApp(); spotifySheet('setup'); toast('Spotify app settings cleared'); },
-  'sp-demo': () => { Spotify.demo(); spotifySheet(); toast('Demo music is on'); },
   'sp-refresh': async () => { toast('Refreshing your music'); await Spotify.sync(true); },
-  'sp-disconnect': () => { Spotify.disconnect(); closeSheet(); toast('Spotify disconnected and your music data deleted'); },
-  'sp-democrew': (t) => { const s = cur().spotify, on = t.getAttribute('aria-checked') !== 'true'; t.setAttribute('aria-checked', on); s.demoCrew = on; persist(); }
+  'sp-disconnect': () => { Spotify.disconnect(); closeSheet(); toast('Spotify disconnected and your music data deleted'); }
 });
 /* Back button from Spotify's own error page: the browser may restore this page from its cache without re-running boot. */
 addEventListener('pageshow', e => { if (e.persisted && cur()) Spotify.checkReturn(); });
 /* ---------- boot ---------- */
 loadDB();
-if (DB.session && DB.users[DB.session]){ const u = DB.users[DB.session]; hydrate(u); seedIfNeeded(u); appEl.hidden = false; render(); Spotify.boot(); }
-else { DB.session = null; showAuth(); }
+/* start once the shared config.json has loaded (or after a short wait if it is slow or missing) */
+Promise.race([GlobalConfig.ready, new Promise(r => setTimeout(r, 1500))]).then(() => {
+  if (DB.session && DB.users[DB.session]){ const u = DB.users[DB.session]; hydrate(u); seedIfNeeded(u); appEl.hidden = false; render(); Spotify.boot(); Cloud.sync(true); }
+  else { DB.session = null; showAuth(); }
+});
 </script>
 
 </body>
