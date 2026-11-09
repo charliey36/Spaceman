@@ -1,0 +1,134 @@
+[
+ {
+  "t0": 0.3,
+  "t1": 3.4,
+  "y": 175,
+  "style": "cap",
+  "text": "So we played this road trip game\ncalled Spaceman."
+ },
+ {
+  "t0": 3.7,
+  "t1": 6.3,
+  "y": 175,
+  "style": "cap",
+  "text": "Everyone plays mini games\non their own phone."
+ },
+ {
+  "t0": 6.4,
+  "t1": 8.4,
+  "y": 175,
+  "style": "cap",
+  "text": "And there’s an AI called Spaceman…"
+ },
+ {
+  "t0": 8.4,
+  "t1": 11.0,
+  "y": 175,
+  "style": "cap",
+  "text": "…who steals your points\nwhen you get things wrong."
+ },
+ {
+  "t0": 11.35,
+  "t1": 15.9,
+  "y": 175,
+  "style": "cap",
+  "text": "Then, halfway through,\nhe kidnapped me."
+ },
+ {
+  "t0": 16.1,
+  "t1": 19.05,
+  "y": 175,
+  "style": "cap",
+  "text": "To get me back, my friends\nhad to pay 30 points."
+ },
+ {
+  "t0": 19.25,
+  "t1": 21.1,
+  "y": 175,
+  "style": "cap",
+  "text": "20 in. 10 to go."
+ },
+ {
+  "t0": 21.15,
+  "t1": 23.05,
+  "y": 175,
+  "style": "cap",
+  "text": "And Connor had 36."
+ },
+ {
+  "t0": 23.1,
+  "t1": 29.9,
+  "y": 1645,
+  "style": "label",
+  "text": "Connor’s phone"
+ },
+ {
+  "t0": 23.4,
+  "t1": 25.0,
+  "y": 185,
+  "style": "sub",
+  "name": "Megan",
+  "text": "Connor. It’s ten points."
+ },
+ {
+  "t0": 25.1,
+  "t1": 28.3,
+  "y": 185,
+  "style": "sub",
+  "name": "Connor",
+  "text": "Yeah, but if I pay,\nyou’re back in first place."
+ },
+ {
+  "t0": 28.4,
+  "t1": 29.85,
+  "y": 185,
+  "style": "sub",
+  "name": "Megan",
+  "text": "I’ve been kidnapped!"
+ },
+ {
+  "t0": 34.1,
+  "t1": 37.9,
+  "y": 1645,
+  "style": "label",
+  "text": "Megan’s phone"
+ },
+ {
+  "t0": 34.25,
+  "t1": 35.95,
+  "y": 185,
+  "style": "sub",
+  "name": "Megan",
+  "text": "He is not thinking about it."
+ },
+ {
+  "t0": 36.05,
+  "t1": 37.85,
+  "y": 185,
+  "style": "sub",
+  "name": "Connor",
+  "text": "I’m thinking about it."
+ },
+ {
+  "t0": 38.0,
+  "t1": 39.5,
+  "y": 175,
+  "style": "cap",
+  "text": "He did not pay."
+ },
+ {
+  "t0": 39.55,
+  "t1": 42.55,
+  "y": 175,
+  "style": "cap",
+  "text": "Spaceman drained my points,\nand Connor took first place."
+ },
+ {
+  "t0": 44.8,
+  "t1": 48.6,
+  "y": 175,
+  "style": "cap",
+  "text": "Who’s the Connor\nin your group?",
+  "fadeout": 0
+ }
+]
