@@ -6518,7 +6518,7 @@ const MUSIC_DERIVED = true;
                  scheme, host, path, letter case and trailing slash all count.
    Hosts not listed use this page's own address in a fixed form: no index.html, always a trailing slash (see Spotify.redirect). */
 const SPOTIFY_CONFIG = {
-  clientId:'',
+  clientId:'c81b45dafe2f45eebc4876adc44e7f58',   /* public by design: PKCE has no secret. Every device uses it, so nobody has to do developer setup */
   redirectUris:{
     'charliey36.github.io':'https://charliey36.github.io/Spaceman/'      /* production: GitHub Pages */
   }
@@ -6546,7 +6546,7 @@ const Spotify = {
   st: () => cur().spotify,
   connected(){ const s = cur() && cur().spotify; return !!(s && s.on); },
   sharing(){ return this.connected() && !!S.settings.spotifyShare && !!this.st().profile; },
-  clientId(){ return String(SpStore.read().clientId || window.SPACEMAN_SPOTIFY_CLIENT_ID || SPOTIFY_CONFIG.clientId || '').trim(); },
+  clientId(){ return String(window.SPACEMAN_SPOTIFY_CLIENT_ID || SPOTIFY_CONFIG.clientId || SpStore.read().clientId || '').trim(); },
   setClient(v){ const o = SpStore.read(); o.clientId = String(v).replace(/[^\w-]/g, '').slice(0, 64); SpStore.write(o); },
   setRedirect(v){ const o = SpStore.read(); v = String(v || '').trim(); if (v) o.redirectUri = v; else delete o.redirectUri; SpStore.write(o); },
   /* ONE redirect URI, the same on every visit: Spotify compares it with the Dashboard exactly. Older builds used this page's raw address,
