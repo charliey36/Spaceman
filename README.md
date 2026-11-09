@@ -32,6 +32,7 @@ Places where real functionality will plug in later (GPS, Spotify, voice, sharing
 | Doc | What it covers |
 |---|---|
 | `docs/ATLAS.md` | Commander Atlas: the human Mission Control voice, his mood, memory, dialogue system and ElevenLabs setup |
+| `docs/ELEVENLABS.md` | ElevenLabs setup, Test Voice, error messages, audit findings and defaults |
 | `docs/PARTY.md` | Party-board research (Mario Party, Wii Party, Fortune Street, Party Project) and the real-time mechanics it led to |
 | `docs/PRODUCT-REVIEW.md` | Phase 10 research, gameplay, commercial, engagement and TikTok audits, and recommendations |
 | `docs/SPACEMAN.md` | Crew vs Spaceman: Spaceman's character, hijacks and rescues, milestones, surprise events, how Spaceman earns, pacing |
