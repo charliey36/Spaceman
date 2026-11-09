@@ -809,6 +809,15 @@ button.ms-card:hover .ms-ic{transform:scale(1.08) rotate(-6deg)}
 .tx-targets .chip[aria-pressed="true"]{background:var(--fg);color:var(--void);border-color:var(--fg)}
 .tx-ideas{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
 .tx-ideas .chip{height:auto;min-height:36px;padding:7px 12px;white-space:normal;text-align:left;line-height:1.35;cursor:pointer}
+
+.field select{flex:1;min-width:0;background:none;border:0;outline:0;font-size:16px;color:var(--fg);font-family:inherit}
+.elst{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line-2)}
+.elst b{font-size:16px}.elst span{font-size:13px;color:var(--fg-2);line-height:1.4}
+.elst.ok{border-color:var(--ion)}.elst.bad{border-color:var(--danger)}.elst.bad b{color:var(--danger)}
+.elr{margin:6px 2px 0;font-size:13.5px;line-height:1.4}.elr.bad{color:var(--danger)}.elr.ok{color:var(--ion)}.elr.warn{color:var(--fg-2)}.elr span{color:var(--fg-2);font-size:12.5px}
+.eldl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:10px 2px 4px;font-size:13px}.eldl dt{color:var(--fg-3)}.eldl dd{margin:0;word-break:break-all}.eldl code{font:12px var(--font-mono)}
+.eldiag{margin-top:12px}.eldiag summary{cursor:pointer;color:var(--fg-2);font-size:13px;padding:6px 0}
+.eldiag pre{max-height:190px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:10px;font:11px/1.45 var(--font-mono);white-space:pre-wrap;word-break:break-word;color:var(--fg-2)}
 .field.area{height:auto;align-items:flex-start;padding:14px 16px}
 .field.area textarea{flex:1;min-width:0;background:none;border:0;outline:0;resize:none;font:inherit;font-size:16px;color:var(--fg);line-height:1.45}
 .field.area textarea::placeholder{color:var(--fg-3)}
@@ -4827,53 +4836,185 @@ const pickOne = a => a[Math.floor(Math.random()*a.length)];
    symbols and emoji cleaned up, and a light radio squelch either side. FUTURE (docs/VOICE.md): neural TTS clips
    through the same speak() call, with the radio filter applied to the voice itself. */
 const NAME_SAY = {Zac:'Zack', Seb:'Sebb', Ollie:'Olly'};
-/* Optional ElevenLabs voices for Commander Atlas and Spaceman (docs/ATLAS.md).
-   The key, voice IDs and model are stored only in this browser. Audio goes through a radio chain:
-   band-pass 300–3,400 Hz, a presence lift at 1.8 kHz, gentle saturation and compression, over the radio hiss. */
+/* Optional ElevenLabs voices for Commander Atlas and Spaceman (docs/ATLAS.md, docs/ELEVENLABS.md).
+   The key, voice IDs, model and radio setting are stored only in this browser (localStorage "spaceman.el").
+   There are no environment variables: it is a static page. To keep the key off the phone, set
+   window.SPACEMAN_CONFIG = {elevenLabsBase:'https://your-proxy.example'} and let that server add the key.
+   Pipeline: validate settings → POST /v1/text-to-speech/{voice} → decode → radio chain → play.
+   Every step is logged (Settings → Voice → Diagnostics) and every failure is named, never silent. */
+const EL_MODELS = [['eleven_multilingual_v2','Multilingual v2 · best quality (default)'], ['eleven_flash_v2_5','Flash v2.5 · fastest and cheapest'], ['eleven_turbo_v2_5','Turbo v2.5 · fast, good quality'], ['eleven_v3','v3 · most expressive, slower']];
+class ELError extends Error { constructor(code, title, hint, o = {}){ super(title); this.code = code; this.title = title; this.hint = hint || ''; Object.assign(this, o); } }
 const EL = {
-  srcs:[], cache:new Map(), failed:false,
+  srcs:[], cache:new Map(), pend:new Map(), hist:[], blocked:null, testing:false, testRes:null, lastToast:{},
+  base(){ return String((window.SPACEMAN_CONFIG || {}).elevenLabsBase || 'https://api.elevenlabs.io').replace(/\/+$/, ''); },
   cfg(){ try { return JSON.parse(localStorage.getItem('spaceman.el') || 'null'); } catch { return null; } },
-  save(c){ try { localStorage.setItem('spaceman.el', JSON.stringify(c)); } catch {} this.failed = false; this.cache.clear(); },
-  ready(){ const c = this.cfg(); return !!(c && c.on && c.key && c.atlas); },
-  async tts(text, voice, mood){
-    const c = this.cfg(), k = `${voice}|${mood}|${text}`; if (this.cache.has(k)) return this.cache.get(k);
-    const stability = {excited:.35, amused:.37, competitive:.38, curious:.42, impressed:.4, concerned:.45, smug:.4}[mood] ?? .4;   /* lower = more expressive */
-    const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, {method:'POST',
-      headers:{'xi-api-key':c.key, 'Content-Type':'application/json', 'Accept':'audio/mpeg'},
-      body:JSON.stringify({text, model_id:c.model || 'eleven_multilingual_v2', voice_settings:{stability, similarity_boost:.8, style:.2, use_speaker_boost:true}})});
-    if (!res.ok) throw new Error(`ElevenLabs ${res.status}`);
-    const audio = await Voice.ac().decodeAudioData(await res.arrayBuffer()); this.cache.set(k, audio); if (this.cache.size > 40) this.cache.delete(this.cache.keys().next().value); return audio;
-  },
-  play(audio, at){
-    const C = Voice.ac(), src = C.createBufferSource(); src.buffer = audio;
-    const hp = C.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 300;
-    const lp = C.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3400;
-    const pk = C.createBiquadFilter(); pk.type = 'peaking'; pk.frequency.value = 1800; pk.gain.value = 5; pk.Q.value = 1;
-    const ws = C.createWaveShaper(), curve = new Float32Array(1024); for (let i = 0; i < 1024; i++){ const x = i/512 - 1; curve[i] = Math.tanh(2.2*x)/Math.tanh(2.2); } ws.curve = curve;
-    const cp = C.createDynamicsCompressor(); cp.threshold.value = -22; cp.ratio.value = 4; const g = C.createGain(); g.gain.value = .9;
-    src.connect(hp).connect(lp).connect(pk).connect(ws).connect(cp).connect(g).connect(C.destination); src.start(at); this.srcs.push(src);
-    return at + audio.duration;
-  },
+  sig(c){ c = c || this.cfg() || {}; let h = 5381; const s = [c.key, c.atlas, c.sm, c.model].join('|'); for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); },
+  save(c){ try { localStorage.setItem('spaceman.el', JSON.stringify(c)); } catch (e) { this.log('error', 'Could not store settings: ' + e.message); }
+    this.blocked = null; this.cache.clear(); this.pend.clear(); this.testRes = null;
+    this.log('info', `Settings saved: ${c.on ? 'ON' : 'off'} · key ${this.mask(c.key)} · Atlas ${c.atlas || '(none)'} · Spaceman ${c.sm || '(same as Atlas)'} · model ${c.model || 'default'} · radio ${c.fx || 'light'}`); this.paint(); },
+  last(){ try { return JSON.parse(localStorage.getItem('spaceman.el.last') || 'null'); } catch { return null; } },
+  mask(k){ return k ? `${String(k).slice(0, 3)}…${String(k).slice(-4)} (${String(k).length} chars)` : '(none)'; },
+  ready(){ const c = this.cfg(); return !!(c && c.on && c.key && (c.atlas || c.sm)); },
+  usable(){ if (!this.ready()) return false; const b = this.blocked; if (!b) return true; if (b.sig !== this.sig() || Date.now() > b.until){ this.blocked = null; return true; } return false; },
+  voiceFor(role, c){ c = c || this.cfg() || {}; return role === 'sm' ? (c.sm || c.atlas) : (c.atlas || c.sm); },
+  fx(c){ return ((c || this.cfg() || {}).fx) || 'light'; },
+  /* ---- logging: obvious root causes, never the key itself ---- */
+  log(lvl, msg){ this.hist.push({t:Date.now(), lvl, msg}); if (this.hist.length > 120) this.hist.shift();
+    try { (lvl === 'error' ? console.error : lvl === 'warn' ? console.warn : console.log)('[Spaceman ElevenLabs]', msg); } catch {} this.paintLog(); },
+  /* ---- validation before any request ---- */
+  clean(s){ return String(s || '').replace(/[​-‍﻿ ]/g, ' ').trim().replace(/^["'“”‘’`]+|["'“”‘’`]+$/g, '').trim(); },
+  cleanVoice(s){ let v = this.clean(s); const m = v.match(/voiceId=([A-Za-z0-9]+)/) || v.match(/voices?\/([A-Za-z0-9]{15,32})/); return m ? m[1] : v; },
+  normalise(f){ return {on:!!f.on, key:this.clean(f.key).replace(/\s+/g, ''), atlas:this.cleanVoice(f.atlas), sm:this.cleanVoice(f.sm), model:this.clean(f.model) || 'eleven_multilingual_v2', fx:['light', 'full', 'off'].includes(f.fx) ? f.fx : 'light'}; },
+  check(c){ const errors = [], warns = [];
+    if (!c.key) errors.push('API key is missing. Create one in ElevenLabs → Developers → API Keys (starts with sk_).');
+    else if (!/^(sk_[A-Za-z0-9_]{16,}|[a-f0-9]{32})$/.test(c.key)) warns.push('That doesn’t look like an ElevenLabs key (they start with sk_). Trying anyway.');
+    if (!c.atlas && !c.sm) errors.push('Voice ID is missing. Copy it from ElevenLabs → Voices → ⋯ → Copy voice ID.');
+    [['Atlas', c.atlas], ['Spaceman', c.sm]].forEach(([n, v]) => { if (v && !/^[A-Za-z0-9]{15,32}$/.test(v)) errors.push(`${n} voice ID “${v.slice(0, 24)}” isn’t a voice ID. They are about 20 letters and numbers, like 21m00Tcm4TlvDq8ikWAM. Did you paste the voice name?`); });
+    if (!/^eleven_[a-z0-9_]+$/.test(c.model || '')) errors.push(`Model “${c.model}” isn’t a model ID. Try eleven_multilingual_v2.`);
+    return {errors, warns}; },
+  /* ---- voice settings per model (ElevenLabs guidance: stability ~0.4–0.5 natural, similarity ~0.75, little style) ---- */
+  settings(model, mood){
+    const stability = {excited:.38, amused:.42, competitive:.42, curious:.5, impressed:.45, concerned:.5, smug:.45}[mood] ?? .45;
+    const speed = {smug:.96, concerned:.97, excited:1.04, amused:1.02, competitive:1.03}[mood] ?? 1;
+    if (/v3/.test(model)) return {stability:.5, similarity_boost:.75};                      /* v3 accepts 0 / 0.5 / 1 only, no speed or style */
+    const v = {stability, similarity_boost:.75, speed};
+    if (/multilingual_v2/.test(model)){ v.style = .2; v.use_speaker_boost = true; }
+    return v; },
+  /* ---- errors: every one named, with a fix ---- */
+  netError(e){ if (typeof navigator !== 'undefined' && navigator.onLine === false) return new ELError('offline', '❌ No internet connection', 'Reconnect and try again. Using the built-in voice meanwhile.', {transient:true});
+    return new ELError('network', '❌ ElevenLabs Request Failed', 'The browser couldn’t reach ElevenLabs (' + (e && e.message || 'network error') + '). Check your connection, any ad blocker or VPN, and that the page is allowed to call api.elevenlabs.io.', {transient:true}); },
+  async httpError(res){
+    let raw = ''; try { raw = await res.text(); } catch {} let j = null; try { j = JSON.parse(raw); } catch {}
+    const d = j && j.detail, st = String((d && d.status) || (typeof d === 'string' ? d : '') || ''), msg = String((d && d.message) || (Array.isArray(d) ? d.map(x => x.msg).join('; ') : typeof d === 'string' ? d : raw.slice(0, 160)) || ''), low = `${st} ${msg}`.toLowerCase(), s = res.status;
+    this.log('error', `← HTTP ${s}${st ? ' ' + st : ''}${msg ? ' · ' + msg.slice(0, 200) : ''}`);
+    if (/quota|credit|character limit/.test(low)) return new ELError('quota', '❌ Out of ElevenLabs credits', 'Your plan has no credits left this month. Top up or wait for the reset.', {permanent:true});
+    if (/missing_permissions|permission/.test(low)) return new ELError('permission', '❌ API key is missing a permission', 'In ElevenLabs → Developers → API Keys, edit this key and set Text to Speech to “Access”.', {permanent:true});
+    if (/voice_not_found|voice.*(not found|does not exist)|invalid.?voice/.test(low) || s === 404) return new ELError('voice', '❌ Voice Not Found', 'ElevenLabs doesn’t know that voice ID on this account. Copy it again from My Voices. A voice from the shared library has to be added to My Voices first.', {permanent:true});
+    if (s === 401 || s === 403 || /invalid_api_key|unauthor/.test(low)) return new ELError('key', '❌ Invalid API Key', 'ElevenLabs rejected the key. Check it starts with sk_ and has no spaces, or create a new one.', {permanent:true});
+    if (s === 402 || /payment|paid_plan|subscription|upgrade/.test(low)) return new ELError('plan', '❌ This needs a paid ElevenLabs plan', 'That voice or model isn’t available on your current plan.', {permanent:true});
+    if (s === 429) return new ELError('rate', '⏳ ElevenLabs rate limit', 'Too many requests at once. Spaceman will use the built-in voice for a moment, then try again.', {transient:true, retry:true});
+    if (/model/.test(low) && (s === 400 || s === 422)) return new ELError('model', '❌ Model not accepted', `ElevenLabs rejected the model (${msg.slice(0, 80)}). Try eleven_multilingual_v2.`, {permanent:true});
+    if (s === 400 || s === 422) return new ELError('request', '❌ ElevenLabs Request Failed', `ElevenLabs rejected the request (${msg.slice(0, 120) || 'HTTP ' + s}).`, {permanent:true});
+    if (s >= 500) return new ELError('down', '❌ ElevenLabs is unavailable', `ElevenLabs answered with HTTP ${s}. Try again in a minute.`, {transient:true, retry:true});
+    return new ELError('http', '❌ ElevenLabs Request Failed', `HTTP ${s}${msg ? ': ' + msg.slice(0, 120) : ''}`, {transient:true}); },
+  async fetchAudio(text, voice, model, vs, c){
+    const url = `${this.base()}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, body = JSON.stringify({text, model_id:model, voice_settings:vs});
+    this.log('info', `→ POST /v1/text-to-speech/${voice} · model ${model} · ${text.length} chars · stability ${vs.stability} · key ${this.mask(c.key)}`);
+    const t0 = performance.now(); let res;
+    for (let attempt = 0; attempt < 2; attempt++){
+      try { res = await fetch(url, {method:'POST', headers:{'xi-api-key':c.key, 'Content-Type':'application/json', 'Accept':'audio/mpeg'}, body}); }
+      catch (e) { const ne = this.netError(e); this.log('error', `✗ ${ne.title}: ${e && e.message}`); throw ne; }
+      if (res.ok) break;
+      const err = await this.httpError(res); if (attempt === 0 && err.retry){ this.log('warn', `Retrying once in 0.9 s (${err.code})`); await new Promise(r => setTimeout(r, 900)); continue; } throw err; }
+    const type = res.headers.get('content-type') || '';
+    if (/json|text\/html/.test(type)){ const raw = await res.text().catch(() => ''); this.log('error', `← 200 but not audio (${type}): ${raw.slice(0, 120)}`); throw new ELError('request', '❌ ElevenLabs Request Failed', 'ElevenLabs answered with something that isn’t audio. If you use a proxy, check it passes the audio through.', {transient:true}); }
+    const buf = await res.arrayBuffer(), bytes = buf.byteLength; this.log('info', `← ${res.status} ${type || 'audio'} · ${Math.round(bytes/1024)} KB · ${Math.round(performance.now() - t0)} ms`);
+    if (bytes < 400) throw new ELError('empty', '❌ ElevenLabs Request Failed', 'ElevenLabs returned an empty audio file.', {transient:true});
+    let audio; try { audio = await Voice.ac().decodeAudioData(buf); } catch (e) { this.log('error', 'Audio decode failed: ' + (e && e.message)); throw new ELError('decode', '❌ Audio couldn’t be played', 'The audio arrived but this browser couldn’t decode it.', {transient:true}); }
+    this.log('ok', `✓ Audio ready: ${audio.duration.toFixed(1)} s`); return audio; },
+  /* cached, de-duplicated: the key includes voice, model, settings, mood and text, and saving settings clears it, so an old voice can never replay */
+  tts(text, voice, mood, c){
+    c = c || this.cfg(); const model = c.model || 'eleven_multilingual_v2', vs = this.settings(model, mood), k = [voice, model, JSON.stringify(vs), text].join('|');
+    if (this.cache.has(k)){ this.log('info', `Cache hit: “${text.slice(0, 40)}”`); return Promise.resolve(this.cache.get(k)); }
+    if (this.pend.has(k)) return this.pend.get(k);
+    const p = this.fetchAudio(text, voice, model, vs, c).then(a => { this.cache.set(k, a); if (this.cache.size > 40) this.cache.delete(this.cache.keys().next().value); return a; }).finally(() => this.pend.delete(k));
+    this.pend.set(k, p); return p; },
+  /* ---- status the Settings page shows ---- */
+  note(ok, o){ const c = o.c || this.cfg() || {}, r = ok ? {ok:true, sig:this.sig(c), at:Date.now(), ms:o.ms, role:o.role, voice:o.voice, text:String(o.text || '').slice(0, 70)}
+      : {ok:false, sig:this.sig(c), at:Date.now(), code:o.err.code, title:o.err.title, hint:o.err.hint, role:o.role, text:String(o.text || '').slice(0, 70)};
+    try { localStorage.setItem('spaceman.el.last', JSON.stringify(r)); } catch {} this.paint(); },
+  fail(e, text, role){
+    if (!(e instanceof ELError)) e = new ELError('unknown', '❌ ElevenLabs Request Failed', (e && e.message) || 'Unknown error', {transient:true});
+    this.log('error', `${e.title} · ${e.hint}`);
+    const c = this.cfg() || {}; this.note(false, {err:e, text, role, c});
+    if (e.permanent) this.blocked = {sig:this.sig(c), until:Date.now() + 24*3600e3, err:e}; else if (!e.quiet) this.blocked = {sig:this.sig(c), until:Date.now() + 20000, err:e};
+    const now = Date.now(); if (!this.lastToast[e.code] || now - this.lastToast[e.code] > 30000){ this.lastToast[e.code] = now; toast(`${e.title.replace(/^[^A-Za-z]+/, '')}. Using the built-in voice. Details in Settings → Voice.`); }
+    return e; },
+  /* ---- audio ---- */
+  async awake(){ const C = Voice.ac(); if (C.state !== 'running'){ this.log('info', `Audio is ${C.state}; waking it`); try { await Promise.race([C.resume(), new Promise(r => setTimeout(r, 1200))]); } catch {} }
+    if (C.state !== 'running') throw new ELError('blocked', '🔇 The browser is holding audio back', 'Tap anywhere on the screen once so the browser allows sound, then try again.', {transient:true, quiet:true}); return C; },
+  play(audio, at, fx){
+    const C = Voice.ac(), src = C.createBufferSource(); src.buffer = audio; let node = src;
+    if (fx === 'full'){
+      const hp = C.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 300; const lp = C.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3400;
+      const pk = C.createBiquadFilter(); pk.type = 'peaking'; pk.frequency.value = 1800; pk.gain.value = 5; pk.Q.value = 1;
+      const ws = C.createWaveShaper(), curve = new Float32Array(1024); for (let i = 0; i < 1024; i++){ const x = i/512 - 1; curve[i] = Math.tanh(2.2*x)/Math.tanh(2.2); } ws.curve = curve;
+      const cp = C.createDynamicsCompressor(); cp.threshold.value = -22; cp.ratio.value = 4; const g = C.createGain(); g.gain.value = .9; node = src.connect(hp).connect(lp).connect(pk).connect(ws).connect(cp).connect(g);
+    } else if (fx !== 'off'){      /* light: the voice stays clear and human, with a hint of handset */
+      const hp = C.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 140; const lp = C.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 7000;
+      const pk = C.createBiquadFilter(); pk.type = 'peaking'; pk.frequency.value = 2400; pk.gain.value = 2.5; pk.Q.value = .8; const cp = C.createDynamicsCompressor(); cp.threshold.value = -20; cp.ratio.value = 3; node = src.connect(hp).connect(lp).connect(pk).connect(cp);
+    }
+    const out = C.createGain(); out.gain.value = fx === 'off' ? 1 : .95; node.connect(out).connect(C.destination); src.start(at); this.srcs.push(src); src.onended = () => { this.srcs = this.srcs.filter(x => x !== src); };
+    return at + audio.duration; },
+  /* "Hold on… right." becomes two clips with a real beat between them; a sign-off becomes its own clip one second later */
+  plan(text){ let body = Voice.prep(text), sign = null; const m = body.match(/\s*(Over and out\.|Over\.|Mission Control out\.)\s*$/i); if (m){ sign = m[1]; body = body.slice(0, m.index); }
+    const segs = body.split('…').map(x => x.trim()).filter(Boolean), parts = segs.length > 1 && segs.every(x => x.split(/\s+/).length >= 2) ? segs.map((x, i) => i < segs.length - 1 ? x + '…' : x) : [body.replace(/…/g, '...')];
+    return {parts:parts.filter(Boolean), sign}; },
   async speak(text, o = {}){
-    const c = this.cfg(), voice = o.role === 'sm' ? (c.sm || c.atlas) : c.atlas, run = Voice.run;
-    let body = Voice.prep(text), sign = null; const m = body.match(/\s*(Over\.)\s*$/); if (m){ sign = 'Over.'; body = body.slice(0, m.index); }
-    const a = await this.tts(body, voice, o.mood || 'curious'), z = sign ? await this.tts('Over.', voice, 'curious') : null; if (run !== Voice.run) return;
-    const C = Voice.ac(); if (C.state === 'suspended') await C.resume(); Voice.squelch(); Voice.bedOn(); if (o.radio) Voice.crackle();
-    let t = this.play(a, C.currentTime + .3); if (z) t = this.play(z, t + 1);      /* the one-second beat before "Over." */
-    setTimeout(() => { if (run === Voice.run){ Voice.bedOff(); Voice.squelch(true); if (o.then) setTimeout(() => { if (run === Voice.run) o.then(); }, 450); } }, Math.max(0, (t - C.currentTime)*1000 + 80));
-  }
+    const c = o.cfg || this.cfg(), run = Voice.run, role = o.role === 'sm' ? 'sm' : 'atlas', voice = this.voiceFor(role, c), tag = role === 'sm' ? 'Spaceman' : 'Atlas', mood = o.mood || 'curious', fx = this.fx(c), {parts, sign} = this.plan(text);
+    if (!parts.length) return;
+    this.log('info', `Speak as ${tag} (${mood}): “${String(text).slice(0, 70)}”`); const t0 = performance.now();
+    let clips; try { clips = await Promise.all([...parts.map(p => this.tts(p, voice, mood, c)), ...(sign ? [this.tts(sign, voice, 'curious', c)] : [])]); } catch (e) { e.role = role; e.text = text; throw e; }
+    const z = sign ? clips.pop() : null; if (run !== Voice.run){ this.log('info', 'A newer line started first; this one was dropped'); return; }
+    const C = await this.awake(); if (run !== Voice.run) return;
+    if (fx !== 'off'){ Voice.squelch(); Voice.bedOn(); if (o.radio) Voice.crackle(); }
+    let t = C.currentTime + .3; clips.forEach((a, i) => { t = this.play(a, t, fx); if (i < clips.length - 1) t += .35; }); if (z) t = this.play(z, t + 1, fx);       /* the one-second beat before "Over." */
+    this.note(true, {role, voice, ms:Math.round(performance.now() - t0), text, c}); this.log('ok', `▶ Playing ${tag}: ${(t - C.currentTime).toFixed(1)} s of audio, ready in ${Math.round(performance.now() - t0)} ms`);
+    return new Promise(res => setTimeout(() => { if (run === Voice.run){ Voice.bedOff(); if (fx !== 'off') Voice.squelch(true); this.log('info', 'Playback finished'); if (o.then) setTimeout(() => { if (run === Voice.run) o.then(); }, 450); } res(); }, Math.max(0, (t - C.currentTime)*1000 + 80))); },
+  /* generate ahead (while the transmission animation plays) so the voice starts the moment the message appears */
+  prefetch(text, o = {}){ if (!this.usable()) return; const c = this.cfg(), role = o.role === 'sm' ? 'sm' : 'atlas', voice = this.voiceFor(role, c), {parts, sign} = this.plan(text);
+    Promise.all([...parts.map(p => this.tts(p, voice, o.mood || 'curious', c)), ...(sign ? [this.tts(sign, voice, 'curious', c)] : [])]).catch(e => this.fail(e, text, role)); },
+  /* ---- the Test Voice button: uses what is typed in the form, makes real audio, plays it, says exactly what happened ---- */
+  async test(form){ try { return await this.test2(form); } finally { this.testing = false; this.paint(); } },
+  async test2(form){
+    const c = this.normalise(form), chk = this.check(c); this.testRes = [];
+    chk.warns.forEach(w => this.testRes.push({lvl:'warn', text:w}));
+    if (chk.errors.length){ chk.errors.forEach(e => this.testRes.push({lvl:'bad', text:'❌ ' + e})); this.log('warn', 'Test stopped: ' + chk.errors[0]); this.paint(); return false; }
+    this.save({...c}); this.testRes = chk.warns.map(w => ({lvl:'warn', text:w})); this.testing = true; this.paint();
+    const jobs = [['atlas', c.atlas, 'Atlas', 'Mission Control test successful. Over.', 'amused']]; if (c.sm && c.sm !== c.atlas) jobs.push(['sm', c.sm, 'Spaceman', 'Spaceman test successful. Try not to look so surprised. Over.', 'smug']);
+    let atlasOk = false; Voice.stop();
+    for (const [role, voice, name, line, mood] of jobs){
+      try { const t0 = performance.now(); await this.speak(line, {role, mood, radio:true, cfg:c}); this.testRes.push({lvl:'ok', text:`✅ ${name}: generated and played (${((performance.now() - t0)/1000).toFixed(1)} s)`}); if (role === 'atlas') atlasOk = true; }
+      catch (e) { const er = e instanceof ELError ? e : new ELError('unknown', '❌ ElevenLabs Request Failed', e && e.message); this.log('error', `${name} test failed: ${er.title}`); this.note(false, {err:er, text:line, role, c}); this.testRes.push({lvl:'bad', text:`${er.title} (${name})`, hint:er.hint}); }
+      this.paint(); }
+    if (!jobs.length) atlasOk = true;
+    if (atlasOk && !c.on){ const keep = this.testRes; c.on = true; this.save({...c}); this.testRes = [{lvl:'ok', text:'Switched ElevenLabs on'}, ...keep]; const sw = document.getElementById('el-on'); if (sw) sw.checked = true; }
+    this.testing = false; this.blocked = null; this.paint(); return atlasOk; },
+  /* ---- what Settings shows ---- */
+  chip(){ const c = this.cfg() || {}, st = this.last(), same = st && st.sig === this.sig(c);
+    if (!c.on) return ['Off', '']; if (!this.ready()) return ['Setup', '']; if (this.blocked && this.blocked.sig === this.sig(c) && Date.now() < this.blocked.until) return ['Error', 'bad']; if (same && st.ok) return ['Connected', 'ion']; if (same && !st.ok) return ['Error', 'bad']; return ['Untested', '']; },
+  ago(t){ const s = Math.round((Date.now() - t)/1000); return s < 5 ? 'just now' : s < 90 ? `${s} s ago` : s < 5400 ? `${Math.round(s/60)} min ago` : new Date(t).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); },
+  statusHTML(){
+    const c = this.cfg() || {}, st = this.last(), same = st && st.sig === this.sig(c), b = this.blocked && this.blocked.sig === this.sig(c) && Date.now() < this.blocked.until ? this.blocked : null; let tone = 'idle', head, sub;
+    if (this.testing){ tone = 'idle'; head = '⏳ Testing…'; sub = 'Generating a real line and playing it.'; }
+    else if (!c.key || !(c.atlas || c.sm)){ head = 'Not set up'; sub = 'Add an API key and a voice ID, then tap Test Voice.'; }
+    else if (same && st.ok){ tone = 'ok'; head = '✅ Connected'; sub = `Last line made ${this.ago(st.at)} in ${((st.ms || 0)/1000).toFixed(1)} s.`; }
+    else if (same && !st.ok){ tone = 'bad'; head = st.title; sub = st.hint; }
+    else { head = 'Not tested yet'; sub = 'Tap Test Voice to check this setup.'; }
+    const id = v => v ? `<code>${esc(v)}</code>` : '<span class="muted">not set</span>', using = !c.on ? 'Built-in voice (ElevenLabs is off)' : !this.ready() ? 'Built-in voice (setup incomplete)' : b ? `Built-in voice (${esc(b.err.title.replace(/^[^A-Za-z]+/, ''))})` : 'ElevenLabs';
+    const res = (this.testRes || []).map(r => `<p class="elr ${r.lvl}">${esc(r.text)}${r.hint ? `<br><span>${esc(r.hint)}</span>` : ''}</p>`).join('');
+    return `<div class="elst ${tone}"><b>${head}</b><span>${esc(sub || '')}</span></div>${res}
+      <dl class="eldl"><dt>ElevenLabs</dt><dd>${c.on ? 'On' : 'Off'}</dd><dt>Speaking with</dt><dd>${using}</dd><dt>Atlas voice</dt><dd>${id(c.atlas)}</dd><dt>Spaceman voice</dt><dd>${c.sm ? id(c.sm) : '<span class="muted">same as Atlas</span>'}</dd><dt>Model</dt><dd>${id(c.model || 'eleven_multilingual_v2')}</dd>
+      <dt>Last result</dt><dd>${st ? (st.ok ? `✅ ${esc(st.role === 'sm' ? 'Spaceman' : 'Atlas')}, ${this.ago(st.at)}` : `${esc(st.title)}, ${this.ago(st.at)}`) + (st.text ? `<br><span class="muted">“${esc(st.text)}”</span>` : '') : '<span class="muted">nothing yet</span>'}</dd></dl>`; },
+  paint(){ try { const n = document.getElementById('el-status'); if (n) n.innerHTML = this.statusHTML(); this.paintLog(); const t = document.getElementById('el-testbtn'); if (t){ t.disabled = this.testing; t.textContent = this.testing ? 'Testing…' : '▶ Test Voice'; } } catch {} },
+  logText(){ return this.hist.map(e => `${new Date(e.t).toLocaleTimeString([], {hour12:false})} ${e.lvl === 'error' ? '✗' : e.lvl === 'warn' ? '!' : e.lvl === 'ok' ? '✓' : '·'} ${e.msg}`).join('\n') || 'Nothing logged yet.'; },
+  paintLog(){ try { const n = document.getElementById('el-log'); if (n) { n.textContent = this.logText(); n.scrollTop = n.scrollHeight; } } catch {} }
 };
+function elForm(){ const g = id => ($('#' + id) || {}).value || ''; return {on:!!($('#el-on') || {}).checked, key:g('el-key'), atlas:g('el-atlas'), sm:g('el-sm'), model:g('el-model'), fx:g('el-fx')}; }
 function elSheet(){
   const c = EL.cfg() || {};
   openSheet(`<div class="sheet-title"><span class="eyebrow ion">🎧 Commander Atlas</span><h2 class="display" style="font-size:24px">Voice</h2>
-    <p class="muted">Built-in voices work everywhere. For a properly human Atlas, connect ElevenLabs. Recommended voice: male, British, mid 30s to 40s, warm, radio-presenter energy. Spaceman can have its own voice.</p></div>
+    <p class="muted">Built-in voices work everywhere. For a properly human Atlas and Spaceman, connect ElevenLabs. Recommended: male, British, mid 30s to 40s, warm, radio-presenter energy.</p></div>
+    <div id="el-status">${EL.statusHTML()}</div>
     <label class="row"><span class="grow"><b>Use ElevenLabs</b><span>Falls back to the built-in voice if anything fails</span></span><input id="el-on" type="checkbox" ${c.on ? 'checked' : ''}></label>
-    <label class="field"><span>API key</span><input id="el-key" type="password" autocomplete="off" value="${esc(c.key || '')}" placeholder="xi-…"></label>
-    <label class="field"><span>Atlas voice ID</span><input id="el-atlas" type="text" autocomplete="off" value="${esc(c.atlas || '')}"></label>
-    <label class="field"><span>Spaceman voice ID (optional)</span><input id="el-sm" type="text" autocomplete="off" value="${esc(c.sm || '')}"></label>
-    <label class="field"><span>Model</span><input id="el-model" type="text" autocomplete="off" value="${esc(c.model || 'eleven_multilingual_v2')}"></label>
-    <p class="small muted">Settings: stability 0.35–0.45 (by Atlas’s mood), similarity 0.80, style 0.20, speaker boost on. Stored only in this browser; anyone using this phone could use the key.</p>
-    <div class="btn-row"><button class="btn btn-secondary" data-action="el-test">Test</button><button class="btn btn-primary grow" data-action="el-save">Save</button></div>`);
+    <label class="field"><span>API key</span><input id="el-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.key || '')}" placeholder="sk_…"></label>
+    <label class="field"><span>Atlas voice ID</span><input id="el-atlas" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.atlas || '')}" placeholder="e.g. 21m00Tcm4TlvDq8ikWAM"></label>
+    <label class="field"><span>Spaceman voice ID (optional)</span><input id="el-sm" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.sm || '')}" placeholder="blank = same as Atlas"></label>
+    <label class="field"><span>Model</span><input id="el-model" type="text" list="el-models" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.model || 'eleven_multilingual_v2')}"><datalist id="el-models">${EL_MODELS.map(m => `<option value="${m[0]}">${m[1]}</option>`).join('')}</datalist></label>
+    <label class="field"><span>Radio effect</span><select id="el-fx"><option value="light" ${EL.fx(c) === 'light' ? 'selected' : ''}>Light (clear voice, hint of handset)</option><option value="full" ${EL.fx(c) === 'full' ? 'selected' : ''}>Full radio (narrow, crunchy)</option><option value="off" ${EL.fx(c) === 'off' ? 'selected' : ''}>None (pure voice)</option></select></label>
+    <p class="small muted">The key only needs <b>Text to Speech: Access</b>. Everything is stored in this browser; anyone using this phone could use the key. Changing a voice ID applies to the very next transmission.</p>
+    <div class="btn-row"><button class="btn btn-secondary grow" id="el-testbtn" data-action="el-test">▶ Test Voice</button><button class="btn btn-primary grow" data-action="el-save">Save</button></div>
+    <details class="eldiag"><summary>Diagnostics</summary><pre id="el-log">${esc(EL.logText())}</pre><div class="btn-row"><button class="btn btn-ghost" data-action="el-copylog">Copy log</button><button class="btn btn-ghost" data-action="el-clearlog">Clear</button></div></details>`);
 }
 const Voice = {
   ctx:null, voice:null, t:0, run:0,
@@ -4920,9 +5061,14 @@ const Voice = {
      - tiny pitch drift between phrases, so it never sounds like a flat line
      - a sign-off ("Over.") always comes after a full one-second pause, in a lower, settled voice */
   speak(text, o = {}){
-    if (EL.ready() && !EL.failed){ this.stop(); EL.speak(text, o).catch(() => { EL.failed = true; toast('ElevenLabs didn’t answer. Using the built-in voice.'); this.speakTTS(text, o); }); return true; }
+    if (EL.usable()){ this.stop(); const run = this.run, role = o.role === 'sm' ? 'sm' : 'atlas';
+      EL.speak(text, o).catch(e => { EL.fail(e, text, role); if (run === Voice.run) this.speakTTS(text, o); }); return true; }
+    if (EL.ready() && EL.blocked) EL.log('info', `Using built-in voice (ElevenLabs paused: ${EL.blocked.err.title.replace(/^[^A-Za-z]+/, '')})`);
     return this.speakTTS(text, o);
   },
+  prefetch(text, o){ try { EL.prefetch(text, o); } catch {} },
+  /* phones keep audio locked until a tap; the first touches wake the AudioContext so timed transmissions can speak */
+  unlock(){ try { const C = this.ac(); if (C.state !== 'running') C.resume(); const b = C.createBuffer(1, 1, 22050), s = C.createBufferSource(); s.buffer = b; s.connect(C.destination); s.start(0); } catch {} },
   speakTTS(text, o = {}){ try { if (!('speechSynthesis' in window)) return false; this.stop(); this.squelch(); this.bedOn(); if (o.radio) setTimeout(() => this.crackle(), 250);
     const MOOD = {neutral:[1, 1], host:[1.03, 1.04], smug:[.94, .9], grave:[.9, .86], excited:[1.07, 1.07], curious:[1, 1.01], concerned:[.95, .95], impressed:[.98, 1.03], amused:[1.03, 1.05], competitive:[1.05, 1]}[o.mood || 'neutral'] || [1, 1];
     let body = this.prep(text), sign = null; const m = body.match(/\s*(Over and out\.|Over\.|Mission Control out\.)\s*$/i); if (m){ sign = m[1]; body = body.slice(0, m.index); }
@@ -4950,6 +5096,7 @@ const Voice = {
   stop(){ this.run++; clearTimeout(this.t); this.bedOff(true); try { speechSynthesis.cancel(); } catch {} try { EL.srcs.forEach(n => n.stop()); EL.srcs = []; } catch {} }
 };
 try { speechSynthesis.onvoiceschanged = () => Voice.pickVoice(); } catch {}
+{ const wake = () => { Voice.unlock(); if (Voice.ctx && Voice.ctx.state === 'running') ['pointerdown', 'touchend', 'keydown'].forEach(e => removeEventListener(e, wake, true)); }; ['pointerdown', 'touchend', 'keydown'].forEach(e => addEventListener(e, wake, {capture:true, passive:true})); }
 /* Sound effects: synthesised with Web Audio, so there are no files to load and every sound shares one
    palette (clean sines, soft noise, a little shimmer). Quiet by design and switchable in the mission menu. */
 const SFX = {
@@ -5736,8 +5883,9 @@ function txOverlay(){
   const id = tx.id, still = () => LJ && LJ.S.tx && LJ.S.tx.id === id && $('#tx', live);
   if (LJ.introTx === id){ box.classList.add('open'); setText('tx-status', 'Voice transmission'); return; }
   LJ.introTx = id; Voice.squelch();
+  const vo = {role:tx.kind === 'roast' ? 'sm' : 'atlas', mood:tx.kind === 'roast' ? 'smug' : tx.mood || 'curious', radio:tx.radio}; if (LJ.voice) Voice.prefetch(txSpeech(tx), vo);
   setTimeout(() => { if (still()) setText('tx-status', 'Transmitting message'); }, reduce ? 0 : 1300);
-  setTimeout(() => { if (!still()) return; box.classList.add('open'); setText('tx-status', 'Voice transmission'); if (LJ.voice) Voice.speak(txSpeech(tx), {role:tx.kind === 'roast' ? 'sm' : 'atlas', mood:tx.kind === 'roast' ? 'smug' : tx.mood || 'curious', radio:tx.radio}); }, reduce ? 0 : 2500);
+  setTimeout(() => { if (!still()) return; box.classList.add('open'); setText('tx-status', 'Voice transmission'); if (LJ.voice) Voice.speak(txSpeech(tx), vo); }, reduce ? 0 : 2500);
 }
 
 function txSheet(){
@@ -5795,7 +5943,7 @@ function menuSheet(){
       <button class="row" data-action="day">${ic('sun',20)}<span class="grow"><b>Daylight mode</b><span>Higher contrast for bright sun</span></span><span class="chip ${LJ.day ? 'ion' : ''}">${LJ.day ? 'On' : 'Off'}</span></button>
       <button class="row" data-action="sfx">${ic('sparkle',20)}<span class="grow"><b>Sound effects</b><span>${SFX.enabled() ? 'On' : 'Off'} on this phone</span></span><span class="chip ${SFX.enabled() ? 'ion' : ''}">${SFX.enabled() ? 'On' : 'Off'}</span></button>
       ${musicMenuRow()}
-      <button class="row" data-action="el-open">${ic('signal',20)}<span class="grow"><b>Voice of Commander Atlas</b><span>${EL.ready() ? 'ElevenLabs, with radio processing' : 'This phone’s built-in voice'}</span></span><span class="chip ${EL.ready() ? 'ion' : ''}">${EL.ready() ? 'Pro' : 'Basic'}</span></button>
+      <button class="row" data-action="el-open">${ic('signal',20)}<span class="grow"><b>Voice of Commander Atlas</b><span>${EL.ready() ? 'ElevenLabs voices' : 'This phone’s built-in voice'}</span></span><span class="chip ${EL.chip()[1]}">${EL.ready() ? EL.chip()[0] : 'Basic'}</span></button>
       ${S.final ? '' : `<button class="row" data-action="final">${ic('flag',20)}<span class="grow"><b>🏁 Final Approach</b><span>Nearly there? Last place spins the roulette and the stakes go up</span></span></button>`}
       ${S.pace === 'real' ? '' : `<button class="row" data-action="warp">${ic('bolt',20)}<span class="grow"><b>Prototype: warp 5 minutes</b><span>Skip journey time to see more events</span></span></button>`}
     </div>
@@ -5871,8 +6019,12 @@ const LIVE_ACTIONS = {
   end: () => { closeSheet(); endJourney(); },
   final: () => { closeSheet(); Transport.send({type:'final'}); toast('Final Approach is next. Last place spins.'); },
   'el-open': () => elSheet(),
-  'el-save': () => { const g = id => ($('#' + id) || {}).value || ''; EL.save({on:$('#el-on')?.checked, key:g('el-key').trim(), atlas:g('el-atlas').trim(), sm:g('el-sm').trim(), model:g('el-model') || 'eleven_multilingual_v2'}); closeSheet(); toast(EL.ready() ? 'Commander Atlas now uses ElevenLabs on this phone' : 'Using this phone’s built-in voice'); },
-  'el-test': () => { Voice.speak('Commander Atlas to Spaceman crew… radio check. You sound great. I sound better. Over.', {role:'atlas', mood:'amused'}); },
+  'el-save': () => { const c = EL.normalise(elForm()), chk = EL.check(c); if (chk.errors.length){ EL.testRes = chk.errors.map(e => ({lvl:'bad', text:'❌ ' + e})); EL.paint(); return; }
+    EL.save(c); EL.testRes = chk.warns.map(w => ({lvl:'warn', text:w})).concat([{lvl:'ok', text:c.on ? 'Saved. Tap Test Voice to check it.' : 'Saved. ElevenLabs is switched off, so the built-in voice is used.'}]); EL.paint();
+    [['el-key', c.key], ['el-atlas', c.atlas], ['el-sm', c.sm], ['el-model', c.model]].forEach(([id, v]) => { const n = $('#' + id); if (n) n.value = v; }); toast(c.on ? 'Saved. Transmissions will use ElevenLabs' : 'Saved. ElevenLabs is off'); },
+  'el-copylog': () => { const t = EL.logText(); try { navigator.clipboard.writeText(t).then(() => toast('Log copied')).catch(() => toast('Couldn’t copy. Select the text instead')); } catch { toast('Couldn’t copy. Select the text instead'); } },
+  'el-clearlog': () => { EL.hist = []; EL.paintLog(); },
+  'el-test': () => { if (EL.testing) return; Voice.unlock(); EL.test(elForm()).then(ok => { if (ok) toast('ElevenLabs connected'); }); },
   warp: () => { Transport.send({type:'warp', mins:5}); closeSheet(); toast('Warped 5 mission minutes'); },
   'tx-new': () => txSheet(),
   'tx-queue': () => {
