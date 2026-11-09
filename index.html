@@ -439,7 +439,11 @@ pre.tree b{color:var(--fg);font-weight:500}
 .toast .ok{width:22px;height:22px;border-radius:50%;background:var(--fg);color:var(--void);display:grid;place-items:center;flex:none}
 
 /* ---------- Live journey ---------- */
-.live{position:fixed;inset:0;z-index:100;background:var(--void);overflow-y:auto;isolation:isolate;animation:pageIn var(--base) var(--ease)}
+.live{position:fixed;inset:0;z-index:100;background:var(--void);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;isolation:isolate}
+/* Mission Mode owns the viewport: the app shell underneath is removed, not just covered,
+   so nothing from the previous page can show through a fade, a rubber-band bounce or a collapsing browser bar. */
+html.mission,html.mission body{background:var(--void);overflow:hidden;overscroll-behavior:none;height:100%}
+html.mission #app{display:none}
 .live canvas{position:fixed;inset:0;width:100%;height:100%;z-index:-1}
 .live-in{max-width:520px;margin:0 auto;min-height:100%;padding:calc(14px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:22px}
 .countdown{position:fixed;inset:0;display:grid;place-items:center;align-content:center;gap:28px;text-align:center}
@@ -1383,9 +1387,10 @@ button.opt:active{transform:scale(.96);border-color:var(--ion)}
 .pt{position:absolute;top:43.75%;width:10%;aspect-ratio:1;transform:translate(-50%,-50%);overflow:hidden;border-radius:2px;box-shadow:0 0 0 2px #262C3B}
 .pt .av{width:100%!important;height:100%!important;border-radius:2px;box-shadow:none}
 .pt.held{box-shadow:0 0 0 2px #FF6B6B}
-.bub{position:absolute;bottom:86%;transform:translateX(-50%);white-space:nowrap;padding:5px 8px;font:600 11.5px/1.2 var(--font-mono,ui-monospace,monospace);color:#0B0D12;background:#E9EDF5;box-shadow:2px 2px 0 #7C9CFF;animation:bubLife 3.6s steps(12) forwards;z-index:2}
-.bub::after{content:'';position:absolute;left:50%;top:100%;width:6px;height:6px;margin-left:-3px;background:#E9EDF5}
-@keyframes bubLife{0%{opacity:0;transform:translate(-50%,6px)}8%{opacity:1;transform:translate(-50%,0)}85%{opacity:1}100%{opacity:0}}
+.bub{--lo:.41;--f:calc(var(--lo) + var(--t,.5)*(1 - 2*var(--lo)));position:absolute;bottom:86%;transform:translateX(calc(var(--f,.5)*-100%));width:max-content;max-width:76%;white-space:normal;text-align:left;padding:5px 8px;font:600 11.5px/1.2 var(--font-mono,ui-monospace,monospace);color:#0B0D12;background:#E9EDF5;box-shadow:2px 2px 0 #7C9CFF;animation:bubLife 3.6s steps(12) forwards;z-index:2}
+.bub b{font-weight:700;color:#3A4A86}
+.bub::after{content:'';position:absolute;left:calc(var(--f,.5)*100%);top:100%;width:6px;height:6px;margin-left:-3px;background:#E9EDF5}
+@keyframes bubLife{0%{opacity:0;transform:translate(calc(var(--f,.5)*-100%),6px)}8%{opacity:1;transform:translate(calc(var(--f,.5)*-100%),0)}85%{opacity:1}100%{opacity:0}}
 .sm-chase{position:absolute;right:7%;top:12%;opacity:.85;animation:smChase 7s ease-in-out infinite}
 @keyframes smChase{0%,100%{transform:translate(0,0)}50%{transform:translate(-14px,8px)}}
 @media (prefers-reduced-motion:reduce){.px-stars,.ship,.fl,.sm-chase,.bub{animation:none!important}.fl.f2{opacity:0}}
@@ -1420,6 +1425,109 @@ details.guide .list{padding:0 8px 8px}
 .tx-row{display:flex}.tx-to-sel{display:flex;align-items:center;gap:10px;flex:1}.tx-to-sel select{flex:1;height:44px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line-2);color:var(--fg);padding:0 12px;font:inherit}
 .tx-custom[hidden]{display:none}
 .pc-rows{display:flex;flex-direction:column;padding:4px 14px}.pc-row{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line)}.pc-row:last-child{border:0}.pc-row .mono{font-size:12px;color:var(--fg-3);flex:none;min-width:48px}.pc-row .grow{min-width:0;font-size:14px}.rs-give .btn{font-size:17px}
+/* ---------- Phase 13: mobile fit (320–430px wide, 568px tall and up) ---------- */
+p,.m-desc,.q-text,.tx-msg,.opt{overflow-wrap:break-word}   /* prose only: numbers and labels in tiles must never split mid-word */
+/* header: the player's name and role always fit */
+.lv-top{gap:8px}
+.lv-me{max-width:none;flex:0 1 auto}
+.lv-me .dev-txt small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lv-me > svg{flex:none}
+@media (max-width:430px){.lv-me > svg{display:none}.lv-me{padding-right:12px}}   /* the swap hint costs the role its room on phones; the whole pill is still the switcher */
+.lv-stat{flex:none}
+/* Crew vs Spaceman: the middle line never runs into the scores */
+.vs{grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)}
+.vs-side small{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.vs-side.sm small{display:inline-flex;align-items:center;gap:4px}
+.vs-side.sm small .av{flex:none}
+.vs-mid{max-width:32vw}
+.vs{column-gap:8px}
+/* leaderboard strip: upright chips, every name visible */
+.lb.strip{gap:5px}
+.lb.strip .lb-p{grid-template-columns:minmax(0,1fr);grid-template-areas:"av" "t" "pts";justify-items:center;text-align:center;padding:6px 2px 5px;gap:1px;border-radius:12px}
+.lb.strip .lb-av{margin-bottom:2px}
+.lb.strip .lb-av .av{width:26px;height:26px}
+.lb.strip .lb-t{width:100%;align-items:center}
+.lb.strip .lb-t small{display:none}
+.lb.strip .lb-t b{max-width:100%;font-size:11px;font-weight:600;color:var(--fg-2)}
+.lb.strip .lb-p.mine .lb-t b,.lb.strip .lb-p.lead .lb-t b{color:var(--fg)}
+.lb.strip .lb-pts{justify-self:center;font-size:18px}
+.lb.strip .rb{width:16px;height:16px;right:-7px;bottom:-3px;border-width:1.5px}
+.lb.strip .rb.co{font:700 7.5px/1 var(--font-mono);letter-spacing:-.02em}
+/* the empty power-up slots picked up the page empty-state's 28px padding, making the tray 76px tall */
+.pu-slot.empty{padding:0;margin:0;text-align:center}
+/* eight or more players: two rows, a touch smaller */
+.lb.strip.rows2 .lb-p{padding-top:4px;padding-bottom:4px}
+.lb.strip.rows2 .lb-av .av{width:22px;height:22px}
+.lb.strip.rows2 .lb-t b{font-size:10.5px;letter-spacing:-.02em}
+.lb.strip.rows2 .lb-pts{font-size:16px}
+.lb.strip .lb-p.sm .lb-t b{letter-spacing:-.035em}
+/* nothing to show under the stage: no empty row */
+.lv-foot:has(.lv-prog:empty):has(.emote-bar:empty){display:none}
+/* transmissions: centred when they fit, scroll from the top when they don't (no button below the fold, nothing cut off above) */
+.tx{display:flex;flex-direction:column}
+.tx-in{margin:auto}
+/* music bar with ⏮ ⏯ ⏭: same height as the plain bar */
+.mus.has-c{gap:6px;padding:4px 8px 4px 4px}
+.mus-l{display:flex;align-items:center;gap:10px;flex:1;min-width:0;color:inherit;text-decoration:none;text-align:left;background:none;border:0;padding:0;font:inherit;cursor:pointer}
+.mus-c{display:flex;align-items:center;gap:2px;flex:none}
+.mc{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--fg-2);background:transparent;border:0;transition:transform var(--fast) var(--ease),color var(--fast),background var(--fast)}
+.mc:hover{color:var(--fg)}
+.mc:active{transform:scale(.88);color:var(--fg)}
+.mc.pp{background:var(--fg);color:var(--void)}
+.mc.pp:active{background:var(--fg-2)}
+.mus.has-c.paused .art{opacity:.55}
+/* recap: bonus awards wrap instead of squeezing the reason into a sliver */
+.award-row{flex-wrap:wrap}
+.award-row .grow{flex:1 1 150px;min-width:0}
+.aw-who{flex-wrap:wrap;margin-left:auto;min-width:0}
+/* list rows, the Go summary line and award chips: up to two lines instead of cutting a label off */
+.row .grow b,.hero-foot .grow-t{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2}
+.hero-foot .grow-t{line-height:1.3}
+.award-chip{max-width:100%}
+/* recap title: shrinks on small phones, never cut off mid-word */
+.title-input{font-size:clamp(22px,7.4vw,28px);text-overflow:ellipsis}
+/* streak flame sits on the avatar, so it never pushes the name out of its chip */
+.lb-fire{position:absolute;left:-6px;top:-6px;font-size:12px;line-height:1;font-style:normal;filter:drop-shadow(0 0 2px #000)}
+/* You: Captain rating stays on one line */
+.cap-top{flex-wrap:wrap}
+.cap-big{white-space:nowrap}
+@media (max-width:374px){
+  .lv-me{padding-right:10px}
+  .lv-stat{gap:4px}.lv-stat .t-num{font-size:20px}.lv-stat small{font-size:12px;margin-right:2px}.lv-stat .mono{font-size:12.5px}
+  .lv-top .icon-btn{width:40px;height:40px}
+  .vs{padding:4px 10px;column-gap:6px}.vs-side{gap:5px}.vs-side small{font-size:11.5px}.vs-side.sm small .av,.vs-tot{display:none}
+  .vs-mid small{font-size:11.5px}
+  .live-in.lv{padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:max(10px,env(safe-area-inset-right,0px))}
+  .role-x{display:none}
+  .lb.strip{gap:3px}.lb.strip .lb-p{padding-left:1px;padding-right:1px}.lb.strip .lb-t b{font-size:10.5px;letter-spacing:-.02em}
+  .mus.has-c .mus-l{gap:8px}.mus.has-c .art{width:30px;height:30px}
+  .mc{width:32px;height:32px}
+  .fstats b{font-size:16px;white-space:normal}
+  .tiles{gap:8px}.tile{padding:14px 10px}.tile .t-num{font-size:19px;letter-spacing:-.03em}.tile .lbl{font-size:12px}
+  .aw-mini{white-space:normal}
+  .award-chip{font-size:12px;padding-right:10px;gap:5px}
+  .score-row{gap:10px;padding:12px 14px}.score-row b{white-space:normal}
+}
+/* short phones (iPhone SE, small Androids): tighter rhythm so a game fits without scrolling */
+@media (max-height:740px){
+  .live-in.lv{gap:6px;padding-top:calc(8px + env(safe-area-inset-top,0px));padding-bottom:calc(8px + env(safe-area-inset-bottom,0px))}
+  .lv-top,.lv-me{min-height:42px}.lv-me{padding-top:3px;padding-bottom:3px}
+  .lv-top .icon-btn{width:40px;height:40px}
+  .lv-stage{padding:12px}
+  .lv #lv-ch,.lv .ev-card{gap:9px}
+  .lv .opt{min-height:46px;padding:8px 10px}
+  .lv .q-text{font-size:17px}
+  .lv .m-desc{font-size:14px;line-height:1.4}
+  .pu-slot,.tray-tx{min-height:50px}.pu-slot{width:58px;border-radius:14px}.tray-tx{border-radius:14px}
+  .lb.strip .lb-p{padding:4px 2px}
+  .lb.strip .lb-av .av{width:22px;height:22px}
+  .lb.strip .lb-pts{font-size:16px}
+  .mus,.mus.idle{min-height:42px}
+  .radar{width:92px;height:92px}.radar .core{width:52px;height:52px}
+  .tx-in{gap:12px}
+  .ship{top:62%}
+  .bub{--lo:.36;max-width:88%;font-size:10.5px;padding:4px 7px}
+}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -1737,7 +1845,11 @@ const ICONS = {
   speaker:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/>',
   mute:'<path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/>',
   comet:'<circle cx="16" cy="8" r="3.5"/><path d="M13.5 10.5 4 20M12.4 7.4 6.5 9.4M16.6 11.6 14.6 17.5"/>',
-  hole:'<path d="M12 12a1.6 1.6 0 1 1 1.6-1.6 3.6 3.6 0 1 1-3.6-3.6 5.8 5.8 0 1 1 5.8 5.8 8 8 0 1 1-8-8"/>'
+  hole:'<path d="M12 12a1.6 1.6 0 1 1 1.6-1.6 3.6 3.6 0 1 1-3.6-3.6 5.8 5.8 0 1 1 5.8 5.8 8 8 0 1 1-8-8"/>',
+  mPrev:'<path d="M6.5 5.5v13"/><path d="M18.5 6.2v11.6L9.8 12z" fill="currentColor"/>',
+  mNext:'<path d="M17.5 5.5v13"/><path d="M5.5 6.2v11.6l8.7-5.8z" fill="currentColor"/>',
+  mPlay:'<path d="M8 5.6v12.8L18.5 12z" fill="currentColor"/>',
+  mPause:'<rect x="6.5" y="5.5" width="3.6" height="13" rx="1" fill="currentColor" stroke="none"/><rect x="13.9" y="5.5" width="3.6" height="13" rx="1" fill="currentColor" stroke="none"/>'
 };
 function ic(name, size=20, sw=1.75){
   if (name === 'helmet') return `<svg viewBox="0 0 100 100" width="${size}" height="${size}" aria-hidden="true"><use href="#helmet"/></svg>`;
@@ -1766,6 +1878,8 @@ const backH = (title, sub, back, backLbl) => `
 const emptyCard = (icon, title, text, btn='') => `<section class="card empty"><span class="ic-tile ion">${ic(icon,22)}</span><b style="font-weight:600;font-size:18px">${title}</b><p class="muted" style="max-width:34ch;font-size:15px">${text}</p>${btn}</section>`;
 const sampleBtn = '<button class="btn btn-secondary" data-action="sample">Load sample data</button>';
 const sparks = (n=16) => `<div class="burst" aria-hidden="true">${Array.from({length:n}, (_,i) => `<i style="--a:${i*(360/n)}deg"></i>`).join('')}</div>`;
+/* Recaps are a record of the mission: the scoreboard uses everyone's real name, including yours. */
+const recapName = id => id === ME.id ? (ME.name || 'You') : whoName(id);
 function nameList(ids){ const n = ids.map(whoName); return n.length < 2 ? (n[0] || '') : n.slice(0,-1).join(', ') + ' & ' + n[n.length-1]; }
 function timeName(j){
   const d = dt(j.date).toLocaleDateString('en-GB',{weekday:'long'});
@@ -3874,7 +3988,7 @@ const Engine = (() => {
     const n = String(tr.n).slice(0, 80), a = String(tr.a || '').slice(0, 80), last = S.songs[S.songs.length - 1];
     if (last && last.by === by && last.n === n && last.a === a && S.min - last.at < .5) return;       /* the same poll twice isn't a replay */
     S.songs.push({by, n, a, at:S.min}); if (S.songs.length > 300) S.songs.shift();
-    S.now = {by, n, a, art:String(tr.art || '').slice(0, 300), at:S.min};
+    S.now = {by, n, a, art:String(tr.art || '').slice(0, 300), url:String(tr.url || '').slice(0, 300), at:S.min};
     S.aux.intro[by] = (S.aux.intro[by] || 0) + 1;
     if (S.musicQuiet || !S.qualified || S.min - S.lastSongTx < RULES.music.songGap*S.tempo.cycle || R() >= RULES.music.react) { bump(S); return; }
     const key = x => lc(x.n) + '|' + lc(x.a), same = S.songs.filter(x => key(x) === key(S.songs[S.songs.length - 1])).length;
@@ -4835,7 +4949,7 @@ const pickOne = a => a[Math.floor(Math.random()*a.length)];
 
 /* Voice: human first, radio second.
    Today: the most natural voice this device has, spoken phrase by phrase with real pauses, names said properly,
-   symbols and emoji cleaned up, and a light radio squelch either side. FUTURE (docs/VOICE.md): neural TTS clips
+   symbols and emoji cleaned up, and one short radio squelch as it opens. FUTURE (docs/VOICE.md): neural TTS clips
    through the same speak() call, with the radio filter applied to the voice itself. */
 const NAME_SAY = {Zac:'Zack', Seb:'Sebb', Ollie:'Olly'};
 /* Optional ElevenLabs voices for Commander Atlas and Spaceman (docs/ATLAS.md, docs/ELEVENLABS.md).
@@ -5006,7 +5120,7 @@ const EL = {
     if (fx !== 'off'){ Voice.squelch(); Voice.bedOn(); if (o.radio) Voice.crackle(); }
     let t = C.currentTime + .3; clips.forEach((a, i) => { t = this.play(a, t, fx); if (i < clips.length - 1) t += .35; }); if (z) t = this.play(z, t + 1, fx);       /* the one-second beat before "Over." */
     this.note(true, {role, voice, ms:Math.round(performance.now() - t0), text, c}); this.log('ok', `▶ Playing ${tag}: ${(t - C.currentTime).toFixed(1)} s of audio, ready in ${Math.round(performance.now() - t0)} ms`);
-    return new Promise(res => setTimeout(() => { if (run === Voice.run){ Voice.bedOff(); if (fx !== 'off') Voice.squelch(true); this.log('info', 'Playback finished'); if (o.then) setTimeout(() => { if (run === Voice.run) o.then(); }, 450); } res(); }, Math.max(0, (t - C.currentTime)*1000 + 80))); },
+    return new Promise(res => setTimeout(() => { if (run === Voice.run){ Voice.bedOff(); this.log('info', 'Playback finished'); if (o.then) setTimeout(() => { if (run === Voice.run) o.then(); }, 450); } res(); }, Math.max(0, (t - C.currentTime)*1000 + 80))); },
   /* generate ahead (while the transmission animation plays) so the voice starts the moment the message appears */
   prefetch(text, o = {}){ if (!this.usable()) return; const c = this.cfg(), role = o.role === 'sm' ? 'sm' : 'atlas', voice = this.voiceFor(role, c), {parts, sign} = this.plan(text);
     Promise.all([...parts.map(p => this.tts(p, voice, o.mood || 'curious', c)), ...(sign ? [this.tts(sign, voice, 'curious', c)] : [])]).catch(e => this.fail(e, text, role)); },
@@ -5095,14 +5209,10 @@ const Voice = {
     const g = C.createGain(); g.gain.value = out ? .035 : .05; n.connect(bp).connect(g).connect(C.destination); n.start(t);
     if (!out){ const o = C.createOscillator(), og = C.createGain(); o.frequency.value = 1150; og.gain.setValueAtTime(.03, t + .14); og.gain.exponentialRampToValueAtTime(.0001, t + .26); o.connect(og).connect(C.destination); o.start(t + .14); o.stop(t + .28); }
   } catch {} },
-  /* Radio bed: a faint band-limited hiss under the voice, so transmissions sound like they come over a radio.
-     (Browsers don't let us filter speechSynthesis itself, so the radio feel comes from what surrounds it.) */
-  bedOn(){ try { const C = this.ctx ||= new (window.AudioContext || window.webkitAudioContext)(); if (C.state === 'suspended') C.resume(); this.bedOff(true);
-    const len = C.sampleRate*2, buf = C.createBuffer(1, len, C.sampleRate), d = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) d[i] = (Math.random()*2 - 1)*(Math.random() < .0015 ? 3 : 1);     /* the odd crackle */
-    const n = C.createBufferSource(); n.buffer = buf; n.loop = true; const bp = C.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 2200; bp.Q.value = .7;
-    const g = C.createGain(); g.gain.setValueAtTime(.0001, C.currentTime); g.gain.exponentialRampToValueAtTime(.009, C.currentTime + .25);
-    n.connect(bp).connect(g).connect(C.destination); n.start(); this.bed = {n, g}; } catch {} },
+  /* Phase 13: the radio bed is gone. It was a looping band-passed white-noise buffer started under every spoken line (round intros,
+     events, Spaceman's verdicts) and only stopped when the last phrase ended, so a long or stalled speechSynthesis queue left
+     a wind-like hiss running through the round. The radio feel now comes from one short squelch as a transmission opens. */
+  bedOn(){},
   bedOff(now){ try { const b = this.bed; if (!b) return; this.bed = null; const C = this.ctx, t = C.currentTime;
     if (now){ b.n.stop(); return; } b.g.gain.cancelScheduledValues(t); b.g.gain.setValueAtTime(b.g.gain.value || .009, t); b.g.gain.exponentialRampToValueAtTime(.0001, t + .3); b.n.stop(t + .35); } catch {} },
   /* Spoken like a person on a radio, not a screen reader:
@@ -5133,7 +5243,7 @@ const Voice = {
     }); });
     if (sign) ph.push({t:sign, sign:true});
     const v = this.pickVoice(o.role || 'atlas'), run = ++this.run; let i = 0;
-    const next = () => { if (run !== this.run) return; if (i >= ph.length){ this.bedOff(); this.squelch(true); if (o.then) setTimeout(() => { if (run === this.run) o.then(); }, 450); return; }
+    const next = () => { if (run !== this.run) return; if (i >= ph.length){ this.bedOff(); if (o.then) setTimeout(() => { if (run === this.run) o.then(); }, 450); return; }
       const p = ph[i++], u = new SpeechSynthesisUtterance(p.t), drift = (Math.random() - .5)*.06;
       if (v) u.voice = v;
       u.rate = Math.min(1.25, Math.max(.75, MOOD[0]*(p.sign ? .9 : p.caps ? .86 : i === 1 ? .96 : 1)*(p.ex ? 1.06 : 1)));
@@ -5203,7 +5313,8 @@ const clock = () => `${Math.floor(LJ.S.min/60)}:${String(Math.floor(LJ.S.min % 6
 const capName = () => LJ.S.names[LJ.S.captain];
 const coName = () => LJ.S.copilot ? LJ.S.names[LJ.S.copilot] : '';
 const fullOf = id => id === ME.id ? ME.full : PEOPLE[id].full;
-const viewName = id => id === 'sm' ? 'Spaceman' : id === LJ.viewer ? 'You' : LJ.S.names[id];
+/* Phase 13: characters, bubbles, boards and duels use real names. “You” is kept only for instructions (“Your roll”, “Defend your seat”). */
+const viewName = id => id === 'sm' ? 'Spaceman' : LJ.S.names[id] || (PEOPLE[id] || {}).name || 'Someone';
 const isCap = () => LJ.viewer === LJ.S.captain;
 const isCo = () => LJ.viewer === LJ.S.copilot;
 const roleOf = id => id === LJ.S.captain ? 'Captain' : id === LJ.S.copilot ? 'Co-Pilot' : 'Crew';
@@ -5215,6 +5326,7 @@ function startJourney(){
   const L = launchCfg(), crew = [ME.id, ...L.crew];
   SFX.play('launch');
   if (!sheet.hidden){ sheet.hidden = true; sheet.innerHTML = ''; sheet.classList.remove('open'); }
+  document.documentElement.classList.add('mission'); window.scrollTo(0,0);
   live.className = 'live'; live.hidden = false; document.body.style.overflow = 'hidden';
   const names = Object.fromEntries(crew.map(id => [id, id === ME.id ? ME.name : PEOPLE[id].name]));
   Spotify.sync(false);
@@ -5345,13 +5457,13 @@ function paint(){
 /* ---------- sections ---------- */
 function meHTML(){
   const v = LJ.viewer, r = roleOf(v);
-  return `<button class="lv-me" data-live="devices" aria-label="Switch phone">${av(v,30)}<span class="dev-txt"><b>${v === ME.id ? 'Your phone' : `${esc(LJ.S.names[v])}’s phone`}</b><small class="role-${r === 'Co-Pilot' ? 'co' : r.toLowerCase()}">${r === 'Captain' ? 'Captain · driving' : r}</small></span>${ic('swap',15)}</button>`;
+  return `<button class="lv-me" data-live="devices" aria-label="${esc(viewName(v))}’s phone. Switch phone">${av(v,30)}<span class="dev-txt"><b>${esc(viewName(v))}</b><small class="role-${r === 'Co-Pilot' ? 'co' : r.toLowerCase()}">${r === 'Captain' ? 'Captain<span class="role-x"> · driving</span>' : r}</small></span>${ic('swap',15)}</button>`;
 }
 /* Crew vs Spaceman, always on screen */
 function vsHTML(){
   const S = LJ.S, cT = Engine.crewTotal(S), sT = Engine.smTotal(S), d = cT - sT, h = S.hj, line = d > 0 ? `Crew +${d}` : d < 0 ? `Spaceman +${-d}` : cT === 0 ? 'Beat Spaceman' : 'Level';
-  const mid = h ? `<b>VS</b><small class="down">🚨 ${h.who === LJ.viewer ? 'You' : esc(viewName(h.who))} · ${Math.min(h.pool, h.target)}/${h.target}</small>` : `<b>VS</b><small class="${d > 0 ? 'up' : d < 0 ? 'down' : ''}">${line}</small>`;
-  return `<span class="vs-side crew"><small>Crew total</small><b class="t-num">${cT}</b></span><span class="vs-mid">${mid}</span><span class="vs-side sm ${S.furyOn ? 'fury' : ''}"><b class="t-num">${sT}</b><small>${av('sm',14)}${S.furyOn ? `Fury ×${PT.fury}` : 'Spaceman'}</small></span>`;
+  const mid = h ? `<b>VS</b><small class="down">🚨 ${esc(viewName(h.who))} · ${Math.min(h.pool, h.target)}/${h.target}</small>` : `<b>VS</b><small class="${d > 0 ? 'up' : d < 0 ? 'down' : ''}">${line}</small>`;
+  return `<span class="vs-side crew"><small>Crew<span class="vs-tot"> total</span></small><b class="t-num">${cT}</b></span><span class="vs-mid">${mid}</span><span class="vs-side sm ${S.furyOn ? 'fury' : ''}"><b class="t-num">${sT}</b><small>${av('sm',14)}${S.furyOn ? `Fury ×${PT.fury}` : 'Spaceman'}</small></span>`;
 }
 function smSheet(){
   const S = LJ.S, rows = S.smLog.slice().reverse(), cT = Engine.crewTotal(S), sT = Engine.smTotal(S), d = cT - sT, top = Engine.topCrew(S);
@@ -5364,14 +5476,17 @@ function smSheet(){
 function boardHTML(){
   const S = LJ.S, order = [...S.crew].sort((a, b) => S.pts[b] - S.pts[a] || S.crew.indexOf(a) - S.crew.indexOf(b)), max = S.pts[order[0]];
   const held0 = Engine.heldPts(S), smChip = `<button class="lb-p sm" data-live="sm" aria-label="Spaceman, ${S.sm} credits${held0 ? `, plus ${held0} held` : ''}"><span class="lb-r mono"></span><span class="lb-av">${av('sm',30)}</span><span class="lb-t"><b>Spaceman</b><small>${held0 ? `+${held0} held` : 'Opponent'}</small></span><span class="lb-pts t-num">${S.sm}</span></button>`;
-  const n = S.crew.length + 1, cols = n <= 4 ? n : n <= 6 ? 3 : 4;
+  /* Phase 13: four or more chips become one strip of upright chips (avatar, name, credits), so every name fits on a 320px phone
+     without a sideways scroll; eight or more wrap onto two rows. */
+  const n = S.crew.length + 1, strip = n >= 4, cols = !strip ? n : n <= 7 ? n : Math.ceil(n/2);
   const smAt = order.findIndex(id => S.pts[id] < S.sm), list = [...order]; list.splice(smAt < 0 ? order.length : smAt, 0, 'sm');
-  return `<div class="lb ${n >= 5 ? 'tight' : ''}" style="--cols:${cols}">${list.map((id, i) => { if (id === 'sm') return smChip; const fx = S.fx[id], mine = id === LJ.viewer;
+  const tpl = strip && n <= 7 ? `;grid-template-columns:${list.map(id => id === 'sm' ? 'minmax(0,1.3fr)' : 'minmax(0,1fr)').join(' ')}` : '';   /* “Spaceman” is the longest name: its chip gets a little more room */
+  return `<div class="lb ${strip ? 'strip' : ''} ${n > 7 ? 'rows2' : ''}" style="--cols:${cols}${tpl}">${list.map((id, i) => { if (id === 'sm') return smChip; const fx = S.fx[id], mine = id === LJ.viewer;
     const badge = id === S.captain ? `<i class="rb cap" title="Captain">${ic('steer',11,2.2)}</i>` : id === S.copilot ? '<i class="rb co" title="Co-Pilot">CP</i>' : '';
     const held = S.hj && S.hj.who === id;
     return `<button class="lb-p ${max > 0 && S.pts[id] === max ? 'lead' : ''} ${mine ? 'mine' : ''} ${id === S.copilot ? 'co' : ''} ${held ? 'held' : ''}" data-live="${held ? 'sm' : `pu|${id}`}" aria-label="${esc(viewName(id))}, ${held ? 'captured by Spaceman' : roleOf(id)}, ${S.pts[id]} credits">
-      <span class="lb-r mono">${i + 1}</span><span class="lb-av">${av(id,30)}${badge}${S.ae[id] ? `<i class="ae" id="ae-${id}-${S.ae[id].n}" aria-hidden="true">${S.ae[id].e}</i>` : ''}</span>
-      <span class="lb-t"><b>${(S.streak[id] || 0) >= 2 ? '🔥' : ''}${esc(viewName(id))}</b><small>${held ? 'Captured' : fx.shield ? 'Shielded' : mine && fx.double ? '2× ready' : roleOf(id)}</small></span>
+      <span class="lb-r mono">${i + 1}</span><span class="lb-av">${av(id,30)}${badge}${(S.streak[id] || 0) >= 2 ? '<i class="lb-fire" title="On a streak">🔥</i>' : ''}${S.ae[id] ? `<i class="ae" id="ae-${id}-${S.ae[id].n}" aria-hidden="true">${S.ae[id].e}</i>` : ''}</span>
+      <span class="lb-t"><b>${esc(viewName(id))}</b><small>${held ? 'Captured' : fx.shield ? 'Shielded' : mine && fx.double ? '2× ready' : roleOf(id)}</small></span>
       <span class="lb-pts t-num">${S.pts[id]}</span></button>`; }).join('')}</div>`;
 }
 function trayHTML(){
@@ -5409,7 +5524,7 @@ const perksHTML = () => `<div class="perks"><span>+${PT.coWinBonus} on every cha
 const reelHTML = (pool, w) => `<div class="cp-reel" aria-hidden="true">${pool.map(id => `<span class="r">${av(id,88)}</span>`).join('')}<span class="cp-win">${sparks(12)}${av(w,88)}<i class="cp-sat">🛰</i></span></div>`;
 function handText(e){
   const h = e.hand || {}, bits = [];
-  if (e.prev) bits.push(`${viewName(e.prev)} ${e.prev === LJ.viewer ? 'stand' : 'stands'} down${h.shield ? ' and the Co-Pilot Shield goes with the seat' : ''}.`);
+  if (e.prev) bits.push(`${viewName(e.prev)} stands down${h.shield ? ' and the Co-Pilot Shield goes with the seat' : ''}.`);
   if (h.passed && h.passed.length) bits.push('The power-up in the third slot moves over too.');
   if (h.gotShield === 'item') bits.push('Already shielded, so the free Shield arrives as a power-up.');
   return bits.join(' ');
@@ -5448,7 +5563,7 @@ function roleHTML(e){
 /* Seat Challenge: king of the hill for the Co-Pilot seat */
 function seatHTML(e){
   const S = LJ.S, v = LJ.viewer, me = id => id === v, w = e.who, r = e.rival, c = e.cur;
-  const duel = `<div class="duel">${av(w,40)}<span class="duel-x">${me(w) ? 'You' : esc(viewName(w))}<small>Co-Pilot${e.defs ? ` · ${e.defs} defence${e.defs > 1 ? 's' : ''}` : ''}</small></span><b class="mono">VS</b><span class="duel-x r">${me(r) ? 'You' : esc(viewName(r))}<small>${e.why === 'revenge' ? 'Wants it back' : 'Challenger'}</small></span>${av(r,40)}</div>`;
+  const duel = `<div class="duel">${av(w,40)}<span class="duel-x">${esc(viewName(w))}<small>Co-Pilot${e.defs ? ` · ${e.defs} defence${e.defs > 1 ? 's' : ''}` : ''}</small></span><b class="mono">VS</b><span class="duel-x r">${esc(viewName(r))}<small>${e.why === 'revenge' ? 'Wants it back' : 'Challenger'}</small></span>${av(r,40)}</div>`;
   const top = `<span class="eyebrow ion">🛰 Seat Challenge</span><b class="m-title">${e.phase === 'done' ? (e.ok ? 'Seat defended' : 'The seat changes hands') : me(r) ? 'Take the Co-Pilot seat' : me(w) ? 'Defend your seat' : 'The Co-Pilot seat is under attack'}</b>${duel}`;
   if (e.phase === 'q'){ const mine = me(w) || me(r), done = v in e.ans;
     return `<div class="ev-card struggle" data-ev="s${e.id}">${top}<p class="small muted">Same question for both. The challenger only takes the seat if they’re right and the Co-Pilot is wrong.</p><p class="q-text">${esc(c.q)}</p>
@@ -5466,7 +5581,7 @@ function qualifyHTML(e){
   const S = LJ.S, v = LJ.viewer, me = id => id === v;
   const last = id => { if (id in e.rolls) return e.rolls[id]; for (let i = e.hist.length - 1; i >= 0; i--) if (id in e.hist[i]) return e.hist[i][id]; return 0; };
   const tiles = `<div class="q-tiles">${e.all.map(id => { const out = e.phase === 'roll' && !e.pool.includes(id), win = e.phase === 'done' && id === e.who;
-    return `<span class="q-tile ${win ? 'win' : ''} ${out ? 'out' : ''}">${av(id,34)}<b>${me(id) ? 'You' : esc(viewName(id))}</b>${dieSVG(last(id), 'mini')}</span>`; }).join('')}</div>`;
+    return `<span class="q-tile ${win ? 'win' : ''} ${out ? 'out' : ''}">${av(id,34)}<b>${esc(viewName(id))}</b>${dieSVG(last(id), 'mini')}</span>`; }).join('')}</div>`;
   const head = `<span class="eyebrow" style="color:var(--flare)">🎲 Co-Pilot Qualification Roll</span>`;
   if (e.phase === 'done'){ const w = e.who;
     return `<div class="ev-card promo" data-ev="q${e.id}">${head}${tiles}<div class="cp-after">${sparks(14)}<span class="eyebrow ion">🛰 Co-Pilot</span><b class="display cp-title">${me(w) ? 'You’re the Co-Pilot!' : `${esc(fullOf(w))} qualified`}</b>
@@ -5519,7 +5634,7 @@ function chanceHTML(e){
 /* Duel: the fastest right answer takes 5 */
 function duelHTML(e){
   const S = LJ.S, v = LJ.viewer, me = id => id === v, c = e.cur, mine = me(e.a) || me(e.b), done = v in e.ans;
-  const duel = `<div class="duel">${av(e.a,40)}<span class="duel-x">${me(e.a) ? 'You' : esc(viewName(e.a))}<small>Challenger</small></span><b class="mono">VS</b><span class="duel-x r">${me(e.b) ? 'You' : esc(viewName(e.b))}<small>Top passenger</small></span>${av(e.b,40)}</div>`;
+  const duel = `<div class="duel">${av(e.a,40)}<span class="duel-x">${esc(viewName(e.a))}<small>Challenger</small></span><b class="mono">VS</b><span class="duel-x r">${esc(viewName(e.b))}<small>Top passenger</small></span>${av(e.b,40)}</div>`;
   const top = `<span class="eyebrow" style="color:var(--flare)">⚔️ Duel · ${e.stake} credits</span><b class="m-title">${e.phase === 'done' ? (e.w ? `${me(e.w) ? 'You win' : `${esc(viewName(e.w))} wins`} the duel` : 'Nobody wins') : mine ? 'Fastest right answer wins' : 'Duel in progress'}</b>${duel}`;
   if (e.phase === 'q') return `<div class="ev-card struggle" data-ev="d${e.id}">${top}<p class="q-text">${esc(c.q)}</p>
     ${mine && !done ? `<div class="opts">${c.o.map((o, i) => `<button class="opt" data-live="duel|${i}"><b class="mono">${L4[i]}</b>${esc(o)}</button>`).join('')}</div>` : optStatic(c.o)}
@@ -5638,7 +5753,8 @@ function breatherHTML(){
   return `<div class="idle breather"><span class="eyebrow ion">Breather</span><b class="m-title">Spaceman is choosing what happens next</b><p class="m-desc">Talk, snack, look out of the window. The next game starts by itself.</p>
     <div class="ship-scene" aria-hidden="true"><i class="px-stars s1"></i><i class="px-stars s2"></i><span class="sm-chase">${av('sm',22)}</span>
       <div class="ship">${shipSVG(xs)}${S.crew.map((id, i) => `<span class="pt ${S.hj && S.hj.who === id ? 'held' : ''}" style="left:${at(xs[i])}">${av(id,24)}</span>`).join('')}
-      ${b ? `<span class="bub" id="bub-${b.n}" style="left:${at(Math.min(31, Math.max(9, xs[S.crew.indexOf(b.who)])))}">${esc(b.text)}</span>` : ''}</div></div></div>`;
+      ${b ? (() => { const x = Math.min(31, Math.max(9, xs[S.crew.indexOf(b.who)])), t = ((x - 9)/22).toFixed(3);   /* --t: 0 at the left end of the ship, 1 at the right */
+        return `<span class="bub" id="bub-${b.n}" style="left:${at(x)};--t:${t}"><b>${esc(viewName(b.who))}:</b> ${esc(b.text)}</span>`; })() : ''}</div></div></div>`;
 }
 function chHTML(ch){
   const S = LJ.S, M = MISSIONS[ch.id], v = LJ.viewer, cap = isCap(), co = isCo();
@@ -5813,7 +5929,7 @@ function doneHTML(ch, M){
     ${ch.rows.filter(r => !P.first.includes(r[0]) && !P.second.includes(r[0])).slice(0, 4).map(r => row(r, '', 0)).join('')}</div>`;
   }
   if ((ch.kind === 'intel' || ch.kind === 'whatnext') && !ch.froze){ const by = i => ch.voters.filter(id => ch.picks[id] === i);
-    extra = `<span class="m-sub subj">${av(ch.who,24)}${esc(ch.kind === 'intel' ? ch.q : (ch.who === LJ.viewer ? 'Your choice' : `${viewName(ch.who)}’s choice`))}</span><div class="opts reveal">${ch.o.map((o, i) => `<span class="opt ${i === ch.a ? 'right' : ''}"><b class="mono">${L4[i]}</b><span class="grow">${esc(o)}</span><span class="pickers">${by(i).map(id => av(id,22)).join('')}</span></span>`).join('')}</div>
+    extra = `<span class="m-sub subj">${av(ch.who,24)}${esc(ch.kind === 'intel' ? ch.q : `${viewName(ch.who)}’s choice`)}</span><div class="opts reveal">${ch.o.map((o, i) => `<span class="opt ${i === ch.a ? 'right' : ''}"><b class="mono">${L4[i]}</b><span class="grow">${esc(o)}</span><span class="pickers">${by(i).map(id => av(id,22)).join('')}</span></span>`).join('')}</div>
       <div class="btn-row">${ch.right.length ? `<span class="chip ok">+${ch.kind === 'intel' ? PT.intelRight : PT.nextRight} each: ${ch.right.map(id => esc(viewName(id))).join(', ')}</span>` : `<span class="chip">Nobody saw it coming</span>`}${ch.kind === 'intel' && ch.right.length ? `<span class="chip ion">${esc(viewName(ch.who))} +${PT.intelKnown*ch.right.length} for being known</span>` : ''}${ch.kind === 'whatnext' && ch.starPts ? `<span class="chip ion">${esc(viewName(ch.who))} +${ch.starPts}</span>` : ''}</div>`; }
   if (ch.kind === 'blackbox' && ch.tally) extra = `<div class="box-reveal">${av(ch.glitch,52)}<span><span class="eyebrow ion">The glitch</span><b class="display">${esc(ch.glitch === v ? 'You!' : fullOf(ch.glitch))}</b></span></div>
     <div class="box-qs"><span><small class="eyebrow">Everyone else got</small>${esc(ch.qa)}</span><span><small class="eyebrow">The glitch got</small>${esc(ch.qb)}</span></div>`;
@@ -6117,14 +6233,14 @@ function trackCoPilot(j){
 }
 /* Bonus Awards, revealed one by one before the result (Mario Party's Bonus Stars) */
 function bonusHTML(j){
-  if (!j.bonus || !j.bonus.length) return ''; const nm = id => id === ME.id ? 'You' : (PEOPLE[id] || {}).first || (PEOPLE[id] || {}).full || id;
+  if (!j.bonus || !j.bonus.length) return ''; const nm = id => id === ME.id ? ME.name : (PEOPLE[id] || {}).first || (PEOPLE[id] || {}).full || id;
   return `<section class="awards"><span class="eyebrow" style="color:var(--flare)">⭐ Bonus Awards · these can change everything</span>
     ${j.bonus.map((a, i) => `<div class="award-row" style="animation-delay:${.4 + i*.9}s"><span class="aw-star">⭐</span><span class="grow"><b>${esc(a.name)}</b><small>${esc(a.line)}</small></span><span class="aw-who">${a.ids.map(id => av(id, 26)).join('')}<b>${a.ids.map(id => esc(nm(id))).join(' & ')}</b><span class="mono">+${a.n}</span></span></div>`).join('')}
     ${j.smBonus ? `<div class="award-row sm" style="animation-delay:${.4 + j.bonus.length*.9}s"><span class="aw-star">${av('sm',30)}</span><span class="grow"><b>Spaceman’s Bonus</b><small>For every hostage taken and every bribe accepted</small></span><span class="aw-who"><span class="mono">+${j.smBonus}</span></span></div>` : ''}</section>`;
 }
 /* Secrets revealed: who took Spaceman's bribe */
 function secretsHTML(j){
-  if (!j.betrayals || !j.betrayals.length) return ''; const nm = id => id === ME.id ? 'You' : (PEOPLE[id] || {}).full || id;
+  if (!j.betrayals || !j.betrayals.length) return ''; const nm = id => id === ME.id ? ME.full || ME.name : (PEOPLE[id] || {}).full || id;
   return `<section class="secrets"><span class="eyebrow sm-up">🤫 Secrets revealed</span>${j.betrayals.map(b => `<div class="secret ${b.yes ? 'bad' : 'good'}">${av(b.who, 30)}<span><b>${esc(nm(b.who))}</b> ${b.yes ? `took Spaceman’s bribe at minute ${b.min}` : `turned Spaceman’s bribe down at minute ${b.min}`}. ${b.yes ? '🗡' : '🫡'}</span></div>`).join('')}</section>`;
 }
 /* Crew vs Spaceman result. Older journeys without Spaceman data skip it. */
@@ -6148,11 +6264,11 @@ function coPilotHTML(j){
   const last = log.filter(x => x.id === j.copilot).pop(), how = {start:'assigned at launch', promotion:'promoted', reassigned:'took the open seat', lucky:'rolled a 6 on Lucky Roll'};
   return `<section class="card copilot-card"><span class="eyebrow ion">🛰 Final Co-Pilot</span>
     <div class="cp-final">${av(j.copilot,56)}<span><b class="display">${esc(j.copilot === ME.id ? ME.full : PEOPLE[j.copilot].full)}</b><small class="muted">${held(j.copilot)} min in the seat${last ? ` · ${how[last.how]}${last.how !== 'start' ? ` at min ${Math.floor(last.from)}` : ''}` : ''}</small></span></div>
-    ${log.length > 1 ? `<div class="cp-hist">${log.map(x => `<span class="chip">${av(x.id,20)}${esc(whoName(x.id))} · ${x.how === 'start' ? 'from launch' : `${x.how === 'promotion' ? 'promoted' : x.how === 'lucky' ? 'Lucky Roll' : 'took over'} at min ${Math.floor(x.from)}`}</span>`).join('')}</div>` : '<p class="small muted">Held the seat for the whole mission.</p>'}
-    ${(j.promos || []).length ? `<p class="small muted">Mission Promotion rolls: ${j.promos.map(p => `${esc(whoName(p.id))} ${p.roll}`).join(' · ')}</p>` : ''}
+    ${log.length > 1 ? `<div class="cp-hist">${log.map(x => `<span class="chip">${av(x.id,20)}${esc(recapName(x.id))} · ${x.how === 'start' ? 'from launch' : `${x.how === 'promotion' ? 'promoted' : x.how === 'lucky' ? 'Lucky Roll' : 'took over'} at min ${Math.floor(x.from)}`}</span>`).join('')}</div>` : '<p class="small muted">Held the seat for the whole mission.</p>'}
+    ${(j.promos || []).length ? `<p class="small muted">Mission Promotion rolls: ${j.promos.map(p => `${esc(recapName(p.id))} ${p.roll}`).join(' · ')}</p>` : ''}
   </section>`;
 }
-const smChip = j => `<span class="award-chip sm-chip">${av(j.spaceman,22)}${esc(whoName(j.spaceman))} · Journey Spaceman</span>`;
+const smChip = j => `<span class="award-chip sm-chip">${av(j.spaceman,22)}${esc(recapName(j.spaceman))} · Journey Spaceman</span>`;
 const spacemanHTML = (j, burst) => `<section class="spaceman-card">${burst ? sparks(18) : ''}
   <span class="eyebrow" style="color:var(--flare)">The Spaceman</span>
   <span class="sm-av">${av(j.spaceman,108)}<span class="sm-badge">${ic('trophy',13)}Journey Spaceman</span></span>
@@ -6163,7 +6279,7 @@ const spacemanHTML = (j, burst) => `<section class="spaceman-card">${burst ? spa
 function scoresHTML(j){
   if (!j.scores) return '';
   const ids = Object.keys(j.scores).sort((a,b) => j.scores[b] - j.scores[a]);
-  return `<section>${secH('Final scores')}<div class="list">${ids.map((id,k) => `<div class="score-row"><span class="n">0${k+1}</span>${av(id,36)}<b>${esc(whoName(id))}${id === j.captain ? `<span class="tag-cap">${ic('steer',12)}Captain</span>` : ''}</b><span class="p">${j.scores[id]}</span></div>`).join('')}</div></section>`;
+  return `<section>${secH('Final scores')}<div class="list">${ids.map((id,k) => `<div class="score-row"><span class="n">0${k+1}</span>${av(id,36)}<b>${esc(recapName(id))}${id === j.captain ? `<span class="tag-cap">${ic('steer',12)}Captain</span>` : ''}</b><span class="p">${j.scores[id]}</span></div>`).join('')}</div></section>`;
 }
 const logHTML = j => j.log && j.log.length ? `<section>${secH('Mission log')}<div class="card mlog">${j.log.map(lgRow).join('')}</div></section>` : '';
 function rateHTML(j){
@@ -6237,7 +6353,11 @@ function recapHTML(j, info){
     <section>${secH('Share card')}${storyHTML(j)}</section>
     <div class="stack-v"><button class="btn btn-primary btn-lg btn-block" data-action="recap-mem" data-id="${j.id}">See it in Memories</button><button class="btn btn-ghost btn-block" data-action="recap-close">Back to home</button></div>`;
 }
-function closeLive(){ if (LJ) cancelAnimationFrame(LJ.raf); Voice.stop(); LJ = null; live.hidden = true; live.innerHTML = ''; live.className = ''; document.body.style.overflow = ''; }
+function closeLive(){
+  if (LJ){ cancelAnimationFrame(LJ.raf); if (LJ.geo != null) try { navigator.geolocation.clearWatch(LJ.geo); } catch {} }
+  Voice.stop(); LJ = null; live.hidden = true; live.innerHTML = ''; live.className = ''; document.body.style.overflow = '';
+  document.documentElement.classList.remove('mission');
+}
 function setTitle(id, v){
   const j = cur().journeys.find(x => x.id === id); if (!j) return;
   j.title = String(v).trim().slice(0,48); persist(); hydrate(cur()); toast(j.title ? 'Memory named' : 'Name cleared');
@@ -6407,7 +6527,7 @@ function spLog(stage, info = {}){
   try { console.info('[Spotify]', stage, info); const l = JSON.parse(localStorage.getItem(SP_LOG) || '[]'); l.push({at:new Date().toISOString().slice(11, 19), stage, ...info}); localStorage.setItem(SP_LOG, JSON.stringify(l.slice(-40))); } catch {}
 }
 const spLogRead = () => { try { return JSON.parse(localStorage.getItem(SP_LOG) || '[]'); } catch { return []; } };
-const SP_SCOPES = 'user-top-read user-read-recently-played user-read-currently-playing user-read-playback-state';
+const SP_SCOPES = 'user-top-read user-read-recently-played user-read-currently-playing user-read-playback-state user-modify-playback-state';   /* modify: the mission bar's ⏮ ⏯ ⏭ (Spotify Premium) */
 const spLogo = (n = 16) => `<svg class="sp-logo" width="${n}" height="${n}" viewBox="0 0 24 24" role="img" aria-label="Spotify"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M5.6 9.3c4.4-1.3 9.3-1 13 1.2M6.3 12.9c3.7-1 7.5-.7 10.6 1.1M7 16.3c3-.8 5.8-.5 8.3.9" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round"/></svg>`;
 const safeUrl = u => /^https:\/\/([\w-]+\.)*(spotify\.com|scdn\.co|spotifycdn\.com)\//.test(u || '') ? u : '';
 const SpStore = {
@@ -6510,7 +6630,7 @@ const Spotify = {
       spLog(refresh ? 'refresh: rejected' : 'token exchange: rejected', {status:r.status, error:j.error || '', description:j.error_description || ''});
       return r.status === 400 || r.status === 401 ? {bad:true, error:j.error || 'status ' + r.status, desc:j.error_description || ''} : null; }
     const j = await r.json(), o = SpStore.read(); o.tok ||= {}; const old = o.tok[cur().id] || {};
-    o.tok[cur().id] = {access:j.access_token, refresh:j.refresh_token || old.refresh, exp:Date.now() + Math.max(60, j.expires_in - 60)*1000, cid};   /* a refresh may not return a new refresh token: keep the old one */
+    o.tok[cur().id] = {access:j.access_token, refresh:j.refresh_token || old.refresh, exp:Date.now() + Math.max(60, j.expires_in - 60)*1000, cid, scope:j.scope || old.scope || ''};   /* a refresh may not return a new refresh token: keep the old one */
     SpStore.write(o); spLog(refresh ? 'refresh: ok' : 'token exchange: ok', {expires_in:j.expires_in, scope:j.scope || ''}); return o.tok[cur().id];
   },
   async access(){
@@ -6534,6 +6654,43 @@ const Spotify = {
       return {data:await r.json()};
     }
     return {err:'auth'};
+  },
+  /* ---- playback controls (Phase 13): ⏮ ⏯ ⏭ on the mission's music bar. They act on THIS person's Spotify, on whichever
+     device is playing. Spotify only allows it with Premium and the user-modify-playback-state scope; older links need reconnecting. */
+  canControl(){ const t = (SpStore.read().tok || {})[cur().id]; return !t || !t.scope || t.scope.split(' ').includes('user-modify-playback-state'); },
+  async send(path, method){
+    if (Date.now() < this.busyUntil) return {err:'rate'};
+    for (let k = 0; k < 2; k++){
+      const tok = await this.access(); if (!tok) return {err:'auth'}; if (tok === 'net') return {err:'net'};
+      let r; try { r = await fetch('https://api.spotify.com/v1' + path, {method, headers:{Authorization:'Bearer ' + tok}}); } catch { return {err:'net'}; }
+      if (r.status === 401 && k === 0){ const o = SpStore.read(); if (o.tok && o.tok[cur().id]) o.tok[cur().id].exp = 0; SpStore.write(o); continue; }
+      if (r.ok) return {ok:true};
+      let j = {}; try { j = await r.json(); } catch {}
+      const reason = (j.error && (j.error.reason || j.error.message)) || '';
+      if (r.status === 429){ this.busyUntil = Date.now() + (+r.headers.get('Retry-After') || 5)*1000; return {err:'rate'}; }
+      if (r.status === 404) return {err:'device'};
+      if (r.status === 403) return {err:/premium/i.test(reason) ? 'premium' : /scope/i.test(reason) ? 'scope' : 'forbidden', reason};
+      if (r.status === 401) return {err:/scope|permission/i.test(reason) ? 'scope' : 'auth'};
+      return {err:'http', reason};
+    }
+    return {err:'auth'};
+  },
+  async control(act){
+    if (!LJ) return;
+    if (this.st().demo) return demoControl(act);
+    if (!this.canControl()) return toast('Reconnect Spotify after this mission to use the controls');
+    const cur0 = this.now, playing = !!(cur0 && cur0.playing);
+    const path = act === 'next' ? ['/me/player/next', 'POST'] : act === 'prev' ? ['/me/player/previous', 'POST'] : playing ? ['/me/player/pause', 'PUT'] : ['/me/player/play', 'PUT'];
+    if (act === 'toggle' && cur0){ cur0.playing = !playing; paint(); }                                  /* optimistic: the icon flips at once */
+    haptic(8); const r = await this.send(...path);
+    if (r.err){
+      if (act === 'toggle' && cur0) cur0.playing = playing;
+      toast({device:'Open Spotify and start a song first', premium:'Playback controls need Spotify Premium', scope:'Reconnect Spotify after this mission to use the controls',
+        rate:'Spotify is busy. Try again in a moment', net:'Can’t reach Spotify right now', auth:'Spotify needs reconnecting'}[r.err] || 'Spotify didn’t allow that');
+      if (r.err === 'auth') this.fail('auth');
+      if (LJ) paint(); return;
+    }
+    if (LJ) LJ.nextPoll = performance.now() + (act === 'toggle' ? 1200 : 650);                   /* show the new track (or state) as soon as Spotify has it */
   },
   fail(err){ const s = this.st(); if (!s || !s.on || s.demo) return; s.status = err === 'forbidden' ? 'forbidden' : err === 'auth' ? 'expired' : 'unavailable'; persist(); this.redraw(); },
   /* ---- data ---- */
@@ -6627,7 +6784,8 @@ function musicTick(now){
   if (now > LJ.nextPoll){ LJ.nextPoll = now + 12000;
     if (Spotify.connected() && !Spotify.st().demo && LJ.viewer === ME.id) Spotify.pollNow().then(n => {
       if (!LJ) return; const k = n ? n.id : '';
-      if (n && Spotify.sharing() && k !== LJ.lastTrack){ LJ.lastTrack = k; Transport.send({type:'song', by:ME.id, track:{n:n.n, a:n.a, art:n.art, url:n.url}}); } else if (k !== LJ.lastTrack){ LJ.lastTrack = k; paint(); } }); }
+      const pl = !!(n && n.playing);
+      if (n && Spotify.sharing() && k !== LJ.lastTrack){ LJ.lastTrack = k; LJ.lastPlaying = pl; Transport.send({type:'song', by:ME.id, track:{n:n.n, a:n.a, art:n.art, url:n.url}}); } else if (k !== LJ.lastTrack || pl !== LJ.lastPlaying){ LJ.lastTrack = k; LJ.lastPlaying = pl; paint(); } }); }
   if (now > LJ.nextSong){ LJ.nextSong = now + 150000 + Math.random()*90000;
     const ids = Object.keys(S.music).filter(id => id !== ME.id || Spotify.st().demo); if (S.pace !== 'real' && ids.length){
       const id = ids[Math.floor(Math.random()*ids.length)], p = id === ME.id ? Spotify.st().profile : demoMusicFor(id), pool = [...(p.tracks || []), ...(p.recent || [])];
@@ -6635,12 +6793,23 @@ function musicTick(now){
 }
 function musicBarHTML(){
   const S = LJ.S, s = cur().spotify, now = S.now && S.music[S.now.by] ? S.now : null;
+  /* ⏮ ⏯ ⏭ belong to whoever's Spotify it is: this phone's own playback, or every track in demo music (where Spaceman plays the aux) */
+  const meHere = LJ.viewer === ME.id && s.on, ctl = meHere && (s.demo || (now && now.by === ME.id) || (!now && Spotify.sharing()));
+  const btns = playing => `<span class="mus-c" role="group" aria-label="Playback controls">
+      <button class="mc" data-action="sp-ctl" data-c="prev" aria-label="Previous track">${ic('mPrev',16)}</button>
+      <button class="mc pp" data-action="sp-ctl" data-c="toggle" aria-label="${playing ? 'Pause' : 'Play'}" aria-pressed="${!playing}">${ic(playing ? 'mPause' : 'mPlay',16)}</button>
+      <button class="mc" data-action="sp-ctl" data-c="next" aria-label="Next track">${ic('mNext',16)}</button></span>`;
   if (now){
-    const mine = now.by === ME.id, paused = mine && Spotify.now === null && !s.demo && Spotify.connected() && LJ.lastTrack === '';
+    const mine = now.by === ME.id, paused = s.demo ? !!LJ.demoPaused : mine && Spotify.connected() && (Spotify.now === null ? LJ.lastTrack === '' : !Spotify.now.playing);
     const art = safeUrl(now.art) ? `<img class="art" src="${esc(now.art)}" alt="" referrerpolicy="no-referrer">` : `<span class="art">${ic('music',16)}</span>`;
-    const inner = `${art}<span class="txt"><b>${esc(now.n)}</b><small>${esc(now.a)}${S.crew.length > 1 ? ` · ${mine ? 'your' : esc(viewName(now.by)) + '’s'} aux` : ''}</small></span>${paused ? '' : '<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>'}${spLogo(18)}`;
-    const url = safeUrl(now.url);
-    return url ? `<a class="mus" href="${esc(url)}" target="_blank" rel="noopener" aria-label="Now playing: ${esc(now.n)} by ${esc(now.a)}. Open in Spotify">${inner}</a>` : `<div class="mus" role="status" aria-label="Now playing: ${esc(now.n)} by ${esc(now.a)}">${inner}</div>`;
+    const txt = `<span class="txt"><b>${esc(now.n)}</b><small>${paused ? 'Paused · ' : ''}${esc(now.a)}${S.crew.length > 1 ? ` · ${esc(viewName(now.by))}’s aux` : ''}</small></span>`;
+    const url = safeUrl(now.url), label = `Now playing: ${esc(now.n)} by ${esc(now.a)}`;
+    if (ctl){
+      const info = url ? `<a class="mus-l" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${label}. Open in Spotify">${art}${txt}</a>` : `<span class="mus-l" role="status" aria-label="${label}">${art}${txt}</span>`;
+      return `<div class="mus has-c ${paused ? 'paused' : ''}">${info}${btns(!paused)}${spLogo(16)}</div>`;
+    }
+    const inner = `${art}${txt}${paused ? '' : '<span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>'}${spLogo(18)}`;
+    return url ? `<a class="mus" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${label}. Open in Spotify">${inner}</a>` : `<div class="mus" role="status" aria-label="${label}">${inner}</div>`;
   }
   if (S.ev || (S.ch && !(S.ch.phase === 'done' && !S.ch.result))) return '';   /* v1.3: the connect prompt waits for a breather, so games and events keep the room */
   const idle = (txt, cta) => `<button class="mus idle" data-action="sp-open"><span class="art">${ic('music',16)}</span><span class="txt"><b>${txt}</b></span>${cta ? `<span class="cta">${cta}</span>` : ''}${spLogo(18)}</button>`;
@@ -6648,7 +6817,20 @@ function musicBarHTML(){
   if (s.status === 'expired') return idle('Spotify needs reconnecting', 'Reconnect');
   if (s.status === 'forbidden' || s.status === 'unavailable') return idle('Spotify is unavailable right now', '');
   if (!cur().settings.spotifyShare) return idle('Spotify sharing is off', 'Turn on');
+  if (ctl) return `<div class="mus has-c paused"><button class="mus-l" data-action="sp-open"><span class="art">${ic('music',16)}</span><span class="txt"><b>Nothing playing</b><small>Tap play to resume</small></span></button>${btns(false)}${spLogo(16)}</div>`;
   return idle('Nothing playing. Start a song in Spotify', '');
+}
+/* Demo music: the controls work on the simulated aux, so the bar can be tried without a Spotify account. */
+function demoControl(act){
+  const S = LJ.S, now = S.now; haptic();
+  if (act === 'toggle'){ LJ.demoPaused = !LJ.demoPaused; LJ.cache['lv-music'] = null; return paint(); }
+  const by = now ? now.by : ME.id, p = by === ME.id ? (cur().spotify.profile || DEMO_ME) : demoMusicFor(by);
+  let t = null;
+  if (act === 'prev'){ const hist = S.songs.filter(x => x.by === by), i = hist.length - 2; t = i >= 0 ? hist[i] : null; if (!t) return toast('That’s the first song of the mission'); }
+  else { const pool = [...((p && p.tracks) || []), ...((p && p.recent) || [])].filter(x => !now || x.n !== now.n); t = pool.length ? pool[Math.floor(Math.random()*pool.length)] : null; }
+  if (!t) return toast('No more demo songs');
+  LJ.demoPaused = false; LJ.nextSong = performance.now() + 150000 + Math.random()*90000;     /* a skip resets the simulated aux's own timer */
+  Transport.send({type:'song', by, track:{n:t.n, a:t.a}});
 }
 function musicMenuRow(){
   const s = cur().spotify;
@@ -6764,7 +6946,7 @@ function spotifySheet(view){
       <p class="small muted">Disconnecting removes the saved tokens and everything we stored from Spotify on this device. To also revoke access on Spotify’s side, remove Spaceman at spotify.com/account/apps.</p>
       ${s.demo ? '' : `<button class="btn btn-ghost btn-block" data-action="sp-setup">Spotify app settings</button>${logBox}`}`;
   } else {
-    body = `<ul class="sp-steps"><li>Reads your top artists, top tracks and recently played, plus what’s playing now.</li><li>Stores artist and track names, artwork links and the hour of recent plays. Nothing else.</li><li>Never changes your playlists or your playback, and never posts anywhere.</li><li>Shared with your crew only while Share Spotify Data is on.</li></ul>
+    body = `<ul class="sp-steps"><li>Reads your top artists, top tracks and recently played, plus what’s playing now.</li><li>Stores artist and track names, artwork links and the hour of recent plays. Nothing else.</li><li>Never changes your playlists and never posts anywhere. It only touches playback when you press ⏮ ⏯ ⏭ in a mission (Spotify Premium).</li><li>Shared with your crew only while Share Spotify Data is on.</li></ul>
       <div class="stack-v"><button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">${spLogo(20)}Connect Spotify</button>
       <button class="btn btn-ghost btn-lg btn-block" data-action="sp-demo">${ic('sparkle',18)}Try the demo (no Spotify account)</button>
       <button class="btn btn-ghost btn-block" data-action="sp-setup">Spotify app settings</button></div>`;
@@ -6774,6 +6956,7 @@ function spotifySheet(view){
 }
 Object.assign(ACTIONS, {
   'sp-open': () => spotifySheet(),
+  'sp-ctl': (t, d) => Spotify.control(d.c),
   'sp-setup': () => spotifySheet('setup'),
   'sp-connect': () => Spotify.begin(true),
   'sp-reset': () => { Spotify.reset(); spotifySheet(); toast('Spotify connection reset. You can connect again.'); },

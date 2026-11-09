@@ -65,7 +65,7 @@ Atlas has six moods: **excited, curious, concerned, impressed, amused and compet
 | **Hesitations** ("Hold on…") | 480 ms beat at every "…" | Natural from the model |
 | **Mood** | Rate and pitch per mood | Stability per mood (0.35 excited → 0.45 concerned) |
 | **Two characters** | Atlas gets the best British voice on the phone, Spaceman the next-best different one, a little lower | Separate voice IDs |
-| **Radio sound** | Squelch, hiss bed, static bursts *around* the voice | Real processing *of* the voice: band-pass 300–3,400 Hz, presence lift at 1.8 kHz, soft saturation, compression, hiss bed |
+| **Radio sound** | One short squelch as the line opens (the hiss bed was removed in Phase 13) | Real processing *of* the voice: band-pass 300–3,400 Hz, presence lift at 1.8 kHz, soft saturation, compression, hiss bed |
 
 ## ElevenLabs
 

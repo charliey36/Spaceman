@@ -12,7 +12,7 @@ Two parts: **Phase 12 music integration** (built, described first) and **Name Th
 | Status | You → Music, mission menu, music bar | "Spotify Connected", "Connect Spotify", "Reconnect Spotify", "Spotify unavailable", "Spotify access blocked" |
 | 🎵 Share Spotify Data | `settings.spotifyShare`, default **off** | Off = the engine never receives your profile or songs, so no music roasts, no music Crew Intel, no profile, no now-playing for the crew. Turning it off mid-journey removes you at once (`music-set` with `p:null`). |
 | Data | `u.spotify.profile` | Top artists (10, plus genres counted across the top 20), top tracks (10), recently played (50: name, artist, hour), refreshed at most every 30 min or on demand. Playback state is polled every 12 s during a journey, only while the page is visible, and kept in memory only. |
-| Mission music bar | `musicBarHTML()` above the tray | Album art, track, artist, whose aux, Spotify mark, links back to the track on Spotify. Falls back to tasteful one-line states. |
+| Mission music bar | `musicBarHTML()` above the tray | Album art, track, artist, whose aux, Spotify mark, links back to the track on Spotify. ⏮ ⏯ ⏭ controls for your own playback (Phase 13). Falls back to tasteful one-line states. |
 | Profiles | You page, friend sheets | Top genres, artists and tracks, with link-backs and attribution. |
 | Commentary and roasts | `MUSIC` catalogue + `musicCands()` in the engine | Genre-family lines, top artist and track, repeat listening, artist loyalty, variety, late-night plays, sad-song count, pair overlap, zero overlap, genre clash, the odd one out, crew favourite. Never repeated within a mission. |
 | Song reactions | `songIn()` | Same song again, artist runs, aux hogging, "that's in Megan's top artists", crew anthem, "nobody here likes this". Rate-limited. |
@@ -36,7 +36,20 @@ Two parts: **Phase 12 music integration** (built, described first) and **Name Th
 4. Development Mode: the app owner needs Premium, and only 5 allow-listed users can sign in (**User Management**). Anyone else gets "Spotify access blocked".
 5. To test locally, run `python3 -m http.server 8000 --bind 127.0.0.1` in the project folder and open `http://127.0.0.1:8000/`. Opening `index.html` as a file can't work with Spotify.
 
-Scopes: `user-top-read`, `user-read-recently-played`, `user-read-currently-playing`, `user-read-playback-state`. Nothing that writes.
+Scopes: `user-top-read`, `user-read-recently-played`, `user-read-currently-playing`, `user-read-playback-state`, `user-modify-playback-state`. The last one is only used when someone presses ⏮ ⏯ ⏭ on the mission's music bar; nothing touches playlists or posts anything.
+
+### Playback controls (Phase 13)
+
+| Control | Spotify call | Notes |
+|---|---|---|
+| ⏮ Previous | `POST /me/player/previous` | Acts on whichever device is playing this person's Spotify |
+| ⏯ Play / Pause | `PUT /me/player/play` / `PUT /me/player/pause` | Icon flips straight away, then the next poll confirms it |
+| ⏭ Next | `POST /me/player/next` | The bar polls again ~0.6 s later so the new track shows quickly |
+
+- Shown only for **your own** playback (the bar shows your aux, or nothing is playing and you share). Other people's tracks stay read-only, because only they can control their Spotify.
+- Spotify allows these calls with **Premium** only. Errors become a short toast: no active device (404) → "Open Spotify and start a song first"; Premium required (403) → "Playback controls need Spotify Premium".
+- Links made before Phase 13 don't have `user-modify-playback-state`. The stored token keeps the granted scope; without it the buttons say to reconnect after the mission (signing in leaves the page, so it isn't offered mid-mission).
+- Demo music: the controls drive the simulated aux (skip picks another song from that person's demo profile, back replays the previous one, pause stops the equaliser).
 
 ### Configuration ("environment variables")
 
