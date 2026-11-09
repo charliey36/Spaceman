@@ -106,3 +106,9 @@ Settings → Voice shows ElevenLabs's own answer: **HTTP status, error code, err
 | 🚫 Blocked by this page's security policy | The page's Content-Security-Policy (`connect-src`) forbids calling `api.elevenlabs.io`. Typical of a sandboxed or embedded page. | Open Spaceman from a normal web address (GitHub Pages, your own host) or a local server, or use a proxy (`SPACEMAN_CONFIG.elevenLabsBase`). |
 | ❌ … (response blocked) | `api.elevenlabs.io` is reachable but the reply was blocked: an ad or privacy extension, a filter, or a proxy without CORS headers. | Private window with extensions off. |
 | ❌ … (no connection) | No route to the server at all: offline, VPN, firewall, DNS. | Another network or device. |
+
+## Library voices on a Free plan (confirmed on a real account, v1.7)
+
+A real Test Voice run returned **HTTP 402 `paid_plan_required`: "Free users cannot use library voices via the API."** for voice `21m00Tcm4TlvDq8ikWAM` (Rachel). That proved the key, the network and the endpoint all worked; the only problem was the voice. Rachel is a Voice Library voice, and library voices need a paid plan through the API. (That ID was also the example in earlier docs and the field placeholder, which was misleading. Both are replaced.)
+
+Use a voice from **your own account** instead: ElevenLabs → Voices → *My Voices* → ⋯ → *Copy voice ID*. The Voice settings sheet also has **Fill in free British voices**, which enters George (`JBFqnCBsd6RMkjVDRZzb`, warm British male, suits Atlas) and Daniel (`onwK4e9ZLuTAKqWW03F9`, deeper British male, suits Spaceman). They are premade voices, which Free accounts can use. If Test Voice says "Voice Not Found", copy a voice ID from My Voices instead.

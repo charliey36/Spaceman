@@ -5173,8 +5173,9 @@ function elSheet(){
     <div id="el-status">${EL.statusHTML()}</div>
     <label class="row"><span class="grow"><b>Use ElevenLabs</b><span>Falls back to the built-in voice if anything fails</span></span><input id="el-on" type="checkbox" ${c.on ? 'checked' : ''}></label>
     <label class="field"><span>API key</span><input id="el-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.key || '')}" placeholder="sk_…"></label>
-    <label class="field"><span>Atlas voice ID</span><input id="el-atlas" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.atlas || '')}" placeholder="e.g. 21m00Tcm4TlvDq8ikWAM"></label>
+    <label class="field"><span>Atlas voice ID</span><input id="el-atlas" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.atlas || '')}" placeholder="paste from My Voices"></label>
     <label class="field"><span>Spaceman voice ID (optional)</span><input id="el-sm" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.sm || '')}" placeholder="blank = same as Atlas"></label>
+    <button class="btn btn-ghost btn-block" type="button" data-action="el-premade">Fill in free British voices (George + Daniel)</button>
     <label class="field"><span>Model</span><input id="el-model" type="text" list="el-models" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.model || 'eleven_multilingual_v2')}"><datalist id="el-models">${EL_MODELS.map(m => `<option value="${m[0]}">${m[1]}</option>`).join('')}</datalist></label>
     <label class="field"><span>Radio effect</span><select id="el-fx"><option value="light" ${EL.fx(c) === 'light' ? 'selected' : ''}>Light (clear voice, hint of handset)</option><option value="full" ${EL.fx(c) === 'full' ? 'selected' : ''}>Full radio (narrow, crunchy)</option><option value="off" ${EL.fx(c) === 'off' ? 'selected' : ''}>None (pure voice)</option></select></label>
     <p class="small muted">The key only needs <b>Text to Speech: Access</b>. Everything is stored in this browser; anyone using this phone could use the key. Changing a voice ID applies to the very next transmission.</p>
@@ -6189,6 +6190,7 @@ const LIVE_ACTIONS = {
   'el-save': () => { const c = EL.normalise(elForm()), chk = EL.check(c); if (chk.errors.length){ EL.testRes = chk.errors.map(e => ({lvl:'bad', text:'❌ ' + e})); EL.paint(); return; }
     EL.save(c); EL.testRes = chk.warns.map(w => ({lvl:'warn', text:w})).concat([{lvl:'ok', text:c.on ? 'Saved. Tap Test Voice to check it.' : 'Saved. ElevenLabs is switched off, so the built-in voice is used.'}]); EL.paint();
     [['el-key', c.key], ['el-atlas', c.atlas], ['el-sm', c.sm], ['el-model', c.model]].forEach(([id, v]) => { const n = $('#' + id); if (n) n.value = v; }); toast(c.on ? 'Saved. Transmissions will use ElevenLabs' : 'Saved. ElevenLabs is off'); },
+  'el-premade': () => { const a = $('#el-atlas'), m = $('#el-sm'); if (a) a.value = 'JBFqnCBsd6RMkjVDRZzb'; if (m) m.value = 'onwK4e9ZLuTAKqWW03F9'; toast('Filled in. Tap Test Voice'); },
   'el-copylog': () => { const t = EL.logText(); try { navigator.clipboard.writeText(t).then(() => toast('Log copied')).catch(() => toast('Couldn’t copy. Select the text instead')); } catch { toast('Couldn’t copy. Select the text instead'); } },
   'el-clearlog': () => { EL.hist = []; EL.paintLog(); },
   'el-test': () => { if (EL.testing) return; Voice.unlock(); EL.test(elForm()).then(ok => { if (ok) toast('ElevenLabs connected'); }); },
