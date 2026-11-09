@@ -50,3 +50,18 @@ Places where real functionality will plug in later (GPS, Spotify, voice, sharing
 - `docs/CLOUD.md`: cross-device accounts (Supabase) and shared config.
 - `docs/ELEVENLABS.md`: proxy mode (`worker/`), voice roles, and the "response blocked" cause.
 - `docs/SPOTIFY.md`: real-only Spotify and listening-together limits.
+
+## Phase 15
+
+| Area | What changed |
+|---|---|
+| Voices | Atlas (Daniel) and Spaceman (Callum) work with no setup; both Voice IDs stay editable in Settings. |
+| Pause | ⏸ in the mission header freezes everything (timer, miles, games, events, milestones, transmissions, music polling). Resuming shows "▶ Mission Resumed". |
+| Own profile | Tapping your own avatar opens your full card (mission stats, role, journey totals, achievements, music, emotes). |
+| Anonymous transmissions | Toggle fixed (the click handler was never registered). ON hides the sender, OFF shows "From: name". |
+| Mission type | 🚗 Travel (default, optional location) or 🏠 Stationary (no distance). Milestones by ⏱ Time (default, every 15 min real / 10 sim) or 📍 Distance. |
+| Spotify | Live sync: stop, resume, song change, device change and disconnect all update every phone; no stale track. See `docs/SPOTIFY.md`. |
+| Estimation | Spaceman no longer guesses. Last place pays him 3 credits with a transmission. Mission win rate ≈ 20% (see `docs/BALANCE.md`). 166 questions across geography, science, history, technology, music, cars, sports, random facts and ridiculous statistics. |
+| Spaceman | Accent is now dark red (`--sm:#A3283A`). VS bar no longer truncates his name at 3-digit scores. Voice delivery is directed (pauses before the sting, one leaned-on word, unhurried pace). |
+| Atlas | ~230 new lines: music, listening together, estimation steals, comebacks, ties, big leads, huge wins, new leaders, stationary missions, plus more openers, intros, captain prompts and memories. |
+| Cosmic Answers | Suggestions removed; players write their own. |

@@ -206,3 +206,19 @@ The same simulation checks the event queue. In 300 five-player, 45-minute missio
 - Bots have equal skill. Real crews won't, and that's fine: the aim is no built-in role advantage, not equal outcomes.
 - A real Co-Pilot's tapping speed will vary. Log real timings in testing and recalibrate the allowances.
 - Points from Cosmic Answers depend on the Captain's taste. Anonymity helps, but it can't remove that.
+
+## Phase 15: Estimation steal
+
+Spaceman no longer submits an estimate. After each estimation round the player furthest from the answer (non-answers count as furthest) loses 3 credits to Spaceman, unless shielded. Needs at least two players and no tie for last.
+
+Mission win rate for Spaceman (400 simulated missions each, `smScale` retuned to 1.0 / 1.2 / 1.6 / 1.8 / 1.9 / 2.0 / 2.1 for 2 to 8 players, `smSim` 0.95):
+
+| Crew | Spaceman wins |
+|---|---|
+| 3 players | 21.5% |
+| 4 players | 18.8% |
+| 5 players | 19.8% |
+| 6 players | 21.3% |
+| 4 players, simulated pace | 19.8% |
+
+Target is about 20%. Before the change it sat at 21 to 24%.

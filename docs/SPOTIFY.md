@@ -155,3 +155,14 @@ Some of the brief conflicts with Spotify's Developer Policy as written:
 - Spotify UI appears **only** when the account is connected. The now-playing bar shows only while a sharing player's music is actually playing. There is no demo mode and no simulated crew music.
 - Tapping a player in a mission shows a Spotify section (currently playing, top genres, top artists, "Spotify Connected") only for players who switched on **Share Spotify Data**.
 - **Spotify Jam: not detectable.** The Web API's `/me/player` returns the track, progress and a `context` (playlist/album/artist) but nothing that identifies a Jam session or its participants. Listening Together is therefore a heuristic: two sharing players start the same track within 60 s of each other. It shows "🎵 Listening together" with both names and clears when either moves on. It can be wrong (two people who simply pick the same song) and can miss a real Jam if one person's phone isn't polling.
+
+## Phase 15: live sync
+
+The phone polls `/me/player` about every 6 seconds (sooner near the end of a song, and straight away when the tab regains focus). Every change is pushed to the crew:
+
+| Change | Result |
+|---|---|
+| Song changes or playback resumes | New track shown immediately (`song` intent) |
+| Pause, stop, or Share Spotify Data switched off | Track cleared on every phone (`song-stop` intent) |
+| Playback device changes | Device name on your own bar updates |
+| Disconnect or 3 failed polls in a row | Cleared, toast "Spotify disconnected" |
