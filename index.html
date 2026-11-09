@@ -4847,7 +4847,7 @@ const NAME_SAY = {Zac:'Zack', Seb:'Sebb', Ollie:'Olly'};
 const EL_MODELS = [['eleven_multilingual_v2','Multilingual v2 · best quality (default)'], ['eleven_flash_v2_5','Flash v2.5 · fastest and cheapest'], ['eleven_turbo_v2_5','Turbo v2.5 · fast, good quality'], ['eleven_v3','v3 · most expressive, slower']];
 class ELError extends Error { constructor(code, title, hint, o = {}){ super(title); this.code = code; this.title = title; this.hint = hint || ''; Object.assign(this, o); } }
 const EL = {
-  srcs:[], cache:new Map(), pend:new Map(), alt:{}, supported:null, tier:null, hist:[], blocked:null, testing:false, testRes:null, lastToast:{},
+  srcs:[], cache:new Map(), pend:new Map(), alt:{}, supported:null, tier:null, csp:[], hist:[], blocked:null, testing:false, testRes:null, lastToast:{},
   base(){ return String((window.SPACEMAN_CONFIG || {}).elevenLabsBase || 'https://api.elevenlabs.io').replace(/\/+$/, ''); },
   cfg(){ try { return JSON.parse(localStorage.getItem('spaceman.el') || 'null'); } catch { return null; } },
   sig(c){ c = c || this.cfg() || {}; let h = 5381; const s = [c.key, c.atlas, c.sm, c.model].join('|'); for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); },
@@ -4889,6 +4889,17 @@ const EL = {
   infoLine(i){ if (!i) return ''; return [i.status ? `HTTP ${i.status}` : null, i.code ? `code ${i.code}` : null, i.type ? `type ${i.type}` : null, i.message ? `message “${String(i.message).slice(0, 220)}”` : null, i.param ? `param ${i.param}` : null, i.endpoint, i.model ? `model ${i.model}` : null, i.voice ? `voice ${i.voice}` : null, i.request_id ? `request ${i.request_id}` : null].filter(Boolean).join(' · '); },
   /* The REAL answer from ElevenLabs is always kept (status, code, message, endpoint, model, voice) and shown. Classification only decides the headline and the advice; it never replaces what ElevenLabs said.
      Both error shapes are read: {detail:{status,message}} (older) and {detail:{type,code,message,param,request_id}} (current). Nothing here checks the plan itself: only ElevenLabs's answer counts. */
+  /* "Failed to fetch" means ElevenLabs never answered, so the key and voice were never even looked at. Work out why: blocked by the page's security policy, no route to the server at all, or reachable but the answer was blocked (CORS / an extension). */
+  async netDiagnose(e, ctx){
+    const offline = this.netError(e); await new Promise(r => setTimeout(r, 60)); const host = (() => { try { return new URL(this.base()).host; } catch { return 'api.elevenlabs.io'; } })(), page = location.host || location.protocol;
+    const mk = (code, title, hint, extra) => { const x = new ELError(code, title, hint, Object.assign({info:this.ctxInfo(ctx, {message:(e && e.message) || 'Failed to fetch', code:code === 'csp' ? 'blocked_by_csp' : undefined}), transient:true}, extra || {})); return x; };
+    if (offline.code === 'offline') return offline;
+    const v = this.csp.find(x => Date.now() - x.at < 8000);
+    if (v) return mk('csp', '🚫 Blocked by this page’s security policy', `The page you are running (${page}) forbids calls to ${host} (${v.dir}). The key and voice were never tested. Open Spaceman from a normal web address (for example GitHub Pages) or a local server, or send requests through your own proxy with SPACEMAN_CONFIG.elevenLabsBase.`, {permanent:true, transient:false});
+    let reach = false; try { await fetch(this.base() + '/v1/models', {mode:'no-cors', cache:'no-store'}); reach = true; } catch {}
+    this.log('info', `Reachability probe to ${host}: ${reach ? 'reachable' : 'no answer'}`);
+    if (reach) return mk('cors', '❌ ElevenLabs Request Failed (response blocked)', `${host} is reachable, but the browser blocked the reply. That is usually a browser extension (ad or privacy blocker), a corporate filter, or a proxy missing CORS headers. Try a private window with extensions off. The key and voice were never tested.`);
+    return mk('network', '❌ ElevenLabs Request Failed (no connection)', `This browser can’t reach ${host} at all: offline, an ad or privacy blocker, a VPN or firewall, DNS, or the page’s security policy. The key and voice were never tested. Try another network or a private window with extensions off.`); },
   async httpError(res, ctx){
     let raw = ''; try { raw = await res.text(); } catch {} let j = null; try { j = JSON.parse(raw); } catch {}
     const d = j && (j.detail !== undefined ? j.detail : j), o = d && typeof d === 'object' && !Array.isArray(d) ? d : {}, s = res.status;
@@ -4915,7 +4926,7 @@ const EL = {
     const t0 = performance.now(); let res;
     for (let attempt = 0; attempt < 2; attempt++){
       try { res = await fetch(url, {method:'POST', headers:{'xi-api-key':c.key, 'Content-Type':'application/json', 'Accept':'audio/mpeg'}, body}); }
-      catch (e) { const ne = this.netError(e); ne.info = this.ctxInfo(ctx, {message:e && e.message}); this.log('error', `✗ ${ne.title}: ${e && e.message}`); throw ne; }
+      catch (e) { const ne = await this.netDiagnose(e, ctx); this.log('error', `✗ ${ne.title}: ${e && e.message}`); throw ne; }
       if (res.ok) break;
       const err = await this.httpError(res, ctx); if (attempt === 0 && err.retry){ this.log('warn', `Retrying once in 0.9 s (${err.code})`); await new Promise(r => setTimeout(r, 900)); continue; } throw err; }
     const type = res.headers.get('content-type') || '';
@@ -5039,6 +5050,7 @@ const EL = {
   logText(){ return this.hist.map(e => `${new Date(e.t).toLocaleTimeString([], {hour12:false})} ${e.lvl === 'error' ? '✗' : e.lvl === 'warn' ? '!' : e.lvl === 'ok' ? '✓' : '·'} ${e.msg}`).join('\n') || 'Nothing logged yet.'; },
   paintLog(){ try { const n = document.getElementById('el-log'); if (n) { n.textContent = this.logText(); n.scrollTop = n.scrollHeight; } } catch {} }
 };
+try { document.addEventListener('securitypolicyviolation', e => { if (/elevenlabs/i.test(e.blockedURI || '') || /elevenlabs/i.test(EL.base())) { EL.csp.push({dir:e.effectiveDirective || e.violatedDirective, uri:e.blockedURI, at:Date.now()}); if (EL.csp.length > 5) EL.csp.shift(); EL.log('error', `CSP violation: ${e.effectiveDirective || e.violatedDirective} blocked ${e.blockedURI}`); } }); } catch {}
 function elForm(){ const g = id => ($('#' + id) || {}).value || ''; return {on:!!($('#el-on') || {}).checked, key:g('el-key'), atlas:g('el-atlas'), sm:g('el-sm'), model:g('el-model'), fx:g('el-fx')}; }
 function elSheet(){
   const c = EL.cfg() || {};

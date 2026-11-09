@@ -96,3 +96,13 @@ Settings → Voice shows ElevenLabs's own answer: **HTTP status, error code, err
 | other 403 | ❌ ElevenLabs refused the request (403) |
 
 **Automatic model fallback.** If ElevenLabs refuses the model (or gives an unexplained plan error), Spaceman retries once or twice with `eleven_multilingual_v2`, Flash v2.5 or Turbo v2.5 (only those the account lists, when the list is readable). Whichever works is remembered for that key, voice and model, shown in Settings ("refused, using … instead") and used for later lines. A voice problem never triggers a model change.
+
+## "Failed to fetch" (v1.6)
+
+"Failed to fetch" means ElevenLabs **never answered**, so the key and voice were never checked. Spaceman now works out why and says so:
+
+| Headline | Meaning | Fix |
+|---|---|---|
+| 🚫 Blocked by this page's security policy | The page's Content-Security-Policy (`connect-src`) forbids calling `api.elevenlabs.io`. Typical of a sandboxed or embedded page. | Open Spaceman from a normal web address (GitHub Pages, your own host) or a local server, or use a proxy (`SPACEMAN_CONFIG.elevenLabsBase`). |
+| ❌ … (response blocked) | `api.elevenlabs.io` is reachable but the reply was blocked: an ad or privacy extension, a filter, or a proxy without CORS headers. | Private window with extensions off. |
+| ❌ … (no connection) | No route to the server at all: offline, VPN, firewall, DNS. | Another network or device. |
