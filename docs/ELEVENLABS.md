@@ -65,3 +65,34 @@ Whenever ElevenLabs fails, the line is spoken by the built-in voice, a toast exp
 ## Verified (mocked ElevenLabs API, 56 checks)
 
 This environment cannot reach api.elevenlabs.io, so the suite (`tools/` scratch `el_test.py`) runs the real app in Chromium against a mock of the documented endpoint and error shapes: typed-values Test, both voices, separate "Over.", 1.0 s gap, transmissions and roasts using the right voice and not browser speech, voice change applied instantly, cache reuse and invalidation, all failure modes above (named, built-in fallback, no hammering, recovery after changing the key), 429 retry, ElevenLabs off, no key in logs, no page errors. A real-account check is one tap: **Test Voice**.
+
+## "This needs a paid plan": what it really means (v1.5)
+
+**The message was ours, not ElevenLabs's.** Spaceman had one catch-all that turned HTTP 402, and any reply mentioning *payment, paid plan, subscription* or *upgrade*, into "needs a paid plan", and threw away ElevenLabs's own text. Several different refusals landed there. The old code also called every 403 "Invalid API Key". Spaceman has **no plan checks or feature gates of its own**; it only reports what ElevenLabs answers.
+
+| Component | Needs a paid plan? |
+|---|---|
+| Endpoint `POST /v1/text-to-speech/{voice_id}` (plain text to speech; no streaming, Conversational AI or Agent endpoint) | No |
+| Model `eleven_multilingual_v2` (default), Flash v2.5, Turbo v2.5 | No (they use credits) |
+| Output `mp3_44100_128` | No (192 kbps MP3 needs Creator or higher; Spaceman doesn't use it) |
+| **Voice Library voices** | **Can be.** ElevenLabs says some are limited to paid plans (the owner restricted it, or it has a credit multiplier). Premade voices and your own voices are not. |
+| A model the account can't use (`model_access_denied`) | Possibly. Spaceman falls back automatically. |
+
+So with a free account, a valid key and a **premade or own voice**, generation should succeed. If the voice came from the shared Voice Library, that voice is the most likely thing ElevenLabs refuses.
+
+### What you now see on any failure
+
+Settings → Voice shows ElevenLabs's own answer: **HTTP status, error code, error type, message, request ID, endpoint, model, voice ID**, plus (after Test Voice) an account check: plan tier and credits, what the voice is (premade, cloned, library) and which models the account lists. Those lookups need extra key permissions; if the key lacks them they are reported as skipped, never as errors.
+
+| ElevenLabs answer | Headline |
+|---|---|
+| `invalid_api_key`, `missing_api_key`, 401 | ❌ Invalid API Key |
+| `insufficient_permissions`, `missing_permissions` | ❌ API key is missing a permission (names it) |
+| `insufficient_credits`, `quota_exceeded` | ❌ Out of ElevenLabs credits |
+| `voice_not_found`, 404 | ❌ Voice Not Found |
+| `voice_access_denied`, "library voices… upgrade" | ❌ This voice isn't accessible to this ElevenLabs account |
+| `model_access_denied`, `unsupported_model`, `model_not_found` | ❌ Model not accepted (then automatic fallback) |
+| `feature_not_available`, `subscription_required`, other 402 | ❌ ElevenLabs says this needs a paid plan (with its exact message) |
+| other 403 | ❌ ElevenLabs refused the request (403) |
+
+**Automatic model fallback.** If ElevenLabs refuses the model (or gives an unexplained plan error), Spaceman retries once or twice with `eleven_multilingual_v2`, Flash v2.5 or Turbo v2.5 (only those the account lists, when the list is readable). Whichever works is remembered for that key, voice and model, shown in Settings ("refused, using … instead") and used for later lines. A voice problem never triggers a model change.

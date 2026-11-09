@@ -814,6 +814,7 @@ button.ms-card:hover .ms-ic{transform:scale(1.08) rotate(-6deg)}
 .elst{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line-2)}
 .elst b{font-size:16px}.elst span{font-size:13px;color:var(--fg-2);line-height:1.4}
 .elst.ok{border-color:var(--ion)}.elst.bad{border-color:var(--danger)}.elst.bad b{color:var(--danger)}
+.elinfo{display:block;margin-top:6px;font:11px/1.4 var(--font-mono);color:var(--fg-2);word-break:break-word;user-select:all}
 .elr{margin:6px 2px 0;font-size:13.5px;line-height:1.4}.elr.bad{color:var(--danger)}.elr.ok{color:var(--ion)}.elr.warn{color:var(--fg-2)}.elr span{color:var(--fg-2);font-size:12.5px}
 .eldl{display:grid;grid-template-columns:auto 1fr;gap:5px 12px;margin:10px 2px 4px;font-size:13px}.eldl dt{color:var(--fg-3)}.eldl dd{margin:0;word-break:break-all}.eldl code{font:12px var(--font-mono)}
 .eldiag{margin-top:12px}.eldiag summary{cursor:pointer;color:var(--fg-2);font-size:13px;padding:6px 0}
@@ -4846,12 +4847,12 @@ const NAME_SAY = {Zac:'Zack', Seb:'Sebb', Ollie:'Olly'};
 const EL_MODELS = [['eleven_multilingual_v2','Multilingual v2 · best quality (default)'], ['eleven_flash_v2_5','Flash v2.5 · fastest and cheapest'], ['eleven_turbo_v2_5','Turbo v2.5 · fast, good quality'], ['eleven_v3','v3 · most expressive, slower']];
 class ELError extends Error { constructor(code, title, hint, o = {}){ super(title); this.code = code; this.title = title; this.hint = hint || ''; Object.assign(this, o); } }
 const EL = {
-  srcs:[], cache:new Map(), pend:new Map(), hist:[], blocked:null, testing:false, testRes:null, lastToast:{},
+  srcs:[], cache:new Map(), pend:new Map(), alt:{}, supported:null, tier:null, hist:[], blocked:null, testing:false, testRes:null, lastToast:{},
   base(){ return String((window.SPACEMAN_CONFIG || {}).elevenLabsBase || 'https://api.elevenlabs.io').replace(/\/+$/, ''); },
   cfg(){ try { return JSON.parse(localStorage.getItem('spaceman.el') || 'null'); } catch { return null; } },
   sig(c){ c = c || this.cfg() || {}; let h = 5381; const s = [c.key, c.atlas, c.sm, c.model].join('|'); for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return String(h); },
-  save(c){ try { localStorage.setItem('spaceman.el', JSON.stringify(c)); } catch (e) { this.log('error', 'Could not store settings: ' + e.message); }
-    this.blocked = null; this.cache.clear(); this.pend.clear(); this.testRes = null;
+  save(c){ const before = this.sig(); try { localStorage.setItem('spaceman.el', JSON.stringify(c)); } catch (e) { this.log('error', 'Could not store settings: ' + e.message); }
+    this.blocked = null; this.cache.clear(); this.pend.clear(); if (before !== this.sig()){ this.alt = {}; this.supported = null; } this.testRes = null;
     this.log('info', `Settings saved: ${c.on ? 'ON' : 'off'} · key ${this.mask(c.key)} · Atlas ${c.atlas || '(none)'} · Spaceman ${c.sm || '(same as Atlas)'} · model ${c.model || 'default'} · radio ${c.fx || 'light'}`); this.paint(); },
   last(){ try { return JSON.parse(localStorage.getItem('spaceman.el.last') || 'null'); } catch { return null; } },
   mask(k){ return k ? `${String(k).slice(0, 3)}…${String(k).slice(-4)} (${String(k).length} chars)` : '(none)'; },
@@ -4884,45 +4885,78 @@ const EL = {
   /* ---- errors: every one named, with a fix ---- */
   netError(e){ if (typeof navigator !== 'undefined' && navigator.onLine === false) return new ELError('offline', '❌ No internet connection', 'Reconnect and try again. Using the built-in voice meanwhile.', {transient:true});
     return new ELError('network', '❌ ElevenLabs Request Failed', 'The browser couldn’t reach ElevenLabs (' + (e && e.message || 'network error') + '). Check your connection, any ad blocker or VPN, and that the page is allowed to call api.elevenlabs.io.', {transient:true}); },
-  async httpError(res){
+  ctxInfo(ctx, extra){ return Object.assign({endpoint:`POST /v1/text-to-speech/${ctx.voice}`, model:ctx.model, voice:ctx.voice}, extra); },
+  infoLine(i){ if (!i) return ''; return [i.status ? `HTTP ${i.status}` : null, i.code ? `code ${i.code}` : null, i.type ? `type ${i.type}` : null, i.message ? `message “${String(i.message).slice(0, 220)}”` : null, i.param ? `param ${i.param}` : null, i.endpoint, i.model ? `model ${i.model}` : null, i.voice ? `voice ${i.voice}` : null, i.request_id ? `request ${i.request_id}` : null].filter(Boolean).join(' · '); },
+  /* The REAL answer from ElevenLabs is always kept (status, code, message, endpoint, model, voice) and shown. Classification only decides the headline and the advice; it never replaces what ElevenLabs said.
+     Both error shapes are read: {detail:{status,message}} (older) and {detail:{type,code,message,param,request_id}} (current). Nothing here checks the plan itself: only ElevenLabs's answer counts. */
+  async httpError(res, ctx){
     let raw = ''; try { raw = await res.text(); } catch {} let j = null; try { j = JSON.parse(raw); } catch {}
-    const d = j && j.detail, st = String((d && d.status) || (typeof d === 'string' ? d : '') || ''), msg = String((d && d.message) || (Array.isArray(d) ? d.map(x => x.msg).join('; ') : typeof d === 'string' ? d : raw.slice(0, 160)) || ''), low = `${st} ${msg}`.toLowerCase(), s = res.status;
-    this.log('error', `← HTTP ${s}${st ? ' ' + st : ''}${msg ? ' · ' + msg.slice(0, 200) : ''}`);
-    if (/quota|credit|character limit/.test(low)) return new ELError('quota', '❌ Out of ElevenLabs credits', 'Your plan has no credits left this month. Top up or wait for the reset.', {permanent:true});
-    if (/missing_permissions|permission/.test(low)) return new ELError('permission', '❌ API key is missing a permission', 'In ElevenLabs → Developers → API Keys, edit this key and set Text to Speech to “Access”.', {permanent:true});
-    if (/voice_not_found|voice.*(not found|does not exist)|invalid.?voice/.test(low) || s === 404) return new ELError('voice', '❌ Voice Not Found', 'ElevenLabs doesn’t know that voice ID on this account. Copy it again from My Voices. A voice from the shared library has to be added to My Voices first.', {permanent:true});
-    if (s === 401 || s === 403 || /invalid_api_key|unauthor/.test(low)) return new ELError('key', '❌ Invalid API Key', 'ElevenLabs rejected the key. Check it starts with sk_ and has no spaces, or create a new one.', {permanent:true});
-    if (s === 402 || /payment|paid_plan|subscription|upgrade/.test(low)) return new ELError('plan', '❌ This needs a paid ElevenLabs plan', 'That voice or model isn’t available on your current plan.', {permanent:true});
-    if (s === 429) return new ELError('rate', '⏳ ElevenLabs rate limit', 'Too many requests at once. Spaceman will use the built-in voice for a moment, then try again.', {transient:true, retry:true});
-    if (/model/.test(low) && (s === 400 || s === 422)) return new ELError('model', '❌ Model not accepted', `ElevenLabs rejected the model (${msg.slice(0, 80)}). Try eleven_multilingual_v2.`, {permanent:true});
-    if (s === 400 || s === 422) return new ELError('request', '❌ ElevenLabs Request Failed', `ElevenLabs rejected the request (${msg.slice(0, 120) || 'HTTP ' + s}).`, {permanent:true});
-    if (s >= 500) return new ELError('down', '❌ ElevenLabs is unavailable', `ElevenLabs answered with HTTP ${s}. Try again in a minute.`, {transient:true, retry:true});
-    return new ELError('http', '❌ ElevenLabs Request Failed', `HTTP ${s}${msg ? ': ' + msg.slice(0, 120) : ''}`, {transient:true}); },
-  async fetchAudio(text, voice, model, vs, c){
-    const url = `${this.base()}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, body = JSON.stringify({text, model_id:model, voice_settings:vs});
+    const d = j && (j.detail !== undefined ? j.detail : j), o = d && typeof d === 'object' && !Array.isArray(d) ? d : {}, s = res.status;
+    const code = String(o.code || o.status || ''), type = String(o.type || ''), message = String(o.message || (Array.isArray(d) ? d.map(x => x.msg).join('; ') : typeof d === 'string' ? d : (j && j.message) || raw.slice(0, 200)) || '');
+    const info = this.ctxInfo(ctx, {status:s, code:code || undefined, type:type || undefined, message:message || undefined, param:o.param || undefined, request_id:o.request_id || res.headers.get('x-request-id') || undefined});
+    this.log('error', '← ' + this.infoLine(info));
+    const low = `${code} ${type} ${message}`.toLowerCase(), E = (c2, t, h, f = {}) => new ELError(c2, t, h, Object.assign({info}, f)), said = message ? ` ElevenLabs said: “${message.slice(0, 180)}”` : '';
+    if (/insufficient_credits|quota_exceeded|exceeds your quota|not enough credits|out of credits/.test(low)) return E('quota', '❌ Out of ElevenLabs credits', 'Your account has no credits left for this request. Top up or wait for the monthly reset.' + said, {permanent:true});
+    if (/invalid_api_key|missing_api_key|invalid_authorization|unauthorized|sign_in_required/.test(low) || (s === 401 && !/permission/.test(low))) return E('key', '❌ Invalid API Key', 'ElevenLabs rejected the key. Check it starts with sk_ and has no spaces, or create a new one.' + said, {permanent:true});
+    if (/missing_permissions|insufficient_permissions|permission/.test(low)){ const p = (message.toLowerCase().match(/permissions?[ :]+([a-z]+_[a-z_]+)/) || [])[1]; return E('permission', '❌ API key is missing a permission', `In ElevenLabs → Developers → API Keys, edit this key and set ${p ? p.replace(/_/g, ' ') : 'Text to Speech'} to “Access”.` + said, {permanent:true}); }
+    if (/voice_not_found|invalid_voice_id/.test(low) || (s === 404 && !/model/.test(low))) return E('voice', '❌ Voice Not Found', 'ElevenLabs doesn’t know that voice ID. It must be in this account’s voices (My Voices): your own, a premade voice, or one added from the Voice Library.' + said, {permanent:true});
+    if (/voice_access_denied|library voice|voice.*(not available|free users|upgrade|subscription|paid|access)|(free users|not available for free).*voice/.test(low)) return E('voiceaccess', '❌ This voice isn’t accessible to this ElevenLabs account', 'The voice exists but ElevenLabs refuses it for this account or plan (Voice Library voices can be limited to paid plans). Use one of your own or a premade voice, or upgrade.' + said, {permanent:true});
+    if (/model_access_denied|unsupported_model|model_not_found|model/.test(low) && s !== 429) return E('model', '❌ Model not accepted', `ElevenLabs refused model ${ctx.model} for this account or request. Spaceman tries other models automatically.` + said, {permanent:true, fallbackOk:true});
+    if (s === 429 || /rate_limit|concurrent|system_busy/.test(low)) return E('rate', '⏳ ElevenLabs rate limit', 'Too many requests at once. Spaceman uses the built-in voice for a moment, then tries again.' + said, {transient:true, retry:true});
+    if (s === 402 || /feature_not_available|subscription_required|paid_plan|payment_required|paid|upgrade|subscription|plan/.test(low)) return E('plan', '❌ ElevenLabs says this needs a paid plan', 'This is ElevenLabs’s own answer, not a check inside Spaceman. See the details below for what it refused.' + said, {permanent:true, fallbackOk:!/voice/.test(low)});
+    if (s === 403) return E('forbidden', '❌ ElevenLabs refused the request (403)', 'The key was accepted but this action isn’t allowed.' + said, {permanent:true});
+    if (s === 400 || s === 422) return E('request', '❌ ElevenLabs Request Failed', 'ElevenLabs rejected the request as malformed.' + said, {permanent:true});
+    if (s >= 500) return E('down', '❌ ElevenLabs is unavailable', `ElevenLabs answered with HTTP ${s}. Try again in a minute.` + said, {transient:true, retry:true});
+    return E('http', '❌ ElevenLabs Request Failed', `HTTP ${s}.` + said, {transient:true}); },
+  altModels(model){ const pref = ['eleven_multilingual_v2', 'eleven_flash_v2_5', 'eleven_turbo_v2_5']; return pref.filter(m => m !== model && (!this.supported || this.supported.includes(m))); },
+  async fetchOnce(text, voice, model, mood, c){
+    const vs = this.settings(model, mood), ctx = {voice, model}, url = `${this.base()}/v1/text-to-speech/${encodeURIComponent(voice)}?output_format=mp3_44100_128`, body = JSON.stringify({text, model_id:model, voice_settings:vs});
     this.log('info', `→ POST /v1/text-to-speech/${voice} · model ${model} · ${text.length} chars · stability ${vs.stability} · key ${this.mask(c.key)}`);
     const t0 = performance.now(); let res;
     for (let attempt = 0; attempt < 2; attempt++){
       try { res = await fetch(url, {method:'POST', headers:{'xi-api-key':c.key, 'Content-Type':'application/json', 'Accept':'audio/mpeg'}, body}); }
-      catch (e) { const ne = this.netError(e); this.log('error', `✗ ${ne.title}: ${e && e.message}`); throw ne; }
+      catch (e) { const ne = this.netError(e); ne.info = this.ctxInfo(ctx, {message:e && e.message}); this.log('error', `✗ ${ne.title}: ${e && e.message}`); throw ne; }
       if (res.ok) break;
-      const err = await this.httpError(res); if (attempt === 0 && err.retry){ this.log('warn', `Retrying once in 0.9 s (${err.code})`); await new Promise(r => setTimeout(r, 900)); continue; } throw err; }
+      const err = await this.httpError(res, ctx); if (attempt === 0 && err.retry){ this.log('warn', `Retrying once in 0.9 s (${err.code})`); await new Promise(r => setTimeout(r, 900)); continue; } throw err; }
     const type = res.headers.get('content-type') || '';
-    if (/json|text\/html/.test(type)){ const raw = await res.text().catch(() => ''); this.log('error', `← 200 but not audio (${type}): ${raw.slice(0, 120)}`); throw new ELError('request', '❌ ElevenLabs Request Failed', 'ElevenLabs answered with something that isn’t audio. If you use a proxy, check it passes the audio through.', {transient:true}); }
+    if (/json|text\/html/.test(type)){ const raw = await res.text().catch(() => ''); this.log('error', `← 200 but not audio (${type}): ${raw.slice(0, 120)}`); throw new ELError('request', '❌ ElevenLabs Request Failed', 'ElevenLabs answered with something that isn’t audio. If you use a proxy, check it passes the audio through.', {transient:true, info:this.ctxInfo(ctx, {status:200, message:raw.slice(0, 120)})}); }
     const buf = await res.arrayBuffer(), bytes = buf.byteLength; this.log('info', `← ${res.status} ${type || 'audio'} · ${Math.round(bytes/1024)} KB · ${Math.round(performance.now() - t0)} ms`);
-    if (bytes < 400) throw new ELError('empty', '❌ ElevenLabs Request Failed', 'ElevenLabs returned an empty audio file.', {transient:true});
-    let audio; try { audio = await Voice.ac().decodeAudioData(buf); } catch (e) { this.log('error', 'Audio decode failed: ' + (e && e.message)); throw new ELError('decode', '❌ Audio couldn’t be played', 'The audio arrived but this browser couldn’t decode it.', {transient:true}); }
+    if (bytes < 400) throw new ELError('empty', '❌ ElevenLabs Request Failed', 'ElevenLabs returned an empty audio file.', {transient:true, info:this.ctxInfo(ctx, {status:200})});
+    let audio; try { audio = await Voice.ac().decodeAudioData(buf); } catch (e) { this.log('error', 'Audio decode failed: ' + (e && e.message)); throw new ELError('decode', '❌ Audio couldn’t be played', 'The audio arrived but this browser couldn’t decode it.', {transient:true, info:this.ctxInfo(ctx, {status:200})}); }
     this.log('ok', `✓ Audio ready: ${audio.duration.toFixed(1)} s`); return audio; },
-  /* cached, de-duplicated: the key includes voice, model, settings, mood and text, and saving settings clears it, so an old voice can never replay */
+  /* If ElevenLabs refuses the model (or answers with an unexplained plan error), try an account-compatible one and remember what worked */
+  async fetchAudio(text, voice, model, mood, c){
+    try { return await this.fetchOnce(text, voice, model, mood, c); }
+    catch (e) { if (!(e instanceof ELError) || !e.fallbackOk) throw e;
+      for (const alt of this.altModels(model).slice(0, 2)){
+        this.log('warn', `${model} refused (${e.code}); trying ${alt}`);
+        try { const a = await this.fetchOnce(text, voice, alt, mood, c); this.alt[this.sig(c)] = alt; this.log('ok', `Using ${alt} for this account (${model} was refused)`); return a; }
+        catch (e2) { if (!(e2 instanceof ELError) || !e2.fallbackOk) break; } }
+      throw e; } },
+  /* Best-effort account check after a failure. Each lookup needs its own key permission, so any of them may be unavailable; that is reported, not treated as an error. */
+  async diagnose(c, voice){
+    const out = [], get = async path => { try { const r = await fetch(this.base() + path, {headers:{'xi-api-key':c.key, 'Accept':'application/json'}}); let j = null; try { j = await r.json(); } catch {} return {s:r.status, j}; } catch { return {s:0, j:null}; } }, denied = r => r.s === 401 || r.s === 403;
+    const sub = await get('/v1/user/subscription');
+    if (sub.s === 200 && sub.j){ const t = sub.j.tier || sub.j.status || 'unknown'; this.tier = t; out.push(`Plan: ${t}${sub.j.character_limit ? ` · ${sub.j.character_count || 0} of ${sub.j.character_limit} credits used` : ''}`); }
+    else out.push(denied(sub) ? 'Plan: unknown (this key can’t read subscription info, which is optional)' : `Plan: couldn’t be read (${sub.s ? 'HTTP ' + sub.s : 'no answer'})`);
+    const v = await get('/v1/voices/' + encodeURIComponent(voice));
+    if (v.s === 200 && v.j) out.push(`Voice ${voice}: “${v.j.name || '?'}”, ${v.j.category || 'unknown type'}${v.j.is_owner === false || (v.j.sharing && v.j.sharing.status) ? ' (shared from the Voice Library)' : ''}`);
+    else if (v.s === 404) out.push(`Voice ${voice} is not in this account’s voices (not yours, not added from the Voice Library, or removed).`);
+    else out.push(denied(v) ? 'Voice lookup skipped (this key can’t read voices, which is optional)' : `Voice lookup failed (${v.s ? 'HTTP ' + v.s : 'no answer'})`);
+    const m = await get('/v1/models');
+    if (m.s === 200 && Array.isArray(m.j)){ this.supported = m.j.filter(x => x.can_do_text_to_speech !== false).map(x => x.model_id); out.push(`Models for this account: ${this.supported.join(', ')}. ${this.supported.includes(c.model) ? 'Your model is listed.' : 'Your model is NOT listed.'}`); }
+    else out.push(denied(m) ? 'Model list skipped (this key can’t read models, which is optional)' : `Model list failed (${m.s ? 'HTTP ' + m.s : 'no answer'})`);
+    return out; },
+  /* cached, de-duplicated: the key includes voice, model, settings and text, and saving settings clears it, so an old voice can never replay */
   tts(text, voice, mood, c){
-    c = c || this.cfg(); const model = c.model || 'eleven_multilingual_v2', vs = this.settings(model, mood), k = [voice, model, JSON.stringify(vs), text].join('|');
+    c = c || this.cfg(); const model = this.alt[this.sig(c)] || c.model || 'eleven_multilingual_v2', k = [voice, model, JSON.stringify(this.settings(model, mood)), text].join('|');
     if (this.cache.has(k)){ this.log('info', `Cache hit: “${text.slice(0, 40)}”`); return Promise.resolve(this.cache.get(k)); }
     if (this.pend.has(k)) return this.pend.get(k);
-    const p = this.fetchAudio(text, voice, model, vs, c).then(a => { this.cache.set(k, a); if (this.cache.size > 40) this.cache.delete(this.cache.keys().next().value); return a; }).finally(() => this.pend.delete(k));
+    const p = this.fetchAudio(text, voice, model, mood, c).then(a => { this.cache.set(k, a); if (this.cache.size > 40) this.cache.delete(this.cache.keys().next().value); return a; }).finally(() => this.pend.delete(k));
     this.pend.set(k, p); return p; },
   /* ---- status the Settings page shows ---- */
   note(ok, o){ const c = o.c || this.cfg() || {}, r = ok ? {ok:true, sig:this.sig(c), at:Date.now(), ms:o.ms, role:o.role, voice:o.voice, text:String(o.text || '').slice(0, 70)}
-      : {ok:false, sig:this.sig(c), at:Date.now(), code:o.err.code, title:o.err.title, hint:o.err.hint, role:o.role, text:String(o.text || '').slice(0, 70)};
+      : {ok:false, sig:this.sig(c), at:Date.now(), code:o.err.code, title:o.err.title, hint:o.err.hint, info:o.err.info || null, role:o.role, text:String(o.text || '').slice(0, 70)};
     try { localStorage.setItem('spaceman.el.last', JSON.stringify(r)); } catch {} this.paint(); },
   fail(e, text, role){
     if (!(e instanceof ELError)) e = new ELError('unknown', '❌ ElevenLabs Request Failed', (e && e.message) || 'Unknown error', {transient:true});
@@ -4966,18 +5000,22 @@ const EL = {
   prefetch(text, o = {}){ if (!this.usable()) return; const c = this.cfg(), role = o.role === 'sm' ? 'sm' : 'atlas', voice = this.voiceFor(role, c), {parts, sign} = this.plan(text);
     Promise.all([...parts.map(p => this.tts(p, voice, o.mood || 'curious', c)), ...(sign ? [this.tts(sign, voice, 'curious', c)] : [])]).catch(e => this.fail(e, text, role)); },
   /* ---- the Test Voice button: uses what is typed in the form, makes real audio, plays it, says exactly what happened ---- */
-  async test(form){ try { return await this.test2(form); } finally { this.testing = false; this.paint(); } },
+  async test(form){ try { return await this.test2(form); } finally { this.testing = false; this.paint(); try { const n = document.getElementById('el-status'); if (n) n.scrollIntoView({block:'start', behavior:'smooth'}); } catch {} } },
   async test2(form){
     const c = this.normalise(form), chk = this.check(c); this.testRes = [];
     chk.warns.forEach(w => this.testRes.push({lvl:'warn', text:w}));
     if (chk.errors.length){ chk.errors.forEach(e => this.testRes.push({lvl:'bad', text:'❌ ' + e})); this.log('warn', 'Test stopped: ' + chk.errors[0]); this.paint(); return false; }
     this.save({...c}); this.testRes = chk.warns.map(w => ({lvl:'warn', text:w})); this.testing = true; this.paint();
     const jobs = [['atlas', c.atlas, 'Atlas', 'Mission Control test successful. Over.', 'amused']]; if (c.sm && c.sm !== c.atlas) jobs.push(['sm', c.sm, 'Spaceman', 'Spaceman test successful. Try not to look so surprised. Over.', 'smug']);
-    let atlasOk = false; Voice.stop();
+    let atlasOk = false, failed = null; Voice.stop();
     for (const [role, voice, name, line, mood] of jobs){
-      try { const t0 = performance.now(); await this.speak(line, {role, mood, radio:true, cfg:c}); this.testRes.push({lvl:'ok', text:`✅ ${name}: generated and played (${((performance.now() - t0)/1000).toFixed(1)} s)`}); if (role === 'atlas') atlasOk = true; }
-      catch (e) { const er = e instanceof ELError ? e : new ELError('unknown', '❌ ElevenLabs Request Failed', e && e.message); this.log('error', `${name} test failed: ${er.title}`); this.note(false, {err:er, text:line, role, c}); this.testRes.push({lvl:'bad', text:`${er.title} (${name})`, hint:er.hint}); }
+      try { const t0 = performance.now(); await this.speak(line, {role, mood, radio:true, cfg:c}); const used = this.alt[this.sig(c)];
+        this.testRes.push({lvl:'ok', text:`✅ ${name}: generated and played (${((performance.now() - t0)/1000).toFixed(1)} s) · voice ${voice} · model ${used || c.model}${used ? ` (${c.model} was refused)` : ''}`}); if (role === 'atlas') atlasOk = true; }
+      catch (e) { const er = e instanceof ELError ? e : new ELError('unknown', '❌ ElevenLabs Request Failed', e && e.message); this.log('error', `${name} test failed: ${er.title}`); this.note(false, {err:er, text:line, role, c}); failed = failed || {er, voice};
+        this.testRes.push({lvl:'bad', text:`${er.title} (${name}: voice ${voice} · model ${c.model})`, hint:er.hint, info:this.infoLine(er.info)}); }
       this.paint(); }
+    if (failed && failed.er.info && failed.er.info.status){ this.testRes.push({lvl:'warn', text:'Checking the account…'}); this.paint(); const at = this.testRes.length - 1, lines = await this.diagnose(c, failed.voice); this.testRes.splice(at, 1, ...lines.map(t => ({lvl:'warn', text:t})));
+      if (/free/i.test(this.tier || '') && ['plan', 'voiceaccess', 'model'].includes(failed.er.code)) this.testRes.push({lvl:'warn', text:'Free plan: ElevenLabs limits some voices and models to paid plans. Premade voices and your own voices work on Free.'}); }
     if (!jobs.length) atlasOk = true;
     if (atlasOk && !c.on){ const keep = this.testRes; c.on = true; this.save({...c}); this.testRes = [{lvl:'ok', text:'Switched ElevenLabs on'}, ...keep]; const sw = document.getElementById('el-on'); if (sw) sw.checked = true; }
     this.testing = false; this.blocked = null; this.paint(); return atlasOk; },
@@ -4986,16 +5024,16 @@ const EL = {
     if (!c.on) return ['Off', '']; if (!this.ready()) return ['Setup', '']; if (this.blocked && this.blocked.sig === this.sig(c) && Date.now() < this.blocked.until) return ['Error', 'bad']; if (same && st.ok) return ['Connected', 'ion']; if (same && !st.ok) return ['Error', 'bad']; return ['Untested', '']; },
   ago(t){ const s = Math.round((Date.now() - t)/1000); return s < 5 ? 'just now' : s < 90 ? `${s} s ago` : s < 5400 ? `${Math.round(s/60)} min ago` : new Date(t).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); },
   statusHTML(){
-    const c = this.cfg() || {}, st = this.last(), same = st && st.sig === this.sig(c), b = this.blocked && this.blocked.sig === this.sig(c) && Date.now() < this.blocked.until ? this.blocked : null; let tone = 'idle', head, sub;
+    const c = this.cfg() || {}, st = this.last(), same = st && st.sig === this.sig(c), b = this.blocked && this.blocked.sig === this.sig(c) && Date.now() < this.blocked.until ? this.blocked : null; let tone = 'idle', head, sub, det = '';
     if (this.testing){ tone = 'idle'; head = '⏳ Testing…'; sub = 'Generating a real line and playing it.'; }
     else if (!c.key || !(c.atlas || c.sm)){ head = 'Not set up'; sub = 'Add an API key and a voice ID, then tap Test Voice.'; }
     else if (same && st.ok){ tone = 'ok'; head = '✅ Connected'; sub = `Last line made ${this.ago(st.at)} in ${((st.ms || 0)/1000).toFixed(1)} s.`; }
-    else if (same && !st.ok){ tone = 'bad'; head = st.title; sub = st.hint; }
+    else if (same && !st.ok){ tone = 'bad'; head = st.title; sub = st.hint; det = this.infoLine(st.info); }
     else { head = 'Not tested yet'; sub = 'Tap Test Voice to check this setup.'; }
     const id = v => v ? `<code>${esc(v)}</code>` : '<span class="muted">not set</span>', using = !c.on ? 'Built-in voice (ElevenLabs is off)' : !this.ready() ? 'Built-in voice (setup incomplete)' : b ? `Built-in voice (${esc(b.err.title.replace(/^[^A-Za-z]+/, ''))})` : 'ElevenLabs';
-    const res = (this.testRes || []).map(r => `<p class="elr ${r.lvl}">${esc(r.text)}${r.hint ? `<br><span>${esc(r.hint)}</span>` : ''}</p>`).join('');
-    return `<div class="elst ${tone}"><b>${head}</b><span>${esc(sub || '')}</span></div>${res}
-      <dl class="eldl"><dt>ElevenLabs</dt><dd>${c.on ? 'On' : 'Off'}</dd><dt>Speaking with</dt><dd>${using}</dd><dt>Atlas voice</dt><dd>${id(c.atlas)}</dd><dt>Spaceman voice</dt><dd>${c.sm ? id(c.sm) : '<span class="muted">same as Atlas</span>'}</dd><dt>Model</dt><dd>${id(c.model || 'eleven_multilingual_v2')}</dd>
+    const res = (this.testRes || []).map(r => `<p class="elr ${r.lvl}">${esc(r.text)}${r.hint ? `<br><span>${esc(r.hint)}</span>` : ''}${r.info ? `<code class="elinfo">${esc(r.info)}</code>` : ''}</p>`).join('');
+    return `<div class="elst ${tone}"><b>${head}</b><span>${esc(sub || '')}</span>${det ? `<code class="elinfo">${esc(det)}</code>` : ''}</div>${res}
+      <dl class="eldl"><dt>ElevenLabs</dt><dd>${c.on ? 'On' : 'Off'}</dd><dt>Speaking with</dt><dd>${using}</dd><dt>Atlas voice</dt><dd>${id(c.atlas)}</dd><dt>Spaceman voice</dt><dd>${c.sm ? id(c.sm) : '<span class="muted">same as Atlas</span>'}</dd><dt>Model</dt><dd>${id(c.model || 'eleven_multilingual_v2')}${this.alt[this.sig(c)] ? `<br><span class="muted">refused, using ${esc(this.alt[this.sig(c)])} instead</span>` : ''}</dd>
       <dt>Last result</dt><dd>${st ? (st.ok ? `✅ ${esc(st.role === 'sm' ? 'Spaceman' : 'Atlas')}, ${this.ago(st.at)}` : `${esc(st.title)}, ${this.ago(st.at)}`) + (st.text ? `<br><span class="muted">“${esc(st.text)}”</span>` : '') : '<span class="muted">nothing yet</span>'}</dd></dl>`; },
   paint(){ try { const n = document.getElementById('el-status'); if (n) n.innerHTML = this.statusHTML(); this.paintLog(); const t = document.getElementById('el-testbtn'); if (t){ t.disabled = this.testing; t.textContent = this.testing ? 'Testing…' : '▶ Test Voice'; } } catch {} },
   logText(){ return this.hist.map(e => `${new Date(e.t).toLocaleTimeString([], {hour12:false})} ${e.lvl === 'error' ? '✗' : e.lvl === 'warn' ? '!' : e.lvl === 'ok' ? '✓' : '·'} ${e.msg}`).join('\n') || 'Nothing logged yet.'; },
