@@ -23,12 +23,38 @@ Two parts: **Phase 12 music integration** (built, described first) and **Name Th
 
 ### Setting up real sign-in
 
-1. Create an app at developer.spotify.com/dashboard (Web API).
-2. Add the redirect URI shown in the Spotify sheet **exactly**. It must be `https://…` or a loopback IP such as `http://127.0.0.1:8000/index.html`. `localhost` is no longer accepted.
-3. Paste the Client ID into the sheet (or set `window.SPACEMAN_SPOTIFY_CLIENT_ID` before the script runs).
-4. Development Mode: the app owner needs Premium, and only 5 allow-listed users can sign in (User Management in the dashboard). Anyone else gets "Spotify access blocked".
+1. Create an app at developer.spotify.com/dashboard and tick **Web API**.
+2. Under **Settings → Redirect URIs**, add these exactly, then **Save**:
+
+   | Where | Redirect URI |
+   |---|---|
+   | Production (GitHub Pages) | `https://charliey36.github.io/Spaceman/` |
+   | Local testing | `http://127.0.0.1:8000/` (or register `http://127.0.0.1/` with no port, and Spotify accepts any port) |
+
+   Letter case, the trailing `/`, `https` and the port all count. `localhost` isn't accepted. Don't add a `/callback` path: the app is a single page, so Spotify sends people back to the page itself.
+3. Put the Client ID in `SPOTIFY_CONFIG.clientId` in `index.html`, or paste it into **You → Music → Spotify app settings**.
+4. Development Mode: the app owner needs Premium, and only 5 allow-listed users can sign in (**User Management**). Anyone else gets "Spotify access blocked".
+5. To test locally, run `python3 -m http.server 8000 --bind 127.0.0.1` in the project folder and open `http://127.0.0.1:8000/`. Opening `index.html` as a file can't work with Spotify.
 
 Scopes: `user-top-read`, `user-read-recently-played`, `user-read-currently-playing`, `user-read-playback-state`. Nothing that writes.
+
+### Configuration ("environment variables")
+
+There's no build step, so configuration lives in `SPOTIFY_CONFIG` at the top of the Spotify module:
+
+| Setting | Purpose | Override |
+|---|---|---|
+| `clientId` | Spotify app Client ID (public, not a secret) | Pasted in the app, or `window.SPACEMAN_SPOTIFY_CLIENT_ID` |
+| `redirectUris[host]` | The one Redirect URI used on that host | Advanced field in the app, or `window.SPACEMAN_SPOTIFY_REDIRECT_URI` |
+
+Any other host uses its own address in a fixed form: `index.html` removed and a trailing `/` added. No client secret exists or is needed.
+
+### OAuth fix (v1.3.1): root cause of "redirect_uri: Not matching configuration"
+
+- **Cause:** the app built `redirect_uri` from whatever address the page happened to be open at (`location.origin + location.pathname`). GitHub Pages serves the app at `/Spaceman/`, `/spaceman/`, `/Spaceman/index.html` and `/spaceman/index.html`, so the same app sent four different values. Spotify matches character for character, so anything not registered exactly failed after login.
+- **Why people got stuck:** a failed redirect means Spotify never sends anyone back, so the half-finished attempt was never cleaned up. Once a Client ID was saved, the Spotify sheet stopped showing the Redirect URI and settings, so there was no way to see or fix the mismatch. Spotify remembers its own login, so every retry failed again instantly.
+- **Fix:** one fixed Redirect URI per host (`SPOTIFY_CONFIG`). The same value is stored with the attempt and reused for the token exchange. A tab that comes back without an answer is detected (per-tab sessionStorage marker), cleaned up, and gets a "Spotify connection failed" sheet with the reason, the Redirect URI it sent, Try again, app settings and Reset. Retries after a failure or disconnect send `show_dialog=true`, so a different account can be chosen.
+- **Logging:** every step (`authorize`, `callback`, `token exchange`, `refresh`, `failed`) goes to the browser console as `[Spotify] …`, and the last 40 steps appear under **Connection log** in the Spotify sheet. Codes, tokens and the PKCE verifier are never logged.
 
 ### Production notes
 

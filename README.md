@@ -7,7 +7,7 @@ This repo holds the interactive web prototype: one self-contained `index.html`, 
 
 ## Run it
 
-Open `index.html` in a browser. There's no build step and nothing to install. For the phone experience, use your browser's device mode at about 390px wide.
+Open `index.html` in a browser. There's no build step and nothing to install. To try real Spotify sign-in, serve it instead (`python3 -m http.server 8000 --bind 127.0.0.1`, then open `http://127.0.0.1:8000/`); see `docs/SPOTIFY.md`. For the phone experience, use your browser's device mode at about 390px wide.
 
 Sign in with any email. There's no password, and accounts are stored in your browser's localStorage. Use **You → Prototype tools → Load sample data** to fill an account with friends, journeys and memories.
 

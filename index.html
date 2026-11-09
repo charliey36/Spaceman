@@ -2046,7 +2046,8 @@ function resetAccount(){
   persist(); hydrate(u);
 }
 function deleteAccount(){
-  const u = cur(); delete DB.users[u.email];
+  const u = cur(); try { const o = SpStore.read(); if (o.tok) delete o.tok[u.id]; delete o.pending; SpStore.write(o); } catch {}
+  delete DB.users[u.email];
   Object.values(DB.users).forEach(o => { o.friends = (o.friends || []).filter(f => f.id !== u.id); });
   DB.session = null; persist();
 }
@@ -6221,7 +6222,7 @@ function showAuth(){
 function enterApp(after){
   authEl.classList.add('out'); appEl.hidden = false; document.body.style.overflow = '';
   setTimeout(() => { authEl.hidden = true; authEl.innerHTML = ''; authEl.className = 'auth'; }, reduce ? 0 : 330);
-  render();
+  render(); Spotify.boot();                                          /* finishes a Spotify sign-in that came back while signed out */
   if (after) setTimeout(after, reduce ? 0 : 450);
 }
 function go(email, code){
@@ -6325,6 +6326,7 @@ document.addEventListener('input', e => {
   if (id === 'guest-name') $('#guest-err').textContent = '';
   if (id === 'display-name') setName(e.target.value);
   if (id === 'sp-client') Spotify.setClient(e.target.value);
+  if (id === 'sp-redirect-in') Spotify.setRedirect(e.target.value);
   if (id === 'dest'){ launchCfg().dest = e.target.value.trim(); persist(); }
 });
 document.addEventListener('change', e => { if (e.target.matches('[data-title]')) setTitle(e.target.dataset.title, e.target.value); });
@@ -6338,7 +6340,23 @@ document.addEventListener('keydown', e => {
    Tokens live under their own localStorage key and are wiped on disconnect. What the account keeps is names, artwork links and play hours only.
    MUSIC_DERIVED switches the lines that compute things from listening (counts, percentages, awards). docs/SPOTIFY.md explains why it is a switch. */
 const MUSIC_DERIVED = true;
-const SP_KEY = 'spaceman.spotify.v1';
+/* Spotify app settings. This is a static site with no build step, so this block plays the part of environment variables.
+   clientId:     the Client ID from developer.spotify.com/dashboard (not secret; PKCE needs no secret). Can also be pasted in the app.
+   redirectUris: the exact Redirect URI per host. Each one must be registered in the Dashboard character for character:
+                 scheme, host, path, letter case and trailing slash all count.
+   Hosts not listed use this page's own address in a fixed form: no index.html, always a trailing slash (see Spotify.redirect). */
+const SPOTIFY_CONFIG = {
+  clientId:'',
+  redirectUris:{
+    'charliey36.github.io':'https://charliey36.github.io/Spaceman/'      /* production: GitHub Pages */
+  }
+};
+const SP_KEY = 'spaceman.spotify.v1', SP_LOG = 'spaceman.spotify.log';
+/* Sign-in log: console + the last 40 steps on this device (shown in the Spotify sheet). Never holds tokens, codes or the verifier. */
+function spLog(stage, info = {}){
+  try { console.info('[Spotify]', stage, info); const l = JSON.parse(localStorage.getItem(SP_LOG) || '[]'); l.push({at:new Date().toISOString().slice(11, 19), stage, ...info}); localStorage.setItem(SP_LOG, JSON.stringify(l.slice(-40))); } catch {}
+}
+const spLogRead = () => { try { return JSON.parse(localStorage.getItem(SP_LOG) || '[]'); } catch { return []; } };
 const SP_SCOPES = 'user-top-read user-read-recently-played user-read-currently-playing user-read-playback-state';
 const spLogo = (n = 16) => `<svg class="sp-logo" width="${n}" height="${n}" viewBox="0 0 24 24" role="img" aria-label="Spotify"><circle cx="12" cy="12" r="12" fill="#1DB954"/><path d="M5.6 9.3c4.4-1.3 9.3-1 13 1.2M6.3 12.9c3.7-1 7.5-.7 10.6 1.1M7 16.3c3-.8 5.8-.5 8.3.9" fill="none" stroke="#000" stroke-width="1.7" stroke-linecap="round"/></svg>`;
 const safeUrl = u => /^https:\/\/([\w-]+\.)*(spotify\.com|scdn\.co|spotifycdn\.com)\//.test(u || '') ? u : '';
@@ -6356,55 +6374,107 @@ const Spotify = {
   st: () => cur().spotify,
   connected(){ const s = cur() && cur().spotify; return !!(s && s.on); },
   sharing(){ return this.connected() && !!S.settings.spotifyShare && !!this.st().profile; },
-  clientId(){ return String(SpStore.read().clientId || window.SPACEMAN_SPOTIFY_CLIENT_ID || '').trim(); },
+  clientId(){ return String(SpStore.read().clientId || window.SPACEMAN_SPOTIFY_CLIENT_ID || SPOTIFY_CONFIG.clientId || '').trim(); },
   setClient(v){ const o = SpStore.read(); o.clientId = String(v).replace(/[^\w-]/g, '').slice(0, 64); SpStore.write(o); },
-  redirect: () => location.origin + location.pathname,
-  uriIssue(){
-    const h = location.hostname; if (location.protocol === 'https:' || h === '127.0.0.1' || h === '[::1]') return '';
-    return h === 'localhost' ? 'Spotify no longer accepts “localhost”. Open this page at http://127.0.0.1:PORT instead.' : 'Spotify only accepts https:// or http://127.0.0.1 redirect addresses. Host this page on HTTPS, or open it from http://127.0.0.1.';
+  setRedirect(v){ const o = SpStore.read(); v = String(v || '').trim(); if (v) o.redirectUri = v; else delete o.redirectUri; SpStore.write(o); },
+  /* ONE redirect URI, the same on every visit: Spotify compares it with the Dashboard exactly. Older builds used this page's raw address,
+     so /Spaceman/, /spaceman/, /Spaceman/index.html and /Spaceman each sent a different value and only one could ever match. */
+  redirect(){
+    const o = SpStore.read(); if (o.redirectUri) return o.redirectUri;
+    const cfg = window.SPACEMAN_SPOTIFY_REDIRECT_URI || SPOTIFY_CONFIG.redirectUris[location.hostname]; if (cfg) return cfg;
+    return location.origin + location.pathname.replace(/index\.html$/, '').replace(/\/?$/, '/');
+  },
+  uriIssue(uri = this.redirect()){
+    let u; try { u = new URL(uri); } catch { return 'The Redirect URI isn’t a valid address.'; }
+    if (u.hostname === 'localhost') return 'Spotify doesn’t accept “localhost”. Use http://127.0.0.1:PORT/ instead, and open this page from that address.';
+    if (u.protocol !== 'https:' && !(u.protocol === 'http:' && (u.hostname === '127.0.0.1' || u.hostname === '[::1]'))) return location.protocol === 'file:' ? 'This page is open as a file. Spotify needs it served from https:// or http://127.0.0.1. Run “python3 -m http.server 8000 --bind 127.0.0.1” in the project folder, then open http://127.0.0.1:8000/.' : 'Spotify only accepts https:// Redirect URIs, or http://127.0.0.1 for local testing.';
+    if (u.origin !== location.origin) return `The Redirect URI is on ${u.origin}, but this page is on ${location.origin}. Spotify would send you to the other site, so sign-in can’t finish here.`;
+    if (u.hash) return 'A Redirect URI can’t contain #.';
+    return '';
   },
   engine(p = this.st().profile){ return p ? {genres:p.genres || [], artists:(p.artists || []).map(a => a.n), tracks:(p.tracks || []).map(t => ({n:t.n, a:t.a})), recent:p.recent || []} : null; },
-  /* ---- sign-in ---- */
+  /* ---- sign-in: Authorization Code with PKCE ---- */
   async begin(share = true){
-    if (!this.clientId()) return spotifySheet();
-    const issue = this.uriIssue(); if (issue) return spotifySheet();
-    if (!(window.crypto && crypto.subtle)) return toast('This browser can’t do secure sign-in on this page.');
-    const verifier = rand64(64), challenge = b64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))), state = rand64(24);
-    const o = SpStore.read(); o.pending = {state, verifier, uid:cur().id, share, at:Date.now()}; SpStore.write(o);
-    location.assign('https://accounts.spotify.com/authorize?' + new URLSearchParams({client_id:this.clientId(), response_type:'code', redirect_uri:this.redirect(), code_challenge_method:'S256', code_challenge:challenge, state, scope:SP_SCOPES}));
+    const cid = this.clientId(), redirect = this.redirect(), issue = this.uriIssue(redirect);
+    if (!cid){ spLog('blocked', {why:'no client id'}); return spotifySheet('setup'); }
+    if (issue){ spLog('blocked', {why:issue, redirect_uri:redirect}); return spotifySheet('setup'); }
+    if (LJ) return toast('Connect Spotify after this mission. Signing in leaves the page.');
+    if (!(window.isSecureContext && window.crypto && crypto.subtle)){ spLog('blocked', {why:'no secure context'}); return this.failed('insecure'); }
+    const o = SpStore.read(); if (o.pending) spLog('replacing earlier attempt', {age_s:Math.round((Date.now() - o.pending.at)/1000)});
+    const verifier = rand64(64), challenge = b64url(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(verifier))), state = rand64(24), dialog = !!o.retry;
+    o.pending = {state, verifier, uid:cur().id, share, at:Date.now(), redirect, clientId:cid, ret:location.hash || '#you'}; delete o.retry; SpStore.write(o);
+    const q = {client_id:cid, response_type:'code', redirect_uri:redirect, code_challenge_method:'S256', code_challenge:challenge, state, scope:SP_SCOPES};
+    if (dialog) q.show_dialog = 'true';
+    try { sessionStorage.setItem('spaceman.spotify.leaving', state); } catch {}                                   /* after a failure or disconnect, let them pick the account again */
+    spLog('authorize', {redirect_uri:redirect, client_id:cid.slice(0, 6) + '…', show_dialog:dialog});
+    location.assign('https://accounts.spotify.com/authorize?' + new URLSearchParams(q));
   },
+  /* Spotify sends people back with ?code&state or ?error&state. When the Redirect URI doesn't match, Spotify shows its own error page instead and
+     never sends them back: the next time Spaceman opens with an unfinished attempt, that attempt is cleared and explained. */
   async callback(){
-    const q = new URLSearchParams(location.search); if (!q.get('state') || !(q.has('code') || q.has('error'))) return false;
-    const o = SpStore.read(), pen = o.pending; history.replaceState(null, '', location.pathname);
-    if (!pen || pen.state !== q.get('state') || Date.now() - pen.at > 15*60e3){ toast('That Spotify sign-in expired. Try again.'); return true; }
+    const q = new URLSearchParams(location.search), o = SpStore.read(), pen = o.pending;
+    if (!(q.has('state') && (q.has('code') || q.has('error')))) return this.checkReturn();
+    try { sessionStorage.removeItem('spaceman.spotify.leaving'); } catch {}
+    history.replaceState(null, '', location.pathname + (pen && pen.ret ? pen.ret : location.hash));    /* never leave the code in the address bar */
+    spLog('callback', {code:q.has('code') ? `received (${q.get('code').length} chars)` : 'none', error:q.get('error') || '', state:!pen ? 'no attempt on this device' : pen.state === q.get('state') ? 'matches' : 'does not match', redirect_uri:pen && pen.redirect});
+    if (!pen) return this.failed('no-pending');
+    if (pen.state !== q.get('state')) return this.failed('state', pen);
     delete o.pending; SpStore.write(o);
-    if (q.get('error')){ toast(q.get('error') === 'access_denied' ? 'Spotify wasn’t connected.' : 'Spotify sign-in failed.'); return true; }
-    if (pen.uid !== cur().id){ toast('Sign in as the account that started the Spotify connection, then try again.'); return true; }
-    const r = await this.token({grant_type:'authorization_code', code:q.get('code'), redirect_uri:this.redirect(), code_verifier:pen.verifier});
-    if (!r){ toast('Spotify couldn’t finish connecting. Try again.'); return true; }
-    const u = cur(); u.spotify = {...u.spotify, on:true, demo:false, status:'ok', err:''};
+    if (q.get('error')) return this.failed(q.get('error') === 'access_denied' ? 'cancelled' : 'spotify', pen, q.get('error'));
+    if (Date.now() - pen.at > 15*60e3) return this.failed('expired', pen);
+    if (!cur() || pen.uid !== cur().id) return this.failed('account', pen);
+    const r = await this.token({grant_type:'authorization_code', code:q.get('code'), redirect_uri:pen.redirect, code_verifier:pen.verifier}, pen.clientId);
+    if (!r || r.bad) return this.failed('exchange', pen, r ? [r.error, r.desc].filter(Boolean).join(': ') : 'no response from Spotify');
+    const u = cur(); u.spotify = {...u.spotify, on:true, demo:false, status:'ok', err:''}; this.lastFail = null;
     if (pen.share){ S.settings.spotifyShare = true; u.settings = {...S.settings}; }
-    persist(); await this.sync(true); toast('Spotify connected'); return true;
+    persist(); spLog('connected'); render(); toast('Spotify linked'); await this.sync(true); return true;
   },
-  async token(params){
-    let r; try { r = await fetch('https://accounts.spotify.com/api/token', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams({client_id:this.clientId(), ...params})}); } catch { return null; }
-    if (!r.ok) return r.status === 400 ? {bad:true} : null;
+  checkReturn(){
+    /* sessionStorage belongs to this tab and survives the trip to Spotify, so it tells "this tab came back empty-handed" apart from another tab opening */
+    const o = SpStore.read(), pen = o.pending; let mine = false; try { mine = !!pen && sessionStorage.getItem('spaceman.spotify.leaving') === pen.state; sessionStorage.removeItem('spaceman.spotify.leaving'); } catch {}
+    if (!pen || !(mine || Date.now() - pen.at > 15*60e3)) return false;
+    delete o.pending; SpStore.write(o);
+    spLog('returned without an answer from Spotify', {redirect_uri:pen.redirect, age_s:Math.round((Date.now() - pen.at)/1000)});
+    return this.failed('no-return', pen);
+  },
+  failed(reason, pen, detail = ''){
+    const o = SpStore.read(); o.retry = true; delete o.pending; SpStore.write(o);
+    this.lastFail = {reason, detail, redirect:pen && pen.redirect || this.redirect()};
+    spLog('failed', {reason, detail});
+    if (pen && pen.ret && location.hash !== pen.ret) history.replaceState(null, '', location.pathname + pen.ret);
+    if (cur()){ render(); spotifySheet('fail'); }
+    return true;
+  },
+  /* Start over: forget any half-finished attempt, the tokens and the failure. App settings (Client ID, Redirect URI) stay. */
+  reset(){
+    const o = SpStore.read(); delete o.pending; if (o.tok && cur()) delete o.tok[cur().id]; o.retry = true; SpStore.write(o);
+    this.lastFail = null; spLog('reset');
+    const s = this.st(); if (s && s.on && !s.demo) this.disconnect(); else this.redraw();
+  },
+  forgetApp(){ const o = SpStore.read(); delete o.clientId; delete o.redirectUri; delete o.pending; SpStore.write(o); spLog('app settings cleared'); },
+  async token(params, clientId){
+    const cid = clientId || this.clientId(), refresh = params.grant_type === 'refresh_token';
+    let r; try { r = await fetch('https://accounts.spotify.com/api/token', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:new URLSearchParams({client_id:cid, ...params})}); }
+    catch (e) { spLog(refresh ? 'refresh: network error' : 'token exchange: network error', {message:String(e.message || e)}); return null; }
+    if (!r.ok){ let j = {}; try { j = await r.json(); } catch {}
+      spLog(refresh ? 'refresh: rejected' : 'token exchange: rejected', {status:r.status, error:j.error || '', description:j.error_description || ''});
+      return r.status === 400 || r.status === 401 ? {bad:true, error:j.error || 'status ' + r.status, desc:j.error_description || ''} : null; }
     const j = await r.json(), o = SpStore.read(); o.tok ||= {}; const old = o.tok[cur().id] || {};
-    o.tok[cur().id] = {access:j.access_token, refresh:j.refresh_token || old.refresh, exp:Date.now() + Math.max(60, j.expires_in - 60)*1000};   /* a refresh may not return a new refresh token: keep the old one */
-    SpStore.write(o); return o.tok[cur().id];
+    o.tok[cur().id] = {access:j.access_token, refresh:j.refresh_token || old.refresh, exp:Date.now() + Math.max(60, j.expires_in - 60)*1000, cid};   /* a refresh may not return a new refresh token: keep the old one */
+    SpStore.write(o); spLog(refresh ? 'refresh: ok' : 'token exchange: ok', {expires_in:j.expires_in, scope:j.scope || ''}); return o.tok[cur().id];
   },
   async access(){
     const t = (SpStore.read().tok || {})[cur().id]; if (!t) return null;
     if (t.exp > Date.now()) return t.access;
     if (!t.refresh) return null;
-    this._r ||= this.token({grant_type:'refresh_token', refresh_token:t.refresh}).finally(() => { this._r = null; });
+    this._r ||= this.token({grant_type:'refresh_token', refresh_token:t.refresh}, t.cid).finally(() => { this._r = null; });
     const n = await this._r; if (n && n.bad){ this.fail('auth'); return null; }
-    return n ? n.access : null;
+    return n ? n.access : 'net';
   },
   async api(path){
     if (Date.now() < this.busyUntil) return {err:'rate'};
     for (let k = 0; k < 2; k++){
-      const tok = await this.access(); if (!tok) return {err:'auth'};
+      const tok = await this.access(); if (!tok) return {err:'auth'}; if (tok === 'net') return {err:'net'};
       let r; try { r = await fetch('https://api.spotify.com/v1' + path, {headers:{Authorization:'Bearer ' + tok}}); } catch { return {err:'net'}; }
       if (r.status === 401 && k === 0){ const o = SpStore.read(); if (o.tok && o.tok[cur().id]) o.tok[cur().id].exp = 0; SpStore.write(o); continue; }
       if (r.status === 429){ this.busyUntil = Date.now() + (+r.headers.get('Retry-After') || 30)*1000; return {err:'rate'}; }
@@ -6443,7 +6513,7 @@ const Spotify = {
   },
   /* ---- state changes ---- */
   disconnect(){
-    const u = cur(), o = SpStore.read(); if (o.tok) delete o.tok[u.id]; delete o.pending; SpStore.write(o);
+    const u = cur(), o = SpStore.read(); if (o.tok) delete o.tok[u.id]; delete o.pending; o.retry = true; SpStore.write(o); spLog('disconnected');
     u.spotify = {on:false, demo:false, demoCrew:u.spotify.demoCrew !== false, status:'off', err:'', profile:null, at:0};      /* data goes with the connection */
     this.now = null; persist(); this.pushToJourney(); this.redraw();
   },
@@ -6453,8 +6523,8 @@ const Spotify = {
   },
   shareChanged(){ this.pushToJourney(); this.redraw(); },
   pushToJourney(){ if (LJ && LJ.viewer === ME.id) Transport.send({type:'music-set', by:ME.id, p:this.sharing() ? this.engine() : null}); },
-  redraw(){ if (LJ) paint(); else if (live.hidden && typeof refresh === 'function') refresh(); if (!sheet.hidden && sheet.querySelector('[data-sp-sheet]')) spotifySheet(); },
-  async boot(){ const handled = await this.callback(); if (handled) return this.redraw(); if (this.connected() && !this.st().demo) this.sync(false); }
+  redraw(){ if (LJ) paint(); else if (live.hidden && typeof refresh === 'function') refresh(); if (!sheet.hidden && sheet.querySelector('[data-sp-sheet]')) spotifySheet(this.view); },
+  async boot(){ if (!cur()) return; const handled = await this.callback(); if (!handled && this.connected() && !this.st().demo) this.sync(false); }
 };
 
 /* ---- demo provider: simulated crew who have "connected" and chosen to share (Lewis has opted out; guests have no account) ---- */
@@ -6585,42 +6655,86 @@ function musicRecapHTML(j){
 }
 
 /* ---- connect / manage sheet ---- */
-function spotifySheet(){
-  const u = cur(), s = u.spotify, cid = Spotify.clientId(), issue = Spotify.uriIssue(), share = !!u.settings.spotifyShare;
+const SP_FAIL = {
+  'no-return':'Spotify didn’t send you back to Spaceman. If Spotify showed “redirect_uri: Not matching configuration” or “Invalid redirect URI”, the Redirect URI below isn’t registered in your Spotify app exactly as shown. If you just pressed back, you can simply try again.',
+  cancelled:'You cancelled the Spotify sign-in, so nothing was connected.',
+  spotify:'Spotify stopped the sign-in.',
+  'no-pending':'This sign-in started in a different browser, or it was already used. Start again from here.',
+  state:'This sign-in didn’t match the one Spaceman started, so it was ignored for your safety.',
+  expired:'The sign-in took too long and expired.',
+  account:'The sign-in was started by a different Spaceman account. Sign in as that account, or start again here.',
+  exchange:'Spotify sent you back, but wouldn’t swap the sign-in code for access.',
+  insecure:'This browser won’t do secure sign-in on this page. Open it from https:// or http://127.0.0.1.'
+};
+function spHint(f){
+  const d = String(f.detail || '').toLowerCase();
+  if (f.reason === 'no-return' || d.includes('redirect')) return 'Fix: in developer.spotify.com/dashboard → your app → Settings → Redirect URIs, add the address above exactly (including https, letter case and the final /), then Save.';
+  if (d.includes('invalid_client')) return 'Fix: the Client ID doesn’t match a Spotify app. Copy it again from the Dashboard.';
+  if (d.includes('invalid_grant')) return 'The sign-in code was already used or expired. Try again.';
+  if (d.includes('unauthorized_client') || d.includes('user not registered')) return 'Fix: in Development Mode, add this Spotify account under User Management in the Dashboard.';
+  return '';
+}
+function spotifySheet(view){
+  Spotify.view = view;
+  const u = cur(), s = u.spotify, cid = Spotify.clientId(), redirect = Spotify.redirect(), issue = Spotify.uriIssue(redirect), share = !!u.settings.spotifyShare, f = Spotify.lastFail;
+  const uriBox = `<span class="sp-sub">Redirect URI this app sends</span><div class="sp-code" id="sp-redirect">${esc(redirect)}</div><button class="btn btn-secondary btn-block" data-copy="sp-redirect">${ic('copy',16)}Copy Redirect URI</button>`;
+  const log = spLogRead().slice(-12).reverse();
+  const logBox = log.length ? `<details class="card" style="padding:12px 16px"><summary class="small muted">Connection log</summary><div class="sp-code" style="margin-top:10px;white-space:pre-wrap">${log.map(e => esc(`${e.at} ${e.stage}${Object.keys(e).filter(k => k !== 'at' && k !== 'stage').map(k => ` · ${k}: ${e[k]}`).join('')}`)).join('\n')}</div></details>` : '';
   const switchRow = `<div class="row"><span class="grow"><b>🎵 Share Spotify Data</b><span>${share ? 'On: your crew sees your music' : 'Off: hidden, and Spaceman stays quiet about it'}</span></span><button class="switch" role="switch" aria-checked="${share}" aria-label="Share Spotify Data" data-toggle="spotifyShare"></button></div>`;
-  let body;
-  if (s.on){
+  let title = 'Spotify', body;
+  if (view === 'fail' && f){
+    title = 'Spotify connection failed';
+    body = `<div class="card stack-v" style="gap:10px;border-color:var(--flare)"><b>${esc(SP_FAIL[f.reason] || 'Something went wrong.')}</b>${f.detail ? `<span class="small muted">Spotify said: ${esc(f.detail)}</span>` : ''}</div>
+      <span class="sp-sub">Redirect URI that was used</span><div class="sp-code" id="sp-redirect">${esc(f.redirect)}</div><button class="btn btn-secondary btn-block" data-copy="sp-redirect">${ic('copy',16)}Copy Redirect URI</button>
+      ${spHint(f) ? `<p class="small muted">${esc(spHint(f))}</p>` : ''}
+      <div class="stack-v"><button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">${spLogo(20)}Try again</button>
+      <button class="btn btn-secondary btn-lg btn-block" data-action="sp-setup">${ic('sliders',18)}Check Spotify app settings</button>
+      <button class="btn btn-ghost btn-lg btn-block" data-action="sp-reset">Reset Spotify connection</button></div>${logBox}`;
+  } else if (view === 'setup' || (!s.on && (!cid || issue))){
+    title = 'Spotify app settings';
+    body = `<div class="card stack-v" style="gap:10px">
+        <p class="small muted">1. In developer.spotify.com/dashboard, open your app → Settings → Redirect URIs and add the address below <b>exactly</b>. Tick Web API and save. 2. Paste the Client ID. There’s no secret: sign-in uses PKCE.</p>
+        ${uriBox}
+        <label class="field" for="sp-client">${ic('sliders',18)}<input id="sp-client" value="${esc(cid)}" placeholder="Spotify Client ID" autocomplete="off" spellcheck="false" autocapitalize="off"></label>
+        <details><summary class="small muted">Use a different Redirect URI</summary><p class="small muted" style="margin:8px 0">Only if your Dashboard already lists another address on this site. Leave empty for the one above.</p>
+          <label class="field" for="sp-redirect-in">${ic('signal',18)}<input id="sp-redirect-in" value="${esc(SpStore.read().redirectUri || '')}" placeholder="${esc(redirect)}" autocomplete="off" spellcheck="false" autocapitalize="off"></label></details>
+        ${issue ? `<p class="small" style="color:var(--flare)">${esc(issue)}</p>` : ''}
+        <button class="btn btn-primary btn-block" data-action="sp-connect">${spLogo(20)}Connect Spotify</button>
+        <button class="btn btn-ghost btn-block" data-action="sp-forget">Clear app settings</button></div>
+      ${s.on ? '' : `<button class="btn btn-ghost btn-lg btn-block" data-action="sp-demo">${ic('sparkle',18)}Try the demo (no Spotify account)</button>`}${logBox}`;
+  } else if (s.on){
     const st = s.status === 'ok' ? 'Spotify Connected' : s.status === 'expired' ? 'Reconnect needed' : s.status === 'forbidden' ? 'Access blocked' : 'Spotify unavailable';
     body = `<div class="list"><div class="row">${spLogo(30)}<span class="grow"><b>${st}</b><span>${s.demo ? 'Demo account with simulated music' : `Last updated ${agoText(s.at)}`}</span></span></div>${switchRow}
       <div class="row"><span class="grow"><b>Simulated crew music</b><span>Prototype: friends in this app get demo profiles so you can try crew features</span></span><button class="switch" role="switch" aria-checked="${s.demoCrew !== false}" aria-label="Simulated crew music" data-sp-demo-crew data-action="sp-democrew"></button></div></div>
       ${s.status === 'forbidden' ? '<p class="small muted">Spotify apps in Development Mode only work for accounts the developer has added (up to five). Add this account in the Spotify developer dashboard under User Management.</p>' : ''}
+      ${s.status === 'expired' ? '<p class="small muted">Your Spotify sign-in ended (it was revoked, or the app settings changed). Reconnect to carry on.</p>' : ''}
       <div class="stack-v">${s.demo ? '' : `<button class="btn btn-secondary btn-lg btn-block" data-action="sp-refresh">${ic('swap',18)}Refresh my music</button>`}
       ${!s.demo && s.status !== 'ok' ? `<button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">Reconnect Spotify</button>` : ''}
       <button class="btn btn-danger btn-lg btn-block" data-action="sp-disconnect">${ic('trash',18)}Disconnect and delete my Spotify data</button></div>
-      <p class="small muted">Disconnecting removes the saved tokens and everything we stored from Spotify on this device. To also revoke access on Spotify’s side, remove Spaceman at spotify.com/account/apps.</p>`;
+      <p class="small muted">Disconnecting removes the saved tokens and everything we stored from Spotify on this device. To also revoke access on Spotify’s side, remove Spaceman at spotify.com/account/apps.</p>
+      ${s.demo ? '' : `<button class="btn btn-ghost btn-block" data-action="sp-setup">Spotify app settings</button>${logBox}`}`;
   } else {
     body = `<ul class="sp-steps"><li>Reads your top artists, top tracks and recently played, plus what’s playing now.</li><li>Stores artist and track names, artwork links and the hour of recent plays. Nothing else.</li><li>Never changes your playlists or your playback, and never posts anywhere.</li><li>Shared with your crew only while Share Spotify Data is on.</li></ul>
-      ${cid && !issue ? `<div class="stack-v"><button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">${spLogo(20)}Connect Spotify</button></div>` : `<div class="card stack-v" style="gap:10px"><b>Set up Spotify sign-in</b>
-        <p class="small muted">Create an app at developer.spotify.com/dashboard, add this redirect URI exactly, then paste the Client ID. There’s no secret to paste; sign-in uses PKCE.</p>
-        <div class="sp-code" id="sp-redirect">${esc(Spotify.redirect())}</div>
-        <button class="btn btn-secondary btn-block" data-copy="sp-redirect">${ic('copy',16)}Copy redirect URI</button>
-        <label class="field" for="sp-client">${ic('sliders',18)}<input id="sp-client" value="${esc(cid)}" placeholder="Spotify Client ID" autocomplete="off" spellcheck="false" autocapitalize="off"></label>
-        ${issue ? `<p class="small" style="color:var(--flare)">${esc(issue)}</p>` : ''}
-        <button class="btn btn-primary btn-block" data-action="sp-connect">Connect Spotify</button></div>`}
-      <button class="btn btn-ghost btn-lg btn-block" data-action="sp-demo">${ic('sparkle',18)}Try the demo (no Spotify account)</button>`;
+      <div class="stack-v"><button class="btn btn-primary btn-lg btn-block" data-action="sp-connect">${spLogo(20)}Connect Spotify</button>
+      <button class="btn btn-ghost btn-lg btn-block" data-action="sp-demo">${ic('sparkle',18)}Try the demo (no Spotify account)</button>
+      <button class="btn btn-ghost btn-block" data-action="sp-setup">Spotify app settings</button></div>`;
   }
-  openSheet(`<div data-sp-sheet class="stack-v" style="gap:16px"><div class="sheet-title"><span class="eyebrow ion">Music</span><h2 class="display" style="font-size:24px">Spotify</h2></div>${body}
+  openSheet(`<div data-sp-sheet class="stack-v" style="gap:16px"><div class="sheet-title"><span class="eyebrow ion">Music</span><h2 class="display" style="font-size:24px">${title}</h2></div>${body}
     <p class="sp-foot">${spLogo(14)}Music data from Spotify. Spotify is a trademark of Spotify AB; Spaceman isn’t affiliated with it.</p></div>`);
 }
 Object.assign(ACTIONS, {
   'sp-open': () => spotifySheet(),
+  'sp-setup': () => spotifySheet('setup'),
   'sp-connect': () => Spotify.begin(true),
+  'sp-reset': () => { Spotify.reset(); spotifySheet(); toast('Spotify connection reset. You can connect again.'); },
+  'sp-forget': () => { Spotify.forgetApp(); spotifySheet('setup'); toast('Spotify app settings cleared'); },
   'sp-demo': () => { Spotify.demo(); spotifySheet(); toast('Demo music is on'); },
   'sp-refresh': async () => { toast('Refreshing your music'); await Spotify.sync(true); },
   'sp-disconnect': () => { Spotify.disconnect(); closeSheet(); toast('Spotify disconnected and your music data deleted'); },
   'sp-democrew': (t) => { const s = cur().spotify, on = t.getAttribute('aria-checked') !== 'true'; t.setAttribute('aria-checked', on); s.demoCrew = on; persist(); }
 });
-
+/* Back button from Spotify's own error page: the browser may restore this page from its cache without re-running boot. */
+addEventListener('pageshow', e => { if (e.persisted && cur()) Spotify.checkReturn(); });
 /* ---------- boot ---------- */
 loadDB();
 if (DB.session && DB.users[DB.session]){ const u = DB.users[DB.session]; hydrate(u); seedIfNeeded(u); appEl.hidden = false; render(); Spotify.boot(); }
